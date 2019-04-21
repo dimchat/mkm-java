@@ -1,0 +1,103 @@
+package chat.dim.mkm.entity;
+
+/**
+ *  ID for entity (Account/Group)
+ *
+ *      data format: "name@address[/terminal]"
+ *
+ *      fileds:
+ *          name     - entity name, the seed of fingerprint to build address
+ *          address  - a string to identify an entity
+ *          terminal - entity login resource(device), OPTIONAL
+ */
+public class ID {
+
+    private final String string;
+
+    public final String name;
+    public final Address address;
+    public final String terminal;
+
+    public ID(ID identifier) {
+        this.string   = identifier.string;
+        this.name     = identifier.name;
+        this.address  = identifier.address;
+        this.terminal = identifier.terminal;
+    }
+
+    public ID(String string) {
+        this.string = string;
+        // terminal
+        String[] pair = string.split("/", 2);
+        if (pair.length > 1) {
+            this.terminal = pair[1];
+        } else {
+            this.terminal = null;
+        }
+        // name & address
+        pair = pair[0].split("@", 2);
+        if (pair.length > 1) {
+            this.name = pair[0];
+            this.address = new Address(pair[1]);
+        } else {
+            this.name = "";
+            this.address = new Address(pair[0]);
+        }
+    }
+
+    public ID(String name, Address address) {
+        if (name == null || name.length() == 0) {
+            // BTC address?
+            this.string = address.toString();
+        } else {
+            this.string = name + "@" + address;
+        }
+        this.terminal = null;
+        this.name = name;
+        this.address = address;
+    }
+
+    public ID(Address address) {
+        this("", address);
+    }
+
+    public String toString() {
+        return this.string;
+    }
+
+    public boolean equals(ID identifier) {
+        if (name != null && !name.equals(identifier.name)) {
+            return false;
+        }
+        return address.equals(identifier.address);
+    }
+
+    public boolean equals(String string) {
+        return equals(new ID(string));
+    }
+
+    public NetworkType getType() {
+        return this.address.network;
+    }
+
+    public long getNumber() {
+        return this.address.code;
+    }
+
+    public boolean isValid() {
+        return this.address.valid;
+    }
+
+    public static void main(String args[]) {
+        {
+            ID identifier = new ID("moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
+            System.out.println("ID: " + identifier);
+            System.out.println("number: " + identifier.getNumber());
+        }
+        {
+            ID identifier = new ID("moky@4DnqXWdTV8wuZgfqSCX9GjE2kNq7HJrUgQ");
+            System.out.println("ID: " + identifier);
+            System.out.println("number: " + identifier.getNumber());
+        }
+    }
+}
