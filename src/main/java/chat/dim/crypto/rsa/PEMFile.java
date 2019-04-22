@@ -2,18 +2,17 @@ package chat.dim.crypto.rsa;
 
 import chat.dim.crypto.Utils;
 
-public class PEMFile {
+class PEMFile {
 
-    public final String fileContent;
+    final String fileContent;
 
-    public final byte[] publicKeyData;
-    public final byte[] privateKeyData;
+    final byte[] publicKeyData;
+    final byte[] privateKeyData;
 
-    public PEMFile(String fileContent) {
+    PEMFile(String fileContent) {
         super();
 
         this.fileContent = fileContent;
-
         // public key
         String publicContent = getKeyContent(fileContent, "PUBLIC");
         if (publicContent == null) {
@@ -21,7 +20,6 @@ public class PEMFile {
         } else {
             this.publicKeyData = Utils.base64Decode(publicContent);
         }
-
         // private key
         String privateContent = getKeyContent(fileContent, "PRIVATE");
         if (privateContent == null) {
@@ -31,7 +29,7 @@ public class PEMFile {
         }
     }
 
-    public PEMFile(java.security.interfaces.RSAPublicKey publicKey) {
+    PEMFile(java.security.interfaces.RSAPublicKey publicKey) {
         super();
 
         this.fileContent = getFileContent(publicKey);
@@ -39,12 +37,12 @@ public class PEMFile {
         this.privateKeyData = null;
     }
 
-    public PEMFile(java.security.interfaces.RSAPrivateKey privateKey) {
+    PEMFile(java.security.interfaces.RSAPrivateKey privateKey) {
         super();
 
         this.fileContent = getFileContent(privateKey);
-        this.privateKeyData = privateKey.getEncoded();
         this.publicKeyData = null;
+        this.privateKeyData = privateKey.getEncoded();
     }
 
     private String getFileContent(java.security.interfaces.RSAPublicKey publicKey) {

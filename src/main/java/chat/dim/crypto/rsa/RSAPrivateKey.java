@@ -124,15 +124,13 @@ public class RSAPrivateKey extends PrivateKey {
     }
 
     public byte[] decrypt(byte[] cipherText) {
-        int blockSize = keySizeInBits() / 8;
-        int length = cipherText.length;
-        if (length != blockSize) {
+        if (cipherText.length != (keySizeInBits() / 8)) {
             throw new AssertionError("RSA ciphertext length error");
         }
         try {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
-            return cipher.doFinal(cipherText, 0, length);
+            return cipher.doFinal(cipherText);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException |
                 InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
@@ -142,10 +140,10 @@ public class RSAPrivateKey extends PrivateKey {
 
     public byte[] sign(byte[] data) {
         try {
-            Signature signature = Signature.getInstance("SHA256withRSA");
-            signature.initSign(privateKey);
-            signature.update(data);
-            return signature.sign();
+            Signature signer = Signature.getInstance("SHA256withRSA");
+            signer.initSign(privateKey);
+            signer.update(data);
+            return signer.sign();
         } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
             e.printStackTrace();
         }

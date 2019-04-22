@@ -54,13 +54,7 @@ public class PrivateKey extends CryptographyKey {
         try {
             Constructor constructor = clazz.getConstructor(HashMap.class);
             return (PrivateKey) constructor.newInstance(dictionary);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return null;
@@ -103,7 +97,7 @@ public class PrivateKey extends CryptographyKey {
         String text = "moky";
         byte[] plaintext = text.getBytes("UTF-8");
         byte[] cipherText = pk.encrypt(plaintext);
-        System.out.println("RSA encrypt(\"" + text + "\") = " + cipherText);
+        System.out.println("RSA encrypt(\"" + text + "\") = " + Utils.hexEncode(cipherText));
 
         byte[] data = sk.decrypt(cipherText);
         String decrypt = new String(data);
@@ -113,6 +107,14 @@ public class PrivateKey extends CryptographyKey {
             System.out.println("!!! RSA en/decrypt OK");
         } else {
             throw new AssertionError("!!! RSA en/decrypt error");
+        }
+
+        byte[] signature = sk.sign(plaintext);
+        System.out.println("signature(\"" + text + "\") = " + Utils.hexEncode(signature));
+        if (pk.verify(plaintext, signature)) {
+            System.out.println("!!! RSA signature OK");
+        } else {
+            throw new AssertionError("!!! RSA signature error");
         }
     }
 }

@@ -48,13 +48,7 @@ public class SymmetricKey extends CryptographyKey {
         try {
             Constructor constructor = clazz.getConstructor(HashMap.class);
             return (SymmetricKey) constructor.newInstance(dictionary);
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
+        } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
             e.printStackTrace();
         }
         return null;
@@ -85,7 +79,7 @@ public class SymmetricKey extends CryptographyKey {
     //-------- Runtime end --------
 
     public static void main(String args[]) throws UnsupportedEncodingException {
-        HashMap dictionary = new HashMap();
+        HashMap<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "AES");
         dictionary.put("data", "C2+xGizLL1G1+z9QLPYNdp/bPP/seDvNw45SXPAvQqk=");
         dictionary.put("iv", "SxPwi6u4+ZLXLdAFJezvSQ==");
@@ -96,13 +90,32 @@ public class SymmetricKey extends CryptographyKey {
         String text = "moky";
         byte[] plaintext = text.getBytes("UTF-8");
         byte[] cipherText = key.encrypt(plaintext);
-        System.out.println("RSA encrypt(\"" + text + "\") = " + Utils.base64Encode(cipherText));
+        System.out.println("RSA encrypt(\"" + text + "\") = " + Utils.hexEncode(cipherText));
 
         byte[] data = key.decrypt(cipherText);
         String decrypt = new String(data);
         System.out.println("decrypt to " + decrypt);
 
         if (Utils.base64Encode(cipherText).equals("0xtbqZN6x2aWTZn0DpCoCA==")) {
+            System.out.println("!!! AES encrypt OK");
+        } else {
+            throw new AssertionError("!!! AES encrypt error");
+        }
+
+        // random key
+        dictionary.remove("data");
+        dictionary.remove("iv");
+        key = SymmetricKey.create(dictionary);
+        System.out.println("key:" + key);
+
+        cipherText = key.encrypt(plaintext);
+        System.out.println("RSA encrypt(\"" + text + "\") = " + Utils.hexEncode(cipherText));
+
+        data = key.decrypt(cipherText);
+        decrypt = new String(data);
+        System.out.println("decrypt to " + decrypt);
+
+        if (decrypt.equals(text)) {
             System.out.println("!!! AES encrypt OK");
         } else {
             throw new AssertionError("!!! AES encrypt error");

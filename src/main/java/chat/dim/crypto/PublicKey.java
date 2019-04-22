@@ -79,7 +79,7 @@ public class PublicKey extends CryptographyKey {
     //-------- Runtime end --------
 
     public static void main(String args[]) {
-        HashMap dictionary = new HashMap();
+        HashMap<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "RSA");
         dictionary.put("data", "-----BEGIN PUBLIC KEY-----\n" +
                 "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCI8jKup683D4Gxa0dJomGMqHhd3bcHr7NObJuglNLvYir9PFsfs/mNB/K6jN+R+O6hpyCIiKARk0zxxfuzzLdZhXWmqcvy4f95cJAG5aYOtv8RACwRo/b9/NaDuHnpBW7soArZDS8RqTI1lYH5v2tZqMIdhoC5DAUyKOHFcGxiGQIDAQAB\n" +

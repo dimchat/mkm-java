@@ -61,8 +61,8 @@ public class Meta {
     public static final byte VersionDefault = VersionMKM;
 
     public Meta(Meta meta) {
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("version", new Integer(meta.version));
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("version", (int) meta.version);
         map.put("key", meta.key.toDictionary());
         map.put("seed", meta.seed);
         map.put("fingerprint", Utils.base64Encode(meta.fingerprint));
@@ -90,8 +90,8 @@ public class Meta {
     }
 
     public Meta(byte version, PublicKey key, String seed, byte[] fingerprint) throws UnsupportedEncodingException {
-        HashMap<String, Object> map = new HashMap<String, Object>();
-        map.put("version", new Integer(version));
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("version", (int) version);
         map.put("key", key.toDictionary());
         map.put("seed", seed);
         map.put("fingerprint", Utils.base64Encode(fingerprint));

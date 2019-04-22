@@ -29,7 +29,7 @@ public class Utils {
     }
 
     public static byte[] sha256(byte[] data) {
-        MessageDigest md = null;
+        MessageDigest md;
         try {
             md = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
@@ -49,11 +49,11 @@ public class Utils {
         return out;
     }
 
-    private static String hexEncode(byte[] data) {
+    public static String hexEncode(byte[] data) {
         StringBuilder sb = new StringBuilder();
         String hex;
-        for (int i = 0; i < data.length; i++) {
-            hex = Integer.toHexString(data[i] & 0xFF);
+        for (byte ch : data) {
+            hex = Integer.toHexString(ch & 0xFF);
             sb.append(hex.length() == 1 ? "0" + hex : hex);
         }
         return sb.toString();

@@ -14,28 +14,36 @@ import java.util.Random;
 
 public class AESKey extends SymmetricKey {
 
+    private final Cipher cipher;
+
     private final SecretKeySpec keySpec;
     private final IvParameterSpec ivSpec;
 
     public AESKey(AESKey key) {
         super(key);
+        this.cipher = key.cipher;
         this.keySpec = key.keySpec;
         this.ivSpec = key.ivSpec;
     }
 
-    public AESKey(HashMap<String, Object> dictionary) {
+    public AESKey(HashMap<String, Object> dictionary) throws NoSuchPaddingException, NoSuchAlgorithmException {
         super(dictionary);
-        keySpec = new SecretKeySpec(getData(), "AES");
+        cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        keySpec = new SecretKeySpec(getKeyData(), "AES");
         ivSpec = new IvParameterSpec(getInitVector());
     }
 
-    private int keySize() {
+    private int getKeySize() {
         Object size = dictionary.get("keySize");
         if (size == null) {
             dictionary.put("keySize", 32);
             return 32;
         }
         return (Integer) size;
+    }
+
+    private int getBlockSize() {
+        return cipher.getBlockSize();
     }
 
     private byte[] randomData(int size) {
@@ -45,19 +53,23 @@ public class AESKey extends SymmetricKey {
         return buffer;
     }
 
-    private byte[] getData() {
+    private byte[] zeroData(int size) {
+        return new byte[size];
+    }
+
+    private byte[] getKeyData() {
         Object data = dictionary.get("data");
         if (data != null) {
             return Utils.base64Decode((String) data);
         }
 
-        // random password
-        int size = keySize();
-        byte[] pw = randomData(size);
+        // random key data
+        int keySize = getKeySize();
+        byte[] pw = randomData(keySize);
         dictionary.put("data", Utils.base64Encode(pw));
 
         // random initialization vector
-        int blockSize = 16;
+        int blockSize = getBlockSize();
         byte[] iv = randomData(blockSize);
         dictionary.put("iv", Utils.base64Encode(iv));
 
@@ -69,18 +81,21 @@ public class AESKey extends SymmetricKey {
         if (iv != null) {
             return Utils.base64Decode((String) iv);
         }
-        return null;
+        // zero iv
+        int blockSize = getBlockSize();
+        byte[] zeros = zeroData(blockSize);
+        dictionary.put("iv", Utils.base64Encode(zeros));
+        return zeros;
     }
 
     //-------- interfaces --------
 
     public byte[] encrypt(byte[] plaintext) {
         try {
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
             return cipher.doFinal(plaintext);
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
-                IllegalBlockSizeException | InvalidAlgorithmParameterException | BadPaddingException e) {
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException |
+                IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
         }
         return null;
@@ -88,11 +103,10 @@ public class AESKey extends SymmetricKey {
 
     public byte[] decrypt(byte[] cipherText) {
         try {
-            Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
             return cipher.doFinal(cipherText);
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException | InvalidKeyException |
-                IllegalBlockSizeException | InvalidAlgorithmParameterException | BadPaddingException e) {
+        } catch (InvalidKeyException | InvalidAlgorithmParameterException |
+                IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
         }
         return null;

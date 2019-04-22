@@ -6,9 +6,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.security.InvalidKeyException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
@@ -66,16 +64,13 @@ public class RSAPublicKey extends PublicKey {
     //-------- interfaces --------
 
     public byte[] encrypt(byte[] plaintext) {
-        int blockSize = keySizeInBits() / 8 - 11;
-        int length = plaintext.length;
-        if (length > blockSize) {
+        if (plaintext.length > (keySizeInBits() / 8 - 11)) {
             throw new AssertionError("RSA plaintext length error");
         }
         try {
-            Cipher cipher = null;
-            cipher = Cipher.getInstance("RSA");
+            Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-            return cipher.doFinal(plaintext, 0, length);
+            return cipher.doFinal(plaintext);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException |
                 InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
@@ -84,8 +79,14 @@ public class RSAPublicKey extends PublicKey {
     }
 
     public boolean verify(byte[] data, byte[] signature) {
-        System.out.println("override me!");
-        // TODO: override me
+        try {
+            Signature signer = Signature.getInstance("SHA256withRSA");
+            signer.initVerify(publicKey);
+            signer.update(data);
+            return signer.verify(signature);
+        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
+            e.printStackTrace();
+        }
         return false;
     }
 }
