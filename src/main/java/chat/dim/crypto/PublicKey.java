@@ -32,41 +32,37 @@ public class PublicKey extends CryptographyKey {
 
     private static HashMap<String, Class> publicKeyClasses = new HashMap<>();
 
-    public static void register(String algorithm, Class keyClass) {
-        // TODO: check whether is subclass of PublicKey
-        publicKeyClasses.put(algorithm, keyClass);
+    public static void register(String algorithm, Class clazz) {
+        // TODO: check whether clazz is subclass of PublicKey
+        publicKeyClasses.put(algorithm, clazz);
     }
 
-    private static PublicKey createInstance(HashMap<String, Object> dictionary) {
+    private static PublicKey createInstance(HashMap<String, Object> dictionary) throws ClassNotFoundException {
         String algorithm = getAlgorithm(dictionary);
         Class clazz = publicKeyClasses.get(algorithm);
         if (clazz == null) {
-            System.out.println("unknown algorithm:" + algorithm);
-            return null;
+            throw new ClassNotFoundException("unknown algorithm:" + algorithm);
         }
         try {
             Constructor constructor = clazz.getConstructor(HashMap.class);
             return (PublicKey) constructor.newInstance(dictionary);
-        } catch (NoSuchMethodException | InstantiationException |
-                IllegalAccessException | InvocationTargetException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    public static PublicKey create(Object object) {
+    public static PublicKey create(Object object) throws ClassNotFoundException {
         if (object == null) {
             return null;
         }
         if (object instanceof PublicKey) {
             return (PublicKey) object;
+        } else if (object instanceof HashMap) {
+            return createInstance((HashMap<String, Object>) object);
+        } else {
+            throw new IllegalArgumentException("unknown key:" + object);
         }
-        Class clazz = object.getClass();
-        if (clazz.equals(HashMap.class)) {
-            HashMap<String, Object> dictionary = (HashMap<String, Object>) object;
-            return createInstance(dictionary);
-        }
-        throw new AssertionError("unknown key:" + object);
     }
 
     static {
@@ -78,7 +74,7 @@ public class PublicKey extends CryptographyKey {
 
     //-------- Runtime end --------
 
-    public static void main(String args[]) {
+    public static void main(String args[]) throws ClassNotFoundException {
         HashMap<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "RSA");
         dictionary.put("data", "-----BEGIN PUBLIC KEY-----\n" +

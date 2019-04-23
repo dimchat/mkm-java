@@ -29,7 +29,7 @@ public abstract class CryptographyKey {
     }
 
     public HashMap<String, Object> toDictionary() {
-        return this.dictionary;
+        return dictionary;
     }
 
     public static String getAlgorithm(HashMap<String, Object> dictionary) {

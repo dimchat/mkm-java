@@ -33,40 +33,37 @@ public class SymmetricKey extends CryptographyKey {
 
     private static HashMap<String, Class> symmetricKeyClasses = new HashMap<>();
 
-    public static void register(String algorithm, Class keyClass) {
-        // TODO: check whether is subclass of SymmetricKey
-        symmetricKeyClasses.put(algorithm, keyClass);
+    public static void register(String algorithm, Class clazz) {
+        // TODO: check whether clazz is subclass of SymmetricKey
+        symmetricKeyClasses.put(algorithm, clazz);
     }
 
-    private static SymmetricKey createInstance(HashMap<String, Object> dictionary) {
+    private static SymmetricKey createInstance(HashMap<String, Object> dictionary) throws ClassNotFoundException {
         String algorithm = getAlgorithm(dictionary);
         Class clazz = symmetricKeyClasses.get(algorithm);
         if (clazz == null) {
-            System.out.println("unknown algorithm:" + algorithm);
-            return null;
+            throw new ClassNotFoundException("unknown algorithm:" + algorithm);
         }
         try {
             Constructor constructor = clazz.getConstructor(HashMap.class);
             return (SymmetricKey) constructor.newInstance(dictionary);
-        } catch (NoSuchMethodException | InstantiationException | InvocationTargetException | IllegalAccessException e) {
+        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    public static SymmetricKey create(Object object) {
+    public static SymmetricKey create(Object object) throws ClassNotFoundException {
         if (object == null) {
             return null;
         }
         if (object instanceof SymmetricKey) {
             return (SymmetricKey) object;
+        } else if (object instanceof HashMap) {
+            return createInstance((HashMap<String, Object>) object);
+        } else {
+            throw new IllegalArgumentException("unknown key:" + object);
         }
-        Class clazz = object.getClass();
-        if (clazz.equals(HashMap.class)) {
-            HashMap<String, Object> dictionary = (HashMap<String, Object>) object;
-            return createInstance(dictionary);
-        }
-        throw new AssertionError("unknown key:" + object);
     }
 
     static {
@@ -78,7 +75,7 @@ public class SymmetricKey extends CryptographyKey {
 
     //-------- Runtime end --------
 
-    public static void main(String args[]) throws UnsupportedEncodingException {
+    public static void main(String args[]) throws UnsupportedEncodingException, ClassNotFoundException {
         HashMap<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "AES");
         dictionary.put("data", "C2+xGizLL1G1+z9QLPYNdp/bPP/seDvNw45SXPAvQqk=");
@@ -99,7 +96,7 @@ public class SymmetricKey extends CryptographyKey {
         if (Utils.base64Encode(cipherText).equals("0xtbqZN6x2aWTZn0DpCoCA==")) {
             System.out.println("!!! AES encrypt OK");
         } else {
-            throw new AssertionError("!!! AES encrypt error");
+            throw new ArithmeticException("!!! AES encrypt error");
         }
 
         // random key
@@ -118,7 +115,7 @@ public class SymmetricKey extends CryptographyKey {
         if (decrypt.equals(text)) {
             System.out.println("!!! AES encrypt OK");
         } else {
-            throw new AssertionError("!!! AES encrypt error");
+            throw new ArithmeticException("!!! AES encrypt error");
         }
 
 //        text = "XX5qfromb3R078VVK7LwVA==";

@@ -74,7 +74,7 @@ public class Meta {
         this.valid       = meta.valid;
     }
 
-    public Meta(HashMap<String, Object> dictionary) throws UnsupportedEncodingException {
+    public Meta(HashMap<String, Object> dictionary) throws UnsupportedEncodingException, ClassNotFoundException {
         this.dictionary  = dictionary;
         this.version     = Integer.getInteger((String)dictionary.get("version")).byteValue();
         this.key         = PublicKey.create(dictionary.get("key"));

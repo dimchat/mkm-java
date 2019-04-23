@@ -64,7 +64,7 @@ public class RSAPrivateKey extends PrivateKey {
 
     private void updateData(KeyPair keyPair) {
         PEMFile pemFile = new PEMFile((java.security.interfaces.RSAPrivateKey) keyPair.getPrivate());
-        dictionary.put("data", pemFile.fileContent);
+        dictionary.put("data", pemFile.toString());
     }
 
     private int keySizeInBits() {
@@ -119,13 +119,18 @@ public class RSAPrivateKey extends PrivateKey {
         HashMap<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "RSA");
         dictionary.put("keySizeInBits", keySizeInBits());
-        dictionary.put("data", pemFile.fileContent);
-        return PublicKey.create(dictionary);
+        dictionary.put("data", pemFile.toString());
+        try {
+            return PublicKey.create(dictionary);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     public byte[] decrypt(byte[] cipherText) {
         if (cipherText.length != (keySizeInBits() / 8)) {
-            throw new AssertionError("RSA ciphertext length error");
+            throw new InvalidParameterException("RSA cipher text length error:" + cipherText.length);
         }
         try {
             Cipher cipher = Cipher.getInstance("RSA");
@@ -134,8 +139,8 @@ public class RSAPrivateKey extends PrivateKey {
         } catch (NoSuchAlgorithmException | NoSuchPaddingException |
                 InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public byte[] sign(byte[] data) {
@@ -146,7 +151,7 @@ public class RSAPrivateKey extends PrivateKey {
             return signer.sign();
         } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

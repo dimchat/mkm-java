@@ -4,7 +4,7 @@ import chat.dim.crypto.Utils;
 
 class PEMFile {
 
-    final String fileContent;
+    private final String fileContent;
 
     final byte[] publicKeyData;
     final byte[] privateKeyData;
@@ -43,6 +43,10 @@ class PEMFile {
         this.fileContent = getFileContent(privateKey);
         this.publicKeyData = null;
         this.privateKeyData = privateKey.getEncoded();
+    }
+
+    public String toString() {
+        return fileContent;
     }
 
     private String getFileContent(java.security.interfaces.RSAPublicKey publicKey) {

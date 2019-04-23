@@ -23,7 +23,7 @@ public class PrivateKey extends CryptographyKey {
         return null;
     }
 
-    public byte[] decrypt(byte[] ciphertext) {
+    public byte[] decrypt(byte[] cipherText) {
         System.out.println("override me!");
         // TODO: override me
         return null;
@@ -39,40 +39,37 @@ public class PrivateKey extends CryptographyKey {
 
     private static HashMap<String, Class> privateKeyClasses = new HashMap<>();
 
-    public static void register(String algorithm, Class keyClass) {
-        // TODO: check whether is subclass of PrivateKey
-        privateKeyClasses.put(algorithm, keyClass);
+    public static void register(String algorithm, Class clazz) {
+        // TODO: check whether clazz is subclass of PrivateKey
+        privateKeyClasses.put(algorithm, clazz);
     }
 
-    private static PrivateKey createInstance(HashMap<String, Object> dictionary) {
+    private static PrivateKey createInstance(HashMap<String, Object> dictionary) throws ClassNotFoundException {
         String algorithm = getAlgorithm(dictionary);
         Class clazz = privateKeyClasses.get(algorithm);
         if (clazz == null) {
-            System.out.println("unknown algorithm:" + algorithm);
-            return null;
+            throw new ClassNotFoundException("unknown algorithm:" + algorithm);
         }
         try {
             Constructor constructor = clazz.getConstructor(HashMap.class);
             return (PrivateKey) constructor.newInstance(dictionary);
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
-    public static PrivateKey create(Object object) {
+    public static PrivateKey create(Object object) throws ClassNotFoundException {
         if (object == null) {
             return null;
         }
         if (object instanceof PrivateKey) {
             return (PrivateKey) object;
+        } else if (object instanceof HashMap) {
+            return createInstance((HashMap<String, Object>) object);
+        } else {
+            throw new IllegalArgumentException("unknown key:" + object);
         }
-        Class clazz = object.getClass();
-        if (clazz.equals(HashMap.class)) {
-            HashMap<String, Object> dictionary = (HashMap<String, Object>) object;
-            return createInstance(dictionary);
-        }
-        throw new AssertionError("unknown key:" + object);
     }
 
     static {
@@ -84,7 +81,7 @@ public class PrivateKey extends CryptographyKey {
 
     //-------- Runtime end --------
 
-    public static void main(String args[]) throws UnsupportedEncodingException {
+    public static void main(String args[]) throws UnsupportedEncodingException, ClassNotFoundException {
         HashMap<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "RSA");
 
@@ -106,7 +103,7 @@ public class PrivateKey extends CryptographyKey {
         if (decrypt.equals(text)) {
             System.out.println("!!! RSA en/decrypt OK");
         } else {
-            throw new AssertionError("!!! RSA en/decrypt error");
+            throw new ArithmeticException("!!! RSA en/decrypt error");
         }
 
         byte[] signature = sk.sign(plaintext);
@@ -114,7 +111,7 @@ public class PrivateKey extends CryptographyKey {
         if (pk.verify(plaintext, signature)) {
             System.out.println("!!! RSA signature OK");
         } else {
-            throw new AssertionError("!!! RSA signature error");
+            throw new ArithmeticException("!!! RSA signature error");
         }
     }
 }

@@ -75,7 +75,7 @@ public class Utils {
         exp = "cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d";
         System.out.println("sha256(" + string + ") = " + res);
         if (!res.equalsIgnoreCase(exp)) {
-            throw new AssertionError("SHA256 error");
+            throw new ArithmeticException("SHA256 error");
         }
 
         // ripemd160(moky) = 44bd174123aee452c6ec23a6ab7153fa30fa3b91
@@ -84,7 +84,7 @@ public class Utils {
         exp = "44bd174123aee452c6ec23a6ab7153fa30fa3b91";
         System.out.println("ripemd160(" + string + ") = " + res);
         if (!res.equalsIgnoreCase(exp)) {
-            throw new AssertionError("RIPEMD160 error");
+            throw new ArithmeticException("RIPEMD160 error");
         }
 
         // base58(moky) = 3oF5MJ
@@ -92,7 +92,7 @@ public class Utils {
         exp = "3oF5MJ";
         System.out.println("base58(" + string + ") = " + res);
         if (!res.equalsIgnoreCase(exp)) {
-            throw new AssertionError("BASE58 error");
+            throw new ArithmeticException("BASE58 error");
         }
 
         // base64(moky) = bW9reQ==
@@ -100,7 +100,7 @@ public class Utils {
         exp = "bW9reQ==";
         System.out.println("base64(" + string + ") = " + res);
         if (!res.equalsIgnoreCase(exp)) {
-            throw new AssertionError("BASE64 error");
+            throw new ArithmeticException("BASE64 error");
         }
     }
 }
