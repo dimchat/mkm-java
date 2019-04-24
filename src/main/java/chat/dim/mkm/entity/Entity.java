@@ -50,10 +50,4 @@ public class Entity {
     public Meta getMeta() {
         return dataSource.getMeta(this);
     }
-
-    public static void main(String args[]) {
-        ID identifier = new ID("moky@4DnqXWdTV8wuZgfqSCX9GjE2kNq7HJrUgQ");
-        Entity entity = new Entity(identifier);
-        System.out.println(entity);
-    }
 }

@@ -61,6 +61,18 @@ public class ID {
         this("", address);
     }
 
+    public static ID getInstance(Object object) {
+        if (object == null) {
+            return null;
+        } else if (object instanceof ID) {
+            return (ID) object;
+        } else if (object instanceof String) {
+            return new ID((String) object);
+        } else {
+            throw new IllegalArgumentException("unknown ID:" + object);
+        }
+    }
+
     public String toString() {
         return this.string;
     }
@@ -86,18 +98,5 @@ public class ID {
 
     public boolean isValid() {
         return this.address.valid;
-    }
-
-    public static void main(String args[]) {
-        {
-            ID identifier = new ID("moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
-            System.out.println("ID: " + identifier);
-            System.out.println("number: " + identifier.getNumber());
-        }
-        {
-            ID identifier = new ID("moky@4DnqXWdTV8wuZgfqSCX9GjE2kNq7HJrUgQ");
-            System.out.println("ID: " + identifier);
-            System.out.println("number: " + identifier.getNumber());
-        }
     }
 }

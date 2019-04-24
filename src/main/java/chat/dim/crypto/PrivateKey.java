@@ -2,7 +2,6 @@ package chat.dim.crypto;
 
 import chat.dim.crypto.rsa.RSAPrivateKey;
 
-import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -35,7 +34,7 @@ public class PrivateKey extends CryptographyKey {
         return null;
     }
 
-    //-------- Runtime begin --------
+    //-------- Runtime --------
 
     private static HashMap<String, Class> privateKeyClasses = new HashMap<>();
 
@@ -59,11 +58,10 @@ public class PrivateKey extends CryptographyKey {
         }
     }
 
-    public static PrivateKey create(Object object) throws ClassNotFoundException {
+    public static PrivateKey getInstance(Object object) throws ClassNotFoundException {
         if (object == null) {
             return null;
-        }
-        if (object instanceof PrivateKey) {
+        } else if (object instanceof PrivateKey) {
             return (PrivateKey) object;
         } else if (object instanceof HashMap) {
             return createInstance((HashMap<String, Object>) object);
@@ -77,41 +75,5 @@ public class PrivateKey extends CryptographyKey {
         register("RSA", RSAPrivateKey.class);
         // ECC
         // ...
-    }
-
-    //-------- Runtime end --------
-
-    public static void main(String args[]) throws UnsupportedEncodingException, ClassNotFoundException {
-        HashMap<String, Object> dictionary = new HashMap<>();
-        dictionary.put("algorithm", "RSA");
-
-        PrivateKey sk = PrivateKey.create(dictionary);
-        System.out.println("RSA private key:" + sk);
-
-        PublicKey pk = sk.getPublicKey();
-        System.out.println("RSA public key:" + pk);
-
-        String text = "moky";
-        byte[] plaintext = text.getBytes("UTF-8");
-        byte[] cipherText = pk.encrypt(plaintext);
-        System.out.println("RSA encrypt(\"" + text + "\") = " + Utils.hexEncode(cipherText));
-
-        byte[] data = sk.decrypt(cipherText);
-        String decrypt = new String(data);
-        System.out.println("decrypt to " + decrypt);
-
-        if (decrypt.equals(text)) {
-            System.out.println("!!! RSA en/decrypt OK");
-        } else {
-            throw new ArithmeticException("!!! RSA en/decrypt error");
-        }
-
-        byte[] signature = sk.sign(plaintext);
-        System.out.println("signature(\"" + text + "\") = " + Utils.hexEncode(signature));
-        if (pk.verify(plaintext, signature)) {
-            System.out.println("!!! RSA signature OK");
-        } else {
-            throw new ArithmeticException("!!! RSA signature error");
-        }
     }
 }

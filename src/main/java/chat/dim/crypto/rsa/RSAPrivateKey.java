@@ -121,7 +121,7 @@ public class RSAPrivateKey extends PrivateKey {
         dictionary.put("keySizeInBits", keySizeInBits());
         dictionary.put("data", pemFile.toString());
         try {
-            return PublicKey.create(dictionary);
+            return PublicKey.getInstance(dictionary);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             return null;

@@ -37,28 +37,23 @@ public class Address {
         this.string  = string;
 
         byte[] data = Utils.base58Decode(string);
-        if (data.length == 25) {
-            // Network ID
-            NetworkType network = NetworkType.fromByte(data[0]);
-            // Check Code
-            byte[] prefix = new byte[21];
-            byte[] suffix = new byte[4];
-            System.arraycopy(data, 0, prefix, 0, 21);
-            System.arraycopy(data, 21, suffix, 0, 4);
-            byte[] cc = checkCode(prefix);
-            if (Arrays.equals(cc, suffix)) {
-                this.network = network;
-                this.code    = userNumber(cc);
-                this.valid   = true;
-            } else {
-                this.network = null;
-                this.code    = 0;
-                this.valid   = false;
-            }
+        if (data.length != 25) {
+            throw new IndexOutOfBoundsException("address length error:" + data.length);
+        }
+        // Network ID
+        NetworkType network = NetworkType.fromByte(data[0]);
+        // Check Code
+        byte[] prefix = new byte[21];
+        byte[] suffix = new byte[4];
+        System.arraycopy(data, 0, prefix, 0, 21);
+        System.arraycopy(data, 21, suffix, 0, 4);
+        byte[] cc = checkCode(prefix);
+        if (Arrays.equals(cc, suffix)) {
+            this.network = network;
+            this.code    = userNumber(cc);
+            this.valid   = true;
         } else {
-            this.network = null;
-            this.code    = 0;
-            this.valid   = false;
+            throw new ArithmeticException("address check code error:" + string);
         }
     }
 
@@ -89,6 +84,18 @@ public class Address {
         this.valid   = true;
     }
 
+    public static Address getInstance(Object object) {
+        if (object == null) {
+            return null;
+        } else if (object instanceof Address) {
+            return (Address) object;
+        } else if (object instanceof String) {
+            return new Address((String) object);
+        } else {
+            throw new IllegalArgumentException("unknown address:" + object);
+        }
+    }
+
     public String toString() {
         return this.string;
     }
@@ -110,18 +117,5 @@ public class Address {
 
     private static long userNumber(byte[] cc) {
         return (long)(cc[3] & 0xFF) << 24 | (cc[2] & 0xFF) << 16 | (cc[1] & 0xFF) << 8 | (cc[0] & 0xFF);
-    }
-
-    public static void main(String args[]) {
-        {
-            Address address = new Address("4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
-            System.out.println("address: " + address);
-            System.out.println("number: " + address.code);
-        }
-        {
-            Address address = new Address("4DnqXWdTV8wuZgfqSCX9GjE2kNq7HJrUgQ");
-            System.out.println("address: " + address);
-            System.out.println("number: " + address.code);
-        }
     }
 }

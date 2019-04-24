@@ -28,7 +28,7 @@ public class PublicKey extends CryptographyKey {
         return false;
     }
 
-    //-------- Runtime begin --------
+    //-------- Runtime --------
 
     private static HashMap<String, Class> publicKeyClasses = new HashMap<>();
 
@@ -52,11 +52,10 @@ public class PublicKey extends CryptographyKey {
         }
     }
 
-    public static PublicKey create(Object object) throws ClassNotFoundException {
+    public static PublicKey getInstance(Object object) throws ClassNotFoundException {
         if (object == null) {
             return null;
-        }
-        if (object instanceof PublicKey) {
+        } else if (object instanceof PublicKey) {
             return (PublicKey) object;
         } else if (object instanceof HashMap) {
             return createInstance((HashMap<String, Object>) object);
@@ -70,18 +69,5 @@ public class PublicKey extends CryptographyKey {
         register("RSA", RSAPublicKey.class);
         // ECC
         // ...
-    }
-
-    //-------- Runtime end --------
-
-    public static void main(String args[]) throws ClassNotFoundException {
-        HashMap<String, Object> dictionary = new HashMap<>();
-        dictionary.put("algorithm", "RSA");
-        dictionary.put("data", "-----BEGIN PUBLIC KEY-----\n" +
-                "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCI8jKup683D4Gxa0dJomGMqHhd3bcHr7NObJuglNLvYir9PFsfs/mNB/K6jN+R+O6hpyCIiKARk0zxxfuzzLdZhXWmqcvy4f95cJAG5aYOtv8RACwRo/b9/NaDuHnpBW7soArZDS8RqTI1lYH5v2tZqMIdhoC5DAUyKOHFcGxiGQIDAQAB\n" +
-                "-----END PUBLIC KEY-----");
-
-        PublicKey key = PublicKey.create(dictionary);
-        System.out.println("key:" + key);
     }
 }

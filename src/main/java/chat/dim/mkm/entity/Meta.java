@@ -77,7 +77,7 @@ public class Meta {
     public Meta(HashMap<String, Object> dictionary) throws UnsupportedEncodingException, ClassNotFoundException {
         this.dictionary  = dictionary;
         this.version     = Integer.getInteger((String)dictionary.get("version")).byteValue();
-        this.key         = PublicKey.create(dictionary.get("key"));
+        this.key         = PublicKey.getInstance(dictionary.get("key"));
         this.seed        = (String)dictionary.get("seed");
         this.fingerprint = Utils.base64Decode((String)dictionary.get("fingerprint"));
         // check valid
@@ -112,6 +112,18 @@ public class Meta {
     public Meta(byte version, PrivateKey sk, String seed) throws UnsupportedEncodingException {
         this(version, sk.getPublicKey(), seed,
                 version == VersionBTC ? sk.getPublicKey().data : sk.sign(seed.getBytes("UTF-8")));
+    }
+
+    public static Meta getInstance(Object object) throws UnsupportedEncodingException, ClassNotFoundException {
+        if (object == null) {
+            return null;
+        } else if (object instanceof Meta) {
+            return (Meta) object;
+        } else if (object instanceof HashMap) {
+            return new Meta((HashMap<String, Object>) object);
+        } else {
+            throw new IllegalArgumentException("unknown meta:" + object);
+        }
     }
 
     public HashMap<String, Object> toDictionary() {
