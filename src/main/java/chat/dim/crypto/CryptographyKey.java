@@ -32,15 +32,15 @@ public abstract class CryptographyKey {
         return dictionary;
     }
 
-    public static String getAlgorithm(Map<String, Object> dictionary) {
-        return (String) dictionary.get("algorithm");
-    }
-
     public boolean equals(CryptographyKey key) {
-        return equals(key.dictionary);
+        return key != null && equals(key.dictionary);
     }
 
     public boolean equals(Map map) {
         return dictionary.equals(map);
+    }
+
+    protected static String getAlgorithm(Map<String, Object> dictionary) {
+        return (String) dictionary.get("algorithm");
     }
 }

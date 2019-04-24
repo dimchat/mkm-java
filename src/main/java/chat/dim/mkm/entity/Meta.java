@@ -136,12 +136,12 @@ public class Meta {
         return dictionary;
     }
 
-    public boolean equals(Map map) {
-        return valid && dictionary.equals(map);
+    public boolean equals(Meta meta) {
+        return equals(meta.dictionary);
     }
 
-    public boolean equals(Meta meta) {
-        return valid && dictionary.equals(meta.dictionary);
+    public boolean equals(Map map) {
+        return valid && dictionary.equals(map);
     }
 
     public boolean matches(PublicKey pk) throws UnsupportedEncodingException {

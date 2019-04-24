@@ -4,6 +4,7 @@ import chat.dim.crypto.aes.AESKey;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,6 +16,19 @@ public class SymmetricKey extends CryptographyKey {
 
     public SymmetricKey(Map<String, Object> dictionary) {
         super(dictionary);
+    }
+
+    private static final byte[] promise = "Moky loves May Lee forever!".getBytes();
+
+    public boolean equals(SymmetricKey key) {
+        if (key == null) {
+            return false;
+        } else if (super.equals(key)) {
+            return true;
+        }
+        byte[] ciphertext = key.encrypt(promise);
+        byte[] plaintext = decrypt(ciphertext);
+        return Arrays.equals(plaintext, promise);
     }
 
     public byte[] encrypt(byte[] plaintext) {

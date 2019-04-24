@@ -17,6 +17,16 @@ public class PrivateKey extends CryptographyKey {
         super(dictionary);
     }
 
+    public boolean equals(PrivateKey privateKey) {
+        if (privateKey == null) {
+            return false;
+        } else if (super.equals(privateKey)) {
+            return true;
+        }
+        PublicKey publicKey = getPublicKey();
+        return publicKey != null && publicKey.matches(privateKey);
+    }
+
     public PublicKey getPublicKey() {
         System.out.println("override me!");
         // TODO: override me

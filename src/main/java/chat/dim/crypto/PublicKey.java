@@ -17,6 +17,22 @@ public class PublicKey extends CryptographyKey {
         super(dictionary);
     }
 
+    private static final byte[] promise = "Moky loves May Lee forever!".getBytes();
+
+    public boolean matches(PrivateKey privateKey) {
+        if (privateKey == null) {
+            return false;
+        }
+        // 1. if the SK has the same public key, return true
+        PublicKey publicKey = privateKey.getPublicKey();
+        if (publicKey != null && publicKey.equals(this)) {
+            return true;
+        }
+        // 2. try to verify the SK's signature
+        byte[] signature = privateKey.sign(promise);
+        return verify(promise, signature);
+    }
+
     public byte[] encrypt(byte[] plaintext) {
         System.out.println("override me!");
         // TODO: override me
