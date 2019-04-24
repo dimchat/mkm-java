@@ -5,6 +5,7 @@ import chat.dim.crypto.rsa.RSAPrivateKey;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class PrivateKey extends CryptographyKey {
 
@@ -12,7 +13,7 @@ public class PrivateKey extends CryptographyKey {
         super(key);
     }
 
-    public PrivateKey(HashMap<String, Object> dictionary) {
+    public PrivateKey(Map<String, Object> dictionary) {
         super(dictionary);
     }
 
@@ -36,21 +37,22 @@ public class PrivateKey extends CryptographyKey {
 
     //-------- Runtime --------
 
-    private static HashMap<String, Class> privateKeyClasses = new HashMap<>();
+    private static Map<String, Class> privateKeyClasses = new HashMap<>();
 
     public static void register(String algorithm, Class clazz) {
         // TODO: check whether clazz is subclass of PrivateKey
         privateKeyClasses.put(algorithm, clazz);
     }
 
-    private static PrivateKey createInstance(HashMap<String, Object> dictionary) throws ClassNotFoundException {
+    @SuppressWarnings("unchecked")
+    private static PrivateKey createInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
         String algorithm = getAlgorithm(dictionary);
         Class clazz = privateKeyClasses.get(algorithm);
         if (clazz == null) {
             throw new ClassNotFoundException("unknown algorithm:" + algorithm);
         }
         try {
-            Constructor constructor = clazz.getConstructor(HashMap.class);
+            Constructor constructor = clazz.getConstructor(Map.class);
             return (PrivateKey) constructor.newInstance(dictionary);
         } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
             e.printStackTrace();
@@ -58,13 +60,14 @@ public class PrivateKey extends CryptographyKey {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static PrivateKey getInstance(Object object) throws ClassNotFoundException {
         if (object == null) {
             return null;
         } else if (object instanceof PrivateKey) {
             return (PrivateKey) object;
-        } else if (object instanceof HashMap) {
-            return createInstance((HashMap<String, Object>) object);
+        } else if (object instanceof Map) {
+            return createInstance((Map<String, Object>) object);
         } else {
             throw new IllegalArgumentException("unknown key:" + object);
         }

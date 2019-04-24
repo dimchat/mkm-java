@@ -11,6 +11,7 @@ import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.HashMap;
+import java.util.Map;
 
 public class RSAPrivateKey extends PrivateKey {
 
@@ -23,7 +24,7 @@ public class RSAPrivateKey extends PrivateKey {
         this.publicKey = key.publicKey;
     }
 
-    public RSAPrivateKey(HashMap<String, Object> dictionary) {
+    public RSAPrivateKey(Map<String, Object> dictionary) {
         super(dictionary);
         KeyPair keyPair = getKeyPair();
         if (keyPair == null) {
@@ -116,7 +117,7 @@ public class RSAPrivateKey extends PrivateKey {
             return null;
         }
         PEMFile pemFile = new PEMFile(publicKey);
-        HashMap<String, Object> dictionary = new HashMap<>();
+        Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "RSA");
         dictionary.put("keySizeInBits", keySizeInBits());
         dictionary.put("data", pemFile.toString());

@@ -97,7 +97,7 @@ public class Address {
     }
 
     public String toString() {
-        return this.string;
+        return string;
     }
 
     public boolean equals(Address address) {

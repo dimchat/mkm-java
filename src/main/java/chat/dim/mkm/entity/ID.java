@@ -74,7 +74,7 @@ public class ID {
     }
 
     public String toString() {
-        return this.string;
+        return string;
     }
 
     public boolean equals(ID identifier) {

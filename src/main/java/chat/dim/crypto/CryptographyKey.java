@@ -1,10 +1,10 @@
 package chat.dim.crypto;
 
-import java.util.HashMap;
+import java.util.Map;
 
 public abstract class CryptographyKey {
 
-    protected final HashMap<String, Object> dictionary;
+    protected final Map<String, Object> dictionary;
 
     public final String algorithm;
     public byte[] data;
@@ -16,7 +16,7 @@ public abstract class CryptographyKey {
         this.data = key.data;
     }
 
-    public CryptographyKey(HashMap<String, Object> dictionary) {
+    public CryptographyKey(Map<String, Object> dictionary) {
         super();
         this.dictionary = dictionary;
         this.algorithm = CryptographyKey.getAlgorithm(dictionary);
@@ -28,11 +28,11 @@ public abstract class CryptographyKey {
         return dictionary.toString();
     }
 
-    public HashMap<String, Object> toDictionary() {
+    public Map<String, Object> toDictionary() {
         return dictionary;
     }
 
-    public static String getAlgorithm(HashMap<String, Object> dictionary) {
+    public static String getAlgorithm(Map<String, Object> dictionary) {
         return (String) dictionary.get("algorithm");
     }
 
@@ -40,7 +40,7 @@ public abstract class CryptographyKey {
         return equals(key.dictionary);
     }
 
-    public boolean equals(HashMap map) {
+    public boolean equals(Map map) {
         return dictionary.equals(map);
     }
 }

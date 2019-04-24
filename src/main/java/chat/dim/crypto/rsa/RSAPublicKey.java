@@ -9,7 +9,7 @@ import javax.crypto.NoSuchPaddingException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
-import java.util.HashMap;
+import java.util.Map;
 
 public class RSAPublicKey extends PublicKey {
 
@@ -20,7 +20,7 @@ public class RSAPublicKey extends PublicKey {
         this.publicKey = key.publicKey;
     }
 
-    public RSAPublicKey(HashMap<String, Object> dictionary) throws NoSuchFieldException {
+    public RSAPublicKey(Map<String, Object> dictionary) throws NoSuchFieldException {
         super(dictionary);
         this.publicKey = getKey();
     }

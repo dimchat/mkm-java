@@ -1,12 +1,13 @@
 package chat.dim.mkm.entity;
 
-import chat.dim.crypto.Utils;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.Utils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *  Account/Group Meta data
@@ -29,7 +30,7 @@ import java.util.HashMap;
  */
 public class Meta {
 
-    private final HashMap<String, Object> dictionary;
+    private final Map<String, Object> dictionary;
 
     public final byte version;
     public final PublicKey key;
@@ -61,7 +62,7 @@ public class Meta {
     public static final byte VersionDefault = VersionMKM;
 
     public Meta(Meta meta) {
-        HashMap<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("version", (int) meta.version);
         map.put("key", meta.key.toDictionary());
         map.put("seed", meta.seed);
@@ -74,7 +75,7 @@ public class Meta {
         this.valid       = meta.valid;
     }
 
-    public Meta(HashMap<String, Object> dictionary) throws UnsupportedEncodingException, ClassNotFoundException {
+    public Meta(Map<String, Object> dictionary) throws UnsupportedEncodingException, ClassNotFoundException {
         this.dictionary  = dictionary;
         this.version     = Integer.getInteger((String)dictionary.get("version")).byteValue();
         this.key         = PublicKey.getInstance(dictionary.get("key"));
@@ -90,7 +91,7 @@ public class Meta {
     }
 
     public Meta(byte version, PublicKey key, String seed, byte[] fingerprint) throws UnsupportedEncodingException {
-        HashMap<String, Object> map = new HashMap<>();
+        Map<String, Object> map = new HashMap<>();
         map.put("version", (int) version);
         map.put("key", key.toDictionary());
         map.put("seed", seed);
@@ -114,23 +115,28 @@ public class Meta {
                 version == VersionBTC ? sk.getPublicKey().data : sk.sign(seed.getBytes("UTF-8")));
     }
 
+    @SuppressWarnings("unchecked")
     public static Meta getInstance(Object object) throws UnsupportedEncodingException, ClassNotFoundException {
         if (object == null) {
             return null;
         } else if (object instanceof Meta) {
             return (Meta) object;
-        } else if (object instanceof HashMap) {
-            return new Meta((HashMap<String, Object>) object);
+        } else if (object instanceof Map) {
+            return new Meta((Map<String, Object>) object);
         } else {
             throw new IllegalArgumentException("unknown meta:" + object);
         }
     }
 
-    public HashMap<String, Object> toDictionary() {
-        return this.dictionary;
+    public String toString() {
+        return dictionary.toString();
     }
 
-    public boolean equals(HashMap map) {
+    public Map<String, Object> toDictionary() {
+        return dictionary;
+    }
+
+    public boolean equals(Map map) {
         return valid && dictionary.equals(map);
     }
 

@@ -3,13 +3,16 @@ package chat.dim.crypto.aes;
 import chat.dim.crypto.SymmetricKey;
 import chat.dim.crypto.Utils;
 
-import javax.crypto.*;
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 public class AESKey extends SymmetricKey {
@@ -26,7 +29,7 @@ public class AESKey extends SymmetricKey {
         this.ivSpec = key.ivSpec;
     }
 
-    public AESKey(HashMap<String, Object> dictionary) throws NoSuchPaddingException, NoSuchAlgorithmException {
+    public AESKey(Map<String, Object> dictionary) throws NoSuchPaddingException, NoSuchAlgorithmException {
         super(dictionary);
         cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         keySpec = new SecretKeySpec(getKeyData(), "AES");
