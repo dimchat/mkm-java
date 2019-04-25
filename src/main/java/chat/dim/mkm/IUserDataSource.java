@@ -11,7 +11,6 @@ public interface IUserDataSource extends IEntityDataSource {
     public PrivateKey getPrivateKey(User user);
 
     public List<ID> getContacts(User user);
-
-    public boolean addContact(ID contact, User user);
-    public boolean removeContact(ID contact, User user);
+    public int getCountOfContacts(User user);
+    public ID getContactAtIndex(int index, User user);
 }

@@ -1,6 +1,4 @@
-package chat.dim.crypto.rsa;
-
-import chat.dim.crypto.Utils;
+package chat.dim.crypto;
 
 class PEMFile {
 

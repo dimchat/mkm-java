@@ -1,7 +1,4 @@
-package chat.dim.crypto.aes;
-
-import chat.dim.crypto.SymmetricKey;
-import chat.dim.crypto.Utils;
+package chat.dim.crypto;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -15,7 +12,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Random;
 
-public class AESKey extends SymmetricKey {
+class AESKey extends SymmetricKey {
 
     private final Cipher cipher;
 

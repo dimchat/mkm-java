@@ -1,7 +1,4 @@
-package chat.dim.crypto.rsa;
-
-import chat.dim.crypto.PrivateKey;
-import chat.dim.crypto.PublicKey;
+package chat.dim.crypto;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -13,7 +10,7 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
 
-public class RSAPrivateKey extends PrivateKey {
+class RSAPrivateKey extends PrivateKey {
 
     private final java.security.interfaces.RSAPrivateKey privateKey;
     private final java.security.interfaces.RSAPublicKey publicKey;

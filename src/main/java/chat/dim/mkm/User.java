@@ -3,6 +3,7 @@ package chat.dim.mkm;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.mkm.entity.ID;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class User extends Account {
@@ -19,18 +20,29 @@ public class User extends Account {
         this.privateKey = privateKey;
     }
 
+    public PrivateKey getPrivateKey() {
+        if (privateKey != null) {
+            return privateKey;
+        }
+        // get from data source
+        IUserDataSource dataSource = (IUserDataSource) this.dataSource;
+        return dataSource.getPrivateKey(this);
+    }
+
     public List<ID> getContacts() {
         IUserDataSource dataSource = (IUserDataSource) this.dataSource;
-        return dataSource.getContacts(this);
-    }
-
-    public boolean addContact(ID contact) {
-        IUserDataSource dataSource = (IUserDataSource) this.dataSource;
-        return dataSource.addContact(contact, this);
-    }
-
-    public boolean removeContact(ID contact) {
-        IUserDataSource dataSource = (IUserDataSource) this.dataSource;
-        return dataSource.removeContact(contact, this);
+        List<ID> contacts = dataSource.getContacts(this);
+        if (contacts != null) {
+            return contacts;
+        }
+        int count = dataSource.getCountOfContacts(this);
+        if (count <= 0) {
+            return null;
+        }
+        contacts = new ArrayList<>(count);
+        for (int index = 0; index < count; index++) {
+            contacts.add(dataSource.getContactAtIndex(index, this));
+        }
+        return contacts;
     }
 }

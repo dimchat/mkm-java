@@ -1,7 +1,5 @@
 package chat.dim.crypto;
 
-import chat.dim.crypto.aes.AESKey;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;

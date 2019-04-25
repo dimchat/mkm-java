@@ -1,6 +1,4 @@
-package chat.dim.crypto.rsa;
-
-import chat.dim.crypto.PublicKey;
+package chat.dim.crypto;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -11,7 +9,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Map;
 
-public class RSAPublicKey extends PublicKey {
+class RSAPublicKey extends PublicKey {
 
     private final java.security.interfaces.RSAPublicKey publicKey;
 

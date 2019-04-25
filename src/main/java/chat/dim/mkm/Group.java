@@ -2,7 +2,9 @@ package chat.dim.mkm;
 
 import chat.dim.mkm.entity.Entity;
 import chat.dim.mkm.entity.ID;
+import chat.dim.mkm.entity.Meta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Group extends Entity {
@@ -19,6 +21,34 @@ public class Group extends Entity {
         this.founder = founder;
     }
 
+    public boolean isFounder(ID identifier) {
+        if (founder != null && founder.equals(identifier)) {
+            return true;
+        }
+        Meta meta = getMeta();
+        return meta != null && meta.matches(identifier);
+    }
+
+    public ID getFounder() {
+        if (founder != null) {
+            return founder;
+        }
+        // get from data source
+        IGroupDataSource dataSource = (IGroupDataSource) this.dataSource;
+        ID identifier = dataSource.getFounder(this);
+        if (identifier != null) {
+            return identifier;
+        }
+        // check each member
+        List<ID> members = getMembers();
+        for (ID member : members) {
+            if (isFounder(member)) {
+                return member;
+            }
+        }
+        return null;
+    }
+
     public ID getOwner() {
         IGroupDataSource dataSource = (IGroupDataSource) this.dataSource;
         return dataSource.getOwner(this);
@@ -26,16 +56,18 @@ public class Group extends Entity {
 
     public List<ID> getMembers() {
         IGroupDataSource dataSource = (IGroupDataSource) this.dataSource;
-        return dataSource.getMembers(this);
-    }
-
-    public boolean addMember(ID member) {
-        IGroupDataSource dataSource = (IGroupDataSource) this.dataSource;
-        return dataSource.addMember(member, this);
-    }
-
-    public boolean removeMember(ID member) {
-        IGroupDataSource dataSource = (IGroupDataSource) this.dataSource;
-        return dataSource.removeMember(member, this);
+        List<ID> members = dataSource.getMembers(this);
+        if (members != null) {
+            return members;
+        }
+        int count = dataSource.getCountOfMembers(this);
+        if (count <= 0) {
+            return null;
+        }
+        members = new ArrayList<>(count);
+        for (int index = 0; index < count; index++) {
+            members.add(dataSource.getMemberAtIndex(index, this));
+        }
+        return members;
     }
 }

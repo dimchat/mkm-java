@@ -12,7 +12,7 @@ public interface IGroupDataSource extends IEntityDataSource {
     public ID getOwner(Group group);
 
     public List<ID> getMembers(Group group);
+    public int getCountOfMembers(Group group);
+    public ID getMemberAtIndex(int index, Group group);
 
-    public boolean addMember(ID member, Group group);
-    public boolean removeMember(ID member, Group group);
 }
