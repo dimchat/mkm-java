@@ -123,17 +123,23 @@ public class Meta {
             return (Meta) object;
         } else if (object instanceof Map) {
             return new Meta((Map<String, Object>) object);
+        } else if (object instanceof String) {
+            return new Meta(Utils.jsonDecode((String) object));
         } else {
             throw new IllegalArgumentException("unknown meta:" + object);
         }
+    }
+
+    public Map<String, Object> toDictionary() {
+        return dictionary;
     }
 
     public String toString() {
         return dictionary.toString();
     }
 
-    public Map<String, Object> toDictionary() {
-        return dictionary;
+    public String toJSONString() {
+        return Utils.jsonEncode(dictionary);
     }
 
     public boolean equals(Meta meta) {

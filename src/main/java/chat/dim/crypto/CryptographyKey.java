@@ -24,12 +24,16 @@ public abstract class CryptographyKey {
         this.data = null;
     }
 
+    public Map<String, Object> toDictionary() {
+        return dictionary;
+    }
+
     public String toString() {
         return dictionary.toString();
     }
 
-    public Map<String, Object> toDictionary() {
-        return dictionary;
+    public String toJSONString() {
+        return Utils.jsonEncode(dictionary);
     }
 
     public boolean equals(CryptographyKey key) {

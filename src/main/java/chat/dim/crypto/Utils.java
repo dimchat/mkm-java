@@ -3,11 +3,22 @@ package chat.dim.crypto;
 import chat.dim.crypto.bitcoinj.Base58;
 import chat.dim.crypto.bouncycastle.RIPEMD160Digest;
 
+import com.alibaba.fastjson.JSON;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.Map;
 
 public class Utils {
+
+    public static String jsonEncode(Map<String, Object> dictionary) {
+        return JSON.toJSONString(dictionary);
+    }
+
+    public static Map<String, Object> jsonDecode(String jsonString) {
+        return JSON.parseObject(jsonString);
+    }
 
     public static String base64Encode(byte[] data) {
         Base64.Encoder encoder = Base64.getEncoder();
@@ -46,15 +57,5 @@ public class Utils {
         byte[] out = new byte[20];
         digest.doFinal(out, 0);
         return out;
-    }
-
-    public static String hexEncode(byte[] data) {
-        StringBuilder sb = new StringBuilder();
-        String hex;
-        for (byte ch : data) {
-            hex = Integer.toHexString(ch & 0xFF);
-            sb.append(hex.length() == 1 ? "0" + hex : hex);
-        }
-        return sb.toString();
     }
 }

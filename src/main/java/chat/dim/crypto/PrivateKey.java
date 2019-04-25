@@ -76,6 +76,8 @@ public class PrivateKey extends CryptographyKey {
             return (PrivateKey) object;
         } else if (object instanceof Map) {
             return createInstance((Map<String, Object>) object);
+        } else if (object instanceof String) {
+            return createInstance(Utils.jsonDecode((String) object));
         } else {
             throw new IllegalArgumentException("unknown key:" + object);
         }

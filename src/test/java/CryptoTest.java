@@ -18,6 +18,16 @@ public class CryptoTest extends TestCase {
         System.out.println("[" + method + ":" + line + "] " + msg);
     }
 
+    private static String hexEncode(byte[] data) {
+        StringBuilder sb = new StringBuilder();
+        String hex;
+        for (byte ch : data) {
+            hex = Integer.toHexString(ch & 0xFF);
+            sb.append(hex.length() == 1 ? "0" + hex : hex);
+        }
+        return sb.toString();
+    }
+
     @Test
     public void testHash() throws UnsupportedEncodingException {
         log("Crypto test");
@@ -31,14 +41,14 @@ public class CryptoTest extends TestCase {
 
         // sha256（moky）= cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d
         hash = Utils.sha256(data);
-        res = Utils.hexEncode(hash);
+        res = hexEncode(hash);
         exp = "cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d";
         log("sha256(" + string + ") = " + res);
         assertEquals(res, exp);
 
         // ripemd160(moky) = 44bd174123aee452c6ec23a6ab7153fa30fa3b91
         hash = Utils.ripemd160(data);
-        res = Utils.hexEncode(hash);
+        res = hexEncode(hash);
         exp = "44bd174123aee452c6ec23a6ab7153fa30fa3b91";
         log("ripemd160(" + string + ") = " + res);
         assertEquals(res, exp);
@@ -79,7 +89,7 @@ public class CryptoTest extends TestCase {
         String text = "moky";
         byte[] plaintext = text.getBytes("UTF-8");
         byte[] cipherText = pk.encrypt(plaintext);
-        log("RSA encrypt(\"" + text + "\") = " + Utils.hexEncode(cipherText));
+        log("RSA encrypt(\"" + text + "\") = " + hexEncode(cipherText));
 
         byte[] data = sk.decrypt(cipherText);
         String decrypt = new String(data);
@@ -88,7 +98,7 @@ public class CryptoTest extends TestCase {
         assertEquals(decrypt, text);
 
         byte[] signature = sk.sign(plaintext);
-        log("signature(\"" + text + "\") = " + Utils.hexEncode(signature));
+        log("signature(\"" + text + "\") = " + hexEncode(signature));
 
         assertTrue(pk.verify(plaintext, signature));
     }
@@ -118,7 +128,7 @@ public class CryptoTest extends TestCase {
         String text = "moky";
         byte[] plaintext = text.getBytes("UTF-8");
         byte[] cipherText = key.encrypt(plaintext);
-        log("RSA encrypt(\"" + text + "\") = " + Utils.hexEncode(cipherText));
+        log("RSA encrypt(\"" + text + "\") = " + hexEncode(cipherText));
 
         byte[] data = key.decrypt(cipherText);
         String decrypt = new String(data);
@@ -133,7 +143,7 @@ public class CryptoTest extends TestCase {
         log("key:" + key);
 
         cipherText = key.encrypt(plaintext);
-        log("RSA encrypt(\"" + text + "\") = " + Utils.hexEncode(cipherText));
+        log("RSA encrypt(\"" + text + "\") = " + hexEncode(cipherText));
 
         data = key.decrypt(cipherText);
         decrypt = new String(data);
