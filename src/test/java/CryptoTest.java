@@ -44,14 +44,14 @@ public class CryptoTest extends TestCase {
         res = hexEncode(hash);
         exp = "cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d";
         log("sha256(" + string + ") = " + res);
-        assertEquals(res, exp);
+        assertEquals(exp, res);
 
         // ripemd160(moky) = 44bd174123aee452c6ec23a6ab7153fa30fa3b91
         hash = Utils.ripemd160(data);
         res = hexEncode(hash);
         exp = "44bd174123aee452c6ec23a6ab7153fa30fa3b91";
         log("ripemd160(" + string + ") = " + res);
-        assertEquals(res, exp);
+        assertEquals(exp, res);
     }
 
     @Test
@@ -66,13 +66,13 @@ public class CryptoTest extends TestCase {
         res = Utils.base58Encode(data);
         exp = "3oF5MJ";
         log("base58(" + string + ") = " + res);
-        assertEquals(res, exp);
+        assertEquals(exp, res);
 
         // base64(moky) = bW9reQ==
         res = Utils.base64Encode(data);
         exp = "bW9reQ==";
         log("base64(" + string + ") = " + res);
-        assertEquals(res, exp);
+        assertEquals(exp, res);
     }
 
     @Test
@@ -95,7 +95,7 @@ public class CryptoTest extends TestCase {
         String decrypt = new String(data);
         log("decrypt to " + decrypt);
 
-        assertEquals(decrypt, text);
+        assertEquals(text, decrypt);
 
         byte[] signature = sk.sign(plaintext);
         log("signature(\"" + text + "\") = " + hexEncode(signature));
@@ -128,34 +128,42 @@ public class CryptoTest extends TestCase {
         String text = "moky";
         byte[] plaintext = text.getBytes("UTF-8");
         byte[] cipherText = key.encrypt(plaintext);
-        log("RSA encrypt(\"" + text + "\") = " + hexEncode(cipherText));
+        log("encrypt(\"" + text + "\") = " + hexEncode(cipherText));
 
         byte[] data = key.decrypt(cipherText);
-        String decrypt = new String(data);
+        String decrypt = new String(data, "UTF-8");
         log("decrypt to " + decrypt);
+        log(text + " -> " + Utils.base64Encode(cipherText) + " -> " + decrypt);
 
-        assertEquals(Utils.base64Encode(cipherText), "0xtbqZN6x2aWTZn0DpCoCA==");
+        assertEquals("0xtbqZN6x2aWTZn0DpCoCA==", Utils.base64Encode(cipherText));
+
+        key = SymmetricKey.getInstance(dictionary);
+        log("key: " + key);
+
+        text = "XX5qfromb3R078VVK7LwVA==";
+//        text = "0xtbqZN6x2aWTZn0DpCoCA==";
+        cipherText = Utils.base64Decode(text);
+        plaintext = key.decrypt(cipherText);
+        log("FIXED: " + text + " -> " + (plaintext == null ? null : new String(plaintext)));
+//        plaintext = key.decrypt(cipherText);
+//        log("FIXED: " + text + " -> " + (plaintext == null ? null : new String(plaintext)));
 
         // random key
         dictionary.remove("data");
         dictionary.remove("iv");
         key = SymmetricKey.getInstance(dictionary);
-        log("key:" + key);
+        log("key: " + key);
 
+        text = "moky";
+        plaintext = text.getBytes("UTF-8");
         cipherText = key.encrypt(plaintext);
-        log("RSA encrypt(\"" + text + "\") = " + hexEncode(cipherText));
+        log("encrypt(\"" + text + "\") = " + hexEncode(cipherText));
 
         data = key.decrypt(cipherText);
-        decrypt = new String(data);
+        decrypt = new String(data, "UTF-8");
         log("decrypt to " + decrypt);
 
-        assertEquals(decrypt, text);
+        assertEquals(text, decrypt);
 
-//        text = "XX5qfromb3R078VVK7LwVA==";
-//        cipherText = Utils.base64Decode(text);
-//        plaintext = key.decrypt(cipherText);
-//        log(text + " -> " + new String(plaintext));
-//        plaintext = key.decrypt(cipherText);
-//        log(text + " -> " + new String(plaintext));
     }
 }

@@ -3,6 +3,7 @@ package chat.dim.mkm;
 import chat.dim.crypto.Utils;
 import chat.dim.mkm.entity.ID;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Profile {
@@ -21,6 +22,14 @@ public class Profile {
         super();
         this.dictionary = dictionary;
         this.identifier = ID.getInstance(dictionary.get("ID"));
+    }
+
+    public Profile(ID identifier) {
+        super();
+        Map<String, Object> map = new HashMap<>();
+        map.put("ID", identifier.toString());
+        this.dictionary = map;
+        this.identifier = identifier;
     }
 
     @SuppressWarnings("unchecked")

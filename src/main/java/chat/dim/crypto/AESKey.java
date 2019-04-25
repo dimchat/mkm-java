@@ -97,8 +97,8 @@ class AESKey extends SymmetricKey {
         } catch (InvalidKeyException | InvalidAlgorithmParameterException |
                 IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public byte[] decrypt(byte[] cipherText) {
@@ -108,7 +108,7 @@ class AESKey extends SymmetricKey {
         } catch (InvalidKeyException | InvalidAlgorithmParameterException |
                 IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }

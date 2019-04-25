@@ -20,9 +20,16 @@ public class User extends Account {
         this.privateKey = privateKey;
     }
 
+    public User(ID identifier) {
+        this(identifier, null);
+    }
+
     public PrivateKey getPrivateKey() {
         if (privateKey != null) {
             return privateKey;
+        }
+        if (this.dataSource == null) {
+            return null;
         }
         // get from data source
         IUserDataSource dataSource = (IUserDataSource) this.dataSource;
@@ -30,6 +37,9 @@ public class User extends Account {
     }
 
     public List<ID> getContacts() {
+        if (this.dataSource == null) {
+            return null;
+        }
         IUserDataSource dataSource = (IUserDataSource) this.dataSource;
         List<ID> contacts = dataSource.getContacts(this);
         if (contacts != null) {

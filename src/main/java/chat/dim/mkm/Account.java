@@ -7,19 +7,28 @@ import chat.dim.mkm.entity.Meta;
 
 public class Account extends Entity {
 
+    public final PublicKey publicKey;
+
     public Account(Account account) {
         super(account);
+        this.publicKey = account.publicKey;
+    }
+
+    public Account(ID identifier, PublicKey publicKey) {
+        super(identifier);
+        this.publicKey = publicKey;
     }
 
     public Account(ID identifier) {
-        super(identifier);
+        this(identifier, null);
     }
 
     public PublicKey getPublicKey() {
-        Meta meta = getMeta();
-        if (meta == null) {
-            return null;
+        if (publicKey != null) {
+            return publicKey;
         }
-        return meta.key;
+        // get from meta
+        Meta meta = getMeta();
+        return meta == null ? null : meta.key;
     }
 }

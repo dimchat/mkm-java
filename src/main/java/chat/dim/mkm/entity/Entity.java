@@ -7,12 +7,15 @@ public class Entity {
     public IEntityDataSource dataSource;
 
     public Entity(Entity entity) {
-        this(entity.identifier);
+        super();
+        this.identifier = entity.identifier;
         this.dataSource = entity.dataSource;
     }
 
     public Entity(ID identifier) {
+        super();
         this.identifier = identifier;
+        this.dataSource = null;
     }
 
     public String toString() {
@@ -34,12 +37,13 @@ public class Entity {
     public String getName() {
         String name;
         if (dataSource != null) {
-            // get name via delegate
+            // get from data source
             name = dataSource.getName(this);
             if (name != null && name.length() > 0) {
                 return name;
             }
         }
+        // get from identifier
         name = identifier.name;
         if (name != null && name.length() > 0) {
             return name;
@@ -48,6 +52,7 @@ public class Entity {
     }
 
     public Meta getMeta() {
-        return dataSource.getMeta(this);
+        // get from data source
+        return dataSource == null ? null: dataSource.getMeta(this);
     }
 }

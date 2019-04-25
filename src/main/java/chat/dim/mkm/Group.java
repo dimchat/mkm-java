@@ -2,7 +2,6 @@ package chat.dim.mkm;
 
 import chat.dim.mkm.entity.Entity;
 import chat.dim.mkm.entity.ID;
-import chat.dim.mkm.entity.Meta;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,40 +20,36 @@ public class Group extends Entity {
         this.founder = founder;
     }
 
-    public boolean isFounder(ID identifier) {
-        if (founder != null && founder.equals(identifier)) {
-            return true;
-        }
-        Meta meta = getMeta();
-        return meta != null && meta.matches(identifier);
+    public Group(ID identifier) {
+        this(identifier, null);
     }
 
     public ID getFounder() {
         if (founder != null) {
             return founder;
         }
+        if (this.dataSource == null) {
+            return null;
+        }
         // get from data source
         IGroupDataSource dataSource = (IGroupDataSource) this.dataSource;
-        ID identifier = dataSource.getFounder(this);
-        if (identifier != null) {
-            return identifier;
-        }
-        // check each member
-        List<ID> members = getMembers();
-        for (ID member : members) {
-            if (isFounder(member)) {
-                return member;
-            }
-        }
-        return null;
+        return dataSource.getFounder(this);
     }
 
     public ID getOwner() {
+        if (this.dataSource == null) {
+            return null;
+        }
+        // get from data source
         IGroupDataSource dataSource = (IGroupDataSource) this.dataSource;
         return dataSource.getOwner(this);
     }
 
     public List<ID> getMembers() {
+        if (this.dataSource == null) {
+            return null;
+        }
+        // get from data source
         IGroupDataSource dataSource = (IGroupDataSource) this.dataSource;
         List<ID> members = dataSource.getMembers(this);
         if (members != null) {
@@ -64,6 +59,7 @@ public class Group extends Entity {
         if (count <= 0) {
             return null;
         }
+        // get members one by one
         members = new ArrayList<>(count);
         for (int index = 0; index < count; index++) {
             members.add(dataSource.getMemberAtIndex(index, this));
