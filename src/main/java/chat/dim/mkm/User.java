@@ -25,8 +25,8 @@ public class User extends Account {
     }
 
     public PrivateKey getPrivateKey() {
-        if (privateKey != null) {
-            return privateKey;
+        if (this.privateKey != null) {
+            return this.privateKey;
         }
         if (this.dataSource == null) {
             return null;

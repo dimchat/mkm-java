@@ -150,7 +150,7 @@ public class Meta {
         return valid && dictionary.equals(map);
     }
 
-    public boolean matches(PublicKey pk) throws UnsupportedEncodingException {
+    public boolean matches(PublicKey pk) {
         if (!valid) {
             return false;
         }
@@ -163,7 +163,12 @@ public class Meta {
             return true;
         }
         // check whether keys equal by verifying signature
-        return pk.verify(seed.getBytes("UTF-8"), fingerprint);
+        try {
+            return pk.verify(seed.getBytes("UTF-8"), fingerprint);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     public boolean matches(ID identifier) {

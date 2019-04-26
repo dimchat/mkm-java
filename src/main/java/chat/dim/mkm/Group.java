@@ -25,8 +25,8 @@ public class Group extends Entity {
     }
 
     public ID getFounder() {
-        if (founder != null) {
-            return founder;
+        if (this.founder != null) {
+            return this.founder;
         }
         if (this.dataSource == null) {
             return null;

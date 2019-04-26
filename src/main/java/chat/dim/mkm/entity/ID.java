@@ -89,14 +89,14 @@ public class ID {
     }
 
     public NetworkType getType() {
-        return this.address.network;
+        return address.network;
     }
 
     public long getNumber() {
-        return this.address.code;
+        return address.code;
     }
 
     public boolean isValid() {
-        return this.address.valid;
+        return address.valid;
     }
 }

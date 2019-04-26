@@ -36,8 +36,8 @@ public class Entity {
 
     public String getName() {
         String name;
+        // get from data source
         if (dataSource != null) {
-            // get from data source
             name = dataSource.getName(this);
             if (name != null && name.length() > 0) {
                 return name;

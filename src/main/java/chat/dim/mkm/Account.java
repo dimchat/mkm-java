@@ -24,8 +24,8 @@ public class Account extends Entity {
     }
 
     public PublicKey getPublicKey() {
-        if (publicKey != null) {
-            return publicKey;
+        if (this.publicKey != null) {
+            return this.publicKey;
         }
         // get from meta
         Meta meta = getMeta();
