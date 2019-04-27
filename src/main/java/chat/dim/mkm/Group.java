@@ -45,13 +45,13 @@ public class Group extends Entity {
         return dataSource.getOwner(this);
     }
 
-    public List<ID> getMembers() {
+    public List<Object> getMembers() {
         if (this.dataSource == null) {
             return null;
         }
         // get from data source
         GroupDataSource dataSource = (GroupDataSource) this.dataSource;
-        List<ID> members = dataSource.getMembers(this);
+        List<Object> members = dataSource.getMembers(this);
         if (members != null) {
             return members;
         }

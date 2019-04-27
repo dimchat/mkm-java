@@ -11,7 +11,7 @@ public interface GroupDataSource extends EntityDataSource {
 
     public ID getOwner(Group group);
 
-    public List<ID> getMembers(Group group);
+    public List<Object> getMembers(Group group);
     public int getCountOfMembers(Group group);
     public ID getMemberAtIndex(int index, Group group);
 

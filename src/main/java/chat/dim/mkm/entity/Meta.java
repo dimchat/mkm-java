@@ -5,7 +5,7 @@ import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.Utils;
 
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -59,7 +59,7 @@ public class Meta extends Dictionary {
     public static final byte VersionExBTC   = 0x03;
     public static final byte VersionDefault = VersionMKM;
 
-    public Meta(Map<String, Object> dictionary) throws UnsupportedEncodingException, ClassNotFoundException {
+    public Meta(Map<String, Object> dictionary) throws ClassNotFoundException {
         super(dictionary);
         this.version     = Integer.getInteger((String)dictionary.get("version")).byteValue();
         this.key         = PublicKey.getInstance(dictionary.get("key"));
@@ -67,14 +67,14 @@ public class Meta extends Dictionary {
         this.fingerprint = Utils.base64Decode((String)dictionary.get("fingerprint"));
         // check valid
         if (version == VersionMKM || version == VersionExBTC) {
-            this.valid = key.verify(seed.getBytes("UTF-8"), fingerprint);
+            this.valid = key.verify(seed.getBytes(StandardCharsets.UTF_8), fingerprint);
         } else { // VersionBTC
             // no seed, and the fingerprint is key.data
             this.valid = (seed == null) && (key != null) && (Arrays.equals(key.data, fingerprint));
         }
     }
 
-    public Meta(byte version, PublicKey key, String seed, byte[] fingerprint) throws UnsupportedEncodingException {
+    public Meta(byte version, PublicKey key, String seed, byte[] fingerprint) {
         super();
         this.version = version;
         this.key = key;
@@ -82,7 +82,7 @@ public class Meta extends Dictionary {
         this.fingerprint = fingerprint;
         // check valid
         if (version == VersionMKM || version == VersionExBTC) {
-            this.valid = key.verify(seed.getBytes("UTF-8"), fingerprint);
+            this.valid = key.verify(seed.getBytes(StandardCharsets.UTF_8), fingerprint);
         } else { // VersionBTC
             // no seed, and the fingerprint is key.data
             this.valid = (seed == null) && (key != null) && (Arrays.equals(key.data, fingerprint));
@@ -93,13 +93,13 @@ public class Meta extends Dictionary {
         dictionary.put("fingerprint", Utils.base64Encode(fingerprint));
     }
 
-    public Meta(byte version, PrivateKey sk, String seed) throws UnsupportedEncodingException {
+    public Meta(byte version, PrivateKey sk, String seed) {
         this(version, sk.getPublicKey(), seed,
-                version == VersionBTC ? sk.getPublicKey().data : sk.sign(seed.getBytes("UTF-8")));
+                version == VersionBTC ? sk.getPublicKey().data : sk.sign(seed.getBytes(StandardCharsets.UTF_8)));
     }
 
     @SuppressWarnings("unchecked")
-    public static Meta getInstance(Object object) throws UnsupportedEncodingException, ClassNotFoundException {
+    public static Meta getInstance(Object object) throws ClassNotFoundException {
         if (object == null) {
             return null;
         } else if (object instanceof Meta) {
@@ -130,12 +130,7 @@ public class Meta extends Dictionary {
             return true;
         }
         // check whether keys equal by verifying signature
-        try {
-            return pk.verify(seed.getBytes("UTF-8"), fingerprint);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            return false;
-        }
+        return pk.verify(seed.getBytes(StandardCharsets.UTF_8), fingerprint);
     }
 
     public boolean matches(ID identifier) {

@@ -10,7 +10,7 @@ public interface UserDataSource extends EntityDataSource {
 
     public PrivateKey getPrivateKey(User user);
 
-    public List<ID> getContacts(User user);
+    public List<Object> getContacts(User user);
     public int getCountOfContacts(User user);
     public ID getContactAtIndex(int index, User user);
 }

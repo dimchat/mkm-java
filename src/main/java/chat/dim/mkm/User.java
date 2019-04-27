@@ -36,12 +36,12 @@ public class User extends Account {
         return dataSource.getPrivateKey(this);
     }
 
-    public List<ID> getContacts() {
+    public List<Object> getContacts() {
         if (this.dataSource == null) {
             return null;
         }
         UserDataSource dataSource = (UserDataSource) this.dataSource;
-        List<ID> contacts = dataSource.getContacts(this);
+        List<Object> contacts = dataSource.getContacts(this);
         if (contacts != null) {
             return contacts;
         }
