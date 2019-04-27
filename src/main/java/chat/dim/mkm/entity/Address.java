@@ -101,7 +101,7 @@ public class Address {
     }
 
     public boolean equals(Address address) {
-        return equals(address.toString());
+        return equals(address.string);
     }
 
     public boolean equals(String address) {

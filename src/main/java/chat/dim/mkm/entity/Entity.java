@@ -4,7 +4,7 @@ public class Entity {
 
     public final ID identifier;
 
-    public IEntityDataSource dataSource;
+    public EntityDataSource dataSource;
 
     public Entity(Entity entity) {
         super();

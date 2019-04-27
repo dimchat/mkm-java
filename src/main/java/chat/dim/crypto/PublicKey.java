@@ -7,10 +7,6 @@ import java.util.Map;
 
 public class PublicKey extends CryptographyKey {
 
-    public PublicKey(PublicKey key) {
-        super(key);
-    }
-
     public PublicKey(Map<String, Object> dictionary) {
         super(dictionary);
     }

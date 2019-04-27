@@ -2,11 +2,11 @@ package chat.dim.mkm;
 
 import chat.dim.crypto.PrivateKey;
 import chat.dim.mkm.entity.ID;
-import chat.dim.mkm.entity.IEntityDataSource;
+import chat.dim.mkm.entity.EntityDataSource;
 
 import java.util.List;
 
-public interface IUserDataSource extends IEntityDataSource {
+public interface UserDataSource extends EntityDataSource {
 
     public PrivateKey getPrivateKey(User user);
 

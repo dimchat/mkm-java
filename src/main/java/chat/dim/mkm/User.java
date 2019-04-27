@@ -32,7 +32,7 @@ public class User extends Account {
             return null;
         }
         // get from data source
-        IUserDataSource dataSource = (IUserDataSource) this.dataSource;
+        UserDataSource dataSource = (UserDataSource) this.dataSource;
         return dataSource.getPrivateKey(this);
     }
 
@@ -40,7 +40,7 @@ public class User extends Account {
         if (this.dataSource == null) {
             return null;
         }
-        IUserDataSource dataSource = (IUserDataSource) this.dataSource;
+        UserDataSource dataSource = (UserDataSource) this.dataSource;
         List<ID> contacts = dataSource.getContacts(this);
         if (contacts != null) {
             return contacts;

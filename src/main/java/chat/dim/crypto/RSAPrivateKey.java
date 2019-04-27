@@ -15,12 +15,6 @@ class RSAPrivateKey extends PrivateKey {
     private final java.security.interfaces.RSAPrivateKey privateKey;
     private final java.security.interfaces.RSAPublicKey publicKey;
 
-    public RSAPrivateKey(RSAPrivateKey key) {
-        super(key);
-        this.privateKey = key.privateKey;
-        this.publicKey = key.publicKey;
-    }
-
     public RSAPrivateKey(Map<String, Object> dictionary) {
         super(dictionary);
         KeyPair keyPair = getKeyPair();

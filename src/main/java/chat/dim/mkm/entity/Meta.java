@@ -1,12 +1,12 @@
 package chat.dim.mkm.entity;
 
+import chat.dim.crypto.Dictionary;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.Utils;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -28,9 +28,7 @@ import java.util.Map;
  *          address = base58_encode(network + hash + code);
  *          number  = uint(code);
  */
-public class Meta {
-
-    private final Map<String, Object> dictionary;
+public class Meta extends Dictionary {
 
     public final byte version;
     public final PublicKey key;
@@ -61,22 +59,8 @@ public class Meta {
     public static final byte VersionExBTC   = 0x03;
     public static final byte VersionDefault = VersionMKM;
 
-    public Meta(Meta meta) {
-        Map<String, Object> map = new HashMap<>();
-        map.put("version", (int) meta.version);
-        map.put("key", meta.key.toDictionary());
-        map.put("seed", meta.seed);
-        map.put("fingerprint", Utils.base64Encode(meta.fingerprint));
-        this.dictionary  = map;
-        this.version     = meta.version;
-        this.key         = meta.key;
-        this.seed        = meta.seed;
-        this.fingerprint = meta.fingerprint;
-        this.valid       = meta.valid;
-    }
-
     public Meta(Map<String, Object> dictionary) throws UnsupportedEncodingException, ClassNotFoundException {
-        this.dictionary  = dictionary;
+        super(dictionary);
         this.version     = Integer.getInteger((String)dictionary.get("version")).byteValue();
         this.key         = PublicKey.getInstance(dictionary.get("key"));
         this.seed        = (String)dictionary.get("seed");
@@ -91,12 +75,7 @@ public class Meta {
     }
 
     public Meta(byte version, PublicKey key, String seed, byte[] fingerprint) throws UnsupportedEncodingException {
-        Map<String, Object> map = new HashMap<>();
-        map.put("version", (int) version);
-        map.put("key", key.toDictionary());
-        map.put("seed", seed);
-        map.put("fingerprint", Utils.base64Encode(fingerprint));
-        this.dictionary  = map;
+        super();
         this.version = version;
         this.key = key;
         this.seed = seed;
@@ -108,6 +87,10 @@ public class Meta {
             // no seed, and the fingerprint is key.data
             this.valid = (seed == null) && (key != null) && (Arrays.equals(key.data, fingerprint));
         }
+        dictionary.put("version", (int) version);
+        dictionary.put("key", key);
+        dictionary.put("seed", seed);
+        dictionary.put("fingerprint", Utils.base64Encode(fingerprint));
     }
 
     public Meta(byte version, PrivateKey sk, String seed) throws UnsupportedEncodingException {
@@ -128,22 +111,6 @@ public class Meta {
         } else {
             throw new IllegalArgumentException("unknown meta:" + object);
         }
-    }
-
-    public Map<String, Object> toDictionary() {
-        return dictionary;
-    }
-
-    public String toString() {
-        return dictionary.toString();
-    }
-
-    public String toJSONString() {
-        return Utils.jsonEncode(dictionary);
-    }
-
-    public boolean equals(Meta meta) {
-        return equals(meta.dictionary);
     }
 
     public boolean equals(Map map) {

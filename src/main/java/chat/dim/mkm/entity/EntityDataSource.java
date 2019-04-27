@@ -2,7 +2,7 @@ package chat.dim.mkm.entity;
 
 import chat.dim.mkm.Profile;
 
-public interface IEntityDataSource {
+public interface EntityDataSource {
 
     public Meta getMeta(Entity entity);
 

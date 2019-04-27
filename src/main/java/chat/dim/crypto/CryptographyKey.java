@@ -2,46 +2,16 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
-public abstract class CryptographyKey {
+public abstract class CryptographyKey extends Dictionary {
 
-    protected final Map<String, Object> dictionary;
-
-    public final String algorithm;
+    protected final String algorithm;
     public byte[] data;
 
-    public CryptographyKey(CryptographyKey key) {
-        super();
-        this.dictionary = key.dictionary;
-        this.algorithm = key.algorithm;
-        this.data = key.data;
-    }
-
     public CryptographyKey(Map<String, Object> dictionary) {
-        super();
-        this.dictionary = dictionary;
-        this.algorithm = CryptographyKey.getAlgorithm(dictionary);
+        super(dictionary);
+        this.algorithm = getAlgorithm(dictionary);
         // process by subclass
         this.data = null;
-    }
-
-    public Map<String, Object> toDictionary() {
-        return dictionary;
-    }
-
-    public String toString() {
-        return dictionary.toString();
-    }
-
-    public String toJSONString() {
-        return Utils.jsonEncode(dictionary);
-    }
-
-    public boolean equals(CryptographyKey key) {
-        return key != null && equals(key.dictionary);
-    }
-
-    public boolean equals(Map map) {
-        return dictionary.equals(map);
     }
 
     protected static String getAlgorithm(Map<String, Object> dictionary) {

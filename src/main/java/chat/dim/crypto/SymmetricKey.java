@@ -8,10 +8,6 @@ import java.util.Map;
 
 public class SymmetricKey extends CryptographyKey {
 
-    public SymmetricKey(SymmetricKey key) {
-        super(key);
-    }
-
     public SymmetricKey(Map<String, Object> dictionary) {
         super(dictionary);
     }

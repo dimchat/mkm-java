@@ -1,35 +1,24 @@
 package chat.dim.mkm;
 
+import chat.dim.crypto.Dictionary;
 import chat.dim.crypto.Utils;
 import chat.dim.mkm.entity.ID;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public class Profile {
-
-    private final Map<String, Object> dictionary;
+public class Profile extends Dictionary {
 
     public final ID identifier;
 
-    public Profile(Profile profile) {
-        super();
-        this.dictionary = profile.dictionary;
-        this.identifier = profile.identifier;
-    }
-
     public Profile(Map<String, Object> dictionary) {
-        super();
-        this.dictionary = dictionary;
+        super(dictionary);
         this.identifier = ID.getInstance(dictionary.get("ID"));
     }
 
     public Profile(ID identifier) {
         super();
-        Map<String, Object> map = new HashMap<>();
-        map.put("ID", identifier.toString());
-        this.dictionary = map;
         this.identifier = identifier;
+        dictionary.put("ID", identifier.toString());
     }
 
     @SuppressWarnings("unchecked")
@@ -45,26 +34,6 @@ public class Profile {
         } else {
             throw new IllegalArgumentException("unknown meta:" + object);
         }
-    }
-
-    public Map<String, Object> toDictionary() {
-        return dictionary;
-    }
-
-    public String toString() {
-        return dictionary.toString();
-    }
-
-    public String toJSONString() {
-        return Utils.jsonEncode(dictionary);
-    }
-
-    public boolean equals(Profile profile) {
-        return dictionary.equals(profile.dictionary);
-    }
-
-    public boolean equals(Map map) {
-        return dictionary.equals(map);
     }
 
     public String getName() {

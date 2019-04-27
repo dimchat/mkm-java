@@ -13,11 +13,6 @@ class RSAPublicKey extends PublicKey {
 
     private final java.security.interfaces.RSAPublicKey publicKey;
 
-    public RSAPublicKey(RSAPublicKey key) {
-        super(key);
-        this.publicKey = key.publicKey;
-    }
-
     public RSAPublicKey(Map<String, Object> dictionary) throws NoSuchFieldException {
         super(dictionary);
         this.publicKey = getKey();

@@ -1,9 +1,12 @@
+import chat.dim.crypto.Utils;
 import chat.dim.mkm.entity.Address;
 import chat.dim.mkm.entity.Entity;
 import chat.dim.mkm.entity.ID;
-
 import junit.framework.TestCase;
 import org.junit.Test;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class EntityTest extends TestCase {
 
@@ -42,6 +45,14 @@ public class EntityTest extends TestCase {
         log("ID: " + identifier);
         log("number: " + identifier.getNumber());
         assertEquals(4049699527L, identifier.getNumber());
+
+        List<ID> array = new ArrayList<>();
+        array.add(identifier);
+        array.add(identifier);
+        log("list<ID>:" + array);
+        String json = Utils.jsonEncode(array);
+//        String json = JSONObject.toJSON(array).toString();
+        log("json:" + json);
     }
 
     @Test

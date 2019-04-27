@@ -1,11 +1,11 @@
 package chat.dim.mkm;
 
 import chat.dim.mkm.entity.ID;
-import chat.dim.mkm.entity.IEntityDataSource;
+import chat.dim.mkm.entity.EntityDataSource;
 
 import java.util.List;
 
-public interface IGroupDataSource extends IEntityDataSource {
+public interface GroupDataSource extends EntityDataSource {
 
     public ID getFounder(Group group);
 

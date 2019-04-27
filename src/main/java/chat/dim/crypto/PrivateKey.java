@@ -7,10 +7,6 @@ import java.util.Map;
 
 public class PrivateKey extends CryptographyKey {
 
-    public PrivateKey(PrivateKey key) {
-        super(key);
-    }
-
     public PrivateKey(Map<String, Object> dictionary) {
         super(dictionary);
     }

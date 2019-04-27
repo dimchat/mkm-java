@@ -32,7 +32,7 @@ public class Group extends Entity {
             return null;
         }
         // get from data source
-        IGroupDataSource dataSource = (IGroupDataSource) this.dataSource;
+        GroupDataSource dataSource = (GroupDataSource) this.dataSource;
         return dataSource.getFounder(this);
     }
 
@@ -41,7 +41,7 @@ public class Group extends Entity {
             return null;
         }
         // get from data source
-        IGroupDataSource dataSource = (IGroupDataSource) this.dataSource;
+        GroupDataSource dataSource = (GroupDataSource) this.dataSource;
         return dataSource.getOwner(this);
     }
 
@@ -50,7 +50,7 @@ public class Group extends Entity {
             return null;
         }
         // get from data source
-        IGroupDataSource dataSource = (IGroupDataSource) this.dataSource;
+        GroupDataSource dataSource = (GroupDataSource) this.dataSource;
         List<ID> members = dataSource.getMembers(this);
         if (members != null) {
             return members;

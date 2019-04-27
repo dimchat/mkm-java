@@ -2,12 +2,12 @@ import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.SymmetricKey;
 import chat.dim.crypto.Utils;
-
 import junit.framework.TestCase;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class CryptoTest extends TestCase {
 
@@ -77,7 +77,7 @@ public class CryptoTest extends TestCase {
 
     @Test
     public void testRSA() throws ClassNotFoundException, UnsupportedEncodingException {
-        HashMap<String, Object> dictionary = new HashMap<>();
+        Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "RSA");
 
         PrivateKey sk = PrivateKey.getInstance(dictionary);
@@ -105,7 +105,7 @@ public class CryptoTest extends TestCase {
 
     @Test
     public void testPublicKey() throws ClassNotFoundException {
-        HashMap<String, Object> dictionary = new HashMap<>();
+        Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "RSA");
         dictionary.put("data", "-----BEGIN PUBLIC KEY-----\n" +
                 "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCI8jKup683D4Gxa0dJomGMqHhd3bcHr7NObJuglNLvYir9PFsfs/mNB/K6jN+R+O6hpyCIiKARk0zxxfuzzLdZhXWmqcvy4f95cJAG5aYOtv8RACwRo/b9/NaDuHnpBW7soArZDS8RqTI1lYH5v2tZqMIdhoC5DAUyKOHFcGxiGQIDAQAB\n" +
@@ -117,7 +117,7 @@ public class CryptoTest extends TestCase {
 
     @Test
     public void testAES() throws ClassNotFoundException, UnsupportedEncodingException {
-        HashMap<String, Object> dictionary = new HashMap<>();
+        Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "AES");
         dictionary.put("data", "C2+xGizLL1G1+z9QLPYNdp/bPP/seDvNw45SXPAvQqk=");
         dictionary.put("iv", "SxPwi6u4+ZLXLdAFJezvSQ==");
@@ -164,6 +164,5 @@ public class CryptoTest extends TestCase {
         log("decrypt to " + decrypt);
 
         assertEquals(text, decrypt);
-
     }
 }

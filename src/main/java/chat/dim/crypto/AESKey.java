@@ -19,13 +19,6 @@ class AESKey extends SymmetricKey {
     private final SecretKeySpec keySpec;
     private final IvParameterSpec ivSpec;
 
-    public AESKey(AESKey key) {
-        super(key);
-        this.cipher = key.cipher;
-        this.keySpec = key.keySpec;
-        this.ivSpec = key.ivSpec;
-    }
-
     public AESKey(Map<String, Object> dictionary) throws NoSuchPaddingException, NoSuchAlgorithmException {
         super(dictionary);
         cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
