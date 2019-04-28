@@ -11,7 +11,7 @@ public abstract class SymmetricKey extends CryptographyKey {
     public static final String AES = "AES";
     public static final String DES = "DES";
 
-    public SymmetricKey(Map<String, Object> dictionary) {
+    protected SymmetricKey(Map<String, Object> dictionary) {
         super(dictionary);
     }
 

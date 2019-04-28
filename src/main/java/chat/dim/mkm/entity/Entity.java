@@ -12,6 +12,7 @@ public class Entity {
         this.dataSource = null;
     }
 
+    @Override
     public String toString() {
         String clazzName = getClass().getSimpleName();
         return "<" + clazzName + "|" + getType() + " " + identifier + " (" + getNumber() + ") \"" + getName() + "\">";

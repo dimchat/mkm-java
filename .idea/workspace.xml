@@ -3,26 +3,14 @@
   <component name="ChangeListManager">
     <list default="true" id="346ea60d-a3cc-4704-bec4-efd174924a90" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/AESKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/AESKey.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/CryptographyKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/CryptographyKey.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/Dictionary.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/Dictionary.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/PrivateKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/PrivateKey.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/PublicKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/PublicKey.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/RSAPrivateKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/RSAPrivateKey.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/RSAPublicKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/RSAPublicKey.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/SymmetricKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/SymmetricKey.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/Utils.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/crypto/Utils.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/Group.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/Group.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/IGroupDataSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/GroupDataSource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/IUserDataSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/UserDataSource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/Profile.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/Profile.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Address.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Address.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Entity.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Entity.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/IEntityDataSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/EntityDataSource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/IMetaDataSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/MetaDataSource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Meta.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Meta.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/CryptoTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/CryptoTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/EntityTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/EntityTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/ID.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/ID.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -124,65 +112,74 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="Dictionary.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/Dictionary.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="375">
+              <caret line="25" column="4" lean-forward="true" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#475#476#0" expanded="true" />
+                <element signature="e#520#521#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PrivateKey.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/PrivateKey.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="180">
+              <caret line="12" column="13" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Meta.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Meta.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="619">
+              <caret line="92" column="71" selection-start-line="92" selection-start-column="71" selection-end-line="92" selection-end-column="71" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#3999#4000#0" expanded="true" />
+                <element signature="e#4045#4046#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Address.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Address.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="586">
+              <caret line="91" column="13" selection-start-line="91" selection-start-column="13" selection-end-line="91" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CryptoTest.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/CryptoTest.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="117">
+              <caret line="41" column="89" lean-forward="true" selection-start-line="41" selection-start-column="89" selection-end-line="41" selection-end-column="89" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="EntityTest.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/EntityTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="660">
-              <caret line="52" column="35" selection-start-line="52" selection-start-column="35" selection-end-line="52" selection-end-column="35" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Utils.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/Utils.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="795">
-              <caret line="59" column="5" lean-forward="true" selection-start-line="59" selection-start-column="5" selection-end-line="59" selection-end-column="5" />
+            <state relative-caret-position="556">
+              <caret line="81" column="43" lean-forward="true" selection-start-line="81" selection-start-column="43" selection-end-line="81" selection-end-column="43" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#362#363#0" expanded="true" />
-                <element signature="e#413#414#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JSON.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.2.47/80217385515cb624ad9d1e7b47162b5ecff0c040/fastjson-1.2.47-sources.jar!/com/alibaba/fastjson/JSON.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="450">
-              <caret line="659" column="52" selection-start-line="659" selection-start-column="52" selection-end-line="659" selection-end-column="52" />
-              <folding>
-                <element signature="e#20721#20722#0" expanded="true" />
-                <element signature="e#20778#20779#0" expanded="true" />
-                <element signature="e#32613#32614#0" expanded="true" />
-                <element signature="e#32686#32687#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="JSONSerializer.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.2.47/80217385515cb624ad9d1e7b47162b5ecff0c040/fastjson-1.2.47-sources.jar!/com/alibaba/fastjson/serializer/JSONSerializer.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="796">
-              <caret line="376" column="29" selection-start-line="376" selection-start-column="29" selection-end-line="376" selection-end-column="29" />
-              <folding>
-                <element signature="e#11862#11863#0" expanded="true" />
-                <element signature="e#11914#11915#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="SerializeConfig.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.2.47/80217385515cb624ad9d1e7b47162b5ecff0c040/fastjson-1.2.47-sources.jar!/com/alibaba/fastjson/serializer/SerializeConfig.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-91">
-              <caret line="278" column="17" selection-start-line="278" selection-start-column="17" selection-end-line="278" selection-end-column="17" />
-              <folding>
-                <element signature="e#14156#14157#0" expanded="true" />
-                <element signature="e#14207#14208#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -191,56 +188,38 @@
       <file leaf-file-name="ID.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/ID.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="121">
-              <caret line="49" column="27" lean-forward="true" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="27" />
-              <folding>
-                <element signature="e#1613#1614#0" expanded="true" />
-                <element signature="e#1646#1647#0" expanded="true" />
-                <element signature="e#2533#2534#0" expanded="true" />
-                <element signature="e#2562#2563#0" expanded="true" />
-                <element signature="e#2326#2327#0" expanded="true" />
-                <element signature="e#2371#2372#0" expanded="true" />
-                <element signature="e#2407#2408#0" expanded="true" />
-                <element signature="e#2445#2446#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="623">
+              <caret line="68" column="13" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="build.gradle" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/build.gradle">
+      <file leaf-file-name="Entity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Entity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="210">
-              <caret line="14" column="49" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="49" />
+            <state relative-caret-position="285">
+              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Address.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Address.java">
+      <file leaf-file-name="Account.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/Account.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1213">
-              <caret line="98" selection-start-line="98" selection-end-line="98" />
-              <folding>
-                <element signature="e#3522#3523#0" expanded="true" />
-                <element signature="e#3551#3552#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Dictionary.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/Dictionary.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="705">
-              <caret line="59" column="13" lean-forward="true" selection-start-line="59" selection-start-column="13" selection-end-line="59" selection-end-column="13" />
+            <state relative-caret-position="105">
+              <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#475#476#0" expanded="true" />
-                <element signature="e#520#521#0" expanded="true" />
-                <element signature="e#721#722#0" expanded="true" />
-                <element signature="e#764#765#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Group.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/Group.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="390">
+              <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
             </state>
           </provider>
         </entry>
@@ -254,17 +233,12 @@
         <option value="JUnit4 Test Class" />
         <option value="Interface" />
         <option value="Class" />
+        <option value="JavaScript File" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>AES</find>
-      <find>0xtbqZN6x2aWTZn0DpCoCA==</find>
-      <find>blocksize</find>
-      <find>iv</find>
-      <find>blockSize</find>
-      <find>Cipher</find>
       <find>publicKey</find>
       <find>keySize</find>
       <find>getKeySize</find>
@@ -289,6 +263,12 @@
       <find>chars()</find>
       <find>Serializable</find>
       <find>serializers</find>
+      <find>plainText</find>
+      <find>plain</find>
+      <find>SHA-256</find>
+      <find>SHA</find>
+      <find>algorithm</find>
+      <find>RSA</find>
     </findStrings>
     <replaceStrings>
       <replace>log</replace>
@@ -480,9 +460,9 @@
     </option>
     <option name="modificationStamps">
       <map>
-        <entry key="$PROJECT_DIR$" value="6223733085000" />
+        <entry key="$PROJECT_DIR$" value="6223972949000" />
         <entry key="$PROJECT_DIR$/.gradle" value="0" />
-        <entry key="$PROJECT_DIR$/build.gradle" value="4168048122" />
+        <entry key="$PROJECT_DIR$/build.gradle" value="2857247651" />
         <entry key="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" value="2083459160" />
         <entry key="$PROJECT_DIR$/settings.gradle" value="2330720428" />
       </map>
@@ -667,8 +647,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/org/bitcoinj/core/Sha256Hash.java" />
-        <option value="$PROJECT_DIR$/src/main/java/org/bitcoinj/core/AddressFormatException.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/bitcoinj/core/Base58.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/bouncycastle/crypto/Digest.java" />
         <option value="$PROJECT_DIR$/src/main/java/org/bouncycastle/crypto/digests/GeneralDigest.java" />
@@ -693,31 +671,33 @@
         <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/rsa/PEMFile.java" />
         <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/rsa/RSAPrivateKey.java" />
         <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/rsa/RSAPublicKey.java" />
-        <option value="$PROJECT_DIR$/build.gradle" />
-        <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/Account.java" />
         <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/IEntityDataSource.java" />
         <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/IMetaDataSource.java" />
         <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/IGroupDataSource.java" />
         <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/IUserDataSource.java" />
-        <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Entity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/String.java" />
+        <option value="$PROJECT_DIR$/build.gradle" />
+        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/Utils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/AESKey.java" />
+        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/RSAPublicKey.java" />
+        <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Meta.java" />
+        <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/Account.java" />
         <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/Group.java" />
+        <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/Profile.java" />
+        <option value="$PROJECT_DIR$/src/main/resources/mkm_hulk.js" />
+        <option value="$PROJECT_DIR$/src/main/resources/mkm_moki.js" />
+        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/RSAPrivateKey.java" />
         <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/User.java" />
+        <option value="$PROJECT_DIR$/src/test/java/EntityTest.java" />
         <option value="$PROJECT_DIR$/src/test/java/CryptoTest.java" />
+        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/PrivateKey.java" />
+        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/PublicKey.java" />
+        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/SymmetricKey.java" />
         <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/CryptographyKey.java" />
         <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/Dictionary.java" />
-        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/PrivateKey.java" />
-        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/AESKey.java" />
-        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/SymmetricKey.java" />
-        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/RSAPrivateKey.java" />
-        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/RSAPublicKey.java" />
-        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/PublicKey.java" />
-        <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/String.java" />
-        <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/Profile.java" />
-        <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Meta.java" />
-        <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Address.java" />
-        <option value="$PROJECT_DIR$/src/test/java/EntityTest.java" />
         <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/ID.java" />
-        <option value="$PROJECT_DIR$/src/main/java/chat/dim/crypto/Utils.java" />
+        <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Entity.java" />
+        <option value="$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Address.java" />
       </list>
     </option>
   </component>
@@ -744,6 +724,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="AndroidView" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -845,6 +826,13 @@
               <item name="MingKeMing" type="b2602c69:ProjectViewProjectNode" />
               <item name="mkm-java" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MingKeMing" type="b2602c69:ProjectViewProjectNode" />
+              <item name="mkm-java" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
@@ -862,9 +850,8 @@
           <select />
         </subPane>
       </pane>
-      <pane id="PackagesPane" />
-      <pane id="AndroidView" />
       <pane id="Scope" />
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -903,7 +890,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.EntityTest">
+  <component name="RunManager" selected="Gradle.mkm-java [uploadArchives]">
     <configuration default="true" type="Application" factoryName="Application">
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
     </configuration>
@@ -1039,8 +1026,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.EntityTest" />
         <item itemvalue="JUnit.CryptoTest" />
+        <item itemvalue="JUnit.EntityTest" />
         <item itemvalue="Gradle.mkm-java [uploadArchives]" />
         <item itemvalue="Gradle.mkm-java [clean]" />
         <item itemvalue="Gradle.mkm-java [build]" />
@@ -1066,44 +1053,45 @@
       <workItem from="1556178860719" duration="7174000" />
       <workItem from="1556192922605" duration="90000" />
       <workItem from="1556262432328" duration="9239000" />
-      <workItem from="1556355037786" duration="9910000" />
+      <workItem from="1556355037786" duration="10856000" />
+      <workItem from="1556431300896" duration="10766000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="EntityTest - 2019.04.27 at 19h 31m 48s.xml">
+    <history-entry file="EntityTest - 2019.04.28 at 15h 59m 16s.xml">
       <configuration name="EntityTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EntityTest - 2019.04.27 at 19h 38m 23s.xml">
+    <history-entry file="CryptoTest - 2019.04.28 at 15h 59m 21s.xml">
+      <configuration name="CryptoTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="EntityTest - 2019.04.28 at 16h 02m 57s.xml">
       <configuration name="EntityTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EntityTest - 2019.04.27 at 19h 44m 06s.xml">
+    <history-entry file="EntityTest - 2019.04.28 at 16h 04m 26s.xml">
       <configuration name="EntityTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EntityTest - 2019.04.27 at 20h 03m 54s.xml">
+    <history-entry file="EntityTest - 2019.04.28 at 16h 09m 37s.xml">
       <configuration name="EntityTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EntityTest - 2019.04.27 at 20h 07m 34s.xml">
+    <history-entry file="CryptoTest - 2019.04.28 at 16h 17m 06s.xml">
+      <configuration name="CryptoTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="CryptoTest - 2019.04.28 at 16h 17m 50s.xml">
+      <configuration name="CryptoTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="EntityTest - 2019.04.28 at 16h 17m 56s.xml">
       <configuration name="EntityTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EntityTest - 2019.04.27 at 20h 08m 06s.xml">
+    <history-entry file="EntityTest - 2019.04.28 at 16h 19m 41s.xml">
       <configuration name="EntityTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="EntityTest - 2019.04.27 at 20h 08m 27s.xml">
-      <configuration name="EntityTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="EntityTest - 2019.04.27 at 20h 15m 00s.xml">
-      <configuration name="EntityTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="EntityTest - 2019.04.27 at 20h 15m 46s.xml">
-      <configuration name="EntityTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="EntityTest - 2019.04.27 at 20h 16m 14s.xml">
-      <configuration name="EntityTest" configurationId="JUnit" />
+    <history-entry file="CryptoTest - 2019.04.28 at 16h 21m 15s.xml">
+      <configuration name="CryptoTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="114354000" />
+    <option name="totallyTimeSpent" value="126066000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1074" y="23" width="1486" height="1417" extended-state="0" />
@@ -1111,21 +1099,21 @@
     <layout>
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="bottom" id="TODO" order="6" />
-      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.49192464" weight="0.3293461" />
+      <window_info anchor="bottom" id="Messages" order="7" sideWeight="0.49125168" weight="0.32911393" />
       <window_info anchor="right" id="Palette&#9;" order="3" />
       <window_info id="Image Layers" order="2" />
       <window_info anchor="right" id="Capture Analysis" order="3" />
-      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.27994618" side_tool="true" visible="true" weight="0.26061058" />
+      <window_info anchor="bottom" id="Event Log" order="7" sideWeight="0.28196502" side_tool="true" visible="true" weight="0.26061058" />
       <window_info anchor="right" id="Maven Projects" order="3" />
       <window_info anchor="bottom" id="Database Changes" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.72005385" visible="true" weight="0.26061058" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.718035" weight="0.26061058" />
       <window_info anchor="bottom" id="Version Control" order="7" />
       <window_info anchor="bottom" id="Terminal" order="7" />
       <window_info id="Capture Tool" order="2" />
       <window_info id="Designer" order="2" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.21063258" />
+      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.49798116" weight="0.17498139" />
       <window_info anchor="right" id="Database" order="3" />
-      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49932706" weight="0.3298585" />
       <window_info anchor="right" id="Gradle" order="3" visible="true" weight="0.14737551" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
@@ -1135,10 +1123,10 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
-      <window_info anchor="bottom" id="Build" order="7" sideWeight="0.4986541" weight="0.17498139" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49932706" weight="0.3298585" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -1153,208 +1141,6 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/Account.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="33" column="1" selection-start-line="33" selection-start-column="1" selection-end-line="33" selection-end-column="1" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/NetworkType.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2085">
-          <caret line="143" column="13" selection-start-line="143" selection-start-column="13" selection-end-line="143" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/bouncycastle/Digest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="27" column="17" selection-start-line="27" selection-start-column="17" selection-end-line="27" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/EntityDataSource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/MetaDataSource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/GroupDataSource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="20" selection-start-line="7" selection-start-column="20" selection-end-line="7" selection-end-column="20" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/UserDataSource.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/Group.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="623">
-          <caret line="52" column="8" selection-start-line="52" selection-start-column="8" selection-end-line="52" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/User.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="42" column="69" selection-start-line="42" selection-start-column="69" selection-end-line="42" selection-end-column="69" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/src.zip!/java/util/AbstractMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="447" column="36" selection-start-line="447" selection-start-column="36" selection-end-line="447" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/src.zip!/java/util/HashMap.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="561">
-          <caret line="1028" column="77" selection-start-line="1028" selection-start-column="77" selection-end-line="1028" selection-end-column="77" />
-          <folding>
-            <element signature="e#19327#19328#0" expanded="true" />
-            <element signature="e#19410#19411#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/CryptoTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="365">
-          <caret line="137" selection-start-line="137" selection-end-line="137" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/CryptographyKey.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="11" column="37" selection-start-line="11" selection-start-column="25" selection-end-line="11" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/src.zip!/java/lang/Object.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="147" column="4" selection-start-line="147" selection-start-column="4" selection-end-line="147" selection-end-column="39" />
-          <folding>
-            <element signature="e#5748#5749#0" expanded="true" />
-            <element signature="e#5784#5785#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/AESKey.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="165">
-          <caret line="21" selection-start-line="21" selection-end-line="21" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/RSAPrivateKey.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-846">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/src.zip!/java/util/Map.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="544" column="12" selection-start-line="544" selection-start-column="12" selection-end-line="544" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/RSAPublicKey.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="14" selection-start-line="14" selection-end-line="14" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/PrivateKey.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="16" column="29" selection-start-line="16" selection-start-column="29" selection-end-line="16" selection-end-column="29" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#270#271#0" expanded="true" />
-            <element signature="e#303#304#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/PublicKey.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
-          <caret line="8" selection-start-line="8" selection-end-line="8" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/String1.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="30">
-          <caret line="2" column="20" selection-start-line="2" selection-start-column="20" selection-end-line="2" selection-end-column="20" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/SymmetricKey.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="19" column="28" selection-start-line="19" selection-start-column="28" selection-end-line="19" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/Profile.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="540">
-          <caret line="36" column="5" selection-start-line="36" selection-start-column="5" selection-end-line="36" selection-end-column="5" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/src.zip!/java/io/Serializable.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="848">
-          <caret line="168" column="17" selection-start-line="168" selection-start-column="17" selection-end-line="168" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/src.zip!/java/lang/Comparable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="226">
@@ -1366,37 +1152,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="651">
           <caret line="176" column="4" selection-start-line="176" selection-start-column="4" selection-end-line="176" selection-end-column="41" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Entity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="90">
-          <caret line="6" column="11" selection-start-line="6" selection-start-column="11" selection-end-line="6" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Meta.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="30" column="6" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/Dictionary.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="705">
-          <caret line="59" column="13" lean-forward="true" selection-start-line="59" selection-start-column="13" selection-end-line="59" selection-end-column="13" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#475#476#0" expanded="true" />
-            <element signature="e#520#521#0" expanded="true" />
-            <element signature="e#721#722#0" expanded="true" />
-            <element signature="e#764#765#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1414,13 +1169,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/build.gradle">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="14" column="49" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="49" />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.2.47/80217385515cb624ad9d1e7b47162b5ecff0c040/fastjson-1.2.47-sources.jar!/com/alibaba/fastjson/serializer/SerializeFilter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
@@ -1435,28 +1183,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Address.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1213">
-          <caret line="98" selection-start-line="98" selection-end-line="98" />
-          <folding>
-            <element signature="e#3522#3523#0" expanded="true" />
-            <element signature="e#3551#3552#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.2.47/80217385515cb624ad9d1e7b47162b5ecff0c040/fastjson-1.2.47-sources.jar!/com/alibaba/fastjson/serializer/SerializeWriter.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="400">
           <caret line="476" selection-start-line="476" selection-end-line="476" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/EntityTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="660">
-          <caret line="52" column="35" selection-start-line="52" selection-start-column="35" selection-end-line="52" selection-end-column="35" />
         </state>
       </provider>
     </entry>
@@ -1475,7 +1205,7 @@
     </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.2.47/80217385515cb624ad9d1e7b47162b5ecff0c040/fastjson-1.2.47-sources.jar!/com/alibaba/fastjson/serializer/JSONSerializer.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="796">
+        <state relative-caret-position="4785">
           <caret line="376" column="29" selection-start-line="376" selection-start-column="29" selection-end-line="376" selection-end-column="29" />
           <folding>
             <element signature="e#11862#11863#0" expanded="true" />
@@ -1549,7 +1279,7 @@
     </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.alibaba/fastjson/1.2.47/80217385515cb624ad9d1e7b47162b5ecff0c040/fastjson-1.2.47-sources.jar!/com/alibaba/fastjson/serializer/SerializeConfig.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-91">
+        <state relative-caret-position="3375">
           <caret line="278" column="17" selection-start-line="278" selection-start-column="17" selection-end-line="278" selection-end-column="17" />
           <folding>
             <element signature="e#14156#14157#0" expanded="true" />
@@ -1558,32 +1288,264 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/ID.java">
+    <entry file="file://$PROJECT_DIR$/build.gradle">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="121">
-          <caret line="49" column="27" lean-forward="true" selection-start-line="49" selection-start-column="27" selection-end-line="49" selection-end-column="27" />
+        <state relative-caret-position="360">
+          <caret line="24" lean-forward="true" selection-start-line="24" selection-end-line="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/src.zip!/java/security/MessageDigestSpi.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="331">
+          <caret line="171" column="7" lean-forward="true" selection-start-line="171" selection-start-column="7" selection-end-line="171" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/src.zip!/java/security/MessageDigest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3124">
+          <caret line="469" column="39" selection-start-line="469" selection-start-column="36" selection-end-line="469" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/src.zip!/java/lang/Class.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="515">
+          <caret line="1381" column="38" selection-start-line="1381" selection-start-column="38" selection-end-line="1381" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/MetaDataSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="30">
+          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/GroupDataSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="7" column="17" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/UserDataSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="120">
+          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
           <folding>
-            <element signature="e#1613#1614#0" expanded="true" />
-            <element signature="e#1646#1647#0" expanded="true" />
-            <element signature="e#2533#2534#0" expanded="true" />
-            <element signature="e#2562#2563#0" expanded="true" />
-            <element signature="e#2326#2327#0" expanded="true" />
-            <element signature="e#2371#2372#0" expanded="true" />
-            <element signature="e#2407#2408#0" expanded="true" />
-            <element signature="e#2445#2446#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/PEMFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="51" column="33" selection-start-line="51" selection-start-column="33" selection-end-line="51" selection-end-column="33" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/Utils.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="795">
-          <caret line="59" column="5" lean-forward="true" selection-start-line="59" selection-start-column="5" selection-end-line="59" selection-end-column="5" />
+        <state relative-caret-position="465">
+          <caret line="35" column="24" selection-start-line="35" selection-start-column="24" selection-end-line="35" selection-end-column="24" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#362#363#0" expanded="true" />
-            <element signature="e#413#414#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/mkm_moki.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="1581" selection-start-column="1581" selection-end-column="1581" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/mkm_hulk.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="44" selection-start-column="44" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/EntityDataSource.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="17" selection-start-line="4" selection-start-column="17" selection-end-line="4" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/NetworkType.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-164">
+          <caret line="93" column="7" lean-forward="true" selection-start-line="93" selection-start-column="7" selection-end-line="93" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_191.jdk/Contents/Home/src.zip!/java/security/KeyPairGenerator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1352">
+          <caret line="113" column="17" selection-start-line="113" selection-start-column="14" selection-end-line="113" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/RSAPrivateKey.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="12" column="9" selection-start-line="12" selection-start-column="6" selection-end-line="12" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/RSAPublicKey.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="481">
+          <caret line="59" column="9" selection-start-line="59" selection-start-column="9" selection-end-line="59" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/AESKey.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="885">
+          <caret line="73" column="25" selection-start-line="73" selection-start-column="25" selection-end-line="73" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/Profile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="33" column="5" selection-start-line="33" selection-start-column="5" selection-end-line="33" selection-end-column="5" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/User.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="420">
+          <caret line="34" column="38" lean-forward="true" selection-start-line="34" selection-start-column="38" selection-end-line="34" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/PublicKey.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/SymmetricKey.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="330">
+          <caret line="24" column="9" lean-forward="true" selection-start-line="24" selection-start-column="9" selection-end-line="24" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/CryptographyKey.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="15" lean-forward="true" selection-start-line="15" selection-end-line="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/PrivateKey.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="180">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/CryptoTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="117">
+          <caret line="41" column="89" lean-forward="true" selection-start-line="41" selection-start-column="89" selection-end-line="41" selection-end-column="89" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/EntityTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="556">
+          <caret line="81" column="43" lean-forward="true" selection-start-line="81" selection-start-column="43" selection-end-line="81" selection-end-column="43" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/crypto/Dictionary.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="25" column="4" lean-forward="true" selection-start-line="25" selection-start-column="4" selection-end-line="25" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#475#476#0" expanded="true" />
+            <element signature="e#520#521#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Meta.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="619">
+          <caret line="92" column="71" selection-start-line="92" selection-start-column="71" selection-end-line="92" selection-end-column="71" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#3999#4000#0" expanded="true" />
+            <element signature="e#4045#4046#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Address.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="586">
+          <caret line="91" column="13" selection-start-line="91" selection-start-column="13" selection-end-line="91" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/ID.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="623">
+          <caret line="68" column="13" selection-start-line="68" selection-start-column="13" selection-end-line="68" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/entity/Entity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/Account.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/chat/dim/mkm/Group.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="390">
+          <caret line="32" lean-forward="true" selection-start-line="32" selection-end-line="32" />
         </state>
       </provider>
     </entry>

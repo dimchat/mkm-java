@@ -7,7 +7,7 @@ public abstract class CryptographyKey extends Dictionary {
     protected final String algorithm;
     public byte[] data;
 
-    public CryptographyKey(Map<String, Object> dictionary) {
+    protected CryptographyKey(Map<String, Object> dictionary) {
         super(dictionary);
         this.algorithm = getAlgorithm(dictionary);
         // process by subclass

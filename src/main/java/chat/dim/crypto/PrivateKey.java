@@ -10,7 +10,7 @@ public abstract class PrivateKey extends CryptographyKey {
     public static final String RSA = "RSA";
     public static final String ECC = "ECC";
 
-    public PrivateKey(Map<String, Object> dictionary) {
+    protected PrivateKey(Map<String, Object> dictionary) {
         super(dictionary);
     }
 
