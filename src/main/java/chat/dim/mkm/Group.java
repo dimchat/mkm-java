@@ -8,12 +8,7 @@ import java.util.List;
 
 public class Group extends Entity {
 
-    public final ID founder;
-
-    public Group(Group group) {
-        super(group);
-        this.founder = group.founder;
-    }
+    private final ID founder;
 
     public Group(ID identifier, ID founder) {
         super(identifier);

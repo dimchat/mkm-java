@@ -83,10 +83,10 @@ class AESKey extends SymmetricKey {
 
     //-------- interfaces --------
 
-    public byte[] encrypt(byte[] plaintext) {
+    public byte[] encrypt(byte[] plainText) {
         try {
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-            return cipher.doFinal(plaintext);
+            return cipher.doFinal(plainText);
         } catch (InvalidKeyException | InvalidAlgorithmParameterException |
                 IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();

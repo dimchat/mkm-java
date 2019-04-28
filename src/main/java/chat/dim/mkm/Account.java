@@ -7,12 +7,7 @@ import chat.dim.mkm.entity.Meta;
 
 public class Account extends Entity {
 
-    public final PublicKey publicKey;
-
-    public Account(Account account) {
-        super(account);
-        this.publicKey = account.publicKey;
-    }
+    private final PublicKey publicKey;
 
     public Account(ID identifier, PublicKey publicKey) {
         super(identifier);

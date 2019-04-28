@@ -18,13 +18,6 @@ public class ID {
     public final Address address;
     public final String terminal;
 
-    public ID(ID identifier) {
-        this.string   = identifier.string;
-        this.name     = identifier.name;
-        this.address  = identifier.address;
-        this.terminal = identifier.terminal;
-    }
-
     public ID(String string) {
         this.string = string;
         // terminal
@@ -58,7 +51,7 @@ public class ID {
     }
 
     public ID(Address address) {
-        this("", address);
+        this(null, address);
     }
 
     public static ID getInstance(Object object) {

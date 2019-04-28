@@ -5,7 +5,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PrivateKey extends CryptographyKey {
+public abstract class PrivateKey extends CryptographyKey {
+
+    public static final String RSA = "RSA";
+    public static final String ECC = "ECC";
 
     public PrivateKey(Map<String, Object> dictionary) {
         super(dictionary);
@@ -21,23 +24,13 @@ public class PrivateKey extends CryptographyKey {
         return publicKey != null && publicKey.matches(privateKey);
     }
 
-    public PublicKey getPublicKey() {
-        System.out.println("override me!");
-        // TODO: override me
-        return null;
-    }
+    //-------- Interfaces --------
 
-    public byte[] decrypt(byte[] cipherText) {
-        System.out.println("override me!");
-        // TODO: override me
-        return null;
-    }
+    public abstract PublicKey getPublicKey();
 
-    public byte[] sign(byte[] data) {
-        System.out.println("override me!");
-        // TODO: override me
-        return null;
-    }
+    public abstract byte[] decrypt(byte[] cipherText);
+
+    public abstract byte[] sign(byte[] data);
 
     //-------- Runtime --------
 
@@ -72,16 +65,20 @@ public class PrivateKey extends CryptographyKey {
             return (PrivateKey) object;
         } else if (object instanceof Map) {
             return createInstance((Map<String, Object>) object);
-        } else if (object instanceof String) {
-            return createInstance(Utils.jsonDecode((String) object));
         } else {
             throw new IllegalArgumentException("unknown key:" + object);
         }
     }
 
+    public static PrivateKey create(String algorithm) throws ClassNotFoundException {
+        Map<String, Object> dictionary = new HashMap<>();
+        dictionary.put("algorithm", algorithm);
+        return createInstance(dictionary);
+    }
+
     static {
         // RSA
-        register("RSA", RSAPrivateKey.class);
+        register(RSA, RSAPrivateKey.class);
         // ECC
         // ...
     }

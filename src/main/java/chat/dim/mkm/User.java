@@ -8,15 +8,10 @@ import java.util.List;
 
 public class User extends Account {
 
-    public final PrivateKey privateKey;
-
-    public User(User user) {
-        super(user);
-        this.privateKey = user.privateKey;
-    }
+    private final PrivateKey privateKey;
 
     public User(ID identifier, PrivateKey privateKey) {
-        super(identifier);
+        super(identifier, privateKey == null ? null : privateKey.getPublicKey());
         this.privateKey = privateKey;
     }
 

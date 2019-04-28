@@ -98,6 +98,10 @@ public class Meta extends Dictionary {
                 version == VersionBTC ? sk.getPublicKey().data : sk.sign(seed.getBytes(StandardCharsets.UTF_8)));
     }
 
+    public Meta(PrivateKey sk, String seed) {
+        this(VersionDefault, sk, seed);
+    }
+
     @SuppressWarnings("unchecked")
     public static Meta getInstance(Object object) throws ClassNotFoundException {
         if (object == null) {
@@ -106,8 +110,6 @@ public class Meta extends Dictionary {
             return (Meta) object;
         } else if (object instanceof Map) {
             return new Meta((Map<String, Object>) object);
-        } else if (object instanceof String) {
-            return new Meta(Utils.jsonDecode((String) object));
         } else {
             throw new IllegalArgumentException("unknown meta:" + object);
         }

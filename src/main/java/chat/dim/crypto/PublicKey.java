@@ -5,7 +5,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PublicKey extends CryptographyKey {
+public abstract class PublicKey extends CryptographyKey {
+
+    public static final String RSA = "RSA";
+    public static final String ECC = "ECC";
 
     public PublicKey(Map<String, Object> dictionary) {
         super(dictionary);
@@ -27,17 +30,11 @@ public class PublicKey extends CryptographyKey {
         return verify(promise, signature);
     }
 
-    public byte[] encrypt(byte[] plaintext) {
-        System.out.println("override me!");
-        // TODO: override me
-        return null;
-    }
+    //-------- Interfaces --------
 
-    public boolean verify(byte[] data, byte[] signature) {
-        System.out.println("override me!");
-        // TODO: override me
-        return false;
-    }
+    public abstract byte[] encrypt(byte[] plainText);
+
+    public abstract boolean verify(byte[] data, byte[] signature);
 
     //-------- Runtime --------
 
@@ -72,8 +69,6 @@ public class PublicKey extends CryptographyKey {
             return (PublicKey) object;
         } else if (object instanceof Map) {
             return createInstance((Map<String, Object>) object);
-        } else if (object instanceof String) {
-            return createInstance(Utils.jsonDecode((String) object));
         } else {
             throw new IllegalArgumentException("unknown key:" + object);
         }
@@ -81,7 +76,7 @@ public class PublicKey extends CryptographyKey {
 
     static {
         // RSA
-        register("RSA", RSAPublicKey.class);
+        register(RSA, RSAPublicKey.class);
         // ECC
         // ...
     }

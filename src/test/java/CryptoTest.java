@@ -2,14 +2,14 @@ import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.SymmetricKey;
 import chat.dim.crypto.Utils;
-import junit.framework.TestCase;
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class CryptoTest extends TestCase {
+public class CryptoTest {
 
     private void log(String msg) {
         StackTraceElement[] traces = Thread.currentThread().getStackTrace();
@@ -41,17 +41,18 @@ public class CryptoTest extends TestCase {
 
         // sha256（moky）= cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d
         hash = Utils.sha256(data);
+        assert hash != null;
         res = hexEncode(hash);
         exp = "cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d";
         log("sha256(" + string + ") = " + res);
-        assertEquals(exp, res);
+        Assert.assertEquals(exp, res);
 
         // ripemd160(moky) = 44bd174123aee452c6ec23a6ab7153fa30fa3b91
         hash = Utils.ripemd160(data);
         res = hexEncode(hash);
         exp = "44bd174123aee452c6ec23a6ab7153fa30fa3b91";
         log("ripemd160(" + string + ") = " + res);
-        assertEquals(exp, res);
+        Assert.assertEquals(exp, res);
     }
 
     @Test
@@ -66,21 +67,18 @@ public class CryptoTest extends TestCase {
         res = Utils.base58Encode(data);
         exp = "3oF5MJ";
         log("base58(" + string + ") = " + res);
-        assertEquals(exp, res);
+        Assert.assertEquals(exp, res);
 
         // base64(moky) = bW9reQ==
         res = Utils.base64Encode(data);
         exp = "bW9reQ==";
         log("base64(" + string + ") = " + res);
-        assertEquals(exp, res);
+        Assert.assertEquals(exp, res);
     }
 
     @Test
     public void testRSA() throws ClassNotFoundException, UnsupportedEncodingException {
-        Map<String, Object> dictionary = new HashMap<>();
-        dictionary.put("algorithm", "RSA");
-
-        PrivateKey sk = PrivateKey.getInstance(dictionary);
+        PrivateKey sk = PrivateKey.create(PrivateKey.RSA);
         log("RSA private key:" + sk);
 
         PublicKey pk = sk.getPublicKey();
@@ -95,12 +93,12 @@ public class CryptoTest extends TestCase {
         String decrypt = new String(data);
         log("decrypt to " + decrypt);
 
-        assertEquals(text, decrypt);
+        Assert.assertEquals(text, decrypt);
 
         byte[] signature = sk.sign(plaintext);
         log("signature(\"" + text + "\") = " + hexEncode(signature));
 
-        assertTrue(pk.verify(plaintext, signature));
+        Assert.assertTrue(pk.verify(plaintext, signature));
     }
 
     @Test
@@ -135,7 +133,7 @@ public class CryptoTest extends TestCase {
         log("decrypt to " + decrypt);
         log(text + " -> " + Utils.base64Encode(cipherText) + " -> " + decrypt);
 
-        assertEquals("0xtbqZN6x2aWTZn0DpCoCA==", Utils.base64Encode(cipherText));
+        Assert.assertEquals("0xtbqZN6x2aWTZn0DpCoCA==", Utils.base64Encode(cipherText));
 
         key = SymmetricKey.getInstance(dictionary);
         log("key: " + key);
@@ -149,9 +147,7 @@ public class CryptoTest extends TestCase {
 //        log("FIXED: " + text + " -> " + (plaintext == null ? null : new String(plaintext)));
 
         // random key
-        dictionary.remove("data");
-        dictionary.remove("iv");
-        key = SymmetricKey.getInstance(dictionary);
+        key = SymmetricKey.create(SymmetricKey.AES);
         log("key: " + key);
 
         text = "moky";
@@ -163,6 +159,6 @@ public class CryptoTest extends TestCase {
         decrypt = new String(data, "UTF-8");
         log("decrypt to " + decrypt);
 
-        assertEquals(text, decrypt);
+        Assert.assertEquals(text, decrypt);
     }
 }

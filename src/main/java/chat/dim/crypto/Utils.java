@@ -2,26 +2,12 @@ package chat.dim.crypto;
 
 import chat.dim.crypto.bitcoinj.Base58;
 import chat.dim.crypto.bouncycastle.RIPEMD160Digest;
-import chat.dim.mkm.entity.Address;
-import chat.dim.mkm.entity.ID;
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.serializer.SerializeConfig;
-import com.alibaba.fastjson.serializer.ToStringSerializer;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
-import java.util.Map;
 
 public class Utils {
-
-    public static String jsonEncode(Object container) {
-        return JSON.toJSONString(container);
-    }
-
-    public static Map<String, Object> jsonDecode(String jsonString) {
-        return JSON.parseObject(jsonString);
-    }
 
     public static String base64Encode(byte[] data) {
         Base64.Encoder encoder = Base64.getEncoder();
@@ -60,11 +46,5 @@ public class Utils {
         byte[] out = new byte[20];
         digest.doFinal(out, 0);
         return out;
-    }
-
-    static {
-        SerializeConfig serializeConfig = SerializeConfig.getGlobalInstance();
-        serializeConfig.put(ID.class, ToStringSerializer.instance);
-        serializeConfig.put(Address.class, ToStringSerializer.instance);
     }
 }

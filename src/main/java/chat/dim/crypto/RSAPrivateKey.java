@@ -55,8 +55,13 @@ class RSAPrivateKey extends PrivateKey {
     }
 
     private void updateData(KeyPair keyPair) {
-        PEMFile pemFile = new PEMFile((java.security.interfaces.RSAPrivateKey) keyPair.getPrivate());
-        dictionary.put("data", pemFile.toString());
+        // -----BEGIN PUBLIC KEY-----
+        PEMFile pkFile = new PEMFile((java.security.interfaces.RSAPublicKey) keyPair.getPublic());
+        // -----END PUBLIC KEY-----
+        // -----BEGIN RSA PRIVATE KEY-----
+        PEMFile skFile = new PEMFile((java.security.interfaces.RSAPrivateKey) keyPair.getPrivate());
+        // -----END RSA PRIVATE KEY-----
+        dictionary.put("data", pkFile.toString() + "\n" + skFile.toString());
     }
 
     private int keySizeInBits() {

@@ -26,13 +26,6 @@ public class Address {
     public final long code;
     public final boolean valid;
 
-    public Address(Address address) {
-        this.string  = address.string;
-        this.network = address.network;
-        this.code    = address.code;
-        this.valid   = address.valid;
-    }
-
     public Address(String string) {
         this.string  = string;
 
@@ -110,6 +103,7 @@ public class Address {
 
     private static byte[] checkCode(byte[] data) {
         byte[] sha256d = Utils.sha256(Utils.sha256(data));
+        assert sha256d != null;
         byte[] cc = new byte[4];
         System.arraycopy(sha256d, 0, cc, 0, 4);
         return cc;

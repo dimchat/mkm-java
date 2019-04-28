@@ -1,7 +1,6 @@
 package chat.dim.mkm;
 
 import chat.dim.crypto.Dictionary;
-import chat.dim.crypto.Utils;
 import chat.dim.mkm.entity.ID;
 
 import java.util.Map;
@@ -29,8 +28,6 @@ public class Profile extends Dictionary {
             return (Profile) object;
         } else if (object instanceof Map) {
             return new Profile((Map<String, Object>) object);
-        } else if (object instanceof String) {
-            return new Profile(Utils.jsonDecode((String) object));
         } else {
             throw new IllegalArgumentException("unknown meta:" + object);
         }

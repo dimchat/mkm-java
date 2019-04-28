@@ -54,14 +54,14 @@ class RSAPublicKey extends PublicKey {
 
     //-------- interfaces --------
 
-    public byte[] encrypt(byte[] plaintext) {
-        if (plaintext.length > (keySizeInBits() / 8 - 11)) {
-            throw new InvalidParameterException("RSA plaintext length error:" + plaintext.length);
+    public byte[] encrypt(byte[] plainText) {
+        if (plainText.length > (keySizeInBits() / 8 - 11)) {
+            throw new InvalidParameterException("RSA plain text length error:" + plainText.length);
         }
         try {
             Cipher cipher = Cipher.getInstance("RSA");
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-            return cipher.doFinal(plaintext);
+            return cipher.doFinal(plainText);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException |
                 InvalidKeyException |
                 IllegalBlockSizeException | BadPaddingException e) {

@@ -6,12 +6,6 @@ public class Entity {
 
     public EntityDataSource dataSource;
 
-    public Entity(Entity entity) {
-        super();
-        this.identifier = entity.identifier;
-        this.dataSource = entity.dataSource;
-    }
-
     public Entity(ID identifier) {
         super();
         this.identifier = identifier;
@@ -19,7 +13,8 @@ public class Entity {
     }
 
     public String toString() {
-        return "<Entity|" + identifier + " (" + getNumber() + ") \"" + getName() + "\">";
+        String clazzName = getClass().getSimpleName();
+        return "<" + clazzName + "|" + getType() + " " + identifier + " (" + getNumber() + ") \"" + getName() + "\">";
     }
 
     public boolean equals(Entity entity) {

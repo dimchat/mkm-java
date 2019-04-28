@@ -6,7 +6,10 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SymmetricKey extends CryptographyKey {
+public abstract class SymmetricKey extends CryptographyKey {
+
+    public static final String AES = "AES";
+    public static final String DES = "DES";
 
     public SymmetricKey(Map<String, Object> dictionary) {
         super(dictionary);
@@ -20,22 +23,16 @@ public class SymmetricKey extends CryptographyKey {
         } else if (super.equals(key)) {
             return true;
         }
-        byte[] ciphertext = key.encrypt(promise);
-        byte[] plaintext = decrypt(ciphertext);
-        return Arrays.equals(plaintext, promise);
+        byte[] cipherText = key.encrypt(promise);
+        byte[] plainText = decrypt(cipherText);
+        return Arrays.equals(plainText, promise);
     }
 
-    public byte[] encrypt(byte[] plaintext) {
-        System.out.println("override me!");
-        // TODO: override me
-        return null;
-    }
+    //-------- Interfaces --------
 
-    public byte[] decrypt(byte[] ciphertext) {
-        System.out.println("override me!");
-        // TODO: override me
-        return null;
-    }
+    public abstract byte[] encrypt(byte[] plainText);
+
+    public abstract byte[] decrypt(byte[] cipherText);
 
     //-------- Runtime --------
 
@@ -70,16 +67,20 @@ public class SymmetricKey extends CryptographyKey {
             return (SymmetricKey) object;
         } else if (object instanceof Map) {
             return createInstance((Map<String, Object>) object);
-        } else if (object instanceof String) {
-            return createInstance(Utils.jsonDecode((String) object));
         } else {
             throw new IllegalArgumentException("unknown key:" + object);
         }
     }
 
+    public static SymmetricKey create(String algorithm) throws ClassNotFoundException {
+        Map<String, Object> dictionary = new HashMap<>();
+        dictionary.put("algorithm", algorithm);
+        return createInstance(dictionary);
+    }
+
     static {
         // AES
-        register("AES", AESKey.class);
+        register(AES, AESKey.class);
         // DES
         // ...
     }
