@@ -41,8 +41,10 @@ public class User extends Account {
             return contacts;
         }
         int count = dataSource.getCountOfContacts(this);
-        if (count <= 0) {
+        if (count == 0) {
             return null;
+        } else if (count < 0) {
+            throw new ArrayIndexOutOfBoundsException("failed to get contacts of user:" + identifier);
         }
         contacts = new ArrayList<>(count);
         for (int index = 0; index < count; index++) {

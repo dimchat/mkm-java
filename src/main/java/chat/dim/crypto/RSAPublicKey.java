@@ -9,6 +9,14 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Map;
 
+/**
+ *  RSA Public Key
+ *
+ *      keyInfo format: {
+ *          algorithm: "RSA",
+ *          data: "..."       // base64
+ *      }
+ */
 class RSAPublicKey extends PublicKey {
 
     private final java.security.interfaces.RSAPublicKey publicKey;

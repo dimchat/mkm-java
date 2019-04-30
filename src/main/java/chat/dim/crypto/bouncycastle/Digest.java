@@ -63,6 +63,7 @@ public interface Digest
      *
      * @param out the array the digest is to be copied into.
      * @param outOff the offset into the out array the digest is to start at.
+     * @return digest length
      */
     public int doFinal(byte[] out, int outOff);
 

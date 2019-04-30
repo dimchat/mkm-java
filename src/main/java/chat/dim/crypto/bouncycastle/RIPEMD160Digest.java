@@ -23,10 +23,6 @@ public class RIPEMD160Digest
         reset();
     }
 
-    /**
-     * Copy constructor.  This will copy the state of the provided
-     * message digest.
-     */
     public RIPEMD160Digest(RIPEMD160Digest t)
     {
         super(t);

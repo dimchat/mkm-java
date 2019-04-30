@@ -50,6 +50,11 @@ public class ID {
         this.address = address;
     }
 
+    /**
+     *  For BTC address
+     *
+     * @param address - BTC address
+     */
     public ID(Address address) {
         this(null, address);
     }
@@ -82,10 +87,20 @@ public class ID {
         return equals(new ID(string));
     }
 
+    /**
+     *  Get Network ID
+     *
+     * @return address type as network ID
+     */
     public NetworkType getType() {
         return address.network;
     }
 
+    /**
+     *  Get Search Number
+     *
+     * @return number for searching this ID
+     */
     public long getNumber() {
         return address.code;
     }

@@ -51,8 +51,10 @@ public class Group extends Entity {
             return members;
         }
         int count = dataSource.getCountOfMembers(this);
-        if (count <= 0) {
+        if (count == 0) {
             return null;
+        } else if (count < 0) {
+            throw new ArrayIndexOutOfBoundsException("failed to get members of group:" + identifier);
         }
         // get members one by one
         members = new ArrayList<>(count);

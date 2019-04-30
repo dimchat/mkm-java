@@ -43,11 +43,6 @@ public abstract class GeneralDigest
         xBufOff = 0;
     }
 
-    /**
-     * Copy constructor.  We are using copy constructors in place
-     * of the Object.clone() interface as this interface is not
-     * supported by J2ME.
-     */
     protected GeneralDigest(GeneralDigest t)
     {
         xBuf = new byte[t.xBuf.length];

@@ -12,6 +12,16 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Map;
 import java.util.Random;
 
+/**
+ *  AES Key
+ *
+ *      keyInfo format: {
+ *          algorithm: "AES",
+ *          keySize  : 32,                // optional
+ *          data     : "{BASE64_ENCODE}}" // password data
+ *          iv       : "{BASE64_ENCODE}", // initialization vector
+ *      }
+ */
 class AESKey extends SymmetricKey {
 
     private final Cipher cipher;

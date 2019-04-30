@@ -30,28 +30,55 @@ import java.util.Map;
  */
 public class Meta extends Dictionary {
 
+    /**
+     *  Meta algorithm version
+     *
+     *      0x01 - username@address
+     *      0x02 - btc_address
+     *      0x03 - username@btc_address
+     */
     public final byte version;
+
+    /**
+     *  Public key
+     *
+     *      RSA / ECC
+     */
     public final PublicKey key;
+
+    /**
+     *  Seed to generate fingerprint
+     *
+     *      Username / Group-X
+     */
     public final String seed;
+
+    /**
+     *  Fingerprint to verify ID and public key
+     *
+     *      Build: fingerprint = sign(seed, privateKey)
+     *      Check: verify(seed, fingerprint, publicKey)
+     */
     public final byte[] fingerprint;
+
     public final boolean valid;
 
     /**
-     *  @enum MKMMetaVersion
+     *  enum MKMMetaVersion
      *
-     *  @abstract Defined for algorithm that generating address.
+     *  abstract Defined for algorithm that generating address.
      *
-     *  @discussion Generate & check ID/Address
+     *  discussion Generate and check ID/Address
      *
      *      MKMMetaVersion_MKM give a seed string first, and sign this seed to get
      *      fingerprint; after that, use the fingerprint to generate address.
-     *      This will get a firmly relationship between (username, address & key).
+     *      This will get a firmly relationship between (username, address and key).
      *
      *      MKMMetaVersion_BTC use the key data to generate address directly.
      *      This can build a BTC address for the entity ID (no username).
      *
      *      MKMMetaVersion_ExBTC use the key data to generate address directly, and
-     *      sign the seed to get fingerprint (just for binding username & key).
+     *      sign the seed to get fingerprint (just for binding username and key).
      *      This can build a BTC address, and bind a username to the entity ID.
      */
     public static final byte VersionMKM     = 0x01;
@@ -74,6 +101,14 @@ public class Meta extends Dictionary {
         }
     }
 
+    /**
+     *  Copy meta data
+     *
+     * @param version - meta algorithm version
+     * @param key - public key
+     * @param seed - user/group name
+     * @param fingerprint - signature of seed, or key data
+     */
     public Meta(byte version, PublicKey key, String seed, byte[] fingerprint) {
         super();
         this.version = version;
@@ -93,6 +128,13 @@ public class Meta extends Dictionary {
         dictionary.put("fingerprint", Utils.base64Encode(fingerprint));
     }
 
+    /**
+     * Generate fingerprint, initialize meta data
+     *
+     * @param version - meta version for MKM or ExBTC
+     * @param sk - private key to generate fingerprint
+     * @param seed - seed for fingerprint
+     */
     public Meta(byte version, PrivateKey sk, String seed) {
         this(version, sk.getPublicKey(), seed,
                 version == VersionBTC ? sk.getPublicKey().data : sk.sign(seed.getBytes(StandardCharsets.UTF_8)));
@@ -100,6 +142,15 @@ public class Meta extends Dictionary {
 
     public Meta(PrivateKey sk, String seed) {
         this(VersionDefault, sk, seed);
+    }
+
+    /**
+     *  For BTC address
+     *
+     * @param key - public key (ECC)
+     */
+    public Meta(PublicKey key) {
+        this(VersionBTC, key, null, key.data);
     }
 
     @SuppressWarnings("unchecked")

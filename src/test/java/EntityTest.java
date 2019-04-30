@@ -34,6 +34,10 @@ public class EntityTest {
         log("address: " + address);
         log("number: " + address.code);
         Assert.assertEquals(4049699527L, address.code);
+
+        NetworkType robot = NetworkType.Robot;
+        log("robot type:" + robot.toByte());
+        Assert.assertTrue((byte)0xC8 == robot.toByte());
     }
 
     @Test

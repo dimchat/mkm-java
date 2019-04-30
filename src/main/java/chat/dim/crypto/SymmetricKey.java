@@ -6,6 +6,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  Symmetric Cryptography Key
+ *
+ *      keyInfo format: {
+ *          algorithm: "AES",
+ *          data     : "{BASE64_ENCODE}",
+ *          ...
+ *      }
+ */
 public abstract class SymmetricKey extends CryptographyKey {
 
     public static final String AES = "AES";
@@ -30,8 +39,20 @@ public abstract class SymmetricKey extends CryptographyKey {
 
     //-------- Interfaces --------
 
+    /**
+     *  cipherText = encrypt(plainText, PW)
+     *
+     * @param plainText - plain data
+     * @return cipherText
+     */
     public abstract byte[] encrypt(byte[] plainText);
 
+    /**
+     *  plainText = decrypt(cipherText, PW);
+     *
+     * @param cipherText - encrypted data
+     * @return plainText
+     */
     public abstract byte[] decrypt(byte[] cipherText);
 
     //-------- Runtime --------

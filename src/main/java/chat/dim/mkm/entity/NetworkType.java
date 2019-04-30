@@ -1,11 +1,11 @@
 package chat.dim.mkm.entity;
 
 /**
- *  @enum MKMNetworkID
+ *  enum MKMNetworkID
  *
- *  @abstract A network type to indicate what kind the entity is.
+ *  abstract A network type to indicate what kind the entity is.
  *
- *  @discussion An address can identify a person, a group of people,
+ *  discussion An address can identify a person, a group of people,
  *      a team, even a thing.
  *
  *      MKMNetwork_Main indicates this entity is a person's account.
@@ -19,7 +19,7 @@ package chat.dim.mkm.entity;
  *      The owner is the king here, it can do anything and no one can stop it.
  *
  *      MKMNetwork_Polylogue indicates a virtual (temporary) social network.
- *      It's created to talk with multi-people (but not too much, e.g. < 100).
+ *      It's created to talk with multi-people (but not too much, e.g. less than 100).
  *      Any member can invite people in, but only the founder can expel member.
  *
  *      MKMNetwork_Chatroom indicates a massive (persistent) social network.

@@ -5,6 +5,15 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  Asymmetric Cryptography Key
+ *
+ *      keyInfo format: {
+ *          algorithm: "RSA", // ECC, ...
+ *          data     : "{BASE64_ENCODE}",
+ *          ...
+ *      }
+ */
 public abstract class PublicKey extends CryptographyKey {
 
     public static final String RSA = "RSA";
@@ -32,8 +41,21 @@ public abstract class PublicKey extends CryptographyKey {
 
     //-------- Interfaces --------
 
+    /**
+     *  cipherText = encrypt(plainText, PK)
+     *
+     * @param plainText - data to be encrypted
+     * @return cipherText
+     */
     public abstract byte[] encrypt(byte[] plainText);
 
+    /**
+     *  OK = verify(data, signature, PK)
+     *
+     * @param data - data
+     * @param signature - signature of data
+     * @return true on signature correct
+     */
     public abstract boolean verify(byte[] data, byte[] signature);
 
     //-------- Runtime --------

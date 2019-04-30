@@ -26,6 +26,11 @@ public class Address {
     public final long code;
     public final boolean valid;
 
+    /**
+     *  Copy address data
+     *
+     *  @param string - Encoded address string
+     */
     public Address(String string) {
         this.string  = string;
 
@@ -50,25 +55,24 @@ public class Address {
         }
     }
 
+    /**
+     *  Generate address with fingerprint and network ID
+     *
+     *  @param fingerprint = sign(seed, PK)
+     *  @param network - network ID
+     */
     public Address(byte[] fingerprint, NetworkType network) {
-        /**
-         *  BTC address algorithm:
-         *      digest     = ripemd160(sha256(fingerprint));
-         *      check_code = sha256(sha256(network + digest)).prefix(4);
-         *      addr       = base58_encode(network + digest + check_code);
-         */
-
-        // 1. hash = ripemd160(sha256(CT))
-        byte[] hash = Utils.ripemd160(Utils.sha256(fingerprint));
-        // 2. _h = network + hash
-        byte[] h = new byte[21];
-        h[0] = network.toByte();
-        System.arraycopy(hash, 0, h, 1, 20);
+        // 1. digest = ripemd160(sha256(fingerprint))
+        byte[] digest = Utils.ripemd160(Utils.sha256(fingerprint));
+        // 2. head = network + digest
+        byte[] head = new byte[21];
+        head[0] = network.toByte();
+        System.arraycopy(digest, 0, head, 1, 20);
         // 3. cc = sha256(sha256(_h)).prefix(4)
-        byte[] cc = checkCode(h);
+        byte[] cc = checkCode(head);
         // 4. data = base58_encode(_h + cc)
         byte[] data = new byte[25];
-        System.arraycopy(h, 0, data, 0, 21);
+        System.arraycopy(head, 0, data, 0, 21);
         System.arraycopy(cc,0, data, 21, 4);
 
         this.string  = Utils.base58Encode(data);

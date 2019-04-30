@@ -2,6 +2,15 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
+/**
+ *  Cryptography Key
+ *
+ *      keyInfo format: {
+ *          algorithm: "RSA", // ECC, AES, ...
+ *          data     : "{BASE64_ENCODE}",
+ *          ...
+ *      }
+ */
 public abstract class CryptographyKey extends Dictionary {
 
     protected final String algorithm;

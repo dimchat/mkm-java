@@ -22,14 +22,29 @@ public class Entity {
         return identifier.equals(entity.identifier);
     }
 
+    /**
+     *  Get entity type
+     *
+     * @return type
+     */
     public NetworkType getType() {
         return identifier.getType();
     }
 
+    /**
+     *  Get Search Number
+     *
+     * @return number for searching this entity
+     */
     public long getNumber() {
         return identifier.getNumber();
     }
 
+    /**
+     *  Get entity name
+     *
+     * @return name string
+     */
     public String getName() {
         String name;
         // get from data source

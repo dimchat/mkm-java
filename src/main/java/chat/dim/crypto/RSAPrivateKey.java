@@ -10,6 +10,15 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  RSA Private Key
+ *
+ *      keyInfo format: {
+ *          algorithm    : "RSA",
+ *          keySizeInBits: 1024, // optional
+ *          data         : "..." // base64_encode()
+ *      }
+ */
 class RSAPrivateKey extends PrivateKey {
 
     private final java.security.interfaces.RSAPrivateKey privateKey;
