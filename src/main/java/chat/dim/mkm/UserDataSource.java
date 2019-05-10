@@ -14,7 +14,7 @@ public interface UserDataSource extends EntityDataSource {
      * @param user - user account
      * @return private key
      */
-    public PrivateKey getPrivateKey(User user);
+    PrivateKey getPrivateKey(User user);
 
     /**
      *  Get contacts list
@@ -22,7 +22,7 @@ public interface UserDataSource extends EntityDataSource {
      * @param user - user account
      * @return contacts list
      */
-    public List<Object> getContacts(User user);
+    List<Object> getContacts(User user);
 
     /**
      *  Get contacts count
@@ -30,7 +30,7 @@ public interface UserDataSource extends EntityDataSource {
      * @param user - user account
      * @return number of contacts
      */
-    public int getCountOfContacts(User user);
+    int getCountOfContacts(User user);
 
     /**
      *  Get contact ID at index
@@ -39,5 +39,5 @@ public interface UserDataSource extends EntityDataSource {
      * @param user - user account
      * @return contact ID
      */
-    public ID getContactAtIndex(int index, User user);
+    ID getContactAtIndex(int index, User user);
 }

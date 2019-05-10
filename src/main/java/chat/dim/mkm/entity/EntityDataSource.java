@@ -10,7 +10,7 @@ public interface EntityDataSource {
      * @param entity - entity object
      * @return meta object
      */
-    public Meta getMeta(Entity entity);
+    Meta getMeta(Entity entity);
 
     /**
      *  Get profile for entity
@@ -18,7 +18,7 @@ public interface EntityDataSource {
      * @param entity - entity object
      * @return profile object
      */
-    public Profile getProfile(Entity entity);
+    Profile getProfile(Entity entity);
 
     /**
      *  Get entity name
@@ -26,5 +26,5 @@ public interface EntityDataSource {
      * @param entity - entity object
      * @return entity name
      */
-    public String getName(Entity entity);
+    String getName(Entity entity);
 }

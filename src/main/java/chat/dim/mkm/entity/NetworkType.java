@@ -96,7 +96,7 @@ public enum NetworkType {
     Robot          (0xC8); // 1100 1000
 
     // Network ID
-    public int value;
+    public final int value;
 
     NetworkType(int value) {
         this.value = value;

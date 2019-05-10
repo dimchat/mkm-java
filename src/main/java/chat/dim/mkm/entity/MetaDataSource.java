@@ -8,5 +8,5 @@ public interface MetaDataSource {
      * @param identifier - entity ID
      * @return meta object
      */
-    public Meta getMeta(ID identifier);
+    Meta getMeta(ID identifier);
 }

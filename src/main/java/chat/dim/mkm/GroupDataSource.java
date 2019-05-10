@@ -13,7 +13,7 @@ public interface GroupDataSource extends EntityDataSource {
      * @param group - group object
      * @return fonder ID
      */
-    public ID getFounder(Group group);
+    ID getFounder(Group group);
 
     /**
      *  Get group owner
@@ -21,7 +21,7 @@ public interface GroupDataSource extends EntityDataSource {
      * @param group - group object
      * @return owner ID
      */
-    public ID getOwner(Group group);
+    ID getOwner(Group group);
 
     /**
      *  Get group members list
@@ -29,7 +29,7 @@ public interface GroupDataSource extends EntityDataSource {
      * @param group - group objet
      * @return members list
      */
-    public List<Object> getMembers(Group group);
+    List<Object> getMembers(Group group);
 
     /**
      *  Get members count
@@ -37,7 +37,7 @@ public interface GroupDataSource extends EntityDataSource {
      * @param group - group object
      * @return number of members
      */
-    public int getCountOfMembers(Group group);
+    int getCountOfMembers(Group group);
 
     /**
      *  Get member ID at index
@@ -46,6 +46,5 @@ public interface GroupDataSource extends EntityDataSource {
      * @param group - group object
      * @return member id
      */
-    public ID getMemberAtIndex(int index, Group group);
-
+    ID getMemberAtIndex(int index, Group group);
 }
