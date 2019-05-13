@@ -1,9 +1,34 @@
+/* license: https://mit-license.org
+ * ==============================================================================
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2019 Albert Moky
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ * ==============================================================================
+ */
 package chat.dim.mkm.entity;
 
+import chat.dim.crypto.Base64;
 import chat.dim.crypto.Dictionary;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
-import chat.dim.crypto.Utils;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
@@ -28,7 +53,7 @@ import java.util.Map;
  *          address = base58_encode(network + hash + code);
  *          number  = uint(code);
  */
-public class Meta extends Dictionary {
+public final class Meta extends Dictionary {
 
     /**
      *  Meta algorithm version
@@ -91,7 +116,7 @@ public class Meta extends Dictionary {
         this.version     = Integer.getInteger((String)dictionary.get("version")).byteValue();
         this.key         = PublicKey.getInstance(dictionary.get("key"));
         this.seed        = (String)dictionary.get("seed");
-        this.fingerprint = Utils.base64Decode((String)dictionary.get("fingerprint"));
+        this.fingerprint = Base64.decode((String)dictionary.get("fingerprint"));
         // check valid
         if (version == VersionMKM || version == VersionExBTC) {
             this.valid = key.verify(seed.getBytes(StandardCharsets.UTF_8), fingerprint);
@@ -125,7 +150,7 @@ public class Meta extends Dictionary {
         dictionary.put("version", (int) version);
         dictionary.put("key", key);
         dictionary.put("seed", seed);
-        dictionary.put("fingerprint", Utils.base64Encode(fingerprint));
+        dictionary.put("fingerprint", Base64.encode(fingerprint));
     }
 
     /**
@@ -164,10 +189,6 @@ public class Meta extends Dictionary {
         } else {
             throw new IllegalArgumentException("unknown meta:" + object);
         }
-    }
-
-    public boolean equals(Map map) {
-        return valid && dictionary.equals(map);
     }
 
     public boolean matches(PublicKey pk) {

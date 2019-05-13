@@ -23,46 +23,33 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm;
+package chat.dim.crypto;
 
-import chat.dim.crypto.PrivateKey;
-import chat.dim.mkm.entity.ID;
-import chat.dim.mkm.entity.EntityDataSource;
+import chat.dim.crypto.bouncycastle.RIPEMD160Digest;
 
-import java.util.List;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-public interface UserDataSource extends EntityDataSource {
+public final class Digest {
 
-    /**
-     *  Get user private key
-     *
-     * @param user - user account
-     * @return private key
-     */
-    PrivateKey getPrivateKey(User user);
+    public static byte[] sha256(byte[] data) {
+        MessageDigest md;
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+            return null;
+        }
+        md.reset();
+        md.update(data);
+        return md.digest();
+    }
 
-    /**
-     *  Get contacts list
-     *
-     * @param user - user account
-     * @return contacts list
-     */
-    List<Object> getContacts(User user);
-
-    /**
-     *  Get contacts count
-     *
-     * @param user - user account
-     * @return number of contacts
-     */
-    int getCountOfContacts(User user);
-
-    /**
-     *  Get contact ID at index
-     *
-     * @param index - contact index
-     * @param user - user account
-     * @return contact ID
-     */
-    ID getContactAtIndex(int index, User user);
+    public static byte[] ripemd160(byte[] data) {
+        RIPEMD160Digest digest = new RIPEMD160Digest();
+        digest.update(data, 0, data.length);
+        byte[] out = new byte[20];
+        digest.doFinal(out, 0);
+        return out;
+    }
 }

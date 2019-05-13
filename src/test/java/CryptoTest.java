@@ -1,7 +1,4 @@
-import chat.dim.crypto.PrivateKey;
-import chat.dim.crypto.PublicKey;
-import chat.dim.crypto.SymmetricKey;
-import chat.dim.crypto.Utils;
+import chat.dim.crypto.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -40,7 +37,7 @@ public class CryptoTest {
         String exp;
 
         // sha256（moky）= cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d
-        hash = Utils.sha256(data);
+        hash = Digest.sha256(data);
         assert hash != null;
         res = hexEncode(hash);
         exp = "cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d";
@@ -48,7 +45,7 @@ public class CryptoTest {
         Assert.assertEquals(exp, res);
 
         // ripemd160(moky) = 44bd174123aee452c6ec23a6ab7153fa30fa3b91
-        hash = Utils.ripemd160(data);
+        hash = Digest.ripemd160(data);
         res = hexEncode(hash);
         exp = "44bd174123aee452c6ec23a6ab7153fa30fa3b91";
         log("ripemd160(" + string + ") = " + res);
@@ -64,13 +61,13 @@ public class CryptoTest {
         String exp;
 
         // base58(moky) = 3oF5MJ
-        res = Utils.base58Encode(data);
+        res = Base58.encode(data);
         exp = "3oF5MJ";
         log("base58(" + string + ") = " + res);
         Assert.assertEquals(exp, res);
 
         // base64(moky) = bW9reQ==
-        res = Utils.base64Encode(data);
+        res =Base64.encode(data);
         exp = "bW9reQ==";
         log("base64(" + string + ") = " + res);
         Assert.assertEquals(exp, res);
@@ -131,19 +128,21 @@ public class CryptoTest {
         byte[] data = key.decrypt(cipherText);
         String decrypt = new String(data, "UTF-8");
         log("decrypt to " + decrypt);
-        log(text + " -> " + Utils.base64Encode(cipherText) + " -> " + decrypt);
+        log(text + " -> " + Base64.encode(cipherText) + " -> " + decrypt);
 
-        Assert.assertEquals("0xtbqZN6x2aWTZn0DpCoCA==", Utils.base64Encode(cipherText));
+        Assert.assertEquals("0xtbqZN6x2aWTZn0DpCoCA==", Base64.encode(cipherText));
 
-        key = SymmetricKey.getInstance(dictionary);
-        log("key: " + key);
+        SymmetricKey key2 = SymmetricKey.getInstance(dictionary);
+        log("key2: " + key2);
+        Assert.assertEquals(key, key2);
+//        Assert.assertTrue(key.equals(key2));
 
         text = "XX5qfromb3R078VVK7LwVA==";
 //        text = "0xtbqZN6x2aWTZn0DpCoCA==";
-        cipherText = Utils.base64Decode(text);
-        plaintext = key.decrypt(cipherText);
+        cipherText = Base64.decode(text);
+        plaintext = key2.decrypt(cipherText);
         log("FIXED: " + text + " -> " + (plaintext == null ? null : new String(plaintext)));
-//        plaintext = key.decrypt(cipherText);
+//        plaintext = key2.decrypt(cipherText);
 //        log("FIXED: " + text + " -> " + (plaintext == null ? null : new String(plaintext)));
 
         // random key

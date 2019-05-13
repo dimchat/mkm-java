@@ -1,6 +1,32 @@
+/* license: https://mit-license.org
+ * ==============================================================================
+ * The MIT License (MIT)
+ *
+ * Copyright (c) 2019 Albert Moky
+ *
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ *
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ * ==============================================================================
+ */
 package chat.dim.mkm.entity;
 
-import chat.dim.crypto.Utils;
+import chat.dim.crypto.Digest;
+import chat.dim.crypto.Base58;
 
 import java.util.Arrays;
 
@@ -18,7 +44,7 @@ import java.util.Arrays;
  *          check_code  = sha256(sha256(network + digest)).prefix(4);
  *          address     = base58_encode(network + digest + check_code);
  */
-public class Address {
+public final class Address {
 
     private final String string;
 
@@ -34,7 +60,7 @@ public class Address {
     public Address(String string) {
         this.string  = string;
 
-        byte[] data = Utils.base58Decode(string);
+        byte[] data = Base58.decode(string);
         if (data.length != 25) {
             throw new IndexOutOfBoundsException("address length error:" + data.length);
         }
@@ -63,7 +89,7 @@ public class Address {
      */
     public Address(byte[] fingerprint, NetworkType network) {
         // 1. digest = ripemd160(sha256(fingerprint))
-        byte[] digest = Utils.ripemd160(Utils.sha256(fingerprint));
+        byte[] digest = Digest.ripemd160(Digest.sha256(fingerprint));
         // 2. head = network + digest
         byte[] head = new byte[21];
         head[0] = network.toByte();
@@ -75,7 +101,7 @@ public class Address {
         System.arraycopy(head, 0, data, 0, 21);
         System.arraycopy(cc,0, data, 21, 4);
 
-        this.string  = Utils.base58Encode(data);
+        this.string  = Base58.encode(data);
         this.network = network;
         this.code    = userNumber(cc);
         this.valid   = true;
@@ -94,20 +120,30 @@ public class Address {
     }
 
     @Override
+    public boolean equals(Object other) {
+        if (super.equals(other)) {
+            // same object
+            return true;
+        } else if (other instanceof Address) {
+            // check with inner string
+            Address address = (Address) other;
+            return string.equals(address.string);
+        } else if (other instanceof String) {
+            // same string
+            return string.equals(other);
+        } else {
+            // null or unknown object
+            return false;
+        }
+    }
+
+    @Override
     public String toString() {
         return string;
     }
 
-    public boolean equals(Address address) {
-        return equals(address.string);
-    }
-
-    public boolean equals(String address) {
-        return valid && string.equals(address);
-    }
-
     private static byte[] checkCode(byte[] data) {
-        byte[] sha256d = Utils.sha256(Utils.sha256(data));
+        byte[] sha256d = Digest.sha256(Digest.sha256(data));
         assert sha256d != null;
         byte[] cc = new byte[4];
         System.arraycopy(sha256d, 0, cc, 0, 4);

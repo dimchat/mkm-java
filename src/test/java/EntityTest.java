@@ -54,6 +54,8 @@ public class EntityTest {
         log("number: " + identifier.getNumber());
         Assert.assertEquals(4049699527L, identifier.getNumber());
 
+        Assert.assertEquals(identifier, new ID("moky@4DnqXWdTV8wuZgfqSCX9GjE2kNq7HJrUgQ/home"));
+
         List<ID> array = new ArrayList<>();
         array.add(identifier);
         array.add(identifier);
