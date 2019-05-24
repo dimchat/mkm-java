@@ -140,7 +140,9 @@ public abstract class PrivateKey extends CryptographyKey {
 
     static {
         // RSA
-        register(RSA, RSAPrivateKey.class);
+        register(RSA, RSAPrivateKey.class); // default
+        register("SHA256withRSA", RSAPrivateKey.class);
+        register("RSA/ECB/PKCS1Padding", RSAPrivateKey.class);
         // ECC
         // ...
     }

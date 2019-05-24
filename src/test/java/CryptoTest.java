@@ -74,43 +74,6 @@ public class CryptoTest {
     }
 
     @Test
-    public void testRSA() throws ClassNotFoundException, UnsupportedEncodingException {
-        PrivateKey sk = PrivateKey.create(PrivateKey.RSA);
-        log("RSA private key:" + sk);
-
-        PublicKey pk = sk.getPublicKey();
-        log("RSA public key:" + pk);
-
-        String text = "moky";
-        byte[] plaintext = text.getBytes("UTF-8");
-        byte[] cipherText = pk.encrypt(plaintext);
-        log("RSA encrypt(\"" + text + "\") = " + hexEncode(cipherText));
-
-        byte[] data = sk.decrypt(cipherText);
-        String decrypt = new String(data);
-        log("decrypt to " + decrypt);
-
-        Assert.assertEquals(text, decrypt);
-
-        byte[] signature = sk.sign(plaintext);
-        log("signature(\"" + text + "\") = " + hexEncode(signature));
-
-        Assert.assertTrue(pk.verify(plaintext, signature));
-    }
-
-    @Test
-    public void testPublicKey() throws ClassNotFoundException {
-        Map<String, Object> dictionary = new HashMap<>();
-        dictionary.put("algorithm", "RSA");
-        dictionary.put("data", "-----BEGIN PUBLIC KEY-----\n" +
-                "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCI8jKup683D4Gxa0dJomGMqHhd3bcHr7NObJuglNLvYir9PFsfs/mNB/K6jN+R+O6hpyCIiKARk0zxxfuzzLdZhXWmqcvy4f95cJAG5aYOtv8RACwRo/b9/NaDuHnpBW7soArZDS8RqTI1lYH5v2tZqMIdhoC5DAUyKOHFcGxiGQIDAQAB\n" +
-                "-----END PUBLIC KEY-----");
-
-        PublicKey key = PublicKey.getInstance(dictionary);
-        log("key:" + key);
-    }
-
-    @Test
     public void testAES() throws ClassNotFoundException, UnsupportedEncodingException {
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "AES");

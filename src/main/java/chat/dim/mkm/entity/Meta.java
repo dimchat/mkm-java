@@ -30,7 +30,7 @@ import chat.dim.crypto.Dictionary;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 
-import java.nio.charset.StandardCharsets;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -113,13 +113,13 @@ public final class Meta extends Dictionary {
 
     public Meta(Map<String, Object> dictionary) throws ClassNotFoundException {
         super(dictionary);
-        this.version     = Integer.getInteger((String)dictionary.get("version")).byteValue();
+        this.version     = ((Number) dictionary.get("version")).byteValue();
         this.key         = PublicKey.getInstance(dictionary.get("key"));
-        this.seed        = (String)dictionary.get("seed");
-        this.fingerprint = Base64.decode((String)dictionary.get("fingerprint"));
+        this.seed        = (String) dictionary.get("seed");
+        this.fingerprint = Base64.decode((String) dictionary.get("fingerprint"));
         // check valid
         if (version == VersionMKM || version == VersionExBTC) {
-            this.valid = key.verify(seed.getBytes(StandardCharsets.UTF_8), fingerprint);
+            this.valid = key.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint);
         } else { // VersionBTC
             // no seed, and the fingerprint is key.data
             this.valid = (seed == null) && (key != null) && (Arrays.equals(key.data, fingerprint));
@@ -142,7 +142,7 @@ public final class Meta extends Dictionary {
         this.fingerprint = fingerprint;
         // check valid
         if (version == VersionMKM || version == VersionExBTC) {
-            this.valid = key.verify(seed.getBytes(StandardCharsets.UTF_8), fingerprint);
+            this.valid = key.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint);
         } else { // VersionBTC
             // no seed, and the fingerprint is key.data
             this.valid = (seed == null) && (key != null) && (Arrays.equals(key.data, fingerprint));
@@ -162,7 +162,7 @@ public final class Meta extends Dictionary {
      */
     public Meta(byte version, PrivateKey sk, String seed) {
         this(version, sk.getPublicKey(), seed,
-                version == VersionBTC ? sk.getPublicKey().data : sk.sign(seed.getBytes(StandardCharsets.UTF_8)));
+                version == VersionBTC ? sk.getPublicKey().data : sk.sign(seed.getBytes(Charset.forName("UTF-8"))));
     }
 
     public Meta(PrivateKey sk, String seed) {
@@ -204,7 +204,7 @@ public final class Meta extends Dictionary {
             return true;
         }
         // check whether keys equal by verifying signature
-        return pk.verify(seed.getBytes(StandardCharsets.UTF_8), fingerprint);
+        return pk.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint);
     }
 
     public boolean matches(ID identifier) {

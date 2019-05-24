@@ -134,7 +134,8 @@ public abstract class SymmetricKey extends CryptographyKey {
 
     static {
         // AES
-        register(AES, AESKey.class);
+        register(AES, AESKey.class); // default
+        register("AES/CBC/PKCS5Padding", AESKey.class);
         // DES
         // ...
     }

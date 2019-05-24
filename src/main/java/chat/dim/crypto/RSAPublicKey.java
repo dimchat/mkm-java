@@ -29,6 +29,7 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.io.IOException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
@@ -46,7 +47,8 @@ final class RSAPublicKey extends PublicKey {
 
     private final java.security.interfaces.RSAPublicKey publicKey;
 
-    public RSAPublicKey(Map<String, Object> dictionary) throws NoSuchFieldException {
+    public RSAPublicKey(Map<String, Object> dictionary)
+            throws NoSuchFieldException, InvalidKeySpecException, NoSuchAlgorithmException, IOException {
         super(dictionary);
         this.publicKey = getKey();
     }
@@ -60,29 +62,26 @@ final class RSAPublicKey extends PublicKey {
         return (Integer) size;
     }
 
-    private java.security.interfaces.RSAPublicKey getKey() throws NoSuchFieldException {
+    private java.security.interfaces.RSAPublicKey getKey()
+            throws NoSuchFieldException, InvalidKeySpecException, NoSuchAlgorithmException, IOException {
         Object data = dictionary.get("data");
         if (data == null) {
             throw new NoSuchFieldException("RSA public key data not found");
         }
-        try {
-            return (java.security.interfaces.RSAPublicKey) parse((String) data);
-        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-            e.printStackTrace();
-            return null;
-        }
+        return parse((String) data);
     }
 
-    private java.security.PublicKey parse(String fileContent) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        PEMFile pemFile = new PEMFile(fileContent);
+    private static java.security.interfaces.RSAPublicKey parse(String fileContent)
+            throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+        PEM pemFile = new PEM(fileContent);
         byte[] publicKeyData = pemFile.publicKeyData;
         if (publicKeyData == null) {
             return null;
         }
-        //PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(publicKeyData);
+        // X.509
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyData);
         KeyFactory factory = KeyFactory.getInstance("RSA");
-        return factory.generatePublic(keySpec);
+        return (java.security.interfaces.RSAPublicKey) factory.generatePublic(keySpec);
     }
 
     //-------- interfaces --------
@@ -92,7 +91,7 @@ final class RSAPublicKey extends PublicKey {
             throw new InvalidParameterException("RSA plain text length error:" + plainText.length);
         }
         try {
-            Cipher cipher = Cipher.getInstance("RSA");
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             return cipher.doFinal(plainText);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException |

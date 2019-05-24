@@ -125,7 +125,9 @@ public abstract class PublicKey extends CryptographyKey {
 
     static {
         // RSA
-        register(RSA, RSAPublicKey.class);
+        register(RSA, RSAPublicKey.class); // default
+        register("SHA256withRSA", RSAPublicKey.class);
+        register("RSA/ECB/PKCS1Padding", RSAPublicKey.class);
         // ECC
         // ...
     }

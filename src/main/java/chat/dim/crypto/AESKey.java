@@ -78,7 +78,7 @@ final class AESKey extends SymmetricKey {
         return cipher.getBlockSize();
     }
 
-    private byte[] randomData(int size) {
+    private static byte[] randomData(int size) {
         Random random = new Random();
         byte[] buffer = new byte[size];
         random.nextBytes(buffer);

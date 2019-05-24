@@ -29,9 +29,11 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
+import java.io.IOException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -49,7 +51,8 @@ final class RSAPrivateKey extends PrivateKey {
     private final java.security.interfaces.RSAPrivateKey privateKey;
     private final java.security.interfaces.RSAPublicKey publicKey;
 
-    public RSAPrivateKey(Map<String, Object> dictionary) {
+    public RSAPrivateKey(Map<String, Object> dictionary)
+            throws InvalidKeySpecException, NoSuchAlgorithmException, IOException, NoSuchProviderException {
         super(dictionary);
         KeyPair keyPair = getKeyPair();
         if (keyPair == null) {
@@ -65,39 +68,6 @@ final class RSAPrivateKey extends PrivateKey {
         }
     }
 
-    private KeyPair getKeyPair() {
-        KeyPair keyPair = null;
-        Object data = dictionary.get("data");
-        if (data == null) {
-            // generate key
-            int bits = keySizeInBits();
-            try {
-                keyPair = generate(bits);
-                updateData(keyPair);
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-            }
-        } else {
-            // parse PEM file content
-            try {
-                keyPair = parse((String) data);
-            } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
-                e.printStackTrace();
-            }
-        }
-        return keyPair;
-    }
-
-    private void updateData(KeyPair keyPair) {
-        // -----BEGIN PUBLIC KEY-----
-        PEMFile pkFile = new PEMFile((java.security.interfaces.RSAPublicKey) keyPair.getPublic());
-        // -----END PUBLIC KEY-----
-        // -----BEGIN RSA PRIVATE KEY-----
-        PEMFile skFile = new PEMFile((java.security.interfaces.RSAPrivateKey) keyPair.getPrivate());
-        // -----END RSA PRIVATE KEY-----
-        dictionary.put("data", pkFile.toString() + "\n" + skFile.toString());
-    }
-
     private int keySizeInBits() {
         Object size = dictionary.get("keySizeInBits");
         if (size == null) {
@@ -107,30 +77,58 @@ final class RSAPrivateKey extends PrivateKey {
         return (Integer) size;
     }
 
-    private KeyPair generate(int keySize) throws NoSuchAlgorithmException {
-        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
-        generator.initialize(keySize);
-        return generator.generateKeyPair();
+    private KeyPair getKeyPair()
+            throws NoSuchAlgorithmException, InvalidKeySpecException, IOException, NoSuchProviderException {
+        Object data = dictionary.get("data");
+        if (data == null) {
+            // generate key
+            int bits = keySizeInBits();
+            return generate(bits);
+        } else {
+            // parse PEM file content
+            return parse((String) data);
+        }
     }
 
-    private KeyPair parse(String fileContent) throws NoSuchAlgorithmException, InvalidKeySpecException {
-        java.security.PublicKey publicKey;
-        java.security.PrivateKey privateKey;
-        KeyFactory factory = KeyFactory.getInstance("RSA");
-        PEMFile pemFile = new PEMFile(fileContent);
+    private KeyPair generate(int keySize)
+            throws NoSuchAlgorithmException, IOException, NoSuchProviderException {
+        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "BC");
+        generator.initialize(keySize);
+        KeyPair keyPair = generator.generateKeyPair();
+
+        // -----BEGIN PUBLIC KEY-----
+        PEM pkFile = new PEM((java.security.interfaces.RSAPublicKey) keyPair.getPublic());
+        // -----END PUBLIC KEY-----
+
+        // -----BEGIN RSA PRIVATE KEY-----
+        PEM skFile = new PEM((java.security.interfaces.RSAPrivateKey) keyPair.getPrivate());
+        // -----END RSA PRIVATE KEY-----
+
+        dictionary.put("data", pkFile.toString() + "\n" + skFile.toString());
+        return keyPair;
+    }
+
+    private static KeyPair parse(String fileContent)
+            throws NoSuchAlgorithmException, InvalidKeySpecException, IOException, NoSuchProviderException {
+        PEM pemFile = new PEM(fileContent);
+        KeyFactory factory = KeyFactory.getInstance("RSA", "BC");
         // private key
+        java.security.interfaces.RSAPrivateKey privateKey;
         byte[] privateKeyData = pemFile.privateKeyData;
         if (privateKeyData != null) {
+            // PKCS#8
             PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(privateKeyData);
-            privateKey = factory.generatePrivate(keySpec);
+            privateKey = (java.security.interfaces.RSAPrivateKey) factory.generatePrivate(keySpec);
         } else {
             privateKey = null;
         }
         // public key
+        java.security.interfaces.RSAPublicKey publicKey;
         byte[] publicKeyData = pemFile.publicKeyData;
         if (publicKeyData != null) {
-            PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(publicKeyData);
-            publicKey = factory.generatePublic(keySpec);
+            // X.509
+            X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyData);
+            publicKey = (java.security.interfaces.RSAPublicKey) factory.generatePublic(keySpec);
         } else {
             publicKey = null;
         }
@@ -140,17 +138,21 @@ final class RSAPrivateKey extends PrivateKey {
     //-------- interfaces --------
 
     public PublicKey getPublicKey() {
-        if (publicKey == null && privateKey != null) {
-            // TODO: get public from private key
-        }
         if (publicKey == null) {
-            return null;
+            throw new NullPointerException("public key not found");
         }
-        PEMFile pemFile = new PEMFile(publicKey);
+        String pem;
+        try {
+            PEM pemFile = new PEM(publicKey);
+            pem = pemFile.toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new NullPointerException("generate public key content failed");
+        }
         Map<String, Object> dictionary = new HashMap<>();
-        dictionary.put("algorithm", "RSA");
+        dictionary.put("algorithm", algorithm);
         dictionary.put("keySizeInBits", keySizeInBits());
-        dictionary.put("data", pemFile.toString());
+        dictionary.put("data", pem);
         try {
             return PublicKey.getInstance(dictionary);
         } catch (ClassNotFoundException e) {
@@ -164,7 +166,7 @@ final class RSAPrivateKey extends PrivateKey {
             throw new InvalidParameterException("RSA cipher text length error:" + cipherText.length);
         }
         try {
-            Cipher cipher = Cipher.getInstance("RSA");
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             return cipher.doFinal(cipherText);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException |
@@ -184,5 +186,9 @@ final class RSAPrivateKey extends PrivateKey {
             e.printStackTrace();
             return null;
         }
+    }
+
+    static {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
     }
 }
