@@ -30,21 +30,21 @@ import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.spec.InvalidKeySpecException;
-import java.security.spec.RSAPrivateKeySpec;
+import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 
-final class PEM {
+public final class PEM {
 
     private final String fileContent; // PKCS#1 @DER @PEM
 
     final byte[] publicKeyData;       // X.509
     final byte[] privateKeyData;      // PKCS#8
 
-    PEM(String fileContent) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
+    PEM(String fileContent) throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException {
         super();
 
         this.fileContent = fileContent;
@@ -94,27 +94,27 @@ final class PEM {
         return "-----BEGIN RSA PRIVATE KEY-----\n" + base64 + "\n-----END RSA PRIVATE KEY-----";
     }
 
-    private static byte[] getPublicKeyData(String pem) throws InvalidKeySpecException, NoSuchAlgorithmException {
+    private static byte[] getPublicKeyData(String pem) throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException {
         String keyContent = getKeyContent(pem, "PUBLIC");
-        boolean fromPub = true;
+        boolean isPrivate = false;
         if (keyContent == null) {
             // get from private key content
             keyContent = getKeyContent(pem, "PRIVATE");
             if (keyContent == null) {
                 return null;
             }
-            fromPub = false;
+            isPrivate = true;
         }
         byte[] data = Base64.decode(keyContent);
         String format = "PKCS#1"; // TODO: check key data format
         if (format.equals("PKCS#1")) {
             // convert to X.509
-            data = (new PKCS1(data)).toX509(fromPub);
+            data = (new PKCS1(data, isPrivate)).toX509();
         }
         return data;
     }
 
-    private static byte[] getPrivateKeyData(String pem) throws InvalidKeySpecException, NoSuchAlgorithmException, IOException {
+    private static byte[] getPrivateKeyData(String pem) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
         String keyContent = getKeyContent(pem, "PRIVATE");
         if (keyContent == null) {
             return null;
@@ -123,7 +123,7 @@ final class PEM {
         String format = "PKCS#1"; // TODO: check key data format
         if (format.equals("PKCS#1")) {
             // convert to PKCS#8
-            data = (new PKCS1(data)).toPKCS8();
+            data = (new PKCS1(data, true)).toPKCS8();
         }
         return data;
     }
@@ -202,13 +202,15 @@ final class X509 {
  */
 final class PKCS1 {
     private final byte[] data;
+    private final boolean isPrivate;
 
-    PKCS1(byte[] data) {
+    PKCS1(byte[] data, boolean isPrivate) {
         this.data = data;
+        this.isPrivate = isPrivate;
     }
 
     // TODO: convert PKCS#1 to X.509
-    byte[] toX509(boolean pub) throws NoSuchAlgorithmException, InvalidKeySpecException {
+    byte[] toX509() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
         /*
         byte[] header = X509.header;
         byte[] out = new byte[header.length + data.length];
@@ -216,35 +218,32 @@ final class PKCS1 {
         System.arraycopy(data, 0, out, header.length, data.length);
         return out;
         */
-        BigInteger modulus;
-        BigInteger exponent;
-        if (pub) {
-            org.bouncycastle.asn1.pkcs.RSAPublicKey publicKey;
-            publicKey = org.bouncycastle.asn1.pkcs.RSAPublicKey.getInstance(data);
-            modulus = publicKey.getModulus();
-            exponent = publicKey.getPublicExponent();
-        } else {
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
+        if (isPrivate) {
+            // get public key data from private key data
             org.bouncycastle.asn1.pkcs.RSAPrivateKey privateKey;
             privateKey = org.bouncycastle.asn1.pkcs.RSAPrivateKey.getInstance(data);
-            modulus = privateKey.getModulus();
-            exponent = privateKey.getPublicExponent();
+            RSAPublicKeySpec keySpec = new RSAPublicKeySpec(privateKey.getModulus(), privateKey.getPublicExponent());
+            return keyFactory.generatePublic(keySpec).getEncoded();
         }
-        RSAPublicKeySpec keySpec = new RSAPublicKeySpec(modulus, exponent);
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        org.bouncycastle.asn1.pkcs.RSAPublicKey publicKey;
+        publicKey = org.bouncycastle.asn1.pkcs.RSAPublicKey.getInstance(data);
+        RSAPublicKeySpec keySpec = new RSAPublicKeySpec(publicKey.getModulus(), publicKey.getPublicExponent());
         return keyFactory.generatePublic(keySpec).getEncoded();
     }
 
     // convert PKCS#1 to PKCS#8
-    byte[] toPKCS8() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
+    byte[] toPKCS8() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
+        if (!isPrivate) {
+            throw new InvalidKeySpecException("it's not private key data");
+        }
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
         org.bouncycastle.asn1.pkcs.RSAPrivateKey privateKey;
         privateKey = org.bouncycastle.asn1.pkcs.RSAPrivateKey.getInstance(data);
-        RSAPrivateKeySpec keySpec = new RSAPrivateKeySpec(privateKey.getModulus(), privateKey.getPrivateExponent());
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        RSAPrivateCrtKeySpec keySpec = new RSAPrivateCrtKeySpec(privateKey.getModulus(), privateKey.getPublicExponent(),
+                privateKey.getPrivateExponent(), privateKey.getPrime1(), privateKey.getPrime2(),
+                privateKey.getExponent1(), privateKey.getExponent2(), privateKey.getCoefficient());
         return keyFactory.generatePrivate(keySpec).getEncoded();
-//        AlgorithmIdentifier algid = new AlgorithmIdentifier(PKCSObjectIdentifiers.pkcs8ShroudedKeyBag);
-//        ASN1Primitive primitive = ASN1Primitive.fromByteArray(data);
-//        PrivateKeyInfo keyInfo = new PrivateKeyInfo(algid, primitive);
-//        return keyInfo.getEncoded();
     }
 }
 

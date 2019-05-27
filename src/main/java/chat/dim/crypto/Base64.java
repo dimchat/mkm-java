@@ -40,14 +40,12 @@ public final class Base64 {
 
         @Override
         public String encode(byte[] data) {
-            java.util.Base64.Encoder encoder = java.util.Base64.getEncoder();
-            return encoder.encodeToString(data);
+            return java.util.Base64.getEncoder().encodeToString(data);
         }
 
         @Override
         public byte[] decode(String string) {
-            java.util.Base64.Decoder decoder = java.util.Base64.getDecoder();
-            return decoder.decode(string);
+            return java.util.Base64.getDecoder().decode(string);
         }
     };
 }

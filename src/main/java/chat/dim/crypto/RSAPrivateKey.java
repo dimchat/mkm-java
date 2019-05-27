@@ -109,7 +109,7 @@ final class RSAPrivateKey extends PrivateKey {
     }
 
     private static KeyPair parse(String fileContent)
-            throws NoSuchAlgorithmException, InvalidKeySpecException, IOException, NoSuchProviderException {
+            throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
         PEM pemFile = new PEM(fileContent);
         KeyFactory factory = KeyFactory.getInstance("RSA", "BC");
         // private key
@@ -166,10 +166,10 @@ final class RSAPrivateKey extends PrivateKey {
             throw new InvalidParameterException("RSA cipher text length error:" + cipherText.length);
         }
         try {
-            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             return cipher.doFinal(cipherText);
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException |
+        } catch (NoSuchProviderException | NoSuchAlgorithmException | NoSuchPaddingException |
                 InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
             return null;
@@ -178,11 +178,11 @@ final class RSAPrivateKey extends PrivateKey {
 
     public byte[] sign(byte[] data) {
         try {
-            Signature signer = Signature.getInstance("SHA256withRSA");
+            Signature signer = Signature.getInstance("SHA256withRSA", "BC");
             signer.initSign(privateKey);
             signer.update(data);
             return signer.sign();
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
+        } catch (NoSuchProviderException | NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
             e.printStackTrace();
             return null;
         }

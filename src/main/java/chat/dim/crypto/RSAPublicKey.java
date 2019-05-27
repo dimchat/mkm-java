@@ -29,7 +29,6 @@ import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import java.io.IOException;
 import java.security.*;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
@@ -48,7 +47,7 @@ final class RSAPublicKey extends PublicKey {
     private final java.security.interfaces.RSAPublicKey publicKey;
 
     public RSAPublicKey(Map<String, Object> dictionary)
-            throws NoSuchFieldException, InvalidKeySpecException, NoSuchAlgorithmException, IOException {
+            throws NoSuchFieldException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException {
         super(dictionary);
         this.publicKey = getKey();
     }
@@ -63,7 +62,7 @@ final class RSAPublicKey extends PublicKey {
     }
 
     private java.security.interfaces.RSAPublicKey getKey()
-            throws NoSuchFieldException, InvalidKeySpecException, NoSuchAlgorithmException, IOException {
+            throws NoSuchFieldException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException {
         Object data = dictionary.get("data");
         if (data == null) {
             throw new NoSuchFieldException("RSA public key data not found");
@@ -72,7 +71,7 @@ final class RSAPublicKey extends PublicKey {
     }
 
     private static java.security.interfaces.RSAPublicKey parse(String fileContent)
-            throws NoSuchAlgorithmException, InvalidKeySpecException, IOException {
+            throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
         PEM pemFile = new PEM(fileContent);
         byte[] publicKeyData = pemFile.publicKeyData;
         if (publicKeyData == null) {
@@ -80,7 +79,7 @@ final class RSAPublicKey extends PublicKey {
         }
         // X.509
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyData);
-        KeyFactory factory = KeyFactory.getInstance("RSA");
+        KeyFactory factory = KeyFactory.getInstance("RSA", "BC");
         return (java.security.interfaces.RSAPublicKey) factory.generatePublic(keySpec);
     }
 
@@ -91,10 +90,10 @@ final class RSAPublicKey extends PublicKey {
             throw new InvalidParameterException("RSA plain text length error:" + plainText.length);
         }
         try {
-            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             return cipher.doFinal(plainText);
-        } catch (NoSuchAlgorithmException | NoSuchPaddingException |
+        } catch (NoSuchProviderException | NoSuchAlgorithmException | NoSuchPaddingException |
                 InvalidKeyException |
                 IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
@@ -104,13 +103,17 @@ final class RSAPublicKey extends PublicKey {
 
     public boolean verify(byte[] data, byte[] signature) {
         try {
-            Signature signer = Signature.getInstance("SHA256withRSA");
+            Signature signer = Signature.getInstance("SHA256withRSA", "BC");
             signer.initVerify(publicKey);
             signer.update(data);
             return signer.verify(signature);
-        } catch (NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
+        } catch (NoSuchProviderException | NoSuchAlgorithmException | InvalidKeyException | SignatureException e) {
             e.printStackTrace();
             return false;
         }
+    }
+
+    static {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
     }
 }

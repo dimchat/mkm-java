@@ -25,7 +25,7 @@
  */
 package chat.dim.crypto;
 
-public class Base58 {
+public final class Base58 {
 
     public static String encode(byte[] data) {
         return coder.encode(data);
@@ -49,4 +49,3 @@ public class Base58 {
         }
     };
 }
-

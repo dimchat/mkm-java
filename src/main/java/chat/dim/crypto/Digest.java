@@ -25,7 +25,7 @@
  */
 package chat.dim.crypto;
 
-import chat.dim.crypto.bouncycastle.RIPEMD160Digest;
+import org.bouncycastle.crypto.digests.RIPEMD160Digest;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
