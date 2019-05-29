@@ -84,29 +84,25 @@ public class Entity {
      * @return name string
      */
     public String getName() {
-        String name;
-        // get from data source
-        if (dataSource != null) {
-            name = dataSource.getName(this);
+        // get from profile
+        Profile profile = getProfile();
+        if (profile != null) {
+            String name = profile.getName();
             if (name != null && name.length() > 0) {
                 return name;
             }
         }
         // get from identifier
-        name = identifier.name;
-        if (name != null && name.length() > 0) {
-            return name;
-        }
-        return identifier.address.toString();
+        return identifier.name;
     }
 
     public Meta getMeta() {
         // get from data source
-        return dataSource == null ? null : dataSource.getMeta(this);
+        return dataSource == null ? null : dataSource.getMeta(this.identifier);
     }
 
     public Profile getProfile() {
         // get from data source
-        return dataSource == null ? null : dataSource.getProfile(this);
+        return dataSource == null ? null : dataSource.getProfile(this.identifier);
     }
 }

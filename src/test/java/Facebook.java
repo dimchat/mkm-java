@@ -1,15 +1,12 @@
 import chat.dim.crypto.PrivateKey;
-import chat.dim.mkm.Account;
-import chat.dim.mkm.Profile;
-import chat.dim.mkm.User;
-import chat.dim.mkm.UserDataSource;
+import chat.dim.mkm.*;
 import chat.dim.mkm.entity.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class Facebook implements MetaDataSource, EntityDataSource, UserDataSource {
+public class Facebook implements UserDataSource {
     private static Facebook ourInstance = new Facebook();
 
     public static Facebook getInstance() {
@@ -38,8 +35,20 @@ public class Facebook implements MetaDataSource, EntityDataSource, UserDataSourc
         accountMap.put(account.identifier.address, account);
     }
 
+    public Account getAccount(ID identifier) {
+        Account account = accountMap.get(identifier.address);
+        if (account == null) {
+            account = userMap.get(identifier.address);
+        }
+        return account;
+    }
+
     public void addUser(User user) {
         userMap.put(user.identifier.address, user);
+    }
+
+    public User getUser(ID identifier) {
+        return userMap.get(identifier.address);
     }
 
     public void addPrivateKey(PrivateKey privateKey, ID identifier) {
@@ -75,29 +84,12 @@ public class Facebook implements MetaDataSource, EntityDataSource, UserDataSourc
     //---- EntityDataSource
 
     @Override
-    public Meta getMeta(Entity entity) {
-        return getMeta(entity.identifier);
-    }
-
-    @Override
-    public Profile getProfile(Entity entity) {
-        return profileMap.get(entity.identifier.address);
-    }
-
-    @Override
-    public String getName(Entity entity) {
-        Profile profile = getProfile(entity);
-        String name = profile.getName();
-        if (name != null && name.length() > 0) {
-            return name;
-        }
-        return entity.identifier.name;
-    }
-
-    //---- MetaDataSource
-
-    @Override
     public Meta getMeta(ID identifier) {
         return metaMap.get(identifier.address);
+    }
+
+    @Override
+    public Profile getProfile(ID identifier) {
+        return profileMap.get(identifier.address);
     }
 }

@@ -30,26 +30,18 @@ import chat.dim.mkm.Profile;
 public interface EntityDataSource {
 
     /**
-     *  Get meta for entity (call 'metaForID:' of MetaDataSource instead)
+     *  Get meta for entity ID
      *
-     * @param entity - entity object
+     * @param identifier - entity ID
      * @return meta object
      */
-    Meta getMeta(Entity entity);
+    Meta getMeta(ID identifier);
 
     /**
-     *  Get profile for entity
+     *  Get profile for entity ID
      *
-     * @param entity - entity object
+     * @param identifier - entity ID
      * @return profile object
      */
-    Profile getProfile(Entity entity);
-
-    /**
-     *  Get entity name
-     *
-     * @param entity - entity object
-     * @return entity name
-     */
-    String getName(Entity entity);
+    Profile getProfile(ID identifier);
 }

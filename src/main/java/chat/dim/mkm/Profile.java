@@ -78,7 +78,7 @@ public class Profile extends Dictionary {
     /**
      *  Public key (used for encryption, can be same with meta.key)
      *
-     *      RSA / ECC
+     *      RSA
      */
     private PublicKey key;
 
