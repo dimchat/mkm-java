@@ -33,13 +33,17 @@ import java.util.List;
 
 public interface UserDataSource extends EntityDataSource {
 
+    int PRIVATE_KEY_SIGNATURE_FLAG = 1;
+    int PRIVATE_KEY_DECRYPTION_FLAG = 2;
+
     /**
-     *  Get user private key
+     *  Get user's private key
      *
+     * @param flag - 1 for signature, 2 for decryption
      * @param user - user account
      * @return private key
      */
-    PrivateKey getPrivateKey(User user);
+    PrivateKey getPrivateKey(int flag, User user);
 
     /**
      *  Get contacts list

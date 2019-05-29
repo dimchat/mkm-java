@@ -8,13 +8,6 @@ import java.util.Map;
 
 public class CryptoRSATest {
 
-    private void log(String msg) {
-        StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-        String method = traces[2].getMethodName();
-        int line = traces[2].getLineNumber();
-        System.out.println("[" + method + ":" + line + "] " + msg);
-    }
-
     private static String hexEncode(byte[] data) {
         StringBuilder sb = new StringBuilder();
         String hex;
@@ -28,24 +21,24 @@ public class CryptoRSATest {
     @Test
     public void testRSA() throws ClassNotFoundException, UnsupportedEncodingException {
         PrivateKey sk = PrivateKey.create(PrivateKey.RSA);
-        log("RSA private key:" + sk);
+        Log.info("RSA private key:" + sk);
 
         PublicKey pk = sk.getPublicKey();
-        log("RSA public key:" + pk);
+        Log.info("RSA public key:" + pk);
 
         String text = "moky";
         byte[] plaintext = text.getBytes("UTF-8");
-        byte[] cipherText = pk.encrypt(plaintext);
-        log("RSA encrypt(\"" + text + "\") = " + hexEncode(cipherText));
+        byte[] ciphertext = pk.encrypt(plaintext);
+        Log.info("RSA encrypt(\"" + text + "\") = " + hexEncode(ciphertext));
 
-        byte[] data = sk.decrypt(cipherText);
+        byte[] data = sk.decrypt(ciphertext);
         String decrypt = new String(data);
-        log("decrypt to " + decrypt);
+        Log.info("decrypt to " + decrypt);
 
         Assert.assertEquals(text, decrypt);
 
         byte[] signature = sk.sign(plaintext);
-        log("signature(\"" + text + "\") = " + hexEncode(signature));
+        Log.info("signature(\"" + text + "\") = " + hexEncode(signature));
 
         Assert.assertTrue(pk.verify(plaintext, signature));
     }
@@ -59,7 +52,7 @@ public class CryptoRSATest {
                 "-----END PUBLIC KEY-----");
 
         PublicKey key = PublicKey.getInstance(dictionary);
-        log("public key:" + key);
+        Log.info("public key:" + key);
     }
 
     @Test
@@ -71,6 +64,6 @@ public class CryptoRSATest {
                 "-----END RSA PRIVATE KEY-----");
 
         PrivateKey sk = PrivateKey.getInstance(dictionary);
-        log("private key:" + sk);
+        Log.info("private key:" + sk);
     }
 }

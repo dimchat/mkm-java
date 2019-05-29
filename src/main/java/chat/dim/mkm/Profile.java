@@ -26,6 +26,7 @@
 package chat.dim.mkm;
 
 import chat.dim.crypto.Dictionary;
+import chat.dim.crypto.PublicKey;
 import chat.dim.mkm.entity.ID;
 
 import java.util.Map;
@@ -72,5 +73,35 @@ public class Profile extends Dictionary {
 
     public void setAvatar(String avatar) {
         dictionary.put("avatar", avatar);
+    }
+
+    /**
+     *  Public key (used for encryption, can be same with meta.key)
+     *
+     *      RSA / ECC
+     */
+    private PublicKey key;
+
+    public PublicKey getKey() {
+        if (key == null) {
+            try {
+                key = PublicKey.getInstance(dictionary.get("key"));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return key;
+    }
+
+    public void setKey(PublicKey publicKey) {
+        if (publicKey == null) {
+            if (key != null) {
+                key = null;
+                dictionary.remove("key");
+            }
+        } else if (!publicKey.equals(key)){
+            key = publicKey;
+            dictionary.put("key", publicKey);
+        }
     }
 }

@@ -8,13 +8,6 @@ import java.util.Map;
 
 public class CryptoTest {
 
-    private void log(String msg) {
-        StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-        String method = traces[2].getMethodName();
-        int line = traces[2].getLineNumber();
-        System.out.println("[" + method + ":" + line + "] " + msg);
-    }
-
     private static String hexEncode(byte[] data) {
         StringBuilder sb = new StringBuilder();
         String hex;
@@ -27,7 +20,7 @@ public class CryptoTest {
 
     @Test
     public void testHash() throws UnsupportedEncodingException {
-        log("Crypto test");
+        Log.info("Crypto test");
 
         String string = "moky";
         byte[] data = string.getBytes("UTF-8");
@@ -41,14 +34,14 @@ public class CryptoTest {
         assert hash != null;
         res = hexEncode(hash);
         exp = "cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d";
-        log("sha256(" + string + ") = " + res);
+        Log.info("sha256(" + string + ") = " + res);
         Assert.assertEquals(exp, res);
 
         // ripemd160(moky) = 44bd174123aee452c6ec23a6ab7153fa30fa3b91
         hash = Digest.ripemd160(data);
         res = hexEncode(hash);
         exp = "44bd174123aee452c6ec23a6ab7153fa30fa3b91";
-        log("ripemd160(" + string + ") = " + res);
+        Log.info("ripemd160(" + string + ") = " + res);
         Assert.assertEquals(exp, res);
     }
 
@@ -63,13 +56,13 @@ public class CryptoTest {
         // base58(moky) = 3oF5MJ
         res = Base58.encode(data);
         exp = "3oF5MJ";
-        log("base58(" + string + ") = " + res);
+        Log.info("base58(" + string + ") = " + res);
         Assert.assertEquals(exp, res);
 
         // base64(moky) = bW9reQ==
         res =Base64.encode(data);
         exp = "bW9reQ==";
-        log("base64(" + string + ") = " + res);
+        Log.info("base64(" + string + ") = " + res);
         Assert.assertEquals(exp, res);
     }
 
@@ -81,45 +74,45 @@ public class CryptoTest {
         dictionary.put("iv", "SxPwi6u4+ZLXLdAFJezvSQ==");
 
         SymmetricKey key = SymmetricKey.getInstance(dictionary);
-        log("key:" + key);
+        Log.info("key:" + key);
 
         String text = "moky";
         byte[] plaintext = text.getBytes("UTF-8");
-        byte[] cipherText = key.encrypt(plaintext);
-        log("encrypt(\"" + text + "\") = " + hexEncode(cipherText));
+        byte[] ciphertext = key.encrypt(plaintext);
+        Log.info("encrypt(\"" + text + "\") = " + hexEncode(ciphertext));
 
-        byte[] data = key.decrypt(cipherText);
+        byte[] data = key.decrypt(ciphertext);
         String decrypt = new String(data, "UTF-8");
-        log("decrypt to " + decrypt);
-        log(text + " -> " + Base64.encode(cipherText) + " -> " + decrypt);
+        Log.info("decrypt to " + decrypt);
+        Log.info(text + " -> " + Base64.encode(ciphertext) + " -> " + decrypt);
 
-        Assert.assertEquals("0xtbqZN6x2aWTZn0DpCoCA==", Base64.encode(cipherText));
+        Assert.assertEquals("0xtbqZN6x2aWTZn0DpCoCA==", Base64.encode(ciphertext));
 
         SymmetricKey key2 = SymmetricKey.getInstance(dictionary);
-        log("key2: " + key2);
+        Log.info("key2: " + key2);
         Assert.assertEquals(key, key2);
 //        Assert.assertTrue(key.equals(key2));
 
         text = "XX5qfromb3R078VVK7LwVA==";
 //        text = "0xtbqZN6x2aWTZn0DpCoCA==";
-        cipherText = Base64.decode(text);
-        plaintext = key2.decrypt(cipherText);
-        log("FIXED: " + text + " -> " + (plaintext == null ? null : new String(plaintext)));
-//        plaintext = key2.decrypt(cipherText);
+        ciphertext = Base64.decode(text);
+        plaintext = key2.decrypt(ciphertext);
+        Log.info("FIXED: " + text + " -> " + (plaintext == null ? null : new String(plaintext)));
+//        plaintext = key2.decrypt(ciphertext);
 //        log("FIXED: " + text + " -> " + (plaintext == null ? null : new String(plaintext)));
 
         // random key
         key = SymmetricKey.create(SymmetricKey.AES);
-        log("key: " + key);
+        Log.info("key: " + key);
 
         text = "moky";
         plaintext = text.getBytes("UTF-8");
-        cipherText = key.encrypt(plaintext);
-        log("encrypt(\"" + text + "\") = " + hexEncode(cipherText));
+        ciphertext = key.encrypt(plaintext);
+        Log.info("encrypt(\"" + text + "\") = " + hexEncode(ciphertext));
 
-        data = key.decrypt(cipherText);
+        data = key.decrypt(ciphertext);
         decrypt = new String(data, "UTF-8");
-        log("decrypt to " + decrypt);
+        Log.info("decrypt to " + decrypt);
 
         Assert.assertEquals(text, decrypt);
     }

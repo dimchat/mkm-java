@@ -10,13 +10,6 @@ import java.util.Map;
 
 public class ImmortalsTest {
 
-    private void log(String msg) {
-        StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-        String method = traces[2].getMethodName();
-        int line = traces[2].getLineNumber();
-        System.out.println("[" + method + ":" + line + "] " + msg);
-    }
-
     private User loadBuiltInAccount(String filename) throws IOException, ClassNotFoundException {
         String jsonString = FileUtils.readTextFile(filename);
         Map<String, Object> dictionary = JsON.decode(jsonString);
@@ -38,7 +31,7 @@ public class ImmortalsTest {
             throw new IllegalArgumentException("private key not match meta public key:" + privateKey);
         }
         // create user
-        User user = new User(identifier, privateKey);
+        User user = new User(identifier);
         //user.dataSource = this;
         return user;
     }
@@ -47,9 +40,9 @@ public class ImmortalsTest {
     public void testImmortals() throws IOException, ClassNotFoundException {
         // Immortal Hulk
         User hulk = loadBuiltInAccount("/mkm_hulk.js");
-        log(hulk.toString());
+        Log.info(hulk.toString());
         // Monkey King
         User moki = loadBuiltInAccount("/mkm_moki.js");
-        log(moki.toString());
+        Log.info(moki.toString());
     }
 }

@@ -58,7 +58,7 @@ public final class ID {
             this.name = pair[0];
             this.address = new Address(pair[1]);
         } else {
-            this.name = "";
+            this.name = null;
             this.address = new Address(pair[0]);
         }
     }
@@ -101,24 +101,19 @@ public final class ID {
         if (super.equals(other)) {
             // same object
             return true;
-        } else if (other instanceof ID) {
-            // check with name & address
-            ID identifier = (ID) other;
-            if (name != null && !name.equals(identifier.name)) {
-                return false;
-            }
-            return address.equals(identifier.address);
-        } else if (other instanceof String) {
-            // convert to ID object and check
-            ID identifier = new ID((String) other);
-            if (name != null && !name.equals(identifier.name)) {
-                return false;
-            }
-            return address.equals(identifier.address);
-        } else {
-            // null or unknown object
+        }
+        // convert to ID object
+        ID identifier = ID.getInstance(other);
+        if (identifier == null) {
+            // null
             return false;
         }
+        // check with name & address
+        if (name != null && !name.equals(identifier.name)) {
+            // ID.name not match
+            return false;
+        }
+        return address.equals(identifier.address);
     }
 
     @Override

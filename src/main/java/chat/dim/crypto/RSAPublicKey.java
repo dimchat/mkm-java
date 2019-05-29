@@ -85,14 +85,14 @@ final class RSAPublicKey extends PublicKey {
 
     //-------- interfaces --------
 
-    public byte[] encrypt(byte[] plainText) {
-        if (plainText.length > (keySizeInBits() / 8 - 11)) {
-            throw new InvalidParameterException("RSA plain text length error:" + plainText.length);
+    public byte[] encrypt(byte[] plaintext) {
+        if (plaintext.length > (keySizeInBits() / 8 - 11)) {
+            throw new InvalidParameterException("RSA plain text length error:" + plaintext.length);
         }
         try {
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
-            return cipher.doFinal(plainText);
+            return cipher.doFinal(plaintext);
         } catch (NoSuchProviderException | NoSuchAlgorithmException | NoSuchPaddingException |
                 InvalidKeyException |
                 IllegalBlockSizeException | BadPaddingException e) {

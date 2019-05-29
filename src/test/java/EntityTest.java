@@ -9,34 +9,28 @@ import chat.dim.mkm.entity.NetworkType;
 import org.junit.Assert;
 import org.junit.Test;
 
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
 public class EntityTest {
-
-    private void log(String msg) {
-        StackTraceElement[] traces = Thread.currentThread().getStackTrace();
-        String method = traces[2].getMethodName();
-        int line = traces[2].getLineNumber();
-        System.out.println("[" + method + ":" + line + "] " + msg);
-    }
 
     @Test
     public void testAddress() {
         Address address;
 
         address = Address.getInstance("4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
-        log("address: " + address);
-        log("number: " + address.code);
+        Log.info("address: " + address);
+        Log.info("number: " + address.code);
         Assert.assertEquals(1840839527L, address.code);
 
         address = Address.getInstance("4DnqXWdTV8wuZgfqSCX9GjE2kNq7HJrUgQ");
-        log("address: " + address);
-        log("number: " + address.code);
+        Log.info("address: " + address);
+        Log.info("number: " + address.code);
         Assert.assertEquals(4049699527L, address.code);
 
         NetworkType robot = NetworkType.Robot;
-        log("robot type:" + robot.toByte());
+        Log.info("robot type:" + robot.toByte());
         Assert.assertTrue((byte)0xC8 == robot.toByte());
     }
 
@@ -45,13 +39,13 @@ public class EntityTest {
         ID identifier;
 
         identifier = ID.getInstance("moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
-        log("ID: " + identifier);
-        log("number: " + identifier.getNumber());
+        Log.info("ID: " + identifier);
+        Log.info("number: " + identifier.getNumber());
         Assert.assertEquals(1840839527L, identifier.getNumber());
 
         identifier = ID.getInstance("moky@4DnqXWdTV8wuZgfqSCX9GjE2kNq7HJrUgQ");
-        log("ID: " + identifier);
-        log("number: " + identifier.getNumber());
+        Log.info("ID: " + identifier);
+        Log.info("number: " + identifier.getNumber());
         Assert.assertEquals(4049699527L, identifier.getNumber());
 
         Assert.assertEquals(identifier, new ID("moky@4DnqXWdTV8wuZgfqSCX9GjE2kNq7HJrUgQ/home"));
@@ -59,7 +53,7 @@ public class EntityTest {
         List<ID> array = new ArrayList<>();
         array.add(identifier);
         array.add(identifier);
-        log("list<ID>:" + array);
+        Log.info("list<ID>:" + array);
 
         Assert.assertTrue(identifier.isValid());
     }
@@ -71,22 +65,34 @@ public class EntityTest {
         String seed = "moky";
 
         Meta meta = new Meta(sk, seed);
-        log("meta:" +meta);
+        Log.info("meta:" +meta);
         Assert.assertTrue(meta.matches(pk));
 
         ID identifier = meta.buildID(NetworkType.Main);
-        log("ID:" + identifier);
+        Log.info("ID:" + identifier);
         Assert.assertTrue(meta.matches(identifier));
         Assert.assertTrue(meta.matches(identifier.address));
 
         Assert.assertTrue(identifier.getType().isCommunicator());
         Assert.assertTrue(identifier.getType().isPerson());
 
-        User user = new User(identifier, sk);
-        PublicKey pk2 = user.getPublicKey();
-        PrivateKey sk2 = user.getPrivateKey();
-        Assert.assertTrue(pk2.matches(sk));
-        Assert.assertTrue(sk2.equals(sk));
+        Facebook facebook = Facebook.getInstance();
+        facebook.addPrivateKey(sk, identifier);
+        facebook.addMeta(meta, identifier);
+
+        User user = new User(identifier);
+        user.dataSource = facebook;
+        facebook.addUser(user);
+
+        byte[] data = seed.getBytes(Charset.forName("UTF-8"));
+        byte[] signature = user.sign(data);
+        Assert.assertTrue(user.verify(data, signature));
+        Log.info("signature OK!");
+
+        byte[] ciphertext = user.encrypt(data);
+        byte[] plaintext = user.decrypt(ciphertext);
+        Assert.assertArrayEquals(data, plaintext);
+        Log.info("decryption OK!");
     }
 
     @Test
@@ -94,15 +100,15 @@ public class EntityTest {
         ID identifier = ID.getInstance("moky@4DnqXWdTV8wuZgfqSCX9GjE2kNq7HJrUgQ");
 
         Account account = new Account(identifier);
-        log("account:" + account);
+        Log.info("account:" + account);
         Assert.assertEquals(4049699527L, account.getNumber());
 
         User user = new User(identifier);
-        log("user:" + user);
+        Log.info("user:" + user);
         Assert.assertEquals(4049699527L, user.getNumber());
 
         if (account.equals(user)) {
-            log("same entity");
+            Log.info("same entity");
         }
     }
 }

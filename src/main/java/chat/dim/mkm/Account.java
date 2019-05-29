@@ -32,23 +32,54 @@ import chat.dim.mkm.entity.Meta;
 
 public class Account extends Entity {
 
-    private final PublicKey publicKey;
-
-    public Account(ID identifier, PublicKey publicKey) {
-        super(identifier);
-        this.publicKey = publicKey;
-    }
-
     public Account(ID identifier) {
-        this(identifier, null);
+        super(identifier);
     }
 
-    public PublicKey getPublicKey() {
-        if (this.publicKey != null) {
-            return this.publicKey;
-        }
-        // get from meta
+    /**
+     *  Verify data with signature, use meta.key
+     *
+     * @param data - message data
+     * @param signature - message signature
+     * @return true on correct
+     */
+    public boolean verify(byte[] data, byte[] signature) {
+        PublicKey key;
+        // get key for signature from meta
         Meta meta = getMeta();
-        return meta == null ? null : meta.key;
+        if (meta == null) {
+            throw new NullPointerException("failed to get meta.key for:" + identifier);
+        } else {
+            key = meta.key;
+        }
+        return key.verify(data, signature);
+    }
+
+    /**
+     *  Encrypt data, try profile.key first, if not found, use meta.key
+     *
+     * @param plaintext - message data
+     * @return encrypted data
+     */
+    public byte[] encrypt(byte[] plaintext) {
+        PublicKey key;
+        // get key for encryption from profile
+        Profile profile = getProfile();
+        if (profile == null) {
+            // profile not updated?
+            key = null;
+        } else {
+            key = profile.getKey();
+        }
+        if (key == null) {
+            // get key for encryption from meta
+            Meta meta = getMeta();
+            if (meta == null) {
+                throw new NullPointerException("failed to get meta.key for:" + identifier);
+            } else {
+                key = meta.key;
+            }
+        }
+        return key.encrypt(plaintext);
     }
 }

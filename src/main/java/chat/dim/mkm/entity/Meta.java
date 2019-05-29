@@ -65,7 +65,7 @@ public final class Meta extends Dictionary {
     public final byte version;
 
     /**
-     *  Public key
+     *  Public key (used for signature)
      *
      *      RSA / ECC
      */

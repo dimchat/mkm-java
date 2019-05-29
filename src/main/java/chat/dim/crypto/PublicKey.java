@@ -67,12 +67,12 @@ public abstract class PublicKey extends CryptographyKey {
     //-------- Interfaces --------
 
     /**
-     *  cipherText = encrypt(plainText, PK)
+     *  ciphertext = encrypt(plaintext, PK)
      *
-     * @param plainText - data to be encrypted
-     * @return cipherText
+     * @param plaintext - data to be encrypted
+     * @return ciphertext
      */
-    public abstract byte[] encrypt(byte[] plainText);
+    public abstract byte[] encrypt(byte[] plaintext);
 
     /**
      *  OK = verify(data, signature, PK)

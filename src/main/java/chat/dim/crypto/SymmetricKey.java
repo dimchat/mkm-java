@@ -59,9 +59,9 @@ public abstract class SymmetricKey extends CryptographyKey {
         } else if (other instanceof SymmetricKey) {
             // check by encryption
             SymmetricKey key = (SymmetricKey) other;
-            byte[] cipherText = key.encrypt(promise);
-            byte[] plainText = decrypt(cipherText);
-            return Arrays.equals(plainText, promise);
+            byte[] ciphertext = key.encrypt(promise);
+            byte[] plaintext = decrypt(ciphertext);
+            return Arrays.equals(plaintext, promise);
         } else {
             // null or unknown object
             return false;
@@ -71,20 +71,20 @@ public abstract class SymmetricKey extends CryptographyKey {
     //-------- Interfaces --------
 
     /**
-     *  cipherText = encrypt(plainText, PW)
+     *  ciphertext = encrypt(plaintext, PW)
      *
-     * @param plainText - plain data
-     * @return cipherText
+     * @param plaintext - plain data
+     * @return ciphertext
      */
-    public abstract byte[] encrypt(byte[] plainText);
+    public abstract byte[] encrypt(byte[] plaintext);
 
     /**
-     *  plainText = decrypt(cipherText, PW);
+     *  plaintext = decrypt(ciphertext, PW);
      *
-     * @param cipherText - encrypted data
-     * @return plainText
+     * @param ciphertext - encrypted data
+     * @return plaintext
      */
-    public abstract byte[] decrypt(byte[] cipherText);
+    public abstract byte[] decrypt(byte[] ciphertext);
 
     //-------- Runtime --------
 

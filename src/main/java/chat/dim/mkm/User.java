@@ -33,29 +33,15 @@ import java.util.List;
 
 public class User extends Account {
 
-    private final PrivateKey privateKey;
-
-    public User(ID identifier, PrivateKey privateKey) {
-        super(identifier, privateKey == null ? null : privateKey.getPublicKey());
-        this.privateKey = privateKey;
-    }
-
     public User(ID identifier) {
-        this(identifier, null);
+        super(identifier);
     }
 
-    public PrivateKey getPrivateKey() {
-        if (this.privateKey != null) {
-            return this.privateKey;
-        }
-        if (this.dataSource == null) {
-            return null;
-        }
-        // get from data source
-        UserDataSource dataSource = (UserDataSource) this.dataSource;
-        return dataSource.getPrivateKey(this);
-    }
-
+    /**
+     *  Get all contacts of the user
+     *
+     * @return contact list
+     */
     public List<Object> getContacts() {
         if (this.dataSource == null) {
             return null;
@@ -76,5 +62,43 @@ public class User extends Account {
             contacts.add(dataSource.getContactAtIndex(index, this));
         }
         return contacts;
+    }
+
+    /**
+     *  Sign data with user's private key
+     *
+     * @param data - message data
+     * @return signature
+     */
+    public byte[] sign(byte[] data) {
+        if (this.dataSource == null) {
+            throw new NullPointerException("data source not set for user:" + identifier);
+        }
+        // get from data source
+        UserDataSource dataSource = (UserDataSource) this.dataSource;
+        PrivateKey privateKey = dataSource.getPrivateKey(UserDataSource.PRIVATE_KEY_SIGNATURE_FLAG, this);
+        if (privateKey == null) {
+            throw new NullPointerException("failed to get private key for user:" + identifier);
+        }
+        return privateKey.sign(data);
+    }
+
+    /**
+     *  Decrypt data with user's private key
+     *
+     * @param ciphertext - encrypted data
+     * @return plain text
+     */
+    public byte[] decrypt(byte[] ciphertext) {
+        if (this.dataSource == null) {
+            throw new NullPointerException("data source not set for user:" + identifier);
+        }
+        // get from data source
+        UserDataSource dataSource = (UserDataSource) this.dataSource;
+        PrivateKey privateKey = dataSource.getPrivateKey(UserDataSource.PRIVATE_KEY_DECRYPTION_FLAG, this);
+        if (privateKey == null) {
+            throw new NullPointerException("failed to get private key for user:" + identifier);
+        }
+        return privateKey.decrypt(ciphertext);
     }
 }

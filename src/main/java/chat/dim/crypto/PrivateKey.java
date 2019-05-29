@@ -77,12 +77,12 @@ public abstract class PrivateKey extends CryptographyKey {
     public abstract PublicKey getPublicKey();
 
     /**
-     *  plainText = decrypt(cipherText, SK);
+     *  plaintext = decrypt(ciphertext, SK);
      *
-     * @param cipherText - encrypted data
-     * @return plainText
+     * @param ciphertext - encrypted data
+     * @return plaintext
      */
-    public abstract byte[] decrypt(byte[] cipherText);
+    public abstract byte[] decrypt(byte[] ciphertext);
 
     /**
      *  signature = sign(data, SK);

@@ -122,10 +122,10 @@ final class AESKey extends SymmetricKey {
 
     //-------- interfaces --------
 
-    public byte[] encrypt(byte[] plainText) {
+    public byte[] encrypt(byte[] plaintext) {
         try {
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
-            return cipher.doFinal(plainText);
+            return cipher.doFinal(plaintext);
         } catch (InvalidKeyException | InvalidAlgorithmParameterException |
                 IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
@@ -133,10 +133,10 @@ final class AESKey extends SymmetricKey {
         }
     }
 
-    public byte[] decrypt(byte[] cipherText) {
+    public byte[] decrypt(byte[] ciphertext) {
         try {
             cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
-            return cipher.doFinal(cipherText);
+            return cipher.doFinal(ciphertext);
         } catch (InvalidKeyException | InvalidAlgorithmParameterException |
                 IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();

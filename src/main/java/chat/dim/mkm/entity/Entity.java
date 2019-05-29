@@ -25,6 +25,8 @@
  */
 package chat.dim.mkm.entity;
 
+import chat.dim.mkm.Profile;
+
 public class Entity {
 
     public final ID identifier;
@@ -100,6 +102,11 @@ public class Entity {
 
     public Meta getMeta() {
         // get from data source
-        return dataSource == null ? null: dataSource.getMeta(this);
+        return dataSource == null ? null : dataSource.getMeta(this);
+    }
+
+    public Profile getProfile() {
+        // get from data source
+        return dataSource == null ? null : dataSource.getProfile(this);
     }
 }

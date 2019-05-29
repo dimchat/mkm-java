@@ -161,14 +161,14 @@ final class RSAPrivateKey extends PrivateKey {
         }
     }
 
-    public byte[] decrypt(byte[] cipherText) {
-        if (cipherText.length != (keySizeInBits() / 8)) {
-            throw new InvalidParameterException("RSA cipher text length error:" + cipherText.length);
+    public byte[] decrypt(byte[] ciphertext) {
+        if (ciphertext.length != (keySizeInBits() / 8)) {
+            throw new InvalidParameterException("RSA cipher text length error:" + ciphertext.length);
         }
         try {
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
-            return cipher.doFinal(cipherText);
+            return cipher.doFinal(ciphertext);
         } catch (NoSuchProviderException | NoSuchAlgorithmException | NoSuchPaddingException |
                 InvalidKeyException | IllegalBlockSizeException | BadPaddingException e) {
             e.printStackTrace();
