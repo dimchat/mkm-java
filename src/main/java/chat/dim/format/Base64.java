@@ -23,32 +23,29 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.format;
 
-import java.util.Map;
+public final class Base64 {
 
-/**
- *  Cryptography Key
- *
- *      keyInfo format: {
- *          algorithm: "RSA", // ECC, AES, ...
- *          data     : "{BASE64_ENCODE}",
- *          ...
- *      }
- */
-public abstract class CryptographyKey extends Dictionary {
-
-    protected final String algorithm;
-    public byte[] data;
-
-    protected CryptographyKey(Map<String, Object> dictionary) {
-        super(dictionary);
-        algorithm = getAlgorithm(dictionary);
-        // process by subclass
-        data = null;
+    public static String encode(byte[] data) {
+        return coder.encode(data);
     }
 
-    protected static String getAlgorithm(Map<String, Object> dictionary) {
-        return (String) dictionary.get("algorithm");
+    public static byte[] decode(String string) {
+        return coder.decode(string);
     }
+
+    // default coder
+    public static BaseCoder coder = new BaseCoder() {
+
+        @Override
+        public String encode(byte[] data) {
+            return java.util.Base64.getEncoder().encodeToString(data);
+        }
+
+        @Override
+        public byte[] decode(String string) {
+            return java.util.Base64.getDecoder().decode(string);
+        }
+    };
 }

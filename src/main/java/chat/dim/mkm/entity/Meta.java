@@ -25,10 +25,10 @@
  */
 package chat.dim.mkm.entity;
 
-import chat.dim.crypto.Base64;
 import chat.dim.crypto.Dictionary;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
+import chat.dim.format.Base64;
 
 import java.nio.charset.Charset;
 import java.util.Arrays;

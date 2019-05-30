@@ -23,29 +23,11 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.format;
 
-public final class Base58 {
+public interface DataParser {
 
-    public static String encode(byte[] data) {
-        return coder.encode(data);
-    }
+    String encode(Object container);
 
-    public static byte[] decode(String string) {
-        return coder.decode(string);
-    }
-
-    // default coder
-    public static BaseCoder coder = new BaseCoder() {
-
-        @Override
-        public String encode(byte[] data) {
-            return chat.dim.crypto.bitcoinj.Base58.encode(data);
-        }
-
-        @Override
-        public byte[] decode(String string) {
-            return chat.dim.crypto.bitcoinj.Base58.decode(string);
-        }
-    };
+    Object decode(String jsonString);
 }

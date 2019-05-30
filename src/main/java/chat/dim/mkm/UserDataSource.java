@@ -33,8 +33,8 @@ import java.util.List;
 
 public interface UserDataSource extends EntityDataSource {
 
-    int PRIVATE_KEY_SIGNATURE_FLAG = 1;
-    int PRIVATE_KEY_DECRYPTION_FLAG = 2;
+    int PRIVATE_KEY_SIGNATURE = 1;
+    int PRIVATE_KEY_DECRYPTION = 2;
 
     /**
      *  Get user's private key

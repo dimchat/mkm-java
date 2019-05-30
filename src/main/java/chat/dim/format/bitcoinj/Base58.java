@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package chat.dim.crypto.bitcoinj;
+package chat.dim.format.bitcoinj;
 
 import java.util.Arrays;
 

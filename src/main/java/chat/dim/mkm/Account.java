@@ -45,13 +45,14 @@ public class Account extends Entity {
      */
     public boolean verify(byte[] data, byte[] signature) {
         PublicKey key;
-        // get key for signature from meta
+        // 1. get key for signature from meta
         Meta meta = getMeta();
         if (meta == null) {
             throw new NullPointerException("failed to get meta.key for:" + identifier);
         } else {
             key = meta.key;
         }
+        // 2. verify with meta.key
         return key.verify(data, signature);
     }
 
@@ -62,24 +63,23 @@ public class Account extends Entity {
      * @return encrypted data
      */
     public byte[] encrypt(byte[] plaintext) {
-        PublicKey key;
-        // get key for encryption from profile
+        PublicKey key = null;
+        // 1. get key for encryption from profile
         Profile profile = getProfile();
-        if (profile == null) {
-            // profile not updated?
-            key = null;
-        } else {
+        if (profile != null && profile.verify(this)) {
             key = profile.getKey();
         }
         if (key == null) {
-            // get key for encryption from meta
+            // 2. get key for encryption from meta
             Meta meta = getMeta();
             if (meta == null) {
                 throw new NullPointerException("failed to get meta.key for:" + identifier);
             } else {
+                // NOTICE: meta.key will never changed, so use profile.key to encrypt is the better way
                 key = meta.key;
             }
         }
+        // 3. encrypt with profile.key
         return key.encrypt(plaintext);
     }
 }

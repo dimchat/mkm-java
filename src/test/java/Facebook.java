@@ -32,6 +32,9 @@ public class Facebook implements UserDataSource {
             addUser((User) account);
             return;
         }
+        if (account.dataSource == null) {
+            account.dataSource = this;
+        }
         accountMap.put(account.identifier.address, account);
     }
 
@@ -44,6 +47,9 @@ public class Facebook implements UserDataSource {
     }
 
     public void addUser(User user) {
+        if (user.dataSource == null) {
+            user.dataSource = this;
+        }
         userMap.put(user.identifier.address, user);
     }
 

@@ -97,6 +97,11 @@ public final class ID {
     }
 
     @Override
+    public int hashCode() {
+        return string.hashCode();
+    }
+
+    @Override
     public boolean equals(Object other) {
         if (super.equals(other)) {
             // same object

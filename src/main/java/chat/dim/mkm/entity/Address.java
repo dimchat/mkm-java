@@ -26,7 +26,7 @@
 package chat.dim.mkm.entity;
 
 import chat.dim.crypto.Digest;
-import chat.dim.crypto.Base58;
+import chat.dim.format.Base58;
 
 import java.util.Arrays;
 
@@ -117,6 +117,11 @@ public final class Address {
         } else {
             throw new IllegalArgumentException("unknown address:" + object);
         }
+    }
+
+    @Override
+    public int hashCode() {
+        return string.hashCode();
     }
 
     @Override

@@ -27,23 +27,66 @@ package chat.dim.mkm;
 
 import chat.dim.crypto.Dictionary;
 import chat.dim.crypto.PublicKey;
+import chat.dim.format.Base64;
+import chat.dim.format.JSON;
 import chat.dim.mkm.entity.ID;
 
+import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Map;
 
 public class Profile extends Dictionary {
 
     public final ID identifier;
 
+    protected Map<String, Object> properties;
+    private String data;      // JsON.encode(properties)
+    private byte[] signature; // User(identifier).sign(data)
+    protected boolean valid;  // true on signature matched
+
+    /**
+     *  Public key (used for encryption, can be same with meta.key)
+     *
+     *      RSA
+     */
+    private PublicKey key;
+
     public Profile(Map<String, Object> dictionary) {
         super(dictionary);
-        this.identifier = ID.getInstance(dictionary.get("ID"));
+        // ID
+        identifier = ID.getInstance(dictionary.get("ID"));
+
+        // properties
+        properties = new HashMap<>();
+        // data = JsON.encode(properties)
+        data = (String) dictionary.get("data");
+        // signature = User(identifier).sign(data)
+        String base64 = (String) dictionary.get("signature");
+        signature = (base64 == null) ? null : Base64.decode(base64);
+        // verify flag
+        valid = false;
+
+        // public key
+        key = null;
     }
 
     public Profile(ID identifier) {
         super();
+        // ID
         this.identifier = identifier;
-        dictionary.put("ID", identifier.toString());
+        dictionary.put("ID", identifier);
+
+        // properties
+        properties = new HashMap<>();
+        // data
+        data = null;
+        // signature
+        signature = null;
+        // verify flag
+        valid = false;
+
+        // public key
+        key = null;
     }
 
     @SuppressWarnings("unchecked")
@@ -59,49 +102,100 @@ public class Profile extends Dictionary {
         }
     }
 
-    public String getName() {
-        return (String) dictionary.get("name");
-    }
-
-    public void setName(String name) {
-        dictionary.put("name", name);
-    }
-
-    public String getAvatar() {
-        return (String) dictionary.get("avatar");
-    }
-
-    public void setAvatar(String avatar) {
-        dictionary.put("avatar", avatar);
-    }
-
     /**
-     *  Public key (used for encryption, can be same with meta.key)
+     *  Verify 'data' and 'signature', if OK, refresh properties from 'data'
      *
-     *      RSA
+     * @param account - account with profile.identifier
+     * @return true on signature matched
      */
-    private PublicKey key;
+    public boolean verify(Account account) {
+        if (valid) {
+            // already verified
+            return true;
+        }
+        if (data == null || signature == null) {
+            // data error
+            return false;
+        }
+        if (!account.identifier.equals(identifier)) {
+            throw new IllegalArgumentException("ID not match");
+        }
+        if (account.verify(data.getBytes(Charset.forName("UTF-8")), signature)) {
+            valid = true;
+            // refresh properties
+            properties.clear();
+            properties.putAll(JSON.decode(data));
 
-    public PublicKey getKey() {
-        if (key == null) {
+            // get public key
             try {
-                key = PublicKey.getInstance(dictionary.get("key"));
+                key = PublicKey.getInstance(properties.get("key"));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
+        } else {
+            data = null;
+            signature = null;
+        }
+        return valid;
+    }
+
+    /**
+     *  Encode properties to 'data' and sign it to 'signature'
+     *
+     * @param user - user with profile.identifier
+     * @return signature
+     */
+    public byte[] sign(User user) {
+        if (valid) {
+            // already signed
+            return signature;
+        }
+        if (!user.identifier.equals(identifier)) {
+            throw new IllegalArgumentException("ID not match");
+        }
+        data = JSON.encode(properties);
+        signature = user.sign(data.getBytes(Charset.forName("UTF-8")));
+        dictionary.put("data", data);
+        dictionary.put("signature", Base64.encode(signature));
+        valid = true;
+        return signature;
+    }
+
+    /**
+     *  Reset data signature after properties changed
+     */
+    protected void reset() {
+        dictionary.remove("data");
+        dictionary.remove("signature");
+        data = null;
+        signature = null;
+        valid = false;
+    }
+
+    //---- properties getter/setter
+
+    public PublicKey getKey() {
+        if (!valid) {
+            return null;
         }
         return key;
     }
 
     public void setKey(PublicKey publicKey) {
-        if (publicKey == null) {
-            if (key != null) {
-                key = null;
-                dictionary.remove("key");
-            }
-        } else if (!publicKey.equals(key)){
-            key = publicKey;
-            dictionary.put("key", publicKey);
+        key = publicKey;
+        properties.put("key", publicKey);
+        reset();
+    }
+
+    public String getName() {
+        if (!valid) {
+            return null;
         }
+        return (String) properties.get("name");
+    }
+
+    public void setName(String name) {
+        properties.put("name", name);
+        reset();
     }
 }

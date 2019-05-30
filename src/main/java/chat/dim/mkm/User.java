@@ -76,7 +76,7 @@ public class User extends Account {
         }
         // get from data source
         UserDataSource dataSource = (UserDataSource) this.dataSource;
-        PrivateKey privateKey = dataSource.getPrivateKey(UserDataSource.PRIVATE_KEY_SIGNATURE_FLAG, this);
+        PrivateKey privateKey = dataSource.getPrivateKey(UserDataSource.PRIVATE_KEY_SIGNATURE, this);
         if (privateKey == null) {
             throw new NullPointerException("failed to get private key for user:" + identifier);
         }
@@ -95,7 +95,7 @@ public class User extends Account {
         }
         // get from data source
         UserDataSource dataSource = (UserDataSource) this.dataSource;
-        PrivateKey privateKey = dataSource.getPrivateKey(UserDataSource.PRIVATE_KEY_DECRYPTION_FLAG, this);
+        PrivateKey privateKey = dataSource.getPrivateKey(UserDataSource.PRIVATE_KEY_DECRYPTION, this);
         if (privateKey == null) {
             throw new NullPointerException("failed to get private key for user:" + identifier);
         }

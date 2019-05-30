@@ -25,6 +25,7 @@
  */
 package chat.dim.crypto;
 
+import chat.dim.format.Base64;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
@@ -72,6 +73,28 @@ public final class PEM {
         return fileContent;
     }
 
+    private static String rfc2045(byte[] data) {
+        String base64 = Base64.encode(data);
+        int length = base64.length();
+        final int MIME_LINE_MAX_LEN = 76;
+        final String CR_LF = "\r\n";
+        if (length > MIME_LINE_MAX_LEN && !base64.contains(CR_LF)) {
+            StringBuilder sb = new StringBuilder();
+            for (int beginIndex = 0, endIndex; beginIndex < length; beginIndex += MIME_LINE_MAX_LEN) {
+                endIndex = beginIndex + MIME_LINE_MAX_LEN;
+                if (endIndex < length) {
+                    sb.append(base64, beginIndex, endIndex);
+                    sb.append(CR_LF);
+                } else {
+                    sb.append(base64, beginIndex, length);
+                    break;
+                }
+            }
+            base64 = sb.toString();
+        }
+        return base64;
+    }
+
     private static String getFileContent(java.security.interfaces.RSAPublicKey publicKey) throws IOException {
         byte[] data = publicKey.getEncoded();
         String format = publicKey.getFormat();
@@ -79,8 +102,7 @@ public final class PEM {
             // convert to PKCS#1
             data = (new X509(data)).toPKCS1();
         }
-        String base64 = Base64.encode(data);
-        return "-----BEGIN PUBLIC KEY-----\n" + base64 + "\n-----END PUBLIC KEY-----";
+        return "-----BEGIN PUBLIC KEY-----\r\n" + rfc2045(data) + "\r\n-----END PUBLIC KEY-----";
     }
 
     private static String getFileContent(java.security.interfaces.RSAPrivateKey privateKey) throws IOException {
@@ -90,8 +112,7 @@ public final class PEM {
             // convert to PKCS#1
             data = (new PKCS8(data)).toPKCS1();
         }
-        String base64 = Base64.encode(data);
-        return "-----BEGIN RSA PRIVATE KEY-----\n" + base64 + "\n-----END RSA PRIVATE KEY-----";
+        return "-----BEGIN RSA PRIVATE KEY-----\r\n" + rfc2045(data) + "\r\n-----END RSA PRIVATE KEY-----";
     }
 
     private static byte[] getPublicKeyData(String pem) throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException {
@@ -156,10 +177,7 @@ public final class PEM {
             return null;
         }
 
-        content = content.replaceAll("\r", "");
-        content = content.replaceAll("\n", "");
-        content = content.replaceAll("\t", "");
-        content = content.replaceAll(" ", "");
+        content = content.replaceAll("[\r\n\t\\s]+", "");
         return content;
     }
 }

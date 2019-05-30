@@ -1,4 +1,7 @@
-import chat.dim.crypto.*;
+import chat.dim.crypto.Digest;
+import chat.dim.crypto.SymmetricKey;
+import chat.dim.format.Base58;
+import chat.dim.format.Base64;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -76,13 +79,20 @@ public class CryptoTest {
         SymmetricKey key = SymmetricKey.getInstance(dictionary);
         Log.info("key:" + key);
 
-        String text = "moky";
-        byte[] plaintext = text.getBytes("UTF-8");
-        byte[] ciphertext = key.encrypt(plaintext);
-        Log.info("encrypt(\"" + text + "\") = " + hexEncode(ciphertext));
+        String text;
+        byte[] plaintext;
+        byte[] ciphertext;
+        byte[] data;
+        String decrypt;
 
-        byte[] data = key.decrypt(ciphertext);
-        String decrypt = new String(data, "UTF-8");
+        text = "moky";
+        plaintext = text.getBytes("UTF-8");
+        ciphertext = key.encrypt(plaintext);
+        Log.info("encrypt(\"" + text + "\") = " + hexEncode(ciphertext));
+        Log.info("encrypt(\"" + text + "\") = " + Base64.encode(ciphertext));
+
+        data = key.decrypt(ciphertext);
+        decrypt = new String(data, "UTF-8");
         Log.info("decrypt to " + decrypt);
         Log.info(text + " -> " + Base64.encode(ciphertext) + " -> " + decrypt);
 
@@ -93,7 +103,7 @@ public class CryptoTest {
         Assert.assertEquals(key, key2);
 //        Assert.assertTrue(key.equals(key2));
 
-        text = "XX5qfromb3R078VVK7LwVA==";
+        text = "XX5qfromb3R078VVK7LwVA=="; // NoPadding
 //        text = "0xtbqZN6x2aWTZn0DpCoCA==";
         ciphertext = Base64.decode(text);
         plaintext = key2.decrypt(ciphertext);
@@ -109,6 +119,7 @@ public class CryptoTest {
         plaintext = text.getBytes("UTF-8");
         ciphertext = key.encrypt(plaintext);
         Log.info("encrypt(\"" + text + "\") = " + hexEncode(ciphertext));
+        Log.info("encrypt(\"" + text + "\") = " + Base64.encode(ciphertext));
 
         data = key.decrypt(ciphertext);
         decrypt = new String(data, "UTF-8");

@@ -98,11 +98,11 @@ public class Entity {
 
     public Meta getMeta() {
         // get from data source
-        return dataSource == null ? null : dataSource.getMeta(this.identifier);
+        return dataSource == null ? null : dataSource.getMeta(identifier);
     }
 
     public Profile getProfile() {
         // get from data source
-        return dataSource == null ? null : dataSource.getProfile(this.identifier);
+        return dataSource == null ? null : dataSource.getProfile(identifier);
     }
 }

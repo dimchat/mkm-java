@@ -25,15 +25,15 @@
  */
 package chat.dim.crypto;
 
+import chat.dim.format.Base64;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
-import java.security.InvalidAlgorithmParameterException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
+import java.security.*;
 import java.util.Map;
 import java.util.Random;
 
@@ -54,13 +54,12 @@ final class AESKey extends SymmetricKey {
     private final SecretKeySpec keySpec;
     private final IvParameterSpec ivSpec;
 
-    public AESKey(Map<String, Object> dictionary) throws NoSuchPaddingException, NoSuchAlgorithmException {
+    public AESKey(Map<String, Object> dictionary) throws NoSuchPaddingException, NoSuchAlgorithmException, NoSuchProviderException {
         super(dictionary);
         // TODO: check algorithm parameters
         // 1. check mode = 'CBC'
         // 2. check padding = 'PKCS7Padding'
-
-        cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+        cipher = Cipher.getInstance("AES/CBC/PKCS7Padding", "BC");
         keySpec = new SecretKeySpec(getKeyData(), "AES");
         ivSpec = new IvParameterSpec(getInitVector());
     }
@@ -142,5 +141,9 @@ final class AESKey extends SymmetricKey {
             e.printStackTrace();
             return null;
         }
+    }
+
+    static {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
     }
 }

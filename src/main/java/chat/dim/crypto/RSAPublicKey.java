@@ -49,7 +49,7 @@ final class RSAPublicKey extends PublicKey {
     public RSAPublicKey(Map<String, Object> dictionary)
             throws NoSuchFieldException, InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException {
         super(dictionary);
-        this.publicKey = getKey();
+        publicKey = getKey();
     }
 
     private int keySizeInBits() {

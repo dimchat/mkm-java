@@ -23,32 +23,11 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.format;
 
-import java.util.Map;
+public interface BaseCoder {
 
-/**
- *  Cryptography Key
- *
- *      keyInfo format: {
- *          algorithm: "RSA", // ECC, AES, ...
- *          data     : "{BASE64_ENCODE}",
- *          ...
- *      }
- */
-public abstract class CryptographyKey extends Dictionary {
+    String encode(byte[] data);
 
-    protected final String algorithm;
-    public byte[] data;
-
-    protected CryptographyKey(Map<String, Object> dictionary) {
-        super(dictionary);
-        algorithm = getAlgorithm(dictionary);
-        // process by subclass
-        data = null;
-    }
-
-    protected static String getAlgorithm(Map<String, Object> dictionary) {
-        return (String) dictionary.get("algorithm");
-    }
+    byte[] decode(String string);
 }

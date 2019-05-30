@@ -23,29 +23,43 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.format;
 
-public final class Base64 {
+import chat.dim.mkm.entity.Address;
+import chat.dim.mkm.entity.ID;
+import com.alibaba.fastjson.serializer.SerializeConfig;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
 
-    public static String encode(byte[] data) {
-        return coder.encode(data);
+import java.util.Map;
+
+public class JSON {
+
+    public static String encode(Object container) {
+        return parser.encode(container);
     }
 
-    public static byte[] decode(String string) {
-        return coder.decode(string);
+    @SuppressWarnings("unchecked")
+    public static Map<String, Object> decode(String jsonString) {
+        return (Map<String, Object>) parser.decode(jsonString);
     }
 
-    // default coder
-    public static BaseCoder coder = new BaseCoder() {
+    // default parser
+    public static DataParser parser = new DataParser() {
 
         @Override
-        public String encode(byte[] data) {
-            return java.util.Base64.getEncoder().encodeToString(data);
+        public String encode(Object container) {
+            return com.alibaba.fastjson.JSON.toJSONString(container);
         }
 
         @Override
-        public byte[] decode(String string) {
-            return java.util.Base64.getDecoder().decode(string);
+        public Object decode(String jsonString) {
+            return com.alibaba.fastjson.JSON.parseObject(jsonString);
         }
     };
+
+    static {
+        SerializeConfig serializeConfig = SerializeConfig.getGlobalInstance();
+        serializeConfig.put(ID.class, ToStringSerializer.instance);
+        serializeConfig.put(Address.class, ToStringSerializer.instance);
+    }
 }
