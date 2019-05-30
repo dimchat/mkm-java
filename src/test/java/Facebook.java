@@ -68,34 +68,34 @@ public class Facebook implements UserDataSource {
     //---- UserDataSource
 
     @Override
-    public PrivateKey getPrivateKey(int flag, User user) {
-        return privateKeyMap.get(user.identifier.address);
+    public PrivateKey getPrivateKey(int flag, ID user) {
+        return privateKeyMap.get(user.address);
     }
 
     @Override
-    public List<Object> getContacts(User user) {
+    public List<ID> getContacts(ID user) {
         return null;
     }
 
     @Override
-    public int getCountOfContacts(User user) {
+    public int getCountOfContacts(ID user) {
         return 0;
     }
 
     @Override
-    public ID getContactAtIndex(int index, User user) {
+    public ID getContactAtIndex(int index, ID user) {
         return null;
     }
 
     //---- EntityDataSource
 
     @Override
-    public Meta getMeta(ID identifier) {
-        return metaMap.get(identifier.address);
+    public Meta getMeta(ID entity) {
+        return metaMap.get(entity.address);
     }
 
     @Override
-    public Profile getProfile(ID identifier) {
-        return profileMap.get(identifier.address);
+    public Profile getProfile(ID entity) {
+        return profileMap.get(entity.address);
     }
 }

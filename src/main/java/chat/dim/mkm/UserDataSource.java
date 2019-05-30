@@ -40,33 +40,33 @@ public interface UserDataSource extends EntityDataSource {
      *  Get user's private key
      *
      * @param flag - 1 for signature, 2 for decryption
-     * @param user - user account
+     * @param user - user ID
      * @return private key
      */
-    PrivateKey getPrivateKey(int flag, User user);
+    PrivateKey getPrivateKey(int flag, ID user);
 
     /**
      *  Get contacts list
      *
-     * @param user - user account
-     * @return contacts list
+     * @param user - user ID
+     * @return contacts list (ID)
      */
-    List<Object> getContacts(User user);
+    List<ID> getContacts(ID user);
 
     /**
      *  Get contacts count
      *
-     * @param user - user account
+     * @param user - user ID
      * @return number of contacts
      */
-    int getCountOfContacts(User user);
+    int getCountOfContacts(ID user);
 
     /**
      *  Get contact ID at index
      *
      * @param index - contact index
-     * @param user - user account
+     * @param user - user ID
      * @return contact ID
      */
-    ID getContactAtIndex(int index, User user);
+    ID getContactAtIndex(int index, ID user);
 }

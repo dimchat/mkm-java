@@ -53,7 +53,7 @@ public class Group extends Entity {
         }
         // get from data source
         GroupDataSource dataSource = (GroupDataSource) this.dataSource;
-        return dataSource.getFounder(this);
+        return dataSource.getFounder(identifier);
     }
 
     public ID getOwner() {
@@ -62,20 +62,20 @@ public class Group extends Entity {
         }
         // get from data source
         GroupDataSource dataSource = (GroupDataSource) this.dataSource;
-        return dataSource.getOwner(this);
+        return dataSource.getOwner(identifier);
     }
 
-    public List<Object> getMembers() {
+    public List<ID> getMembers() {
         if (this.dataSource == null) {
             return null;
         }
         // get from data source
         GroupDataSource dataSource = (GroupDataSource) this.dataSource;
-        List<Object> members = dataSource.getMembers(this);
+        List<ID> members = dataSource.getMembers(identifier);
         if (members != null) {
             return members;
         }
-        int count = dataSource.getCountOfMembers(this);
+        int count = dataSource.getCountOfMembers(identifier);
         if (count == 0) {
             return null;
         } else if (count < 0) {
@@ -84,7 +84,7 @@ public class Group extends Entity {
         // get members one by one
         members = new ArrayList<>(count);
         for (int index = 0; index < count; index++) {
-            members.add(dataSource.getMemberAtIndex(index, this));
+            members.add(dataSource.getMemberAtIndex(index, identifier));
         }
         return members;
     }

@@ -42,16 +42,16 @@ public class User extends Account {
      *
      * @return contact list
      */
-    public List<Object> getContacts() {
+    public List<ID> getContacts() {
         if (this.dataSource == null) {
             return null;
         }
         UserDataSource dataSource = (UserDataSource) this.dataSource;
-        List<Object> contacts = dataSource.getContacts(this);
+        List<ID> contacts = dataSource.getContacts(identifier);
         if (contacts != null) {
             return contacts;
         }
-        int count = dataSource.getCountOfContacts(this);
+        int count = dataSource.getCountOfContacts(identifier);
         if (count == 0) {
             return null;
         } else if (count < 0) {
@@ -59,7 +59,7 @@ public class User extends Account {
         }
         contacts = new ArrayList<>(count);
         for (int index = 0; index < count; index++) {
-            contacts.add(dataSource.getContactAtIndex(index, this));
+            contacts.add(dataSource.getContactAtIndex(index, identifier));
         }
         return contacts;
     }
@@ -76,7 +76,7 @@ public class User extends Account {
         }
         // get from data source
         UserDataSource dataSource = (UserDataSource) this.dataSource;
-        PrivateKey privateKey = dataSource.getPrivateKey(UserDataSource.PRIVATE_KEY_SIGNATURE, this);
+        PrivateKey privateKey = dataSource.getPrivateKey(UserDataSource.PRIVATE_KEY_SIGNATURE, identifier);
         if (privateKey == null) {
             throw new NullPointerException("failed to get private key for user:" + identifier);
         }
@@ -95,7 +95,7 @@ public class User extends Account {
         }
         // get from data source
         UserDataSource dataSource = (UserDataSource) this.dataSource;
-        PrivateKey privateKey = dataSource.getPrivateKey(UserDataSource.PRIVATE_KEY_DECRYPTION, this);
+        PrivateKey privateKey = dataSource.getPrivateKey(UserDataSource.PRIVATE_KEY_DECRYPTION, identifier);
         if (privateKey == null) {
             throw new NullPointerException("failed to get private key for user:" + identifier);
         }
