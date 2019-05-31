@@ -27,8 +27,7 @@ public class ImmortalsTest {
         assert meta != null && meta.matches(identifier);
         facebook.addMeta(meta, identifier);
         // profile
-        Profile profile = Profile.getInstance(dictionary.get("profile"));
-        assert profile != null;
+        Profile profile = new Profile((Map<String, Object>) dictionary.get("profile"));
         facebook.addProfile(profile);
         // private key
         PrivateKey privateKey = PrivateKey.getInstance(dictionary.get("privateKey"));

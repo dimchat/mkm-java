@@ -35,7 +35,39 @@ import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Profile extends Dictionary {
+public class Profile extends TAO {
+
+    public Profile(Map<String, Object> dictionary) {
+        super(dictionary);
+    }
+
+    public Profile(ID identifier, String data, byte[] signature) {
+        super(identifier, data, signature);
+    }
+
+    public Profile(ID identifier) {
+        this(identifier, null, null);
+    }
+
+    //---- properties getter/setter
+
+    public String getName() {
+        return valid ? (String) properties.get("name") : null;
+    }
+
+    public void setName(String name) {
+        properties.put("name", name);
+        reset();
+    }
+}
+
+/**
+ *  The Additional Object
+ *
+ *      'Meta' is the information for entity which never changed, which contains the key for verify signature;
+ *      'TAO' is the variable part, which contains the key for asymmetric encryption.
+ */
+class TAO extends Dictionary {
 
     public final ID identifier;
 
@@ -51,7 +83,7 @@ public class Profile extends Dictionary {
      */
     private PublicKey key;
 
-    public Profile(Map<String, Object> dictionary) {
+    public TAO(Map<String, Object> dictionary) {
         super(dictionary);
         // ID
         identifier = ID.getInstance(dictionary.get("ID"));
@@ -70,42 +102,56 @@ public class Profile extends Dictionary {
         key = null;
     }
 
-    public Profile(ID identifier) {
+    public TAO(ID identifier, String data, byte[] signature) {
         super();
         // ID
         this.identifier = identifier;
-        dictionary.put("ID", identifier);
+        this.dictionary.put("ID", identifier);
 
         // properties
-        properties = new HashMap<>();
-        // data
-        data = null;
+        this.properties = new HashMap<>();
+        // json data
+        this.data = data;
+        if (data != null) {
+            this.dictionary.put("data", data);
+        }
         // signature
-        signature = null;
+        this.signature = signature;
+        if (signature != null) {
+            this.dictionary.put("signature", Base64.encode(signature));
+        }
         // verify flag
-        valid = false;
+        this.valid = false;
 
         // public key
-        key = null;
+        this.key = null;
     }
 
-    @SuppressWarnings("unchecked")
-    public static Profile getInstance(Object object) {
-        if (object == null) {
-            return null;
-        } else if (object instanceof Profile) {
-            return (Profile) object;
-        } else if (object instanceof Map) {
-            return new Profile((Map<String, Object>) object);
-        } else {
-            throw new IllegalArgumentException("unknown meta:" + object);
-        }
+    public PublicKey getKey() {
+        return valid ? key : null;
+    }
+
+    public void setKey(PublicKey publicKey) {
+        key = publicKey;
+        properties.put("key", publicKey);
+        reset();
+    }
+
+    /**
+     *  Reset data signature after properties changed
+     */
+    protected void reset() {
+        dictionary.remove("data");
+        dictionary.remove("signature");
+        data = null;
+        signature = null;
+        valid = false;
     }
 
     /**
      *  Verify 'data' and 'signature', if OK, refresh properties from 'data'
      *
-     * @param account - account with profile.identifier
+     * @param account - account with identifier
      * @return true on signature matched
      */
     public boolean verify(Account account) {
@@ -142,7 +188,7 @@ public class Profile extends Dictionary {
     /**
      *  Encode properties to 'data' and sign it to 'signature'
      *
-     * @param user - user with profile.identifier
+     * @param user - user with tao.identifier
      * @return signature
      */
     public byte[] sign(User user) {
@@ -159,43 +205,5 @@ public class Profile extends Dictionary {
         dictionary.put("signature", Base64.encode(signature));
         valid = true;
         return signature;
-    }
-
-    /**
-     *  Reset data signature after properties changed
-     */
-    protected void reset() {
-        dictionary.remove("data");
-        dictionary.remove("signature");
-        data = null;
-        signature = null;
-        valid = false;
-    }
-
-    //---- properties getter/setter
-
-    public PublicKey getKey() {
-        if (!valid) {
-            return null;
-        }
-        return key;
-    }
-
-    public void setKey(PublicKey publicKey) {
-        key = publicKey;
-        properties.put("key", publicKey);
-        reset();
-    }
-
-    public String getName() {
-        if (!valid) {
-            return null;
-        }
-        return (String) properties.get("name");
-    }
-
-    public void setName(String name) {
-        properties.put("name", name);
-        reset();
     }
 }

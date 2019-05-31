@@ -150,35 +150,26 @@ public final class PEM {
     }
 
     private static String getKeyContent(String pem, String tag) {
-        String sTag, eTag;
-        int sPos, ePos;
-
-        String content = null;
-
-        sTag = "-----BEGIN RSA " + tag + " KEY-----";
-        eTag = "-----END RSA " + tag + " KEY-----";
-        sPos = pem.indexOf(sTag);
+        String sTag = "-----BEGIN RSA " + tag + " KEY-----";
+        String eTag = "-----END RSA " + tag + " KEY-----";
+        int sPos = pem.indexOf(sTag);
         if (sPos < 0) {
+            // not PKCS#1 ? try PKCS#8
             sTag = "-----BEGIN " + tag + " KEY-----";
             eTag = "-----END " + tag + " KEY-----";
             sPos = pem.indexOf(sTag);
-        }
-        if (sPos != -1) {
-            sPos += sTag.length();
-            ePos = pem.indexOf(eTag, sPos);
-            if (ePos != -1) {
-                // got it
-                content = pem.substring(sPos, ePos);
+            if (sPos < 0) {
+                // not found
+                return null;
             }
         }
-
-        if (content == null) {
-            // not found
-            return null;
+        sPos += sTag.length();
+        int ePos = pem.indexOf(eTag, sPos);
+        if (ePos < 0) {
+            throw new StringIndexOutOfBoundsException("PEM format error:" + pem);
         }
-
-        content = content.replaceAll("[\r\n\t\\s]+", "");
-        return content;
+        // got it
+        return pem.substring(sPos, ePos).replaceAll("[\r\n\\s]+", "");
     }
 }
 
