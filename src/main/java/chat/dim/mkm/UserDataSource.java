@@ -33,17 +33,21 @@ import java.util.List;
 
 public interface UserDataSource extends EntityDataSource {
 
-    int PRIVATE_KEY_SIGNATURE = 1;
-    int PRIVATE_KEY_DECRYPTION = 2;
-
     /**
-     *  Get user's private key
+     *  Get user's private key for signature
      *
-     * @param flag - 1 for signature, 2 for decryption
      * @param user - user ID
      * @return private key
      */
-    PrivateKey getPrivateKey(int flag, ID user);
+    PrivateKey getPrivateKeyForSignature(ID user);
+
+    /**
+     *  Get user's private keys for decryption
+     *
+     * @param user - user ID
+     * @return private keys(paired with [profile.key, meta.key])
+     */
+    List<PrivateKey> getPrivateKeysForDecryption(ID user);
 
     /**
      *  Get contacts list
@@ -52,21 +56,4 @@ public interface UserDataSource extends EntityDataSource {
      * @return contacts list (ID)
      */
     List<ID> getContacts(ID user);
-
-    /**
-     *  Get contacts count
-     *
-     * @param user - user ID
-     * @return number of contacts
-     */
-    int getCountOfContacts(ID user);
-
-    /**
-     *  Get contact ID at index
-     *
-     * @param index - contact index
-     * @param user - user ID
-     * @return contact ID
-     */
-    ID getContactAtIndex(int index, ID user);
 }

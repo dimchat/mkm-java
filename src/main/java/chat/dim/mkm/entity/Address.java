@@ -46,11 +46,14 @@ import java.util.Arrays;
  */
 public final class Address {
 
+    public static final byte AlgorithmBTC     = 0x01;
+    public static final byte AlgorithmETH     = 0x01;
+    public static final byte AlgorithmDefault = AlgorithmBTC;
+
     private final String string;
 
     public final NetworkType network;
     public final long code;
-    public final boolean valid;
 
     /**
      *  Copy address data
@@ -75,7 +78,6 @@ public final class Address {
         if (Arrays.equals(cc, suffix)) {
             this.network = network;
             this.code    = userNumber(cc);
-            this.valid   = true;
         } else {
             throw new ArithmeticException("address check code error:" + string);
         }
@@ -87,24 +89,27 @@ public final class Address {
      *  @param fingerprint = sign(seed, PK)
      *  @param network - network ID
      */
-    public Address(byte[] fingerprint, NetworkType network) {
-        // 1. digest = ripemd160(sha256(fingerprint))
-        byte[] digest = Digest.ripemd160(Digest.sha256(fingerprint));
-        // 2. head = network + digest
-        byte[] head = new byte[21];
-        head[0] = network.toByte();
-        System.arraycopy(digest, 0, head, 1, 20);
-        // 3. cc = sha256(sha256(_h)).prefix(4)
-        byte[] cc = checkCode(head);
-        // 4. data = base58_encode(_h + cc)
-        byte[] data = new byte[25];
-        System.arraycopy(head, 0, data, 0, 21);
-        System.arraycopy(cc,0, data, 21, 4);
+    public Address(byte[] fingerprint, NetworkType network, byte algorithm) {
+        if (algorithm == AlgorithmBTC) {
+            // 1. digest = ripemd160(sha256(fingerprint))
+            byte[] digest = Digest.ripemd160(Digest.sha256(fingerprint));
+            // 2. head = network + digest
+            byte[] head = new byte[21];
+            head[0] = network.toByte();
+            System.arraycopy(digest, 0, head, 1, 20);
+            // 3. cc = sha256(sha256(_h)).prefix(4)
+            byte[] cc = checkCode(head);
+            // 4. data = base58_encode(_h + cc)
+            byte[] data = new byte[25];
+            System.arraycopy(head, 0, data, 0, 21);
+            System.arraycopy(cc,0, data, 21, 4);
 
-        this.string  = Base58.encode(data);
-        this.network = network;
-        this.code    = userNumber(cc);
-        this.valid   = true;
+            this.string  = Base58.encode(data);
+            this.network = network;
+            this.code    = userNumber(cc);
+        } else {
+            throw new ArithmeticException("not support algorithm: " + algorithm);
+        }
     }
 
     public static Address getInstance(Object object) {

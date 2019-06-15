@@ -63,12 +63,14 @@ public class EntityTest {
         PrivateKey sk = PrivateKey.create(PrivateKey.RSA);
         PublicKey pk = sk.getPublicKey();
         String seed = "moky";
+        byte[] data = seed.getBytes(Charset.forName("UTF-8"));
 
-        Meta meta = new Meta(sk, seed);
+        byte[] fingerprint = sk.sign(data);
+        Meta meta = new Meta(Meta.VersionDefault, pk, seed, fingerprint);
         Log.info("meta:" +meta);
         Assert.assertTrue(meta.matches(pk));
 
-        ID identifier = meta.buildID(NetworkType.Main);
+        ID identifier = meta.generateID(NetworkType.Main);
         Log.info("ID:" + identifier);
         Assert.assertTrue(meta.matches(identifier));
         Assert.assertTrue(meta.matches(identifier.address));
@@ -84,7 +86,6 @@ public class EntityTest {
         user.dataSource = facebook;
         facebook.addUser(user);
 
-        byte[] data = seed.getBytes(Charset.forName("UTF-8"));
         byte[] signature = user.sign(data);
         Assert.assertTrue(user.verify(data, signature));
         Log.info("signature OK!");

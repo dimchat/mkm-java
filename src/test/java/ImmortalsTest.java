@@ -1,9 +1,9 @@
 import chat.dim.crypto.PrivateKey;
 import chat.dim.format.JSON;
-import chat.dim.mkm.Profile;
 import chat.dim.mkm.User;
 import chat.dim.mkm.entity.ID;
 import chat.dim.mkm.entity.Meta;
+import chat.dim.mkm.entity.Profile;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -26,9 +26,6 @@ public class ImmortalsTest {
         Meta meta = Meta.getInstance(dictionary.get("meta"));
         assert meta != null && meta.matches(identifier);
         facebook.addMeta(meta, identifier);
-        // profile
-        Profile profile = new Profile((Map<String, Object>) dictionary.get("profile"));
-        facebook.addProfile(profile);
         // private key
         PrivateKey privateKey = PrivateKey.getInstance(dictionary.get("privateKey"));
         if (meta.key.matches(privateKey)) {
@@ -41,7 +38,8 @@ public class ImmortalsTest {
         User user = new User(identifier);
         facebook.addUser(user);
 
-        // sign profile
+        // profile
+        Profile profile = new Profile((Map<String, Object>) dictionary.get("profile"));
         List<String> names = (List<String>) profile.get("names");
         if (names != null) {
             profile.remove("names");
@@ -49,7 +47,9 @@ public class ImmortalsTest {
                 profile.setName(names.get(0));
             }
         }
-        profile.sign(user);
+        // sign profile
+        profile.sign(privateKey);
+        facebook.addProfile(profile);
 
         return user;
     }

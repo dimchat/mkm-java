@@ -25,8 +25,6 @@
  */
 package chat.dim.mkm.entity;
 
-import chat.dim.mkm.Profile;
-
 public interface EntityDataSource {
 
     /**

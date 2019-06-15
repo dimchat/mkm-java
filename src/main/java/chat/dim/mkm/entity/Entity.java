@@ -25,8 +25,6 @@
  */
 package chat.dim.mkm.entity;
 
-import chat.dim.mkm.Profile;
-
 public class Entity {
 
     public final ID identifier;
@@ -97,12 +95,26 @@ public class Entity {
     }
 
     public Meta getMeta() {
+        if (dataSource == null) {
+            return null;
+        }
         // get from data source
-        return dataSource == null ? null : dataSource.getMeta(identifier);
+        return dataSource.getMeta(identifier);
     }
 
     public Profile getProfile() {
+        Meta meta = getMeta();
+        if (meta == null) {
+            return null;
+        }
         // get from data source
-        return dataSource == null ? null : dataSource.getProfile(identifier);
+        Profile profile = dataSource.getProfile(identifier);
+        if (profile == null) {
+            return null;
+        } else if (profile.verify(meta.key)) {
+            return profile;
+        } else {
+            throw new ArithmeticException("profile signature not match:" + profile);
+        }
     }
 }

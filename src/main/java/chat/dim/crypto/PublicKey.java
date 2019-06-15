@@ -79,7 +79,7 @@ public abstract class PublicKey extends CryptographyKey {
      *
      * @param data - data
      * @param signature - signature of data
-     * @return true on signature correct
+     * @return true on signature matched
      */
     public abstract boolean verify(byte[] data, byte[] signature);
 

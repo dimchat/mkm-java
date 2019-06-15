@@ -29,6 +29,7 @@ import chat.dim.crypto.PublicKey;
 import chat.dim.mkm.entity.Entity;
 import chat.dim.mkm.entity.ID;
 import chat.dim.mkm.entity.Meta;
+import chat.dim.mkm.entity.Profile;
 
 public class Account extends Entity {
 
@@ -45,14 +46,19 @@ public class Account extends Entity {
      */
     public boolean verify(byte[] data, byte[] signature) {
         PublicKey key;
-        // 1. get key for signature from meta
-        Meta meta = getMeta();
-        if (meta == null) {
-            throw new NullPointerException("failed to get meta.key for:" + identifier);
-        } else {
-            key = meta.key;
+        /*
+        // 1. get key for signature from profile
+        key = getProfileKey();
+        if (key != null && key.verify(data, signature)) {
+            return true;
         }
-        // 2. verify with meta.key
+        */
+        // 2. get key for signature from meta
+        key = getMetaKey();
+        if (key == null) {
+            throw new NullPointerException("failed to get verify key for: " + identifier);
+        }
+        // 3. verify with meta.key
         return key.verify(data, signature);
     }
 
@@ -63,23 +69,33 @@ public class Account extends Entity {
      * @return encrypted data
      */
     public byte[] encrypt(byte[] plaintext) {
-        PublicKey key = null;
         // 1. get key for encryption from profile
-        Profile profile = getProfile();
-        if (profile != null && profile.verify(this)) {
-            key = profile.getKey();
+        PublicKey key = getProfileKey();
+        if (key == null) {
+            // 2. get key for encryption from meta instead
+            key = getMetaKey();
+            // NOTICE: meta.key will never changed, so use profile.key to encrypt is the better way
         }
         if (key == null) {
-            // 2. get key for encryption from meta
-            Meta meta = getMeta();
-            if (meta == null) {
-                throw new NullPointerException("failed to get meta.key for:" + identifier);
-            } else {
-                // NOTICE: meta.key will never changed, so use profile.key to encrypt is the better way
-                key = meta.key;
-            }
+            throw new NullPointerException("failed to get encrypt key for: " + identifier);
         }
         // 3. encrypt with profile.key
         return key.encrypt(plaintext);
+    }
+
+    private PublicKey getMetaKey() {
+        Meta meta = getMeta();
+        if (meta == null) {
+            throw new NullPointerException("failed to get meta for: " + identifier);
+        }
+        return meta.key;
+    }
+
+    private PublicKey getProfileKey() {
+        Profile profile = getProfile();
+        if (profile == null) {
+            return null;
+        }
+        return profile.getKey();
     }
 }

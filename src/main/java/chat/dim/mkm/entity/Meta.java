@@ -31,7 +31,6 @@ import chat.dim.crypto.PublicKey;
 import chat.dim.format.Base64;
 
 import java.nio.charset.Charset;
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -54,6 +53,31 @@ import java.util.Map;
  *          number  = uint(code);
  */
 public final class Meta extends Dictionary {
+
+    /**
+     *  enum MKMMetaVersion
+     *
+     *  abstract Defined for algorithm that generating address.
+     *
+     *  discussion Generate and check ID/Address
+     *
+     *      MKMMetaVersion_MKM give a seed string first, and sign this seed to get
+     *      fingerprint; after that, use the fingerprint to generate address.
+     *      This will get a firmly relationship between (username, address and key).
+     *
+     *      MKMMetaVersion_BTC use the key data to generate address directly.
+     *      This can build a BTC address for the entity ID (no username).
+     *
+     *      MKMMetaVersion_ExBTC use the key data to generate address directly, and
+     *      sign the seed to get fingerprint (just for binding username and key).
+     *      This can build a BTC address, and bind a username to the entity ID.
+     */
+    public static final byte VersionMKM     = 0x01;  // 0000 0001
+    public static final byte VersionBTC     = 0x02;  // 0000 0010
+    public static final byte VersionExBTC   = 0x03;  // 0000 0011
+    public static final byte VersionETH     = 0x04;  // 0000 0100
+    public static final byte VersionExETH   = 0x05;  // 0000 0101
+    public static final byte VersionDefault = VersionMKM;
 
     /**
      *  Meta algorithm version
@@ -86,43 +110,18 @@ public final class Meta extends Dictionary {
      */
     public final byte[] fingerprint;
 
-    public final boolean valid;
-
-    /**
-     *  enum MKMMetaVersion
-     *
-     *  abstract Defined for algorithm that generating address.
-     *
-     *  discussion Generate and check ID/Address
-     *
-     *      MKMMetaVersion_MKM give a seed string first, and sign this seed to get
-     *      fingerprint; after that, use the fingerprint to generate address.
-     *      This will get a firmly relationship between (username, address and key).
-     *
-     *      MKMMetaVersion_BTC use the key data to generate address directly.
-     *      This can build a BTC address for the entity ID (no username).
-     *
-     *      MKMMetaVersion_ExBTC use the key data to generate address directly, and
-     *      sign the seed to get fingerprint (just for binding username and key).
-     *      This can build a BTC address, and bind a username to the entity ID.
-     */
-    public static final byte VersionMKM     = 0x01;
-    public static final byte VersionBTC     = 0x02;
-    public static final byte VersionExBTC   = 0x03;
-    public static final byte VersionDefault = VersionMKM;
-
     public Meta(Map<String, Object> dictionary) throws ClassNotFoundException {
         super(dictionary);
         this.version     = ((Number) dictionary.get("version")).byteValue();
         this.key         = PublicKey.getInstance(dictionary.get("key"));
         this.seed        = (String) dictionary.get("seed");
-        this.fingerprint = Base64.decode((String) dictionary.get("fingerprint"));
+        String base64    = (String) dictionary.get("fingerprint");
+        this.fingerprint = base64 == null ? null : Base64.decode(base64);
         // check valid
-        if (version == VersionMKM || version == VersionExBTC) {
-            this.valid = key.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint);
-        } else { // VersionBTC
-            // no seed, and the fingerprint is key.data
-            this.valid = (seed == null) && (key != null) && (Arrays.equals(key.data, fingerprint));
+        if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
+            if (!key.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint)) {
+                throw new ArithmeticException("fingerprint not match: " + dictionary);
+            }
         }
     }
 
@@ -140,42 +139,20 @@ public final class Meta extends Dictionary {
         this.key = key;
         this.seed = seed;
         this.fingerprint = fingerprint;
-        // check valid
-        if (version == VersionMKM || version == VersionExBTC) {
-            this.valid = key.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint);
-        } else { // VersionBTC
-            // no seed, and the fingerprint is key.data
-            this.valid = (seed == null) && (key != null) && (Arrays.equals(key.data, fingerprint));
-        }
         dictionary.put("version", (int) version);
         dictionary.put("key", key);
-        dictionary.put("seed", seed);
-        dictionary.put("fingerprint", Base64.encode(fingerprint));
-    }
-
-    /**
-     * Generate fingerprint, initialize meta data
-     *
-     * @param version - meta version for MKM or ExBTC
-     * @param sk - private key to generate fingerprint
-     * @param seed - seed for fingerprint
-     */
-    public Meta(byte version, PrivateKey sk, String seed) {
-        this(version, sk.getPublicKey(), seed,
-                version == VersionBTC ? sk.getPublicKey().data : sk.sign(seed.getBytes(Charset.forName("UTF-8"))));
-    }
-
-    public Meta(PrivateKey sk, String seed) {
-        this(VersionDefault, sk, seed);
-    }
-
-    /**
-     *  For BTC address
-     *
-     * @param key - public key (ECC)
-     */
-    public Meta(PublicKey key) {
-        this(VersionBTC, key, null, key.data);
+        if (seed != null) {
+            dictionary.put("seed", seed);
+        }
+        if (fingerprint != null) {
+            dictionary.put("fingerprint", Base64.encode(fingerprint));
+        }
+        // check valid
+        if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
+            if (!key.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint)) {
+                throw new ArithmeticException("fingerprint not match: " + dictionary);
+            }
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -191,54 +168,92 @@ public final class Meta extends Dictionary {
         }
     }
 
+    /**
+     *  Generate meta info for BTC/ETH address
+     *
+     * @param version - meta version (BTC, ETH, ...)
+     * @param key - public key (ECC)
+     * @return Meta object
+     */
+    public static Meta generate(byte version, PublicKey key) {
+        return new Meta(version, key, null, null);
+    }
+
+    /**
+     *  Generate meta info for MKM address
+     *
+     * @param sk - private key
+     * @param seed - user/group name
+     * @return Meta object
+     */
+    public static Meta generate(PrivateKey sk, String seed) {
+        return generate(VersionDefault, sk, seed);
+    }
+
+    /**
+     *  Generate meta info with seed and private key
+     *
+     * @param version - meta version(MKM, BTC, ETH, ...)
+     * @param sk - private key
+     * @param seed - user/group name
+     * @return Meta object
+     */
+    public static Meta generate(byte version, PrivateKey sk, String seed) {
+        if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
+            // generate fingerprint with private key
+            byte[] fingerprint = sk.sign(seed.getBytes(Charset.forName("UTF-8")));
+            return new Meta(version, sk.getPublicKey(), seed, fingerprint);
+        } else { // BTC, ETH, ...
+            return new Meta(version, sk.getPublicKey(), null, null);
+        }
+    }
+
     public boolean matches(PublicKey pk) {
-        if (!valid) {
-            return false;
-        }
-        if (version == VersionBTC) {
-            // ID with BTC address has no username
-            // so we can just compare the key.data to check matching
-            return Arrays.equals(key.data, pk.data);
-        }
         if (key.equals(pk)) {
             return true;
         }
-        // check whether keys equal by verifying signature
-        return pk.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint);
+        if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
+            // check whether keys equal by verifying signature
+            return pk.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint);
+        } else { // BTC, ETH, ...
+            // ID with BTC/ETH address has no username
+            // so we can just compare the key.data to check matching
+            return false;
+        }
     }
 
     public boolean matches(ID identifier) {
-        ID ident = buildID(identifier.getType());
-        return ident != null && ident.equals(identifier);
+        if (seed == null) {
+            if (identifier.name != null || identifier.name.length() > 0) {
+                return false;
+            }
+        } else if (!seed.equals(identifier.name)) {
+            return false;
+        }
+        return matches(identifier.address);
     }
 
     public boolean matches(Address address) {
-        Address addr = buildAddress(address.network);
-        return addr != null && addr.equals(address);
+        return generateAddress(address.network).equals(address);
     }
 
-    public ID buildID(NetworkType network) {
-        Address address = buildAddress(network);
-        if (address == null) {
-            return null;
-        }
-        if (version == VersionBTC) {
-            return new ID(address);
-        } else {
-            // MKM & ExBTC
-            return new ID(seed, address);
-        }
+    public ID generateID(NetworkType network) {
+        Address address = generateAddress(network);
+        return new ID(seed, address);
     }
 
-    public Address buildAddress(NetworkType network) {
-        if (!valid) {
-            return null;
-        }
+    public Address generateAddress(NetworkType network) {
         if (version == VersionMKM) {
-            return new Address(fingerprint, network);
+            // MKM
+            return new Address(fingerprint, network, Address.AlgorithmDefault);
+        } else if ((version & VersionBTC) == VersionBTC) {
+            // BTC, ExBTC
+            return new Address(key.data, network, Address.AlgorithmBTC);
+        } else if ((version & VersionETH) == VersionETH) {
+            // ETH, ExETH
+            return new Address(key.data, network, Address.AlgorithmETH);
         } else {
-            // BTC & ExBTC
-            return new Address(key.data, network);
+            throw new ArithmeticException("meta version error: " + version);
         }
     }
 }

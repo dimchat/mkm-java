@@ -23,19 +23,21 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm;
+package chat.dim.mkm.entity;
 
 import chat.dim.crypto.Dictionary;
+import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
-import chat.dim.mkm.entity.ID;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
 public class Profile extends TAO {
+
+    private String name;
 
     public Profile(Map<String, Object> dictionary) {
         super(dictionary);
@@ -52,11 +54,18 @@ public class Profile extends TAO {
     //---- properties getter/setter
 
     public String getName() {
-        return valid ? (String) properties.get("name") : null;
+        if (!valid) {
+            return null;
+        }
+        if (name == null) {
+            name = (String) properties.get("name");
+        }
+        return name;
     }
 
-    public void setName(String name) {
-        properties.put("name", name);
+    public void setName(String value) {
+        name = value;
+        properties.put("name", value);
         reset();
     }
 }
@@ -151,10 +160,10 @@ class TAO extends Dictionary {
     /**
      *  Verify 'data' and 'signature', if OK, refresh properties from 'data'
      *
-     * @param account - account with identifier
+     * @param publicKey - public key in meta.key
      * @return true on signature matched
      */
-    public boolean verify(Account account) {
+    public boolean verify(PublicKey publicKey) {
         if (valid) {
             // already verified
             return true;
@@ -163,10 +172,7 @@ class TAO extends Dictionary {
             // data error
             return false;
         }
-        if (!account.identifier.equals(identifier)) {
-            throw new IllegalArgumentException("ID not match");
-        }
-        if (account.verify(data.getBytes(Charset.forName("UTF-8")), signature)) {
+        if (publicKey.verify(data.getBytes(Charset.forName("UTF-8")), signature)) {
             valid = true;
             // refresh properties
             properties.clear();
@@ -188,19 +194,16 @@ class TAO extends Dictionary {
     /**
      *  Encode properties to 'data' and sign it to 'signature'
      *
-     * @param user - user with tao.identifier
+     * @param privateKey - private key match meta.key
      * @return signature
      */
-    public byte[] sign(User user) {
+    public byte[] sign(PrivateKey privateKey) {
         if (valid) {
             // already signed
             return signature;
         }
-        if (!user.identifier.equals(identifier)) {
-            throw new IllegalArgumentException("ID not match");
-        }
         data = JSON.encode(properties);
-        signature = user.sign(data.getBytes(Charset.forName("UTF-8")));
+        signature = privateKey.sign(data.getBytes(Charset.forName("UTF-8")));
         dictionary.put("data", data);
         dictionary.put("signature", Base64.encode(signature));
         valid = true;

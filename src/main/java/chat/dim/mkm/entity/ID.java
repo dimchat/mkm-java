@@ -65,7 +65,7 @@ public final class ID {
 
     public ID(String name, Address address) {
         if (name == null || name.length() == 0) {
-            // BTC address?
+            // BTC(ETH) address?
             this.string = address.toString();
         } else {
             this.string = name + "@" + address;
@@ -76,9 +76,9 @@ public final class ID {
     }
 
     /**
-     *  For BTC address
+     *  For BTC/ETH address
      *
-     * @param address - BTC address
+     * @param address - BTC/ETH address
      */
     public ID(Address address) {
         this(null, address);
@@ -145,6 +145,6 @@ public final class ID {
     }
 
     public boolean isValid() {
-        return address.valid;
+        return address != null;
     }
 }

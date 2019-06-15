@@ -55,21 +55,4 @@ public interface GroupDataSource extends EntityDataSource {
      * @return members list (ID)
      */
     List<ID> getMembers(ID group);
-
-    /**
-     *  Get members count
-     *
-     * @param group - group object
-     * @return number of members
-     */
-    int getCountOfMembers(ID group);
-
-    /**
-     *  Get member ID at index
-     *
-     * @param index - member index
-     * @param group - group object
-     * @return member ID
-     */
-    ID getMemberAtIndex(int index, ID group);
 }

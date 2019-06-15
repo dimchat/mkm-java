@@ -28,7 +28,7 @@ package chat.dim.mkm;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.mkm.entity.ID;
 
-import java.util.ArrayList;
+import java.security.InvalidParameterException;
 import java.util.List;
 
 public class User extends Account {
@@ -44,24 +44,10 @@ public class User extends Account {
      */
     public List<ID> getContacts() {
         if (this.dataSource == null) {
-            return null;
+            throw new NullPointerException("data source not set for user:" + identifier);
         }
         UserDataSource dataSource = (UserDataSource) this.dataSource;
-        List<ID> contacts = dataSource.getContacts(identifier);
-        if (contacts != null) {
-            return contacts;
-        }
-        int count = dataSource.getCountOfContacts(identifier);
-        if (count == 0) {
-            return null;
-        } else if (count < 0) {
-            throw new ArrayIndexOutOfBoundsException("failed to get contacts of user:" + identifier);
-        }
-        contacts = new ArrayList<>(count);
-        for (int index = 0; index < count; index++) {
-            contacts.add(dataSource.getContactAtIndex(index, identifier));
-        }
-        return contacts;
+        return dataSource.getContacts(identifier);
     }
 
     /**
@@ -76,7 +62,7 @@ public class User extends Account {
         }
         // get from data source
         UserDataSource dataSource = (UserDataSource) this.dataSource;
-        PrivateKey privateKey = dataSource.getPrivateKey(UserDataSource.PRIVATE_KEY_SIGNATURE, identifier);
+        PrivateKey privateKey = dataSource.getPrivateKeyForSignature(identifier);
         if (privateKey == null) {
             throw new NullPointerException("failed to get private key for user:" + identifier);
         }
@@ -84,7 +70,7 @@ public class User extends Account {
     }
 
     /**
-     *  Decrypt data with user's private key
+     *  Decrypt data with user's private key(s)
      *
      * @param ciphertext - encrypted data
      * @return plain text
@@ -95,10 +81,20 @@ public class User extends Account {
         }
         // get from data source
         UserDataSource dataSource = (UserDataSource) this.dataSource;
-        PrivateKey privateKey = dataSource.getPrivateKey(UserDataSource.PRIVATE_KEY_DECRYPTION, identifier);
-        if (privateKey == null) {
-            throw new NullPointerException("failed to get private key for user:" + identifier);
+        List<PrivateKey> privateKeys = dataSource.getPrivateKeysForDecryption(identifier);
+        byte[] plaintext = null;
+        for (PrivateKey privateKey : privateKeys) {
+            try {
+                plaintext = privateKey.decrypt(ciphertext);
+            } catch (InvalidParameterException e) {
+                // key not match
+                e.printStackTrace();
+            }
+            if (plaintext != null) {
+                // OK!
+                break;
+            }
         }
-        return privateKey.decrypt(ciphertext);
+        return plaintext;
     }
 }
