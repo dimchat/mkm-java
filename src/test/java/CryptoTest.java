@@ -1,25 +1,11 @@
 import chat.dim.crypto.Digest;
-import chat.dim.crypto.SymmetricKey;
-import chat.dim.format.Base58;
-import chat.dim.format.Base64;
+import chat.dim.format.*;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
 
 public class CryptoTest {
-
-    private static String hexEncode(byte[] data) {
-        StringBuilder sb = new StringBuilder();
-        String hex;
-        for (byte ch : data) {
-            hex = Integer.toHexString(ch & 0xFF);
-            sb.append(hex.length() == 1 ? "0" + hex : hex);
-        }
-        return sb.toString();
-    }
 
     @Test
     public void testHash() throws UnsupportedEncodingException {
@@ -35,14 +21,14 @@ public class CryptoTest {
         // sha256（moky）= cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d
         hash = Digest.sha256(data);
         assert hash != null;
-        res = hexEncode(hash);
+        res = Utils.hexEncode(hash);
         exp = "cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d";
         Log.info("sha256(" + string + ") = " + res);
         Assert.assertEquals(exp, res);
 
         // ripemd160(moky) = 44bd174123aee452c6ec23a6ab7153fa30fa3b91
         hash = Digest.ripemd160(data);
-        res = hexEncode(hash);
+        res = Utils.hexEncode(hash);
         exp = "44bd174123aee452c6ec23a6ab7153fa30fa3b91";
         Log.info("ripemd160(" + string + ") = " + res);
         Assert.assertEquals(exp, res);
@@ -69,62 +55,44 @@ public class CryptoTest {
         Assert.assertEquals(exp, res);
     }
 
-    @Test
-    public void testAES() throws ClassNotFoundException, UnsupportedEncodingException {
-        Map<String, Object> dictionary = new HashMap<>();
-        dictionary.put("algorithm", "AES");
-        dictionary.put("data", "C2+xGizLL1G1+z9QLPYNdp/bPP/seDvNw45SXPAvQqk=");
-        dictionary.put("iv", "SxPwi6u4+ZLXLdAFJezvSQ==");
+    static {
+        Base58.coder = new BaseCoder() {
 
-        SymmetricKey key = SymmetricKey.getInstance(dictionary);
-        Log.info("key:" + key);
+            @Override
+            public String encode(byte[] data) {
+                return chat.dim.format.bitcoinj.Base58.encode(data);
+            }
 
-        String text;
-        byte[] plaintext;
-        byte[] ciphertext;
-        byte[] data;
-        String decrypt;
+            @Override
+            public byte[] decode(String string) {
+                return chat.dim.format.bitcoinj.Base58.decode(string);
+            }
+        };
 
-        text = "moky";
-        plaintext = text.getBytes("UTF-8");
-        ciphertext = key.encrypt(plaintext);
-        Log.info("encrypt(\"" + text + "\") = " + hexEncode(ciphertext));
-        Log.info("encrypt(\"" + text + "\") = " + Base64.encode(ciphertext));
+        Base64.coder = new BaseCoder() {
 
-        data = key.decrypt(ciphertext);
-        decrypt = new String(data, "UTF-8");
-        Log.info("decrypt to " + decrypt);
-        Log.info(text + " -> " + Base64.encode(ciphertext) + " -> " + decrypt);
+            @Override
+            public String encode(byte[] data) {
+                return java.util.Base64.getEncoder().encodeToString(data);
+            }
 
-        Assert.assertEquals("0xtbqZN6x2aWTZn0DpCoCA==", Base64.encode(ciphertext));
+            @Override
+            public byte[] decode(String string) {
+                return java.util.Base64.getDecoder().decode(string);
+            }
+        };
 
-        SymmetricKey key2 = SymmetricKey.getInstance(dictionary);
-        Log.info("key2: " + key2);
-        Assert.assertEquals(key, key2);
-//        Assert.assertTrue(key.equals(key2));
+        JSON.parser = new DataParser() {
 
-        text = "XX5qfromb3R078VVK7LwVA=="; // NoPadding
-//        text = "0xtbqZN6x2aWTZn0DpCoCA==";
-        ciphertext = Base64.decode(text);
-        plaintext = key2.decrypt(ciphertext);
-        Log.info("FIXED: " + text + " -> " + (plaintext == null ? null : new String(plaintext)));
-//        plaintext = key2.decrypt(ciphertext);
-//        log("FIXED: " + text + " -> " + (plaintext == null ? null : new String(plaintext)));
+            @Override
+            public String encode(Object container) {
+                return com.alibaba.fastjson.JSON.toJSONString(container);
+            }
 
-        // random key
-        key = SymmetricKey.create(SymmetricKey.AES);
-        Log.info("key: " + key);
-
-        text = "moky";
-        plaintext = text.getBytes("UTF-8");
-        ciphertext = key.encrypt(plaintext);
-        Log.info("encrypt(\"" + text + "\") = " + hexEncode(ciphertext));
-        Log.info("encrypt(\"" + text + "\") = " + Base64.encode(ciphertext));
-
-        data = key.decrypt(ciphertext);
-        decrypt = new String(data, "UTF-8");
-        Log.info("decrypt to " + decrypt);
-
-        Assert.assertEquals(text, decrypt);
+            @Override
+            public Object decode(String jsonString) {
+                return com.alibaba.fastjson.JSON.parseObject(jsonString);
+            }
+        };
     }
 }

@@ -68,13 +68,15 @@ final class RSAPrivateKey extends PrivateKey {
         }
     }
 
-    private int keySizeInBits() {
-        Object size = dictionary.get("keySizeInBits");
+    private int keySize() {
+        // TODO: get from key
+
+        Object size = dictionary.get("keySize");
         if (size == null) {
-            dictionary.put("keySizeInBits", 1024);
-            return 1024;
+            return 1024 / 8; // 128
+        } else  {
+            return (int) size;
         }
-        return (Integer) size;
     }
 
     private KeyPair getKeyPair()
@@ -82,7 +84,7 @@ final class RSAPrivateKey extends PrivateKey {
         Object data = dictionary.get("data");
         if (data == null) {
             // generate key
-            int bits = keySizeInBits();
+            int bits = keySize() * 8;
             return generate(bits);
         } else {
             // parse PEM file content
@@ -90,10 +92,10 @@ final class RSAPrivateKey extends PrivateKey {
         }
     }
 
-    private KeyPair generate(int keySize)
+    private KeyPair generate(int sizeInBits)
             throws NoSuchAlgorithmException, IOException, NoSuchProviderException {
         KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "BC");
-        generator.initialize(keySize);
+        generator.initialize(sizeInBits);
         KeyPair keyPair = generator.generateKeyPair();
 
         // -----BEGIN PUBLIC KEY-----
@@ -105,6 +107,12 @@ final class RSAPrivateKey extends PrivateKey {
         // -----END RSA PRIVATE KEY-----
 
         dictionary.put("data", pkFile.toString() + "\n" + skFile.toString());
+
+        // other parameters
+        dictionary.put("mode", "ECB");
+        dictionary.put("padding", "PKCS1");
+        dictionary.put("digest", "SHA256");
+
         return keyPair;
     }
 
@@ -151,8 +159,10 @@ final class RSAPrivateKey extends PrivateKey {
         }
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", algorithm);
-        dictionary.put("keySizeInBits", keySizeInBits());
         dictionary.put("data", pem);
+        dictionary.put("mode", "ECB");
+        dictionary.put("padding", "PKCS1");
+        dictionary.put("digest", "SHA256");
         try {
             return PublicKey.getInstance(dictionary);
         } catch (ClassNotFoundException e) {
@@ -162,7 +172,7 @@ final class RSAPrivateKey extends PrivateKey {
     }
 
     public byte[] decrypt(byte[] ciphertext) {
-        if (ciphertext.length != (keySizeInBits() / 8)) {
+        if (ciphertext.length != keySize()) {
             throw new InvalidParameterException("RSA cipher text length error:" + ciphertext.length);
         }
         try {

@@ -41,14 +41,10 @@ public abstract class CryptographyKey extends Dictionary {
     protected final String algorithm;
     public byte[] data;
 
-    protected CryptographyKey(Map<String, Object> dictionary) {
+    CryptographyKey(Map<String, Object> dictionary) {
         super(dictionary);
-        algorithm = getAlgorithm(dictionary);
+        this.algorithm = (String) dictionary.get("algorithm");
         // process by subclass
-        data = null;
-    }
-
-    protected static String getAlgorithm(Map<String, Object> dictionary) {
-        return (String) dictionary.get("algorithm");
+        this.data = null;
     }
 }

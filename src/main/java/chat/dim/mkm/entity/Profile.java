@@ -31,15 +31,23 @@ import chat.dim.crypto.PublicKey;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
 
+import java.lang.reflect.Constructor;
 import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Profile extends TAO {
 
     private String name;
 
-    public Profile(Map<String, Object> dictionary) {
+    /**
+     *  Called by 'getInstance()' to create Profile
+     *
+     *  @param dictionary - profile info
+     */
+    public Profile(Map<String, Object> dictionary) throws ClassNotFoundException {
         super(dictionary);
     }
 
@@ -47,6 +55,11 @@ public class Profile extends TAO {
         super(identifier, data, signature);
     }
 
+    /**
+     *  Create a new empty profile
+     *
+     * @param identifier - entity ID
+     */
     public Profile(ID identifier) {
         this(identifier, null, null);
     }
@@ -67,6 +80,52 @@ public class Profile extends TAO {
         name = value;
         properties.put("name", value);
         reset();
+    }
+
+    //-------- Runtime --------
+
+    private static List<Class> profileClasses = new ArrayList<>();
+
+    @SuppressWarnings("unchecked")
+    public static void register(Class clazz) {
+        // check whether clazz is subclass of Profile
+        clazz = clazz.asSubclass(Profile.class);
+        if (!profileClasses.contains(clazz)) {
+            profileClasses.add(0, clazz);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Profile createInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
+        Constructor constructor;
+        for (Class clazz: profileClasses) {
+            try {
+                constructor = clazz.getConstructor(Map.class);
+                return (Profile) constructor.newInstance(dictionary);
+            } catch (Exception e) {
+                // profile data error, try next
+                //e.printStackTrace();
+            }
+        }
+        throw new ClassNotFoundException("unknown profile: " + dictionary);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Profile getInstance(Object object) throws ClassNotFoundException {
+        if (object == null) {
+            return null;
+        } else if (object instanceof Profile) {
+            return (Profile) object;
+        } else if (object instanceof Map) {
+            return createInstance((Map<String, Object>) object);
+        } else {
+            throw new IllegalArgumentException("profile error: " + object);
+        }
+    }
+
+    static {
+        register(Profile.class); // default
+        // ...
     }
 }
 
@@ -92,7 +151,7 @@ class TAO extends Dictionary {
      */
     private PublicKey key;
 
-    public TAO(Map<String, Object> dictionary) {
+    TAO(Map<String, Object> dictionary) throws ClassNotFoundException {
         super(dictionary);
         // ID
         identifier = ID.getInstance(dictionary.get("ID"));
@@ -111,7 +170,7 @@ class TAO extends Dictionary {
         key = null;
     }
 
-    public TAO(ID identifier, String data, byte[] signature) {
+    TAO(ID identifier, String data, byte[] signature) {
         super();
         // ID
         this.identifier = identifier;

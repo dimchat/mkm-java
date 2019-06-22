@@ -52,13 +52,15 @@ final class RSAPublicKey extends PublicKey {
         publicKey = getKey();
     }
 
-    private int keySizeInBits() {
-        Object size = dictionary.get("keySizeInBits");
+    private int keySize() {
+        // TODO: get from key
+
+        Object size = dictionary.get("keySize");
         if (size == null) {
-            dictionary.put("keySizeInBits", 1024);
-            return 1024;
+            return 1024 / 8; // 128
+        } else  {
+            return (int) size;
         }
-        return (Integer) size;
     }
 
     private java.security.interfaces.RSAPublicKey getKey()
@@ -86,7 +88,7 @@ final class RSAPublicKey extends PublicKey {
     //-------- interfaces --------
 
     public byte[] encrypt(byte[] plaintext) {
-        if (plaintext.length > (keySizeInBits() / 8 - 11)) {
+        if (plaintext.length > (keySize() - 11)) {
             throw new InvalidParameterException("RSA plain text length error:" + plaintext.length);
         }
         try {

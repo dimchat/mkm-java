@@ -30,7 +30,10 @@ import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.format.Base64;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -52,7 +55,7 @@ import java.util.Map;
  *          address = base58_encode(network + hash + code);
  *          number  = uint(code);
  */
-public final class Meta extends Dictionary {
+public class Meta extends Dictionary {
 
     /**
      *  enum MKMMetaVersion
@@ -114,14 +117,19 @@ public final class Meta extends Dictionary {
         super(dictionary);
         this.version     = ((Number) dictionary.get("version")).byteValue();
         this.key         = PublicKey.getInstance(dictionary.get("key"));
-        this.seed        = (String) dictionary.get("seed");
-        String base64    = (String) dictionary.get("fingerprint");
-        this.fingerprint = base64 == null ? null : Base64.decode(base64);
         // check valid
         if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
+            String seed = (String) dictionary.get("seed");
+            String base64 = (String) dictionary.get("fingerprint");
+            byte[] fingerprint = Base64.decode(base64);
             if (!key.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint)) {
                 throw new ArithmeticException("fingerprint not match: " + dictionary);
             }
+            this.seed = seed;
+            this.fingerprint = fingerprint;
+        } else {
+            this.seed = null;
+            this.fingerprint = null;
         }
     }
 
@@ -133,61 +141,22 @@ public final class Meta extends Dictionary {
      * @param seed - user/group name
      * @param fingerprint - signature of seed, or key data
      */
-    public Meta(byte version, PublicKey key, String seed, byte[] fingerprint) {
+    private Meta(byte version, PublicKey key, String seed, byte[] fingerprint) {
         super();
         this.version = version;
         this.key = key;
         this.seed = seed;
         this.fingerprint = fingerprint;
-        dictionary.put("version", (int) version);
+        dictionary.put("version", version);
         dictionary.put("key", key);
-        if (seed != null) {
-            dictionary.put("seed", seed);
-        }
-        if (fingerprint != null) {
-            dictionary.put("fingerprint", Base64.encode(fingerprint));
-        }
-        // check valid
         if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
+            // check valid
             if (!key.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint)) {
                 throw new ArithmeticException("fingerprint not match: " + dictionary);
             }
+            dictionary.put("seed", seed);
+            dictionary.put("fingerprint", Base64.encode(fingerprint));
         }
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Meta getInstance(Object object) throws ClassNotFoundException {
-        if (object == null) {
-            return null;
-        } else if (object instanceof Meta) {
-            return (Meta) object;
-        } else if (object instanceof Map) {
-            return new Meta((Map<String, Object>) object);
-        } else {
-            throw new IllegalArgumentException("unknown meta:" + object);
-        }
-    }
-
-    /**
-     *  Generate meta info for BTC/ETH address
-     *
-     * @param version - meta version (BTC, ETH, ...)
-     * @param key - public key (ECC)
-     * @return Meta object
-     */
-    public static Meta generate(byte version, PublicKey key) {
-        return new Meta(version, key, null, null);
-    }
-
-    /**
-     *  Generate meta info for MKM address
-     *
-     * @param sk - private key
-     * @param seed - user/group name
-     * @return Meta object
-     */
-    public static Meta generate(PrivateKey sk, String seed) {
-        return generate(VersionDefault, sk, seed);
     }
 
     /**
@@ -224,7 +193,8 @@ public final class Meta extends Dictionary {
 
     public boolean matches(ID identifier) {
         if (seed == null) {
-            if (identifier.name != null || identifier.name.length() > 0) {
+            String name = identifier.name;
+            if (name != null && name.length() > 0) {
                 return false;
             }
         } else if (!seed.equals(identifier.name)) {
@@ -234,26 +204,81 @@ public final class Meta extends Dictionary {
     }
 
     public boolean matches(Address address) {
-        return generateAddress(address.network).equals(address);
+        return generateAddress(address.getType()).equals(address);
     }
 
     public ID generateID(NetworkType network) {
         Address address = generateAddress(network);
-        return new ID(seed, address);
+        return new ID(seed, address, null);
     }
 
     public Address generateAddress(NetworkType network) {
-        if (version == VersionMKM) {
-            // MKM
-            return new Address(fingerprint, network, Address.AlgorithmDefault);
-        } else if ((version & VersionBTC) == VersionBTC) {
-            // BTC, ExBTC
-            return new Address(key.data, network, Address.AlgorithmBTC);
-        } else if ((version & VersionETH) == VersionETH) {
-            // ETH, ExETH
-            return new Address(key.data, network, Address.AlgorithmETH);
-        } else {
-            throw new ArithmeticException("meta version error: " + version);
+        if (version != VersionMKM) {
+            throw new ArithmeticException("meta version error");
         }
+        // MKM
+        return BTCAddress.generate(fingerprint, network);
+    }
+
+    //-------- Runtime --------
+
+    private static Map<Number, Class> metaClasses = new HashMap<>();
+
+    @SuppressWarnings("unchecked")
+    public static void register(byte version, Class clazz) {
+        // check whether clazz is subclass of Meta
+        clazz = clazz.asSubclass(Meta.class);
+        metaClasses.put(version, clazz);
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Meta createInstance(Map<String, Object> dictionary)
+            throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+        byte version = ((Number) dictionary.get("version")).byteValue();
+        Class clazz = metaClasses.get(version);
+        if (clazz == null) {
+            return new Meta(dictionary);
+        }
+        Constructor constructor = clazz.getConstructor(Map.class);
+        return (Meta) constructor.newInstance(dictionary);
+    }
+
+    @SuppressWarnings("unchecked")
+    public static Meta getInstance(Object object)
+            throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+        if (object == null) {
+            return null;
+        } else if (object instanceof Meta) {
+            return (Meta) object;
+        } else if (object instanceof Map) {
+            return createInstance((Map<String, Object>) object);
+        } else {
+            throw new IllegalArgumentException("meta error:" + object);
+        }
+    }
+
+    static {
+        // MKM
+        //register(VersionMKM, Meta.class); // default
+        // BTC, ExBTC
+        register(VersionBTC, BTCMeta.class);
+        register(VersionExBTC, BTCMeta.class);
+        // ETH, ExETH
+        // ...
+    }
+}
+
+final class BTCMeta extends Meta {
+
+    public BTCMeta(Map<String, Object> dictionary) throws ClassNotFoundException {
+        super(dictionary);
+    }
+
+    public Address generateAddress(NetworkType network) {
+        if ((version & VersionBTC) != VersionBTC) {
+            throw new ArithmeticException("meta version error");
+        }
+        // BTC, ExBTC
+        return BTCAddress.generate(key.data, network);
     }
 }

@@ -65,16 +65,25 @@ final class AESKey extends SymmetricKey {
     }
 
     private int getKeySize() {
+        // TODO: get from key data
+
         Object size = dictionary.get("keySize");
         if (size == null) {
-            dictionary.put("keySize", 32);
             return 32;
+        } else {
+            return (int) size;
         }
-        return (Integer) size;
     }
 
     private int getBlockSize() {
-        return cipher.getBlockSize();
+        // TODO: get from iv data
+
+        Object size = dictionary.get("blockSize");
+        if (size == null) {
+            return cipher.getBlockSize();
+        } else {
+            return (int) size;
+        }
     }
 
     private static byte[] randomData(int size) {
@@ -94,6 +103,10 @@ final class AESKey extends SymmetricKey {
             return Base64.decode((String) data);
         }
 
+        //
+        // key data empty? generate new key info
+        //
+
         // random key data
         int keySize = getKeySize();
         byte[] pw = randomData(keySize);
@@ -103,6 +116,10 @@ final class AESKey extends SymmetricKey {
         int blockSize = getBlockSize();
         byte[] iv = randomData(blockSize);
         dictionary.put("iv", Base64.encode(iv));
+
+        // other parameters
+        //dictionary.put("mode", "CBC");
+        //dictionary.put("padding", "PKCS7");
 
         return pw;
     }

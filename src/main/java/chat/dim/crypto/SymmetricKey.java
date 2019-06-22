@@ -99,7 +99,7 @@ public abstract class SymmetricKey extends CryptographyKey {
 
     @SuppressWarnings("unchecked")
     private static SymmetricKey createInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
-        String algorithm = getAlgorithm(dictionary);
+        String algorithm = (String) dictionary.get("algorithm");
         Class clazz = symmetricKeyClasses.get(algorithm);
         if (clazz == null) {
             throw new ClassNotFoundException("unknown algorithm:" + algorithm);
@@ -126,7 +126,7 @@ public abstract class SymmetricKey extends CryptographyKey {
         }
     }
 
-    public static SymmetricKey create(String algorithm) throws ClassNotFoundException {
+    public static SymmetricKey generate(String algorithm) throws ClassNotFoundException {
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", algorithm);
         return createInstance(dictionary);
@@ -135,7 +135,7 @@ public abstract class SymmetricKey extends CryptographyKey {
     static {
         // AES
         register(AES, AESKey.class); // default
-        register("AES/CBC/PKCS5Padding", AESKey.class);
+        register("AES/CBC/PKCS7Padding", AESKey.class);
         // DES
         // ...
     }

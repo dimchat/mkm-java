@@ -96,7 +96,7 @@ public abstract class PublicKey extends CryptographyKey {
 
     @SuppressWarnings("unchecked")
     private static PublicKey createInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
-        String algorithm = getAlgorithm(dictionary);
+        String algorithm = (String) dictionary.get("algorithm");
         Class clazz = publicKeyClasses.get(algorithm);
         if (clazz == null) {
             throw new ClassNotFoundException("unknown algorithm:" + algorithm);

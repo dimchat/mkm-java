@@ -30,7 +30,7 @@ package chat.dim.mkm.entity;
  *
  *      data format: "name@address[/terminal]"
  *
- *      fileds:
+ *      fields:
  *          name     - entity name, the seed of fingerprint to build address
  *          address  - a string to identify an entity
  *          terminal - entity login resource(device), OPTIONAL
@@ -43,57 +43,74 @@ public final class ID {
     public final Address address;
     public final String terminal;
 
-    public ID(String string) {
+    private ID(String string) throws ClassNotFoundException {
         this.string = string;
         // terminal
-        String[] pair = string.split("/", 2);
-        if (pair.length > 1) {
+        String[] pair = string.split("/");
+        if (pair.length == 1) {
+            this.terminal = null;
+        } else if (pair.length == 2) {
             this.terminal = pair[1];
         } else {
-            this.terminal = null;
+            throw new IllegalArgumentException("ID error: " + string);
         }
-        // name & address
-        pair = pair[0].split("@", 2);
-        if (pair.length > 1) {
-            this.name = pair[0];
-            this.address = new Address(pair[1]);
-        } else {
+        // name @ address
+        pair = pair[0].split("@");
+        if (pair.length == 1) {
             this.name = null;
-            this.address = new Address(pair[0]);
+            this.address = Address.getInstance(pair[0]);
+        } else if (pair.length == 2) {
+            this.name = pair[0];
+            this.address = Address.getInstance(pair[1]);
+        } else {
+            throw new IllegalArgumentException("ID error: " + string);
         }
     }
 
-    public ID(String name, Address address) {
-        if (name == null || name.length() == 0) {
-            // BTC(ETH) address?
-            this.string = address.toString();
-        } else {
-            this.string = name + "@" + address;
+    ID(String name, Address address, String terminal) {
+        String string = address.toString();
+        if (name != null && name.length() > 0) {
+            string = name + "@" + string;
         }
-        this.terminal = null;
+        if (terminal != null && terminal.length() > 0) {
+            string = string + "/" + terminal;
+        }
+        this.string = string;
         this.name = name;
         this.address = address;
+        this.terminal = terminal;
     }
 
     /**
-     *  For BTC/ETH address
+     *  Get Network ID
      *
-     * @param address - BTC/ETH address
+     * @return address type as network ID
      */
-    public ID(Address address) {
-        this(null, address);
+    public NetworkType getType() {
+        return address.getType();
     }
 
-    public static ID getInstance(Object object) {
-        if (object == null) {
-            return null;
-        } else if (object instanceof ID) {
-            return (ID) object;
-        } else if (object instanceof String) {
-            return new ID((String) object);
-        } else {
-            throw new IllegalArgumentException("unknown ID:" + object);
-        }
+    /**
+     *  Get Search Number
+     *
+     * @return number for searching this ID
+     */
+    public long getNumber() {
+        return address.getNumber();
+    }
+
+    /**
+     *  Get whether ID string is valid
+     *
+     * @return False on address error
+     */
+    public boolean isValid() {
+        return address != null;
+    }
+
+    @Override
+    public String toString() {
+        return string;
     }
 
     @Override
@@ -101,6 +118,7 @@ public final class ID {
         return string.hashCode();
     }
 
+    @SuppressWarnings("Contract")
     @Override
     public boolean equals(Object other) {
         if (super.equals(other)) {
@@ -108,7 +126,12 @@ public final class ID {
             return true;
         }
         // convert to ID object
-        ID identifier = ID.getInstance(other);
+        ID identifier = null;
+        try {
+            identifier = ID.getInstance(other);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
         if (identifier == null) {
             // null
             return false;
@@ -121,30 +144,24 @@ public final class ID {
         return address.equals(identifier.address);
     }
 
-    @Override
-    public String toString() {
-        return string;
-    }
+    //-------- Runtime --------
 
     /**
-     *  Get Network ID
+     *  Create/get instance of ID
      *
-     * @return address type as network ID
+     * @param object - ID string/object
+     * @return ID object
+     * @throws ClassNotFoundException on address format not recognized
      */
-    public NetworkType getType() {
-        return address.network;
-    }
-
-    /**
-     *  Get Search Number
-     *
-     * @return number for searching this ID
-     */
-    public long getNumber() {
-        return address.code;
-    }
-
-    public boolean isValid() {
-        return address != null;
+    public static ID getInstance(Object object) throws ClassNotFoundException {
+        if (object == null) {
+            return null;
+        } else if (object instanceof ID) {
+            return (ID) object;
+        } else if (object instanceof String) {
+            return new ID((String) object);
+        } else {
+            throw new IllegalArgumentException("unknown ID:" + object);
+        }
     }
 }

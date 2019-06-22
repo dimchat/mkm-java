@@ -7,6 +7,7 @@ import chat.dim.mkm.entity.Profile;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 
@@ -15,8 +16,8 @@ public class ImmortalsTest {
     private Facebook facebook = Facebook.getInstance();
 
     @SuppressWarnings("unchecked")
-    private User loadBuiltInAccount(String filename) throws IOException, ClassNotFoundException {
-        String jsonString = FileUtils.readTextFile(filename);
+    private User loadBuiltInAccount(String filename) throws IOException, ClassNotFoundException, NoSuchMethodException, InstantiationException, IllegalAccessException, InvocationTargetException {
+        String jsonString = Utils.readTextFile(filename);
         Map<String, Object> dictionary = JSON.decode(jsonString);
 
         // ID
@@ -39,7 +40,7 @@ public class ImmortalsTest {
         facebook.addUser(user);
 
         // profile
-        Profile profile = new Profile((Map<String, Object>) dictionary.get("profile"));
+        Profile profile = Profile.getInstance(dictionary.get("profile"));
         List<String> names = (List<String>) profile.get("names");
         if (names != null) {
             profile.remove("names");
@@ -55,7 +56,7 @@ public class ImmortalsTest {
     }
 
     @Test
-    public void testImmortals() throws IOException, ClassNotFoundException {
+    public void testImmortals() throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         // Immortal Hulk
         User hulk = loadBuiltInAccount("/mkm_hulk.js");
         Log.info("hulk:" + hulk);

@@ -8,19 +8,9 @@ import java.util.Map;
 
 public class CryptoRSATest {
 
-    private static String hexEncode(byte[] data) {
-        StringBuilder sb = new StringBuilder();
-        String hex;
-        for (byte ch : data) {
-            hex = Integer.toHexString(ch & 0xFF);
-            sb.append(hex.length() == 1 ? "0" + hex : hex);
-        }
-        return sb.toString();
-    }
-
     @Test
     public void testRSA() throws ClassNotFoundException, UnsupportedEncodingException {
-        PrivateKey sk = PrivateKey.create(PrivateKey.RSA);
+        PrivateKey sk = PrivateKey.generate(PrivateKey.RSA);
         Log.info("RSA private key:" + sk);
 
         PublicKey pk = sk.getPublicKey();
@@ -29,7 +19,7 @@ public class CryptoRSATest {
         String text = "moky";
         byte[] plaintext = text.getBytes("UTF-8");
         byte[] ciphertext = pk.encrypt(plaintext);
-        Log.info("RSA encrypt(\"" + text + "\") = " + hexEncode(ciphertext));
+        Log.info("RSA encrypt(\"" + text + "\") = " + Utils.hexEncode(ciphertext));
 
         byte[] data = sk.decrypt(ciphertext);
         String decrypt = new String(data);
@@ -38,7 +28,7 @@ public class CryptoRSATest {
         Assert.assertEquals(text, decrypt);
 
         byte[] signature = sk.sign(plaintext);
-        Log.info("signature(\"" + text + "\") = " + hexEncode(signature));
+        Log.info("signature(\"" + text + "\") = " + Utils.hexEncode(signature));
 
         Assert.assertTrue(pk.verify(plaintext, signature));
     }

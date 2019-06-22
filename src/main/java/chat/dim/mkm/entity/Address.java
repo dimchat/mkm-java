@@ -28,100 +28,61 @@ package chat.dim.mkm.entity;
 import chat.dim.crypto.Digest;
 import chat.dim.format.Base58;
 
+import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  *  Address like BitCoin
  *
- *      data format: "network+digest+checkcode"
+ *      data format: "network+digest+code"
  *          network    --  1 byte
  *          digest     -- 20 bytes
- *          check_code --  4 bytes
+ *          code       --  4 bytes
  *
  *      algorithm:
  *          fingerprint = sign(seed, SK);
  *          digest      = ripemd160(sha256(fingerprint));
- *          check_code  = sha256(sha256(network + digest)).prefix(4);
- *          address     = base58_encode(network + digest + check_code);
+ *          code        = sha256(sha256(network + digest)).prefix(4);
+ *          address     = base58_encode(network + digest + code);
  */
-public final class Address {
-
-    public static final byte AlgorithmBTC     = 0x01;
-    public static final byte AlgorithmETH     = 0x01;
-    public static final byte AlgorithmDefault = AlgorithmBTC;
+public class Address {
 
     private final String string;
 
-    public final NetworkType network;
-    public final long code;
-
     /**
-     *  Copy address data
+     *  Called by 'getInstance()' to create address
      *
      *  @param string - Encoded address string
      */
-    public Address(String string) {
+    protected Address(String string) {
         this.string  = string;
-
-        byte[] data = Base58.decode(string);
-        if (data.length != 25) {
-            throw new IndexOutOfBoundsException("address length error:" + data.length);
-        }
-        // Network ID
-        NetworkType network = NetworkType.fromByte(data[0]);
-        // Check Code
-        byte[] prefix = new byte[21];
-        byte[] suffix = new byte[4];
-        System.arraycopy(data, 0, prefix, 0, 21);
-        System.arraycopy(data, 21, suffix, 0, 4);
-        byte[] cc = checkCode(prefix);
-        if (Arrays.equals(cc, suffix)) {
-            this.network = network;
-            this.code    = userNumber(cc);
-        } else {
-            throw new ArithmeticException("address check code error:" + string);
-        }
     }
 
     /**
-     *  Generate address with fingerprint and network ID
+     *  get address type
      *
-     *  @param fingerprint = sign(seed, PK)
-     *  @param network - network ID
+     * @return Network ID
      */
-    public Address(byte[] fingerprint, NetworkType network, byte algorithm) {
-        if (algorithm == AlgorithmBTC) {
-            // 1. digest = ripemd160(sha256(fingerprint))
-            byte[] digest = Digest.ripemd160(Digest.sha256(fingerprint));
-            // 2. head = network + digest
-            byte[] head = new byte[21];
-            head[0] = network.toByte();
-            System.arraycopy(digest, 0, head, 1, 20);
-            // 3. cc = sha256(sha256(_h)).prefix(4)
-            byte[] cc = checkCode(head);
-            // 4. data = base58_encode(_h + cc)
-            byte[] data = new byte[25];
-            System.arraycopy(head, 0, data, 0, 21);
-            System.arraycopy(cc,0, data, 21, 4);
-
-            this.string  = Base58.encode(data);
-            this.network = network;
-            this.code    = userNumber(cc);
-        } else {
-            throw new ArithmeticException("not support algorithm: " + algorithm);
-        }
+    public NetworkType getType() {
+        // NOTICE: override me!
+        return null;
     }
 
-    public static Address getInstance(Object object) {
-        if (object == null) {
-            return null;
-        } else if (object instanceof Address) {
-            return (Address) object;
-        } else if (object instanceof String) {
-            return new Address((String) object);
-        } else {
-            throw new IllegalArgumentException("unknown address:" + object);
-        }
+    /**
+     *  get search number
+     *
+     * @return unsigned integer
+     */
+    public long getNumber() {
+        // NOTICE: override me!
+        return 0;
+    }
+
+    @Override
+    public String toString() {
+        return string;
     }
 
     @Override
@@ -147,9 +108,121 @@ public final class Address {
         }
     }
 
+    //-------- Runtime --------
+
+    private static List<Class> addressClasses = new ArrayList<>();
+
+    /**
+     *  Add extended Address class to process new format
+     *
+     * @param clazz - extended Address class
+     */
+    @SuppressWarnings("unchecked")
+    public static void register(Class clazz) {
+        // check whether clazz is subclass of Address
+        clazz = clazz.asSubclass(Address.class);
+        if (!addressClasses.contains(clazz)) {
+            addressClasses.add(0, clazz);
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Address createInstance(String string) throws ClassNotFoundException {
+        Constructor constructor;
+        for (Class clazz: addressClasses) {
+            try {
+                constructor = clazz.getConstructor(String.class);
+                return (Address) constructor.newInstance(string);
+            } catch (Exception e) {
+                // address format error, try next
+                //e.printStackTrace();
+            }
+        }
+        throw new ClassNotFoundException("unknown address: " + string);
+    }
+
+    /**
+     *  Create/get instance of Address
+     *
+     * @param object - address string/object
+     * @return Address object
+     * @throws ClassNotFoundException on address format not recognized
+     */
+    public static Address getInstance(Object object) throws ClassNotFoundException {
+        if (object == null) {
+            return null;
+        } else if (object instanceof Address) {
+            return (Address) object;
+        } else if (object instanceof String) {
+            return createInstance((String) object);
+        } else {
+            throw new IllegalArgumentException("address error: " + object);
+        }
+    }
+
+    static {
+        // BTC
+        register(BTCAddress.class); // default
+        // ETH
+        // ...
+    }
+}
+
+final class BTCAddress extends Address {
+
+    private final NetworkType network;
+    private final long code;
+
+    public BTCAddress(String string) {
+        super(string);
+        // decode
+        byte[] data = Base58.decode(string);
+        if (data.length != 25) {
+            throw new IndexOutOfBoundsException("address length error:" + data.length);
+        }
+        // Check Code
+        byte[] prefix = new byte[21];
+        byte[] suffix = new byte[4];
+        System.arraycopy(data, 0, prefix, 0, 21);
+        System.arraycopy(data, 21, suffix, 0, 4);
+        byte[] cc = checkCode(prefix);
+        if (!Arrays.equals(cc, suffix)) {
+            throw new ArithmeticException("address check code error:" + string);
+        }
+        this.network = NetworkType.fromByte(data[0]);
+        this.code    = userNumber(cc);
+    }
+
     @Override
-    public String toString() {
-        return string;
+    public NetworkType getType() {
+        return network;
+    }
+
+    @Override
+    public long getNumber() {
+        return code;
+    }
+
+    /**
+     *  Generate address with fingerprint and network ID
+     *
+     *  @param fingerprint = sign(seed, PK)
+     *  @param network - network ID
+     */
+    static BTCAddress generate(byte[] fingerprint, NetworkType network) {
+        // 1. digest = ripemd160(sha256(fingerprint))
+        byte[] digest = Digest.ripemd160(Digest.sha256(fingerprint));
+        // 2. head = network + digest
+        byte[] head = new byte[21];
+        head[0] = network.toByte();
+        System.arraycopy(digest, 0, head, 1, 20);
+        // 3. cc = sha256(sha256(head)).prefix(4)
+        byte[] cc = checkCode(head);
+        // 4. data = base58_encode(head + cc)
+        byte[] data = new byte[25];
+        System.arraycopy(head, 0, data, 0, 21);
+        System.arraycopy(cc,0, data, 21, 4);
+        return new BTCAddress(Base58.encode(data));
     }
 
     private static byte[] checkCode(byte[] data) {

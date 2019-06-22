@@ -83,12 +83,12 @@ public enum NetworkType {
     BTCMain        (0x00), // 0000 0000
     //BTCTest      (0x6f), // 0110 1111
 
-    /**
+    /*
      *  Person Account
      */
     Main           (0x08), // 0000 1000 (Person)
 
-    /**
+    /*
      *  Virtual Groups
      */
     Group          (0x10), // 0001 0000 (Multi-Persons)
@@ -97,7 +97,7 @@ public enum NetworkType {
     Polylogue      (0x10), // 0001 0000 (Multi-Persons Chat, N < 100)
     Chatroom       (0x30), // 0011 0000 (Multi-Persons Chat, N >= 100)
 
-    /**
+    /*
      *  Social Entities in Reality
      */
     //SocialEntity (0x50), // 0101 0000
@@ -108,13 +108,13 @@ public enum NetworkType {
     //Government   (0x73), // 0111 0011
     //Department   (0x52), // 0101 0010
 
-    /**
+    /*
      *  Network
      */
     Provider       (0x76), // 0111 0110 (Service Provider)
     Station        (0x88), // 1000 1000 (Server Node)
 
-    /**
+    /*
      *  Internet of Things
      */
     Thing          (0x80), // 1000 0000 (IoT)

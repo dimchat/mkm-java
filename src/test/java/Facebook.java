@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 public class Facebook implements UserDataSource {
+
     private static Facebook ourInstance = new Facebook();
 
     public static Facebook getInstance() {

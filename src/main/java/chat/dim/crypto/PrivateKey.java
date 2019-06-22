@@ -105,7 +105,7 @@ public abstract class PrivateKey extends CryptographyKey {
 
     @SuppressWarnings("unchecked")
     private static PrivateKey createInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
-        String algorithm = getAlgorithm(dictionary);
+        String algorithm = (String) dictionary.get("algorithm");
         Class clazz = privateKeyClasses.get(algorithm);
         if (clazz == null) {
             throw new ClassNotFoundException("unknown algorithm:" + algorithm);
@@ -132,7 +132,7 @@ public abstract class PrivateKey extends CryptographyKey {
         }
     }
 
-    public static PrivateKey create(String algorithm) throws ClassNotFoundException {
+    public static PrivateKey generate(String algorithm) throws ClassNotFoundException {
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", algorithm);
         return createInstance(dictionary);
