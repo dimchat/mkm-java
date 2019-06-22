@@ -75,12 +75,12 @@ public class Meta extends Dictionary {
      *      sign the seed to get fingerprint (just for binding username and key).
      *      This can build a BTC address, and bind a username to the entity ID.
      */
-    public static final byte VersionMKM     = 0x01;  // 0000 0001
-    public static final byte VersionBTC     = 0x02;  // 0000 0010
-    public static final byte VersionExBTC   = 0x03;  // 0000 0011
-    public static final byte VersionETH     = 0x04;  // 0000 0100
-    public static final byte VersionExETH   = 0x05;  // 0000 0101
-    public static final byte VersionDefault = VersionMKM;
+    public static final int VersionMKM     = 0x01;  // 0000 0001
+    public static final int VersionBTC     = 0x02;  // 0000 0010
+    public static final int VersionExBTC   = 0x03;  // 0000 0011
+    public static final int VersionETH     = 0x04;  // 0000 0100
+    public static final int VersionExETH   = 0x05;  // 0000 0101
+    public static final int VersionDefault = VersionMKM;
 
     /**
      *  Meta algorithm version
@@ -89,7 +89,7 @@ public class Meta extends Dictionary {
      *      0x02 - btc_address
      *      0x03 - username@btc_address
      */
-    public final byte version;
+    public final int version;
 
     /**
      *  Public key (used for signature)
@@ -115,7 +115,7 @@ public class Meta extends Dictionary {
 
     public Meta(Map<String, Object> dictionary) throws ClassNotFoundException {
         super(dictionary);
-        this.version     = ((Number) dictionary.get("version")).byteValue();
+        this.version     = (int) dictionary.get("version");
         this.key         = PublicKey.getInstance(dictionary.get("key"));
         // check valid
         if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
@@ -141,7 +141,7 @@ public class Meta extends Dictionary {
      * @param seed - user/group name
      * @param fingerprint - signature of seed, or key data
      */
-    private Meta(byte version, PublicKey key, String seed, byte[] fingerprint) {
+    private Meta(int version, PublicKey key, String seed, byte[] fingerprint) {
         super();
         this.version = version;
         this.key = key;
@@ -167,7 +167,7 @@ public class Meta extends Dictionary {
      * @param seed - user/group name
      * @return Meta object
      */
-    public static Meta generate(byte version, PrivateKey sk, String seed) {
+    public static Meta generate(int version, PrivateKey sk, String seed) {
         if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
             // generate fingerprint with private key
             byte[] fingerprint = sk.sign(seed.getBytes(Charset.forName("UTF-8")));
@@ -222,10 +222,10 @@ public class Meta extends Dictionary {
 
     //-------- Runtime --------
 
-    private static Map<Number, Class> metaClasses = new HashMap<>();
+    private static Map<Integer, Class> metaClasses = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public static void register(byte version, Class clazz) {
+    public static void register(int version, Class clazz) {
         // check whether clazz is subclass of Meta
         clazz = clazz.asSubclass(Meta.class);
         metaClasses.put(version, clazz);
@@ -234,10 +234,11 @@ public class Meta extends Dictionary {
     @SuppressWarnings("unchecked")
     private static Meta createInstance(Map<String, Object> dictionary)
             throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
-        byte version = ((Number) dictionary.get("version")).byteValue();
+        int version = (int) dictionary.get("version");
         Class clazz = metaClasses.get(version);
         if (clazz == null) {
-            return new Meta(dictionary);
+            // default meta
+            throw new ClassNotFoundException("unknown meta version: " + version);
         }
         Constructor constructor = clazz.getConstructor(Map.class);
         return (Meta) constructor.newInstance(dictionary);
@@ -253,13 +254,13 @@ public class Meta extends Dictionary {
         } else if (object instanceof Map) {
             return createInstance((Map<String, Object>) object);
         } else {
-            throw new IllegalArgumentException("meta error:" + object);
+            throw new IllegalArgumentException("meta error: " + object);
         }
     }
 
     static {
         // MKM
-        //register(VersionMKM, Meta.class); // default
+        register(VersionMKM, Meta.class); // default
         // BTC, ExBTC
         register(VersionBTC, BTCMeta.class);
         register(VersionExBTC, BTCMeta.class);

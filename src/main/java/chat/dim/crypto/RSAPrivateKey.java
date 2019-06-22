@@ -173,7 +173,7 @@ final class RSAPrivateKey extends PrivateKey {
 
     public byte[] decrypt(byte[] ciphertext) {
         if (ciphertext.length != keySize()) {
-            throw new InvalidParameterException("RSA cipher text length error:" + ciphertext.length);
+            throw new InvalidParameterException("RSA cipher text length error: " + ciphertext.length);
         }
         try {
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");

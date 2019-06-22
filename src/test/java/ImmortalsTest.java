@@ -33,7 +33,7 @@ public class ImmortalsTest {
             // store private key into keychain
             facebook.addPrivateKey(privateKey, identifier);
         } else {
-            throw new IllegalArgumentException("private key not match meta public key:" + privateKey);
+            throw new IllegalArgumentException("private key not match meta public key: " + privateKey);
         }
         // create user
         User user = new User(identifier);
@@ -59,16 +59,16 @@ public class ImmortalsTest {
     public void testImmortals() throws IOException, ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         // Immortal Hulk
         User hulk = loadBuiltInAccount("/mkm_hulk.js");
-        Log.info("hulk:" + hulk);
+        Log.info("hulk: " + hulk);
 
-        Log.info("name:" + hulk.getName());
-        Log.info("profile:" + facebook.getProfile(hulk.identifier));
+        Log.info("name: " + hulk.getName());
+        Log.info("profile: " + facebook.getProfile(hulk.identifier));
 
         // Monkey King
         User moki = loadBuiltInAccount("/mkm_moki.js");
-        Log.info("moki:" + moki);
+        Log.info("moki: " + moki);
 
-        Log.info("name:" + moki.getName());
-        Log.info("profile:" + facebook.getProfile(moki.identifier));
+        Log.info("name: " + moki.getName());
+        Log.info("profile: " + facebook.getProfile(moki.identifier));
     }
 }

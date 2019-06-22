@@ -11,10 +11,10 @@ public class CryptoRSATest {
     @Test
     public void testRSA() throws ClassNotFoundException, UnsupportedEncodingException {
         PrivateKey sk = PrivateKey.generate(PrivateKey.RSA);
-        Log.info("RSA private key:" + sk);
+        Log.info("RSA private key: " + sk);
 
         PublicKey pk = sk.getPublicKey();
-        Log.info("RSA public key:" + pk);
+        Log.info("RSA public key: " + pk);
 
         String text = "moky";
         byte[] plaintext = text.getBytes("UTF-8");
@@ -42,7 +42,7 @@ public class CryptoRSATest {
                 "-----END PUBLIC KEY-----");
 
         PublicKey key = PublicKey.getInstance(dictionary);
-        Log.info("public key:" + key);
+        Log.info("public key: " + key);
     }
 
     @Test
@@ -54,6 +54,6 @@ public class CryptoRSATest {
                 "-----END RSA PRIVATE KEY-----");
 
         PrivateKey sk = PrivateKey.getInstance(dictionary);
-        Log.info("private key:" + sk);
+        Log.info("private key: " + sk);
     }
 }

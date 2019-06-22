@@ -57,7 +57,7 @@ public abstract class PrivateKey extends CryptographyKey {
             // check by encryption
             PublicKey publicKey = getPublicKey();
             if (publicKey == null) {
-                throw new NullPointerException("failed to get public key:" + this);
+                throw new NullPointerException("failed to get public key: " + this);
             }
             PrivateKey key = (PrivateKey) other;
             return publicKey.matches(key);
@@ -108,7 +108,7 @@ public abstract class PrivateKey extends CryptographyKey {
         String algorithm = (String) dictionary.get("algorithm");
         Class clazz = privateKeyClasses.get(algorithm);
         if (clazz == null) {
-            throw new ClassNotFoundException("unknown algorithm:" + algorithm);
+            throw new ClassNotFoundException("unknown algorithm: " + algorithm);
         }
         try {
             Constructor constructor = clazz.getConstructor(Map.class);
@@ -128,7 +128,7 @@ public abstract class PrivateKey extends CryptographyKey {
         } else if (object instanceof Map) {
             return createInstance((Map<String, Object>) object);
         } else {
-            throw new IllegalArgumentException("unknown key:" + object);
+            throw new IllegalArgumentException("unknown key: " + object);
         }
     }
 

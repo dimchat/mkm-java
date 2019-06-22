@@ -11,7 +11,7 @@ public final class ETHAddress extends Address {
     public ETHAddress(String string) {
         super(string);
         if (!string.substring(0, 2).equals("0x")) {
-            throw new IllegalArgumentException("invalid ETH address:" + string);
+            throw new IllegalArgumentException("invalid ETH address: " + string);
         }
     }
 

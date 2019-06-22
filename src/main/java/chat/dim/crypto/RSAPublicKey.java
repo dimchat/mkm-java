@@ -89,7 +89,7 @@ final class RSAPublicKey extends PublicKey {
 
     public byte[] encrypt(byte[] plaintext) {
         if (plaintext.length > (keySize() - 11)) {
-            throw new InvalidParameterException("RSA plain text length error:" + plaintext.length);
+            throw new InvalidParameterException("RSA plain text length error: " + plaintext.length);
         }
         try {
             Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");

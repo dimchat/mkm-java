@@ -166,7 +166,7 @@ public final class PEM {
         sPos += sTag.length();
         int ePos = pem.indexOf(eTag, sPos);
         if (ePos < 0) {
-            throw new StringIndexOutOfBoundsException("PEM format error:" + pem);
+            throw new StringIndexOutOfBoundsException("PEM format error: " + pem);
         }
         // got it
         return pem.substring(sPos, ePos).replaceAll("[\r\n\\s]+", "");

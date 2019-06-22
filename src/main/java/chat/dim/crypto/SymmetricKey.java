@@ -102,7 +102,7 @@ public abstract class SymmetricKey extends CryptographyKey {
         String algorithm = (String) dictionary.get("algorithm");
         Class clazz = symmetricKeyClasses.get(algorithm);
         if (clazz == null) {
-            throw new ClassNotFoundException("unknown algorithm:" + algorithm);
+            throw new ClassNotFoundException("unknown algorithm: " + algorithm);
         }
         try {
             Constructor constructor = clazz.getConstructor(Map.class);
@@ -122,7 +122,7 @@ public abstract class SymmetricKey extends CryptographyKey {
         } else if (object instanceof Map) {
             return createInstance((Map<String, Object>) object);
         } else {
-            throw new IllegalArgumentException("unknown key:" + object);
+            throw new IllegalArgumentException("unknown key: " + object);
         }
     }
 

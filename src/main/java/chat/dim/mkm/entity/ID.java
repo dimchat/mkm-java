@@ -161,7 +161,7 @@ public final class ID {
         } else if (object instanceof String) {
             return new ID((String) object);
         } else {
-            throw new IllegalArgumentException("unknown ID:" + object);
+            throw new IllegalArgumentException("unknown ID: " + object);
         }
     }
 }

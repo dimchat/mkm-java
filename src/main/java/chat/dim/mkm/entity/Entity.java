@@ -114,7 +114,7 @@ public class Entity {
         } else if (profile.verify(meta.key)) {
             return profile;
         } else {
-            throw new ArithmeticException("profile signature not match:" + profile);
+            throw new ArithmeticException("profile signature not match: " + profile);
         }
     }
 }

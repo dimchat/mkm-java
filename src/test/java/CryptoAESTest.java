@@ -17,7 +17,7 @@ public class CryptoAESTest {
         dictionary.put("iv", "SxPwi6u4+ZLXLdAFJezvSQ==");
 
         SymmetricKey key = SymmetricKey.getInstance(dictionary);
-        Log.info("key:" + key);
+        Log.info("key: " + key);
 
         String text;
         byte[] plaintext;

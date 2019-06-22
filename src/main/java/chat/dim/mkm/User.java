@@ -44,7 +44,7 @@ public class User extends Account {
      */
     public List<ID> getContacts() {
         if (this.dataSource == null) {
-            throw new NullPointerException("data source not set for user:" + identifier);
+            throw new NullPointerException("data source not set for user: " + identifier);
         }
         UserDataSource dataSource = (UserDataSource) this.dataSource;
         return dataSource.getContacts(identifier);
@@ -58,13 +58,13 @@ public class User extends Account {
      */
     public byte[] sign(byte[] data) {
         if (this.dataSource == null) {
-            throw new NullPointerException("data source not set for user:" + identifier);
+            throw new NullPointerException("data source not set for user: " + identifier);
         }
         // get from data source
         UserDataSource dataSource = (UserDataSource) this.dataSource;
         PrivateKey privateKey = dataSource.getPrivateKeyForSignature(identifier);
         if (privateKey == null) {
-            throw new NullPointerException("failed to get private key for user:" + identifier);
+            throw new NullPointerException("failed to get private key for user: " + identifier);
         }
         return privateKey.sign(data);
     }
@@ -77,7 +77,7 @@ public class User extends Account {
      */
     public byte[] decrypt(byte[] ciphertext) {
         if (this.dataSource == null) {
-            throw new NullPointerException("data source not set for user:" + identifier);
+            throw new NullPointerException("data source not set for user: " + identifier);
         }
         // get from data source
         UserDataSource dataSource = (UserDataSource) this.dataSource;

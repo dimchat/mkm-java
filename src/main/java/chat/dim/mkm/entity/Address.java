@@ -178,7 +178,7 @@ final class BTCAddress extends Address {
         // decode
         byte[] data = Base58.decode(string);
         if (data.length != 25) {
-            throw new IndexOutOfBoundsException("address length error:" + data.length);
+            throw new IndexOutOfBoundsException("address length error: " + data.length);
         }
         // Check Code
         byte[] prefix = new byte[21];
@@ -187,7 +187,7 @@ final class BTCAddress extends Address {
         System.arraycopy(data, 21, suffix, 0, 4);
         byte[] cc = checkCode(prefix);
         if (!Arrays.equals(cc, suffix)) {
-            throw new ArithmeticException("address check code error:" + string);
+            throw new ArithmeticException("address check code error: " + string);
         }
         this.network = NetworkType.fromByte(data[0]);
         this.code    = userNumber(cc);
