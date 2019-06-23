@@ -79,11 +79,11 @@ public abstract class SymmetricKeyImpl extends CryptographyKeyImpl implements Sy
     }
 
     @SuppressWarnings("unchecked")
-    private static SymmetricKey createInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
+    private static SymmetricKey createInstance(Map<String, Object> dictionary) {
         String algorithm = (String) dictionary.get("algorithm");
         Class clazz = symmetricKeyClasses.get(algorithm);
         if (clazz == null) {
-            throw new ClassNotFoundException("unknown algorithm: " + algorithm);
+            throw new IllegalArgumentException("unknown algorithm: " + algorithm);
         }
         try {
             Constructor constructor = clazz.getConstructor(Map.class);
@@ -95,7 +95,7 @@ public abstract class SymmetricKeyImpl extends CryptographyKeyImpl implements Sy
     }
 
     @SuppressWarnings("unchecked")
-    public static SymmetricKey getInstance(Object object) throws ClassNotFoundException {
+    public static SymmetricKey getInstance(Object object) {
         if (object == null) {
             return null;
         } else if (object instanceof SymmetricKey) {
@@ -107,7 +107,7 @@ public abstract class SymmetricKeyImpl extends CryptographyKeyImpl implements Sy
         }
     }
 
-    public static SymmetricKey generate(String algorithm) throws ClassNotFoundException {
+    public static SymmetricKey generate(String algorithm) {
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", algorithm);
         return createInstance(dictionary);

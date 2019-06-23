@@ -48,7 +48,7 @@ public class Profile extends TAO {
      *
      *  @param dictionary - profile info
      */
-    public Profile(Map<String, Object> dictionary) throws ClassNotFoundException {
+    public Profile(Map<String, Object> dictionary) {
         super(dictionary);
     }
 
@@ -97,7 +97,7 @@ public class Profile extends TAO {
     }
 
     @SuppressWarnings("unchecked")
-    private static Profile createInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
+    private static Profile createInstance(Map<String, Object> dictionary) {
         Constructor constructor;
         for (Class clazz: profileClasses) {
             try {
@@ -108,11 +108,11 @@ public class Profile extends TAO {
                 //e.printStackTrace();
             }
         }
-        throw new ClassNotFoundException("unknown profile: " + dictionary);
+        throw new IllegalArgumentException("unknown profile: " + dictionary);
     }
 
     @SuppressWarnings("unchecked")
-    public static Profile getInstance(Object object) throws ClassNotFoundException {
+    public static Profile getInstance(Object object) {
         if (object == null) {
             return null;
         } else if (object instanceof Profile) {
@@ -152,7 +152,7 @@ class TAO extends Dictionary {
      */
     private PublicKey key;
 
-    TAO(Map<String, Object> dictionary) throws ClassNotFoundException {
+    TAO(Map<String, Object> dictionary) {
         super(dictionary);
         // ID
         identifier = ID.getInstance(dictionary.get("ID"));
@@ -239,11 +239,7 @@ class TAO extends Dictionary {
             properties.putAll(JSON.decode(data));
 
             // get public key
-            try {
-                key = PublicKeyImpl.getInstance(properties.get("key"));
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
+            key = PublicKeyImpl.getInstance(properties.get("key"));
         } else {
             data = null;
             signature = null;

@@ -13,7 +13,7 @@ import java.util.Map;
 public class CryptoAESTest {
 
     @Test
-    public void testAES() throws ClassNotFoundException, UnsupportedEncodingException {
+    public void testAES() throws UnsupportedEncodingException {
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "AES");
         dictionary.put("data", "C2+xGizLL1G1+z9QLPYNdp/bPP/seDvNw45SXPAvQqk=");

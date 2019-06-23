@@ -77,11 +77,11 @@ public abstract class PublicKeyImpl extends CryptographyKeyImpl implements Publi
     }
 
     @SuppressWarnings("unchecked")
-    private static PublicKey createInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
+    private static PublicKey createInstance(Map<String, Object> dictionary) {
         String algorithm = (String) dictionary.get("algorithm");
         Class clazz = publicKeyClasses.get(algorithm);
         if (clazz == null) {
-            throw new ClassNotFoundException("unknown algorithm: " + algorithm);
+            throw new IllegalArgumentException("unknown algorithm: " + algorithm);
         }
         try {
             Constructor constructor = clazz.getConstructor(Map.class);
@@ -93,7 +93,7 @@ public abstract class PublicKeyImpl extends CryptographyKeyImpl implements Publi
     }
 
     @SuppressWarnings("unchecked")
-    public static PublicKey getInstance(Object object) throws ClassNotFoundException {
+    public static PublicKey getInstance(Object object) {
         if (object == null) {
             return null;
         } else if (object instanceof PublicKey) {

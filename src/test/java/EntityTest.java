@@ -20,7 +20,7 @@ import java.util.List;
 public class EntityTest {
 
     @Test
-    public void testAddress() throws ClassNotFoundException {
+    public void testAddress() {
         Address address;
 
         address = Address.getInstance("4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
@@ -35,7 +35,7 @@ public class EntityTest {
     }
 
     @Test
-    public void testID() throws ClassNotFoundException {
+    public void testID() {
         ID identifier;
 
         identifier = ID.getInstance("moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
@@ -63,7 +63,7 @@ public class EntityTest {
     }
 
     @Test
-    public void testMeta() throws ClassNotFoundException {
+    public void testMeta() {
         PrivateKey sk = PrivateKeyImpl.generate(PrivateKey.RSA);
         PublicKey pk = sk.getPublicKey();
         String seed = "moky";
@@ -102,7 +102,7 @@ public class EntityTest {
     }
 
     @Test
-    public void testEntity() throws ClassNotFoundException {
+    public void testEntity() {
         ID identifier = ID.getInstance("moky@4DnqXWdTV8wuZgfqSCX9GjE2kNq7HJrUgQ");
 
         Account account = new Account(identifier);

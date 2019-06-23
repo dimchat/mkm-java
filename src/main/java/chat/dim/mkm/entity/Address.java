@@ -127,7 +127,7 @@ public class Address {
     }
 
     @SuppressWarnings("unchecked")
-    private static Address createInstance(String string) throws ClassNotFoundException {
+    private static Address createInstance(String string) {
         Constructor constructor;
         for (Class clazz: addressClasses) {
             try {
@@ -138,7 +138,7 @@ public class Address {
                 //e.printStackTrace();
             }
         }
-        throw new ClassNotFoundException("unknown address: " + string);
+        throw new ArithmeticException("unknown address: " + string);
     }
 
     /**
@@ -146,9 +146,8 @@ public class Address {
      *
      * @param object - address string/object
      * @return Address object
-     * @throws ClassNotFoundException on address format not recognized
      */
-    public static Address getInstance(Object object) throws ClassNotFoundException {
+    public static Address getInstance(Object object) {
         if (object == null) {
             return null;
         } else if (object instanceof Address) {

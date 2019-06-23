@@ -114,20 +114,26 @@ public class Meta extends Dictionary {
      */
     public final byte[] fingerprint;
 
-    public Meta(Map<String, Object> dictionary) throws ClassNotFoundException {
+    public Meta(Map<String, Object> dictionary) throws NoSuchFieldException {
         super(dictionary);
-        this.version     = (int) dictionary.get("version");
-        this.key         = PublicKeyImpl.getInstance(dictionary.get("key"));
+        this.version = (int) dictionary.get("version");
+        this.key = PublicKeyImpl.getInstance(dictionary.get("key"));
+        if (key == null) {
+            throw new NoSuchFieldException("meta key error: " + dictionary);
+        }
         // check valid
         if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
-            String seed = (String) dictionary.get("seed");
+            String name = (String) dictionary.get("seed");
             String base64 = (String) dictionary.get("fingerprint");
-            byte[] fingerprint = Base64.decode(base64);
-            if (!key.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint)) {
+            if (name == null || base64 == null) {
+                throw new NoSuchFieldException("meta error: " + dictionary);
+            }
+            byte[] signature = Base64.decode(base64);
+            if (!key.verify(name.getBytes(Charset.forName("UTF-8")), signature)) {
                 throw new ArithmeticException("fingerprint not match: " + dictionary);
             }
-            this.seed = seed;
-            this.fingerprint = fingerprint;
+            this.seed = name;
+            this.fingerprint = signature;
         } else {
             this.seed = null;
             this.fingerprint = null;
@@ -233,21 +239,23 @@ public class Meta extends Dictionary {
     }
 
     @SuppressWarnings("unchecked")
-    private static Meta createInstance(Map<String, Object> dictionary)
-            throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    private static Meta createInstance(Map<String, Object> dictionary) {
         int version = (int) dictionary.get("version");
         Class clazz = metaClasses.get(version);
         if (clazz == null) {
-            // default meta
-            throw new ClassNotFoundException("unknown meta version: " + version);
+            throw new IllegalArgumentException("unknown meta version: " + version);
         }
-        Constructor constructor = clazz.getConstructor(Map.class);
-        return (Meta) constructor.newInstance(dictionary);
+        try {
+            Constructor constructor = clazz.getConstructor(Map.class);
+            return (Meta) constructor.newInstance(dictionary);
+        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @SuppressWarnings("unchecked")
-    public static Meta getInstance(Object object)
-            throws ClassNotFoundException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static Meta getInstance(Object object) {
         if (object == null) {
             return null;
         } else if (object instanceof Meta) {
@@ -272,7 +280,7 @@ public class Meta extends Dictionary {
 
 final class BTCMeta extends Meta {
 
-    public BTCMeta(Map<String, Object> dictionary) throws ClassNotFoundException {
+    public BTCMeta(Map<String, Object> dictionary) throws NoSuchFieldException {
         super(dictionary);
     }
 

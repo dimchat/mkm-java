@@ -43,7 +43,7 @@ public final class ID {
     public final Address address;
     public final String terminal;
 
-    private ID(String string) throws ClassNotFoundException {
+    private ID(String string) {
         this.string = string;
         // terminal
         String[] pair = string.split("/");
@@ -126,12 +126,7 @@ public final class ID {
             return true;
         }
         // convert to ID object
-        ID identifier = null;
-        try {
-            identifier = ID.getInstance(other);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        }
+        ID identifier = ID.getInstance(other);
         if (identifier == null) {
             // null
             return false;
@@ -151,9 +146,8 @@ public final class ID {
      *
      * @param object - ID string/object
      * @return ID object
-     * @throws ClassNotFoundException on address format not recognized
      */
-    public static ID getInstance(Object object) throws ClassNotFoundException {
+    public static ID getInstance(Object object) {
         if (object == null) {
             return null;
         } else if (object instanceof ID) {

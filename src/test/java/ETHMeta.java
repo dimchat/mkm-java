@@ -1,3 +1,4 @@
+
 import chat.dim.mkm.entity.Address;
 import chat.dim.mkm.entity.Meta;
 import chat.dim.mkm.entity.NetworkType;
@@ -6,7 +7,7 @@ import java.util.Map;
 
 public class ETHMeta extends Meta {
 
-    public ETHMeta(Map<String, Object> dictionary) throws ClassNotFoundException {
+    public ETHMeta(Map<String, Object> dictionary) throws NoSuchFieldException {
         super(dictionary);
     }
 
