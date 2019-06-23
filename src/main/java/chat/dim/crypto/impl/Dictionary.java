@@ -23,7 +23,7 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.crypto.impl;
 
 import java.util.Collection;
 import java.util.HashMap;

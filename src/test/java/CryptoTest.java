@@ -1,5 +1,7 @@
+
 import chat.dim.crypto.Digest;
 import chat.dim.format.*;
+
 import org.junit.Assert;
 import org.junit.Test;
 

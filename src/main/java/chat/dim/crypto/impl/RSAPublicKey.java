@@ -23,7 +23,9 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.crypto.impl;
+
+import chat.dim.format.PEM;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -42,7 +44,7 @@ import java.util.Map;
  *          data: "..."       // base64
  *      }
  */
-final class RSAPublicKey extends PublicKey {
+final class RSAPublicKey extends PublicKeyImpl {
 
     private final java.security.interfaces.RSAPublicKey publicKey;
 
@@ -85,8 +87,12 @@ final class RSAPublicKey extends PublicKey {
         return (java.security.interfaces.RSAPublicKey) factory.generatePublic(keySpec);
     }
 
-    //-------- interfaces --------
+    @Override
+    public byte[] getData() {
+        return publicKey == null ? null : publicKey.getEncoded();
+    }
 
+    @Override
     public byte[] encrypt(byte[] plaintext) {
         if (plaintext.length > (keySize() - 11)) {
             throw new InvalidParameterException("RSA plain text length error: " + plaintext.length);
@@ -103,6 +109,7 @@ final class RSAPublicKey extends PublicKey {
         }
     }
 
+    @Override
     public boolean verify(byte[] data, byte[] signature) {
         try {
             Signature signer = Signature.getInstance("SHA256withRSA", "BC");

@@ -25,9 +25,10 @@
  */
 package chat.dim.mkm.entity;
 
-import chat.dim.crypto.Dictionary;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.impl.Dictionary;
+import chat.dim.crypto.impl.PublicKeyImpl;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
 
@@ -239,7 +240,7 @@ class TAO extends Dictionary {
 
             // get public key
             try {
-                key = PublicKey.getInstance(properties.get("key"));
+                key = PublicKeyImpl.getInstance(properties.get("key"));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }

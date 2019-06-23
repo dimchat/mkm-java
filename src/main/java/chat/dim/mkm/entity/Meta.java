@@ -25,9 +25,10 @@
  */
 package chat.dim.mkm.entity;
 
-import chat.dim.crypto.Dictionary;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.impl.Dictionary;
+import chat.dim.crypto.impl.PublicKeyImpl;
 import chat.dim.format.Base64;
 
 import java.lang.reflect.Constructor;
@@ -116,7 +117,7 @@ public class Meta extends Dictionary {
     public Meta(Map<String, Object> dictionary) throws ClassNotFoundException {
         super(dictionary);
         this.version     = (int) dictionary.get("version");
-        this.key         = PublicKey.getInstance(dictionary.get("key"));
+        this.key         = PublicKeyImpl.getInstance(dictionary.get("key"));
         // check valid
         if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
             String seed = (String) dictionary.get("seed");
@@ -280,6 +281,6 @@ final class BTCMeta extends Meta {
             throw new ArithmeticException("meta version error");
         }
         // BTC, ExBTC
-        return BTCAddress.generate(key.data, network);
+        return BTCAddress.generate(key.getData(), network);
     }
 }

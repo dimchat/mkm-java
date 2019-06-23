@@ -1,9 +1,12 @@
+
 import chat.dim.crypto.PrivateKey;
+import chat.dim.crypto.impl.PrivateKeyImpl;
 import chat.dim.format.JSON;
 import chat.dim.mkm.User;
 import chat.dim.mkm.entity.ID;
 import chat.dim.mkm.entity.Meta;
 import chat.dim.mkm.entity.Profile;
+
 import org.junit.Test;
 
 import java.io.IOException;
@@ -28,7 +31,7 @@ public class ImmortalsTest {
         assert meta != null && meta.matches(identifier);
         facebook.addMeta(meta, identifier);
         // private key
-        PrivateKey privateKey = PrivateKey.getInstance(dictionary.get("privateKey"));
+        PrivateKey privateKey = PrivateKeyImpl.getInstance(dictionary.get("privateKey"));
         if (meta.key.matches(privateKey)) {
             // store private key into keychain
             facebook.addPrivateKey(privateKey, identifier);

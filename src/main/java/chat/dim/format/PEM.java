@@ -23,9 +23,8 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.format;
 
-import chat.dim.format.Base64;
 import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
@@ -42,10 +41,10 @@ public final class PEM {
 
     private final String fileContent; // PKCS#1 @DER @PEM
 
-    final byte[] publicKeyData;       // X.509
-    final byte[] privateKeyData;      // PKCS#8
+    public final byte[] publicKeyData;       // X.509
+    public final byte[] privateKeyData;      // PKCS#8
 
-    PEM(String fileContent) throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException {
+    public PEM(String fileContent) throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException {
         super();
 
         this.fileContent = fileContent;
@@ -53,7 +52,7 @@ public final class PEM {
         this.privateKeyData = getPrivateKeyData(fileContent);
     }
 
-    PEM(java.security.interfaces.RSAPublicKey publicKey) throws IOException {
+    public PEM(java.security.interfaces.RSAPublicKey publicKey) throws IOException {
         super();
 
         this.fileContent = getFileContent(publicKey);
@@ -61,7 +60,7 @@ public final class PEM {
         this.privateKeyData = null;
     }
 
-    PEM(java.security.interfaces.RSAPrivateKey privateKey) throws IOException {
+    public PEM(java.security.interfaces.RSAPrivateKey privateKey) throws IOException {
         super();
 
         this.fileContent = getFileContent(privateKey);

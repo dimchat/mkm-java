@@ -25,89 +25,33 @@
  */
 package chat.dim.crypto;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.HashMap;
-import java.util.Map;
+public interface PublicKey extends CryptographyKey {
 
-/**
- *  Asymmetric Cryptography Key
- *
- *      keyInfo format: {
- *          algorithm: "RSA", // ECC, ...
- *          data     : "{BASE64_ENCODE}",
- *          ...
- *      }
- */
-public abstract class PublicKey extends CryptographyKey implements IPublicKey {
+    String RSA = "RSA"; //-- "RSA/ECB/PKCS1Padding", "SHA256withRSA"
+    String ECC = "ECC";
 
-    protected PublicKey(Map<String, Object> dictionary) {
-        super(dictionary);
-    }
+    /**
+     *  ciphertext = encrypt(plaintext, PK)
+     *
+     * @param plaintext - data to be encrypted
+     * @return ciphertext
+     */
+    byte[] encrypt(byte[] plaintext);
 
-    private static final byte[] promise = "Moky loves May Lee forever!".getBytes();
+    /**
+     *  OK = verify(data, signature, PK)
+     *
+     * @param data - data
+     * @param signature - signature of data
+     * @return true on signature matched
+     */
+    boolean verify(byte[] data, byte[] signature);
 
-    @Override
-    public boolean matches(PrivateKey privateKey) {
-        if (privateKey == null) {
-            return false;
-        }
-        // 1. if the SK has the same public key, return true
-        PublicKey publicKey = privateKey.getPublicKey();
-        if (publicKey != null && publicKey.equals(this)) {
-            return true;
-        }
-        // 2. try to verify the SK's signature
-        byte[] signature = privateKey.sign(promise);
-        return verify(promise, signature);
-    }
-
-    //-------- Runtime --------
-
-    private static Map<String, Class> publicKeyClasses = new HashMap<>();
-
-    @SuppressWarnings("unchecked")
-    public static void register(String algorithm, Class clazz) {
-        // check whether clazz is subclass of PublicKey
-        clazz = clazz.asSubclass(PublicKey.class);
-        publicKeyClasses.put(algorithm, clazz);
-    }
-
-    @SuppressWarnings("unchecked")
-    private static PublicKey createInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
-        String algorithm = (String) dictionary.get("algorithm");
-        Class clazz = publicKeyClasses.get(algorithm);
-        if (clazz == null) {
-            throw new ClassNotFoundException("unknown algorithm: " + algorithm);
-        }
-        try {
-            Constructor constructor = clazz.getConstructor(Map.class);
-            return (PublicKey) constructor.newInstance(dictionary);
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public static PublicKey getInstance(Object object) throws ClassNotFoundException {
-        if (object == null) {
-            return null;
-        } else if (object instanceof PublicKey) {
-            return (PublicKey) object;
-        } else if (object instanceof Map) {
-            return createInstance((Map<String, Object>) object);
-        } else {
-            throw new IllegalArgumentException("unknown key: " + object);
-        }
-    }
-
-    static {
-        // RSA
-        register(RSA, RSAPublicKey.class); // default
-        register("SHA256withRSA", RSAPublicKey.class);
-        register("RSA/ECB/PKCS1Padding", RSAPublicKey.class);
-        // ECC
-        // ...
-    }
+    /**
+     *  Check whether they are key pair
+     *
+     * @param privateKey - private key that can generate the same public key
+     * @return true on keys matched
+     */
+    boolean matches(PrivateKey privateKey);
 }

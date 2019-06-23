@@ -23,7 +23,10 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.crypto.impl;
+
+import chat.dim.crypto.PublicKey;
+import chat.dim.format.PEM;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -46,7 +49,7 @@ import java.util.Map;
  *          data         : "..." // base64_encode()
  *      }
  */
-final class RSAPrivateKey extends PrivateKey {
+final class RSAPrivateKey extends PrivateKeyImpl {
 
     private final java.security.interfaces.RSAPrivateKey privateKey;
     private final java.security.interfaces.RSAPublicKey publicKey;
@@ -143,8 +146,12 @@ final class RSAPrivateKey extends PrivateKey {
         return new KeyPair(publicKey, privateKey);
     }
 
-    //-------- interfaces --------
+    @Override
+    public byte[] getData() {
+        return privateKey == null ? null : privateKey.getEncoded();
+    }
 
+    @Override
     public PublicKey getPublicKey() {
         if (publicKey == null) {
             throw new NullPointerException("public key not found");
@@ -164,13 +171,14 @@ final class RSAPrivateKey extends PrivateKey {
         dictionary.put("padding", "PKCS1");
         dictionary.put("digest", "SHA256");
         try {
-            return PublicKey.getInstance(dictionary);
-        } catch (ClassNotFoundException e) {
+            return new RSAPublicKey(dictionary);
+        } catch (NoSuchFieldException | InvalidKeySpecException | NoSuchAlgorithmException | NoSuchProviderException e) {
             e.printStackTrace();
             return null;
         }
     }
 
+    @Override
     public byte[] decrypt(byte[] ciphertext) {
         if (ciphertext.length != keySize()) {
             throw new InvalidParameterException("RSA cipher text length error: " + ciphertext.length);
@@ -186,6 +194,7 @@ final class RSAPrivateKey extends PrivateKey {
         }
     }
 
+    @Override
     public byte[] sign(byte[] data) {
         try {
             Signature signer = Signature.getInstance("SHA256withRSA", "BC");

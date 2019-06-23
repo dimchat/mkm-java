@@ -15,7 +15,7 @@ public class ETHMeta extends Meta {
             throw new ArithmeticException("meta version error");
         }
         // BTC, ExBTC
-        return ETHAddress.generate(key.data, network);
+        return ETHAddress.generate(key.getData(), network);
     }
 
     static {

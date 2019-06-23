@@ -27,24 +27,13 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
-/**
- *  Cryptography Key
- *
- *      keyInfo format: {
- *          algorithm: "RSA", // ECC, AES, ...
- *          data     : "{BASE64_ENCODE}",
- *          ...
- *      }
- */
-public abstract class CryptographyKey extends Dictionary {
+public interface CryptographyKey extends Map<String, Object> {
 
-    protected final String algorithm;
-    public byte[] data;
-
-    CryptographyKey(Map<String, Object> dictionary) {
-        super(dictionary);
-        this.algorithm = (String) dictionary.get("algorithm");
-        // process by subclass
-        this.data = null;
-    }
+    /**
+     *  Get key data
+     *
+     * @return key data
+     */
+    byte[] getData();
 }
+

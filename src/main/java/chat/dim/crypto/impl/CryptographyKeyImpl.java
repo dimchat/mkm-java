@@ -23,33 +23,30 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.crypto.impl;
 
-public interface IPrivateKey {
+import chat.dim.crypto.CryptographyKey;
 
-    String RSA = "RSA";
-    String ECC = "ECC";
+import java.util.Map;
 
-    /**
-     *  plaintext = decrypt(ciphertext, SK);
-     *
-     * @param ciphertext - encrypted data
-     * @return plaintext
-     */
-    byte[] decrypt(byte[] ciphertext);
+/**
+ *  Cryptography Key
+ *
+ *      keyInfo format: {
+ *          algorithm: "RSA", // ECC, AES, ...
+ *          data     : "{BASE64_ENCODE}",
+ *          ...
+ *      }
+ */
+public abstract class CryptographyKeyImpl extends Dictionary implements CryptographyKey {
 
-    /**
-     *  signature = sign(data, SK);
-     *
-     * @param data - data to be signed
-     * @return signature
-     */
-    byte[] sign(byte[] data);
+    protected final String algorithm;
+    public byte[] data;
 
-    /**
-     *  Get public key from private key
-     *
-     * @return public key paired to this private key
-     */
-    PublicKey getPublicKey();
+    CryptographyKeyImpl(Map<String, Object> dictionary) {
+        super(dictionary);
+        this.algorithm = (String) dictionary.get("algorithm");
+        // process by subclass
+        this.data = null;
+    }
 }

@@ -1,5 +1,7 @@
+
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.impl.PrivateKeyImpl;
 import chat.dim.format.Base64;
 import chat.dim.mkm.Account;
 import chat.dim.mkm.User;
@@ -7,6 +9,7 @@ import chat.dim.mkm.entity.Address;
 import chat.dim.mkm.entity.ID;
 import chat.dim.mkm.entity.Meta;
 import chat.dim.mkm.entity.NetworkType;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -61,7 +64,7 @@ public class EntityTest {
 
     @Test
     public void testMeta() throws ClassNotFoundException {
-        PrivateKey sk = PrivateKey.generate(PrivateKey.RSA);
+        PrivateKey sk = PrivateKeyImpl.generate(PrivateKey.RSA);
         PublicKey pk = sk.getPublicKey();
         String seed = "moky";
         byte[] data = seed.getBytes(Charset.forName("UTF-8"));

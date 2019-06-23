@@ -1,5 +1,9 @@
+
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.impl.PrivateKeyImpl;
+import chat.dim.crypto.impl.PublicKeyImpl;
+
 import org.junit.Test;
 
 import java.util.Map;
@@ -11,10 +15,15 @@ public class CryptoECCTest {
     }
 }
 
-final class ECCPrivateKey extends PrivateKey {
+final class ECCPrivateKey extends PrivateKeyImpl {
 
     public ECCPrivateKey(Map<String, Object> dictionary) {
         super(dictionary);
+    }
+
+    @Override
+    public byte[] getData() {
+        return new byte[0];
     }
 
     @Override
@@ -33,14 +42,19 @@ final class ECCPrivateKey extends PrivateKey {
     }
 
     static {
-        PrivateKey.register(PrivateKey.ECC, ECCPrivateKey.class);
+        PrivateKeyImpl.register(PrivateKey.ECC, ECCPrivateKey.class);
     }
 }
 
-final class ECCPublicKey extends PublicKey {
+final class ECCPublicKey extends PublicKeyImpl {
 
     public ECCPublicKey(Map<String, Object> dictionary) {
         super(dictionary);
+    }
+
+    @Override
+    public byte[] getData() {
+        return new byte[0];
     }
 
     @Override
@@ -54,6 +68,6 @@ final class ECCPublicKey extends PublicKey {
     }
 
     static {
-        PublicKey.register(PublicKey.ECC, ECCPublicKey.class);
+        PublicKeyImpl.register(PublicKey.ECC, ECCPublicKey.class);
     }
 }

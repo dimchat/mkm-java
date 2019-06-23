@@ -1,15 +1,29 @@
+
 import chat.dim.crypto.SymmetricKey;
+import chat.dim.crypto.impl.SymmetricKeyImpl;
+
+import org.junit.Test;
 
 import java.util.Map;
 
 public class CryptoDESTest {
+
+    @Test
+    public void testDES() {
+
+    }
 }
 
-final class DESKey extends SymmetricKey {
+final class DESKey extends SymmetricKeyImpl {
 
     public DESKey(Map<String, Object> dictionary) {
         super(dictionary);
         // TODO: check algorithm parameters
+    }
+
+    @Override
+    public byte[] getData() {
+        return new byte[0];
     }
 
     @Override
@@ -23,6 +37,6 @@ final class DESKey extends SymmetricKey {
     }
 
     static {
-        SymmetricKey.register(SymmetricKey.DES, DESKey.class);
+        SymmetricKeyImpl.register(SymmetricKey.DES, DESKey.class);
     }
 }

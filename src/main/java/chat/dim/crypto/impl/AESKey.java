@@ -23,7 +23,7 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.crypto.impl;
 
 import chat.dim.format.Base64;
 
@@ -47,7 +47,7 @@ import java.util.Random;
  *          iv       : "{BASE64_ENCODE}", // initialization vector
  *      }
  */
-final class AESKey extends SymmetricKey {
+final class AESKey extends SymmetricKeyImpl {
 
     private final Cipher cipher;
 
@@ -60,7 +60,7 @@ final class AESKey extends SymmetricKey {
         // 1. check mode = 'CBC'
         // 2. check padding = 'PKCS7Padding'
         cipher = Cipher.getInstance("AES/CBC/PKCS7Padding", "BC");
-        keySpec = new SecretKeySpec(getKeyData(), "AES");
+        keySpec = new SecretKeySpec(getData(), "AES");
         ivSpec = new IvParameterSpec(getInitVector());
     }
 
@@ -97,7 +97,20 @@ final class AESKey extends SymmetricKey {
         return new byte[size];
     }
 
-    private byte[] getKeyData() {
+    private byte[] getInitVector() {
+        Object iv = dictionary.get("iv");
+        if (iv != null) {
+            return Base64.decode((String) iv);
+        }
+        // zero iv
+        int blockSize = getBlockSize();
+        byte[] zeros = zeroData(blockSize);
+        dictionary.put("iv", Base64.encode(zeros));
+        return zeros;
+    }
+
+    @Override
+    public byte[] getData() {
         Object data = dictionary.get("data");
         if (data != null) {
             return Base64.decode((String) data);
@@ -124,20 +137,7 @@ final class AESKey extends SymmetricKey {
         return pw;
     }
 
-    private byte[] getInitVector() {
-        Object iv = dictionary.get("iv");
-        if (iv != null) {
-            return Base64.decode((String) iv);
-        }
-        // zero iv
-        int blockSize = getBlockSize();
-        byte[] zeros = zeroData(blockSize);
-        dictionary.put("iv", Base64.encode(zeros));
-        return zeros;
-    }
-
-    //-------- interfaces --------
-
+    @Override
     public byte[] encrypt(byte[] plaintext) {
         try {
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, ivSpec);
@@ -149,6 +149,7 @@ final class AESKey extends SymmetricKey {
         }
     }
 
+    @Override
     public byte[] decrypt(byte[] ciphertext) {
         try {
             cipher.init(Cipher.DECRYPT_MODE, keySpec, ivSpec);
