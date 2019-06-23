@@ -39,10 +39,7 @@ import java.util.Map;
  *          ...
  *      }
  */
-public abstract class PrivateKey extends CryptographyKey {
-
-    public static final String RSA = "RSA";
-    public static final String ECC = "ECC";
+public abstract class PrivateKey extends CryptographyKey implements IPrivateKey {
 
     protected PrivateKey(Map<String, Object> dictionary) {
         super(dictionary);
@@ -66,31 +63,6 @@ public abstract class PrivateKey extends CryptographyKey {
             return false;
         }
     }
-
-    //-------- Interfaces --------
-
-    /**
-     *  Get public key from private key
-     *
-     * @return public key paired to this private key
-     */
-    public abstract PublicKey getPublicKey();
-
-    /**
-     *  plaintext = decrypt(ciphertext, SK);
-     *
-     * @param ciphertext - encrypted data
-     * @return plaintext
-     */
-    public abstract byte[] decrypt(byte[] ciphertext);
-
-    /**
-     *  signature = sign(data, SK);
-     *
-     * @param data - data to be signed
-     * @return signature
-     */
-    public abstract byte[] sign(byte[] data);
 
     //-------- Runtime --------
 

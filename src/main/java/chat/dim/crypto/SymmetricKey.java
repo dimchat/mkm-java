@@ -40,10 +40,7 @@ import java.util.Map;
  *          ...
  *      }
  */
-public abstract class SymmetricKey extends CryptographyKey {
-
-    public static final String AES = "AES";
-    public static final String DES = "DES";
+public abstract class SymmetricKey extends CryptographyKey implements ISymmetricKey {
 
     protected SymmetricKey(Map<String, Object> dictionary) {
         super(dictionary);
@@ -67,24 +64,6 @@ public abstract class SymmetricKey extends CryptographyKey {
             return false;
         }
     }
-
-    //-------- Interfaces --------
-
-    /**
-     *  ciphertext = encrypt(plaintext, PW)
-     *
-     * @param plaintext - plain data
-     * @return ciphertext
-     */
-    public abstract byte[] encrypt(byte[] plaintext);
-
-    /**
-     *  plaintext = decrypt(ciphertext, PW);
-     *
-     * @param ciphertext - encrypted data
-     * @return plaintext
-     */
-    public abstract byte[] decrypt(byte[] ciphertext);
 
     //-------- Runtime --------
 

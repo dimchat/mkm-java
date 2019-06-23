@@ -39,10 +39,7 @@ import java.util.Map;
  *          ...
  *      }
  */
-public abstract class PublicKey extends CryptographyKey {
-
-    public static final String RSA = "RSA";
-    public static final String ECC = "ECC";
+public abstract class PublicKey extends CryptographyKey implements IPublicKey {
 
     protected PublicKey(Map<String, Object> dictionary) {
         super(dictionary);
@@ -50,6 +47,7 @@ public abstract class PublicKey extends CryptographyKey {
 
     private static final byte[] promise = "Moky loves May Lee forever!".getBytes();
 
+    @Override
     public boolean matches(PrivateKey privateKey) {
         if (privateKey == null) {
             return false;
@@ -63,25 +61,6 @@ public abstract class PublicKey extends CryptographyKey {
         byte[] signature = privateKey.sign(promise);
         return verify(promise, signature);
     }
-
-    //-------- Interfaces --------
-
-    /**
-     *  ciphertext = encrypt(plaintext, PK)
-     *
-     * @param plaintext - data to be encrypted
-     * @return ciphertext
-     */
-    public abstract byte[] encrypt(byte[] plaintext);
-
-    /**
-     *  OK = verify(data, signature, PK)
-     *
-     * @param data - data
-     * @param signature - signature of data
-     * @return true on signature matched
-     */
-    public abstract boolean verify(byte[] data, byte[] signature);
 
     //-------- Runtime --------
 
