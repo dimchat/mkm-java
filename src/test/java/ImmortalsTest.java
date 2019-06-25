@@ -1,6 +1,7 @@
 
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.impl.PrivateKeyImpl;
+import chat.dim.format.Base64;
 import chat.dim.format.JSON;
 import chat.dim.mkm.User;
 import chat.dim.mkm.entity.ID;
@@ -17,7 +18,7 @@ public class ImmortalsTest {
     private Facebook facebook = Facebook.getInstance();
 
     @SuppressWarnings("unchecked")
-    private User loadBuiltInAccount(String filename) throws IOException {
+    private User loadBuiltInAccount(String filename) throws IOException, ClassNotFoundException {
         String jsonString = Utils.readTextFile(filename);
         Map<String, Object> dictionary = JSON.decode(jsonString);
 
@@ -41,23 +42,52 @@ public class ImmortalsTest {
         facebook.addUser(user);
 
         // profile
-        Profile profile = Profile.getInstance(dictionary.get("profile"));
-        List<String> names = (List<String>) profile.get("names");
-        if (names != null) {
-            profile.remove("names");
-            if (names.size() > 0) {
-                profile.setName(names.get(0));
+        Profile profile;
+        Map<String, Object> profile_dict = (Map<String, Object>) dictionary.get("profile");
+        String profile_data = (String) profile_dict.get("data");
+        if (profile_data == null) {
+            profile = new Profile(identifier);
+            // set name
+            String name = (String) profile_dict.get("name");
+            if (name == null) {
+                List<String> names = (List<String>) profile_dict.get("names");
+                if (names != null) {
+                    if (names.size() > 0) {
+                        name = names.get(0);
+                    }
+                }
+            }
+            profile.setName(name);
+            for (String key : profile_dict.keySet()) {
+                if (key.equals("ID")) {
+                    continue;
+                }
+                if (key.equals("name") || key.equals("names")) {
+                    continue;
+                }
+                profile.setData(key, profile_dict.get(key));
+            }
+            // sign profile
+            profile.sign(privateKey);
+        } else {
+            String signature = (String) profile_dict.get("signature");
+            if (signature == null) {
+                profile = new Profile(identifier, profile_data, null);
+                // sign profile
+                profile.sign(privateKey);
+            } else {
+                profile = new Profile(identifier, profile_data, Base64.decode(signature));
+                // verify
+                profile.verify(privateKey.getPublicKey());
             }
         }
-        // sign profile
-        profile.sign(privateKey);
         facebook.addProfile(profile);
 
         return user;
     }
 
     @Test
-    public void testImmortals() throws IOException {
+    public void testImmortals() throws IOException, ClassNotFoundException {
         // Immortal Hulk
         User hulk = loadBuiltInAccount("/mkm_hulk.js");
         Log.info("hulk: " + hulk);

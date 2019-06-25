@@ -34,26 +34,46 @@ import chat.dim.format.JSON;
 
 import java.lang.reflect.Constructor;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class Profile extends TAO {
 
+    /**
+     *  Entity name
+     */
     private String name;
+
+    /**
+     *  Public key (used for encryption, can be same with meta.key)
+     *
+     *      RSA
+     */
+    private PublicKey key;
 
     /**
      *  Called by 'getInstance()' to create Profile
      *
      *  @param dictionary - profile info
      */
-    public Profile(Map<String, Object> dictionary) {
+    protected Profile(Map<String, Object> dictionary) {
         super(dictionary);
+
+        // public key
+        key = null;
     }
 
+    /**
+     *  Create profile with data and signature
+     *
+     * @param identifier - entity ID
+     * @param data - profile data in JsON format
+     * @param signature - signature of profile data
+     */
     public Profile(ID identifier, String data, byte[] signature) {
         super(identifier, data, signature);
+
+        // public key
+        key = null;
     }
 
     /**
@@ -65,22 +85,49 @@ public class Profile extends TAO {
         this(identifier, null, null);
     }
 
+    @Override
+    public boolean verify(PublicKey publicKey) {
+        if (!super.verify(publicKey)) {
+            return false;
+        }
+
+        // get name
+        name = (String) getData("name");
+
+        // get public key
+        try {
+            key = PublicKeyImpl.getInstance(getData("key"));
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            key = null;
+        }
+        return true;
+    }
+
     //---- properties getter/setter
 
     public String getName() {
         if (!valid) {
             return null;
         }
-        if (name == null) {
-            name = (String) properties.get("name");
-        }
         return name;
     }
 
     public void setName(String value) {
         name = value;
-        properties.put("name", value);
-        reset();
+        setData("name", name);
+    }
+
+    public PublicKey getKey() {
+        if (!valid) {
+            return null;
+        }
+        return key;
+    }
+
+    public void setKey(PublicKey publicKey) {
+        key = publicKey;
+        setData("key", key);
     }
 
     //-------- Runtime --------
@@ -97,7 +144,15 @@ public class Profile extends TAO {
     }
 
     @SuppressWarnings("unchecked")
-    private static Profile createInstance(Map<String, Object> dictionary) {
+    public static Profile getInstance(Object object) {
+        if (object == null) {
+            return null;
+        } else if (object instanceof Profile) {
+            return (Profile) object;
+        }
+        assert object instanceof Map;
+        Map<String, Object> dictionary = (Map<String, Object>) object;
+        // try each subclass to parse profile
         Constructor constructor;
         for (Class clazz: profileClasses) {
             try {
@@ -109,19 +164,6 @@ public class Profile extends TAO {
             }
         }
         throw new IllegalArgumentException("unknown profile: " + dictionary);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Profile getInstance(Object object) {
-        if (object == null) {
-            return null;
-        } else if (object instanceof Profile) {
-            return (Profile) object;
-        } else if (object instanceof Map) {
-            return createInstance((Map<String, Object>) object);
-        } else {
-            throw new IllegalArgumentException("profile error: " + object);
-        }
     }
 
     static {
@@ -136,21 +178,14 @@ public class Profile extends TAO {
  *      'Meta' is the information for entity which never changed, which contains the key for verify signature;
  *      'TAO' is the variable part, which contains the key for asymmetric encryption.
  */
-class TAO extends Dictionary {
+abstract class TAO extends Dictionary {
 
     public final ID identifier;
 
-    protected Map<String, Object> properties;
+    private Map<String, Object> properties;
     private String data;      // JsON.encode(properties)
     private byte[] signature; // User(identifier).sign(data)
     protected boolean valid;  // true on signature matched
-
-    /**
-     *  Public key (used for encryption, can be same with meta.key)
-     *
-     *      RSA
-     */
-    private PublicKey key;
 
     TAO(Map<String, Object> dictionary) {
         super(dictionary);
@@ -166,9 +201,6 @@ class TAO extends Dictionary {
         signature = (base64 == null) ? null : Base64.decode(base64);
         // verify flag
         valid = false;
-
-        // public key
-        key = null;
     }
 
     TAO(ID identifier, String data, byte[] signature) {
@@ -191,30 +223,54 @@ class TAO extends Dictionary {
         }
         // verify flag
         this.valid = false;
-
-        // public key
-        this.key = null;
-    }
-
-    public PublicKey getKey() {
-        return valid ? key : null;
-    }
-
-    public void setKey(PublicKey publicKey) {
-        key = publicKey;
-        properties.put("key", publicKey);
-        reset();
     }
 
     /**
-     *  Reset data signature after properties changed
+     *  Update profile property with key and data
+     *  (this will reset 'data' and 'signature')
+     *
+     * @param key - property key
+     * @param value - property data
      */
-    protected void reset() {
+    public void setData(String key, Object value) {
+        // 1. update data in properties
+        if (value == null) {
+            properties.remove(key);
+        } else {
+            properties.put(key, value);
+        }
+
+        // 2. reset data signature after properties changed
         dictionary.remove("data");
         dictionary.remove("signature");
         data = null;
         signature = null;
         valid = false;
+    }
+
+    /**
+     *  Get profile property data with key
+     *
+     * @param key - property key
+     * @return property data
+     */
+    public Object getData(String key) {
+        if (!valid) {
+            return null;
+        }
+        return properties.get(key);
+    }
+
+    /**
+     *  Get all keys for properties
+     *
+     * @return profile properties key set
+     */
+    public Set<String> dataKeys() {
+        if (!valid) {
+            return null;
+        }
+        return properties.keySet();
     }
 
     /**
@@ -237,9 +293,6 @@ class TAO extends Dictionary {
             // refresh properties
             properties.clear();
             properties.putAll(JSON.decode(data));
-
-            // get public key
-            key = PublicKeyImpl.getInstance(properties.get("key"));
         } else {
             data = null;
             signature = null;

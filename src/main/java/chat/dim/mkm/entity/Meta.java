@@ -56,7 +56,7 @@ import java.util.Map;
  *          address = base58_encode(network + hash + code);
  *          number  = uint(code);
  */
-public class Meta extends Dictionary {
+public abstract class Meta extends Dictionary {
 
     /**
      *  enum MKMMetaVersion
@@ -114,7 +114,7 @@ public class Meta extends Dictionary {
      */
     public final byte[] fingerprint;
 
-    public Meta(Map<String, Object> dictionary) throws NoSuchFieldException {
+    protected Meta(Map<String, Object> dictionary) throws NoSuchFieldException, ClassNotFoundException {
         super(dictionary);
         this.version = (int) dictionary.get("version");
         this.key = PublicKeyImpl.getInstance(dictionary.get("key"));
@@ -141,32 +141,6 @@ public class Meta extends Dictionary {
     }
 
     /**
-     *  Copy meta data
-     *
-     * @param version - meta algorithm version
-     * @param key - public key
-     * @param seed - user/group name
-     * @param fingerprint - signature of seed, or key data
-     */
-    private Meta(int version, PublicKey key, String seed, byte[] fingerprint) {
-        super();
-        this.version = version;
-        this.key = key;
-        this.seed = seed;
-        this.fingerprint = fingerprint;
-        dictionary.put("version", version);
-        dictionary.put("key", key);
-        if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
-            // check valid
-            if (!key.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint)) {
-                throw new ArithmeticException("fingerprint not match: " + dictionary);
-            }
-            dictionary.put("seed", seed);
-            dictionary.put("fingerprint", Base64.encode(fingerprint));
-        }
-    }
-
-    /**
      *  Generate meta info with seed and private key
      *
      * @param version - meta version(MKM, BTC, ETH, ...)
@@ -174,14 +148,17 @@ public class Meta extends Dictionary {
      * @param seed - user/group name
      * @return Meta object
      */
-    public static Meta generate(int version, PrivateKey sk, String seed) {
+    public static Meta generate(int version, PrivateKey sk, String seed) throws ClassNotFoundException {
+        Map<String, Object> dictionary = new HashMap<>();
+        dictionary.put("version", version);
+        dictionary.put("key", sk.getPublicKey());
         if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
             // generate fingerprint with private key
             byte[] fingerprint = sk.sign(seed.getBytes(Charset.forName("UTF-8")));
-            return new Meta(version, sk.getPublicKey(), seed, fingerprint);
-        } else { // BTC, ETH, ...
-            return new Meta(version, sk.getPublicKey(), null, null);
+            dictionary.put("seed", seed);
+            dictionary.put("fingerprint", Base64.encode(fingerprint));
         }
+        return Meta.getInstance(dictionary);
     }
 
     public boolean matches(PublicKey pk) {
@@ -211,7 +188,7 @@ public class Meta extends Dictionary {
     }
 
     public boolean matches(Address address) {
-        return generateAddress(address.getType()).equals(address);
+        return generateAddress(address.getNetwork()).equals(address);
     }
 
     public ID generateID(NetworkType network) {
@@ -220,11 +197,7 @@ public class Meta extends Dictionary {
     }
 
     public Address generateAddress(NetworkType network) {
-        if (version != VersionMKM) {
-            throw new ArithmeticException("meta version error");
-        }
-        // MKM
-        return BTCAddress.generate(fingerprint, network);
+        throw new RuntimeException("override me!");
     }
 
     //-------- Runtime --------
@@ -234,16 +207,27 @@ public class Meta extends Dictionary {
     @SuppressWarnings("unchecked")
     public static void register(int version, Class clazz) {
         // check whether clazz is subclass of Meta
+        if (clazz.equals(Meta.class)) {
+            throw new IllegalArgumentException("should not add Meta.class itself!");
+        }
         clazz = clazz.asSubclass(Meta.class);
         metaClasses.put(version, clazz);
     }
 
     @SuppressWarnings("unchecked")
-    private static Meta createInstance(Map<String, Object> dictionary) {
+    public static Meta getInstance(Object object) throws ClassNotFoundException {
+        if (object == null) {
+            return null;
+        } else if (object instanceof Meta) {
+            return (Meta) object;
+        }
+        assert object instanceof Map;
+        Map<String, Object> dictionary = (Map<String, Object>) object;
+        // get subclass by meta version
         int version = (int) dictionary.get("version");
         Class clazz = metaClasses.get(version);
         if (clazz == null) {
-            throw new IllegalArgumentException("unknown meta version: " + version);
+            throw new ClassNotFoundException("meta not support: " + dictionary);
         }
         try {
             Constructor constructor = clazz.getConstructor(Map.class);
@@ -254,41 +238,52 @@ public class Meta extends Dictionary {
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public static Meta getInstance(Object object) {
-        if (object == null) {
-            return null;
-        } else if (object instanceof Meta) {
-            return (Meta) object;
-        } else if (object instanceof Map) {
-            return createInstance((Map<String, Object>) object);
-        } else {
-            throw new IllegalArgumentException("meta error: " + object);
-        }
-    }
-
     static {
         // MKM
-        register(VersionMKM, Meta.class); // default
-        // BTC, ExBTC
+        register(VersionMKM, DefaultMeta.class);
+        // BTC
         register(VersionBTC, BTCMeta.class);
         register(VersionExBTC, BTCMeta.class);
-        // ETH, ExETH
+        // ETH
         // ...
     }
 }
 
-final class BTCMeta extends Meta {
+/**
+ *  Default Meta to build ID with 'name@address'
+ *
+ *  version:
+ *      0x01 - MKM
+ */
+final class DefaultMeta extends Meta {
 
-    public BTCMeta(Map<String, Object> dictionary) throws NoSuchFieldException {
+    public DefaultMeta(Map<String, Object> dictionary) throws NoSuchFieldException, ClassNotFoundException {
         super(dictionary);
     }
 
+    @Override
     public Address generateAddress(NetworkType network) {
-        if ((version & VersionBTC) != VersionBTC) {
-            throw new ArithmeticException("meta version error");
-        }
-        // BTC, ExBTC
+        assert version == VersionMKM;
+        return BTCAddress.generate(fingerprint, network);
+    }
+}
+
+/**
+ *  Meta to build ID with BTC address
+ *
+ *  version:
+ *      0x02 - BTC
+ *      0x03 - ExBTC
+ */
+final class BTCMeta extends Meta {
+
+    public BTCMeta(Map<String, Object> dictionary) throws NoSuchFieldException, ClassNotFoundException {
+        super(dictionary);
+    }
+
+    @Override
+    public Address generateAddress(NetworkType network) {
+        assert (version & VersionBTC) == VersionBTC;
         return BTCAddress.generate(key.getData(), network);
     }
 }

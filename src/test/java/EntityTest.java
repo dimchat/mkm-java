@@ -63,7 +63,7 @@ public class EntityTest {
     }
 
     @Test
-    public void testMeta() {
+    public void testMeta() throws ClassNotFoundException {
         PrivateKey sk = PrivateKeyImpl.generate(PrivateKey.RSA);
         PublicKey pk = sk.getPublicKey();
         String seed = "moky";

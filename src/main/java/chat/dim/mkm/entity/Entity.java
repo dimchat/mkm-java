@@ -25,7 +25,7 @@
  */
 package chat.dim.mkm.entity;
 
-public class Entity {
+public abstract class Entity {
 
     public final ID identifier;
 
@@ -103,18 +103,10 @@ public class Entity {
     }
 
     public Profile getProfile() {
-        Meta meta = getMeta();
-        if (meta == null) {
+        if (dataSource == null) {
             return null;
         }
-        // get from data source
-        Profile profile = dataSource.getProfile(identifier);
-        if (profile == null) {
-            return null;
-        } else if (profile.verify(meta.key)) {
-            return profile;
-        } else {
-            throw new ArithmeticException("profile signature not match: " + profile);
-        }
+        // get from data source (verify with meta.key first)
+        return dataSource.getProfile(identifier);
     }
 }

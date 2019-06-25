@@ -87,7 +87,7 @@ public final class ID {
      * @return address type as network ID
      */
     public NetworkType getType() {
-        return address.getType();
+        return address.getNetwork();
     }
 
     /**
@@ -96,7 +96,7 @@ public final class ID {
      * @return number for searching this ID
      */
     public long getNumber() {
-        return address.getNumber();
+        return address.getCode();
     }
 
     /**
@@ -152,10 +152,9 @@ public final class ID {
             return null;
         } else if (object instanceof ID) {
             return (ID) object;
-        } else if (object instanceof String) {
-            return new ID((String) object);
-        } else {
-            throw new IllegalArgumentException("unknown ID: " + object);
         }
+        assert object instanceof String;
+        String string = (String) object;
+        return new ID(string);
     }
 }

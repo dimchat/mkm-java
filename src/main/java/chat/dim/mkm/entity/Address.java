@@ -47,7 +47,7 @@ import java.util.List;
  *          code        = sha256(sha256(network + digest)).prefix(4);
  *          address     = base58_encode(network + digest + code);
  */
-public class Address {
+public abstract class Address {
 
     private final String string;
 
@@ -65,19 +65,17 @@ public class Address {
      *
      * @return Network ID
      */
-    public NetworkType getType() {
-        // NOTICE: override me!
-        return null;
+    public NetworkType getNetwork() {
+        throw new RuntimeException("override me!");
     }
 
     /**
      *  get search number
      *
-     * @return unsigned integer
+     * @return check code
      */
-    public long getNumber() {
-        // NOTICE: override me!
-        return 0;
+    public long getCode() {
+        throw new RuntimeException("override me!");
     }
 
     @Override
@@ -126,8 +124,22 @@ public class Address {
         }
     }
 
+    /**
+     *  Create/get instance of Address
+     *
+     * @param object - address string/object
+     * @return Address object
+     */
     @SuppressWarnings("unchecked")
-    private static Address createInstance(String string) {
+    public static Address getInstance(Object object) {
+        if (object == null) {
+            return null;
+        } else if (object instanceof Address) {
+            return (Address) object;
+        }
+        assert object instanceof String;
+        String string = (String) object;
+        // try each subclass to parse address
         Constructor constructor;
         for (Class clazz: addressClasses) {
             try {
@@ -138,25 +150,7 @@ public class Address {
                 //e.printStackTrace();
             }
         }
-        throw new ArithmeticException("unknown address: " + string);
-    }
-
-    /**
-     *  Create/get instance of Address
-     *
-     * @param object - address string/object
-     * @return Address object
-     */
-    public static Address getInstance(Object object) {
-        if (object == null) {
-            return null;
-        } else if (object instanceof Address) {
-            return (Address) object;
-        } else if (object instanceof String) {
-            return createInstance((String) object);
-        } else {
-            throw new IllegalArgumentException("address error: " + object);
-        }
+        throw new ArithmeticException("unknown address: " + object);
     }
 
     static {
@@ -193,12 +187,12 @@ final class BTCAddress extends Address {
     }
 
     @Override
-    public NetworkType getType() {
+    public NetworkType getNetwork() {
         return network;
     }
 
     @Override
-    public long getNumber() {
+    public long getCode() {
         return code;
     }
 

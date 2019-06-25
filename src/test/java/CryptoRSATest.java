@@ -14,7 +14,7 @@ import java.util.Map;
 public class CryptoRSATest {
 
     @Test
-    public void testRSA() throws UnsupportedEncodingException {
+    public void testRSA() throws UnsupportedEncodingException, ClassNotFoundException {
         PrivateKey sk = PrivateKeyImpl.generate(PrivateKey.RSA);
         Log.info("RSA private key: " + sk);
 
@@ -39,7 +39,7 @@ public class CryptoRSATest {
     }
 
     @Test
-    public void testPublicKey() {
+    public void testPublicKey() throws ClassNotFoundException {
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "RSA");
         dictionary.put("data", "-----BEGIN PUBLIC KEY-----\n" +
@@ -51,7 +51,7 @@ public class CryptoRSATest {
     }
 
     @Test
-    public void testPrivateKey() {
+    public void testPrivateKey() throws ClassNotFoundException {
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", "RSA");
         dictionary.put("data", "-----BEGIN RSA PRIVATE KEY-----\n" +

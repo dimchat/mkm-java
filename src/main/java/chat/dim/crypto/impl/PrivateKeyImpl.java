@@ -79,11 +79,19 @@ public abstract class PrivateKeyImpl extends CryptographyKeyImpl implements Priv
     }
 
     @SuppressWarnings("unchecked")
-    private static PrivateKey createInstance(Map<String, Object> dictionary) {
+    public static PrivateKey getInstance(Object object) throws ClassNotFoundException {
+        if (object == null) {
+            return null;
+        } else if (object instanceof PrivateKey) {
+            return (PrivateKey) object;
+        }
+        assert object instanceof Map;
+        Map<String, Object> dictionary = (Map<String, Object>) object;
+        // get subclass by key algorithm
         String algorithm = (String) dictionary.get("algorithm");
         Class clazz = privateKeyClasses.get(algorithm);
         if (clazz == null) {
-            throw new IllegalArgumentException("unknown algorithm: " + algorithm);
+            throw new ClassNotFoundException("algorithm not support: " + algorithm);
         }
         try {
             Constructor constructor = clazz.getConstructor(Map.class);
@@ -94,23 +102,10 @@ public abstract class PrivateKeyImpl extends CryptographyKeyImpl implements Priv
         }
     }
 
-    @SuppressWarnings("unchecked")
-    public static PrivateKey getInstance(Object object) {
-        if (object == null) {
-            return null;
-        } else if (object instanceof PrivateKey) {
-            return (PrivateKey) object;
-        } else if (object instanceof Map) {
-            return createInstance((Map<String, Object>) object);
-        } else {
-            throw new IllegalArgumentException("unknown key: " + object);
-        }
-    }
-
-    public static PrivateKey generate(String algorithm) {
+    public static PrivateKey generate(String algorithm) throws ClassNotFoundException {
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", algorithm);
-        return createInstance(dictionary);
+        return getInstance(dictionary);
     }
 
     static {

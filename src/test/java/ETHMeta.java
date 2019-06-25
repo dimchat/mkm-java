@@ -7,7 +7,7 @@ import java.util.Map;
 
 public class ETHMeta extends Meta {
 
-    public ETHMeta(Map<String, Object> dictionary) throws NoSuchFieldException {
+    public ETHMeta(Map<String, Object> dictionary) throws NoSuchFieldException, ClassNotFoundException {
         super(dictionary);
     }
 
