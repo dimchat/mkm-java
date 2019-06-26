@@ -73,8 +73,8 @@ public class Account extends Entity {
         PublicKey key = getProfileKey();
         if (key == null) {
             // 2. get key for encryption from meta instead
+            //    NOTICE: meta.key will never changed, so use profile.key to encrypt is the better way
             key = getMetaKey();
-            // NOTICE: meta.key will never changed, so use profile.key to encrypt is the better way
         }
         if (key == null) {
             throw new NullPointerException("failed to get encrypt key for: " + identifier);
@@ -97,5 +97,24 @@ public class Account extends Entity {
             return null;
         }
         return profile.getKey();
+    }
+
+    @Override
+    public Profile getProfile() {
+        Profile profile = super.getProfile();
+        if (profile == null) {
+            return null;
+        }
+        // try to verify with meta.key
+        PublicKey key = getMetaKey();
+        if (key == null) {
+            return null;
+        }
+        if (profile.verify(key)) {
+            // signature correct
+            return profile;
+        }
+        // profile error
+        return profile;
     }
 }

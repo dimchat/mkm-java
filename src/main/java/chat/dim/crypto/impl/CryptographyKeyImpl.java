@@ -40,8 +40,11 @@ import java.util.Map;
  */
 public abstract class CryptographyKeyImpl extends Dictionary implements CryptographyKey {
 
+    // key algorithm
     protected final String algorithm;
-    public byte[] data;
+
+    // key data
+    protected byte[] data;
 
     CryptographyKeyImpl(Map<String, Object> dictionary) {
         super(dictionary);

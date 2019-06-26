@@ -196,9 +196,13 @@ public abstract class Meta extends Dictionary {
         return new ID(seed, address, null);
     }
 
-    public Address generateAddress(NetworkType network) {
-        throw new RuntimeException("override me!");
-    }
+    /**
+     *  Generate address with meta info and address type
+     *
+     * @param network - address network type
+     * @return Address object
+     */
+    public abstract Address generateAddress(NetworkType network);
 
     //-------- Runtime --------
 

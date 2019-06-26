@@ -27,6 +27,8 @@ package chat.dim.mkm;
 
 import chat.dim.mkm.entity.Entity;
 import chat.dim.mkm.entity.ID;
+import chat.dim.mkm.entity.Meta;
+import chat.dim.mkm.entity.Profile;
 
 import java.util.List;
 
@@ -61,5 +63,24 @@ public class Group extends Entity {
         // get from data source
         GroupDataSource dataSource = (GroupDataSource) this.dataSource;
         return dataSource.getMembers(identifier);
+    }
+
+    @Override
+    public Profile getProfile() {
+        Profile profile = super.getProfile();
+        if (profile == null) {
+            return null;
+        }
+        // try to verify with owner's meta.key
+        ID owner = getOwner();
+        if (owner != null) {
+            Meta meta = dataSource.getMeta(owner);
+            if (meta != null && profile.verify(meta.key)) {
+                // signature correct
+                return profile;
+            }
+        }
+        // profile error, continue to process by subclass
+        return profile;
     }
 }

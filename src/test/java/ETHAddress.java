@@ -15,6 +15,17 @@ public final class ETHAddress extends Address {
         }
     }
 
+    @Override
+    public NetworkType getNetwork() {
+        return null;
+    }
+
+    @Override
+    public long getCode() {
+        return 0;
+    }
+
+
     static ETHAddress generate(byte[] fingerprint, NetworkType network) {
         // TODO: generate ETH address
         return null;

@@ -65,18 +65,14 @@ public abstract class Address {
      *
      * @return Network ID
      */
-    public NetworkType getNetwork() {
-        throw new RuntimeException("override me!");
-    }
+    public abstract NetworkType getNetwork();
 
     /**
      *  get search number
      *
      * @return check code
      */
-    public long getCode() {
-        throw new RuntimeException("override me!");
-    }
+    public abstract long getCode();
 
     @Override
     public String toString() {
