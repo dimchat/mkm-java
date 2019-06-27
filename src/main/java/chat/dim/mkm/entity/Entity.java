@@ -84,29 +84,19 @@ public abstract class Entity {
     public String getName() {
         // get from profile
         Profile profile = getProfile();
-        if (profile != null) {
-            String name = profile.getName();
-            if (name != null && name.length() > 0) {
-                return name;
-            }
+        String name = profile == null ? null : profile.getName();
+        if (name != null && name.length() > 0) {
+            return name;
         }
-        // get from identifier
+        // get ID.name
         return identifier.name;
     }
 
     public Meta getMeta() {
-        if (dataSource == null) {
-            return null;
-        }
-        // get from data source
         return dataSource.getMeta(identifier);
     }
 
     public Profile getProfile() {
-        if (dataSource == null) {
-            return null;
-        }
-        // get from data source (verify with meta.key first)
         return dataSource.getProfile(identifier);
     }
 }

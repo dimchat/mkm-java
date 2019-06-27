@@ -107,9 +107,6 @@ public class Profile extends TAO {
     //---- properties getter/setter
 
     public String getName() {
-        if (!valid) {
-            return null;
-        }
         return name;
     }
 
@@ -119,9 +116,6 @@ public class Profile extends TAO {
     }
 
     public PublicKey getKey() {
-        if (!valid) {
-            return null;
-        }
         return key;
     }
 
@@ -185,7 +179,7 @@ abstract class TAO extends Dictionary {
     private Map<String, Object> properties;
     private String data;      // JsON.encode(properties)
     private byte[] signature; // User(identifier).sign(data)
-    protected boolean valid;  // true on signature matched
+    private boolean valid;  // true on signature matched
 
     TAO(Map<String, Object> dictionary) {
         super(dictionary);
@@ -223,6 +217,10 @@ abstract class TAO extends Dictionary {
         }
         // verify flag
         this.valid = false;
+    }
+
+    public boolean isValid() {
+        return valid;
     }
 
     /**

@@ -28,18 +28,18 @@ public class ImmortalsTest {
         // meta
         Meta meta = Meta.getInstance(dictionary.get("meta"));
         assert meta != null && meta.matches(identifier);
-        facebook.addMeta(meta, identifier);
+        facebook.cacheMeta(meta, identifier);
         // private key
         PrivateKey privateKey = PrivateKeyImpl.getInstance(dictionary.get("privateKey"));
         if (meta.key.matches(privateKey)) {
             // store private key into keychain
-            facebook.addPrivateKey(privateKey, identifier);
+            facebook.cachePrivateKey(privateKey, identifier);
         } else {
             throw new IllegalArgumentException("private key not match meta public key: " + privateKey);
         }
         // create user
         User user = new User(identifier);
-        facebook.addUser(user);
+        facebook.cacheUser(user);
 
         // profile
         Profile profile;
@@ -81,7 +81,7 @@ public class ImmortalsTest {
                 profile.verify(privateKey.getPublicKey());
             }
         }
-        facebook.addProfile(profile);
+        facebook.cacheProfile(profile);
 
         return user;
     }

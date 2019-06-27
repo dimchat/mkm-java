@@ -39,28 +39,16 @@ public class Group extends Entity {
     }
 
     public ID getFounder() {
-        if (this.dataSource == null) {
-            return null;
-        }
-        // get from data source
         GroupDataSource dataSource = (GroupDataSource) this.dataSource;
         return dataSource.getFounder(identifier);
     }
 
     public ID getOwner() {
-        if (this.dataSource == null) {
-            return null;
-        }
-        // get from data source
         GroupDataSource dataSource = (GroupDataSource) this.dataSource;
         return dataSource.getOwner(identifier);
     }
 
     public List<ID> getMembers() {
-        if (this.dataSource == null) {
-            return null;
-        }
-        // get from data source
         GroupDataSource dataSource = (GroupDataSource) this.dataSource;
         return dataSource.getMembers(identifier);
     }
@@ -68,19 +56,17 @@ public class Group extends Entity {
     @Override
     public Profile getProfile() {
         Profile profile = super.getProfile();
-        if (profile == null) {
+        if (profile == null || profile.isValid()) {
             return null;
         }
         // try to verify with owner's meta.key
         ID owner = getOwner();
-        if (owner != null) {
-            Meta meta = dataSource.getMeta(owner);
-            if (meta != null && profile.verify(meta.key)) {
-                // signature correct
-                return profile;
-            }
+        Meta meta = dataSource.getMeta(owner);
+        if (meta != null && profile.verify(meta.key)) {
+            // signature correct
+            return profile;
         }
-        // profile error, continue to process by subclass
+        // profile error? continue to process by subclass
         return profile;
     }
 }

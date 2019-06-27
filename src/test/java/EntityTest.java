@@ -2,11 +2,9 @@ import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.impl.PrivateKeyImpl;
 import chat.dim.mkm.Account;
+import chat.dim.mkm.Group;
 import chat.dim.mkm.User;
-import chat.dim.mkm.entity.Address;
-import chat.dim.mkm.entity.ID;
-import chat.dim.mkm.entity.Meta;
-import chat.dim.mkm.entity.NetworkType;
+import chat.dim.mkm.entity.*;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -18,6 +16,7 @@ import java.util.Map;
 
 public class EntityTest {
 
+    static Facebook facebook = Facebook.getInstance();
     static String satoshi = "1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa";
 
     private String getAddressInfo(Address address) {
@@ -39,7 +38,23 @@ public class EntityTest {
     }
 
     private String getMetaInfo(Meta meta) {
-        return meta.toString();
+        Map<String, Object> info = new HashMap<>();
+        info.put("version", meta.version);
+        info.put("key", meta.key);
+        info.put("seed", meta.seed);
+        info.put("fingerprint", meta.fingerprint);
+        return info.toString();
+    }
+
+    private String getProfileInfo(Profile profile) {
+        Map<String, Object> info = new HashMap<>();
+        info.put("ID", profile.identifier);
+        info.put("name", profile.getName());
+        info.put("key", profile.getKey());
+        info.put("avatar", profile.getData("avatar"));
+        info.put("properties", profile.dataKeys());
+        info.put("valid", profile.isValid());
+        return info.toString();
     }
 
     @Test
@@ -54,6 +69,7 @@ public class EntityTest {
 
         NetworkType robot = NetworkType.Robot;
         Log.info("robot type: " + robot.toByte());
+        Log.info("robot type: " + robot.value);
         Assert.assertEquals((byte) 0xC8, robot.toByte());
 
         address = Address.getInstance(satoshi);
@@ -101,12 +117,12 @@ public class EntityTest {
         Assert.assertTrue(identifier.getType().isPerson());
 
         Facebook facebook = Facebook.getInstance();
-        facebook.addPrivateKey(sk, identifier);
-        facebook.addMeta(meta, identifier);
+        facebook.cachePrivateKey(sk, identifier);
+        facebook.cacheMeta(meta, identifier);
 
         User user = new User(identifier);
         user.dataSource = facebook;
-        facebook.addUser(user);
+        facebook.cacheUser(user);
 
         byte[] signature = user.sign(data);
         Assert.assertTrue(user.verify(data, signature));
@@ -123,17 +139,37 @@ public class EntityTest {
         ID identifier = ID.getInstance("moky@4DnqXWdTV8wuZgfqSCX9GjE2kNq7HJrUgQ");
         Log.info("ID: " + identifier + ", detail: " + getIDInfo(identifier));
 
-        Account account = new Account(identifier);
+        Account account = facebook.getAccount(identifier);
         Log.info("account: " + account);
         Assert.assertEquals(4049699527L, account.getNumber());
 
-        User user = new User(identifier);
+        User user = facebook.getUser(identifier);
         Log.info("user: " + user);
         Assert.assertEquals(4049699527L, user.getNumber());
 
         if (account.equals(user)) {
             Log.info("same entity");
         }
+        Assert.assertEquals(account.getType(), user.getType());
+
+        Profile profile = user.getProfile();
+        if (profile != null) {
+            Log.info("profile: " + getProfileInfo(profile));
+        }
+
+        List<ID> contacts = user.getContacts();
+        Log.info("contacts: " + contacts);
+    }
+
+    @Test
+    public void testGroup() {
+        ID identifier = ID.getInstance("Group-1280719982@7oMeWadRw4qat2sL4mTdcQSDAqZSo7LH5G");
+        Group group = new Group(identifier);
+        group.dataSource = facebook;
+
+        Log.info("founder: " + group.getFounder());
+        Log.info("owner: " + group.getOwner());
+        Log.info("members: " + group.getMembers());
     }
 }
 

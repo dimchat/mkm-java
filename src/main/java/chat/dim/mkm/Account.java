@@ -85,36 +85,27 @@ public class Account extends Entity {
 
     private PublicKey getMetaKey() {
         Meta meta = getMeta();
-        if (meta == null) {
-            throw new NullPointerException("failed to get meta for: " + identifier);
-        }
-        return meta.key;
+        return meta == null ? null : meta.key;
     }
 
     private PublicKey getProfileKey() {
         Profile profile = getProfile();
-        if (profile == null) {
-            return null;
-        }
-        return profile.getKey();
+        return profile == null ? null : profile.getKey();
     }
 
     @Override
     public Profile getProfile() {
         Profile profile = super.getProfile();
-        if (profile == null) {
-            return null;
+        if (profile == null || profile.isValid()) {
+            return profile;
         }
         // try to verify with meta.key
         PublicKey key = getMetaKey();
-        if (key == null) {
-            return null;
-        }
-        if (profile.verify(key)) {
+        if (key != null && profile.verify(key)) {
             // signature correct
             return profile;
         }
-        // profile error
+        // profile error?
         return profile;
     }
 }

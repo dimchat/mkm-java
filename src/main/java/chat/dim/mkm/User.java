@@ -43,9 +43,6 @@ public class User extends Account {
      * @return contact list
      */
     public List<ID> getContacts() {
-        if (this.dataSource == null) {
-            throw new NullPointerException("data source not set for user: " + identifier);
-        }
         UserDataSource dataSource = (UserDataSource) this.dataSource;
         return dataSource.getContacts(identifier);
     }
@@ -57,16 +54,10 @@ public class User extends Account {
      * @return signature
      */
     public byte[] sign(byte[] data) {
-        if (this.dataSource == null) {
-            throw new NullPointerException("data source not set for user: " + identifier);
-        }
         // get from data source
         UserDataSource dataSource = (UserDataSource) this.dataSource;
         PrivateKey privateKey = dataSource.getPrivateKeyForSignature(identifier);
-        if (privateKey == null) {
-            throw new NullPointerException("failed to get private key for user: " + identifier);
-        }
-        return privateKey.sign(data);
+        return privateKey == null ? null : privateKey.sign(data);
     }
 
     /**
@@ -76,9 +67,6 @@ public class User extends Account {
      * @return plain text
      */
     public byte[] decrypt(byte[] ciphertext) {
-        if (this.dataSource == null) {
-            throw new NullPointerException("data source not set for user: " + identifier);
-        }
         // get from data source
         UserDataSource dataSource = (UserDataSource) this.dataSource;
         List<PrivateKey> privateKeys = dataSource.getPrivateKeysForDecryption(identifier);
@@ -87,7 +75,7 @@ public class User extends Account {
             try {
                 plaintext = privateKey.decrypt(ciphertext);
             } catch (InvalidParameterException e) {
-                // key not match
+                // this key not match, try next one
                 e.printStackTrace();
             }
             if (plaintext != null) {
