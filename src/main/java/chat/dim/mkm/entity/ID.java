@@ -157,4 +157,9 @@ public final class ID {
         String string = (String) object;
         return new ID(string);
     }
+
+    /**
+     *  ID for broadcast
+     */
+    public static final ID EVERYONE = new ID("EVERYONE", Address.EVERYWHERE, null);
 }

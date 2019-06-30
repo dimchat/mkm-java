@@ -149,6 +149,22 @@ public abstract class Address {
         throw new ArithmeticException("unknown address: " + object);
     }
 
+    /**
+     *  Address for broadcast
+     */
+    static final Address EVERYWHERE = new Address("EVERYWHERE") {
+
+        @Override
+        public NetworkType getNetwork() {
+            return NetworkType.Main;
+        }
+
+        @Override
+        public long getCode() {
+            return 9527;
+        }
+    };
+
     static {
         // BTC
         register(BTCAddress.class); // default
