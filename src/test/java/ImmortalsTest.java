@@ -108,10 +108,17 @@ public class ImmortalsTest {
         Log.info("profile: " + facebook.getProfile(moki.identifier));
 
         // Everyone
+        Account anyone = new Account(ID.ANYONE);
+        anyone.dataSource = facebook;
+        Log.info("broadcast: " + anyone.identifier);
+        Log.info("number: " + anyone.getNumber());
+        Log.info("anyone: " + anyone);
+
+        // Everyone
         Account everyone = new Account(ID.EVERYONE);
         everyone.dataSource = facebook;
-        Log.info("broadcast: " + ID.EVERYONE);
-        Log.info("number: " + ID.EVERYONE.getNumber());
-        Log.info("everyone: " + everyone);
+        Log.info("broadcast: " + everyone.identifier);
+        Log.info("number: " + everyone.getNumber());
+        Log.info("anyone: " + everyone);
     }
 }

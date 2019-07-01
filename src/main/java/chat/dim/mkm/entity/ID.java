@@ -155,11 +155,18 @@ public final class ID {
         }
         assert object instanceof String;
         String string = (String) object;
+        // Constant ID
+        if (string.equalsIgnoreCase("ANYONE@ANYWHERE")) {
+            return ANYONE;
+        } else if (string.equalsIgnoreCase("EVERYONE@EVERYWHERE")) {
+            return EVERYONE;
+        }
         return new ID(string);
     }
 
     /**
      *  ID for broadcast
      */
+    public static final ID ANYONE = new ID("ANYONE", Address.ANYWHERE, null);
     public static final ID EVERYONE = new ID("EVERYONE", Address.EVERYWHERE, null);
 }

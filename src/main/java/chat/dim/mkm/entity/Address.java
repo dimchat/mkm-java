@@ -135,6 +135,13 @@ public abstract class Address {
         }
         assert object instanceof String;
         String string = (String) object;
+        // Constant Address
+        if (string.equalsIgnoreCase("ANYWHERE")) {
+            return ANYWHERE;
+        } else if (string.equalsIgnoreCase("EVERYWHERE")) {
+            return EVERYWHERE;
+        }
+
         // try each subclass to parse address
         Constructor constructor;
         for (Class clazz: addressClasses) {
@@ -152,11 +159,23 @@ public abstract class Address {
     /**
      *  Address for broadcast
      */
-    static final Address EVERYWHERE = new Address("EVERYWHERE") {
+    static final Address ANYWHERE = new Address("ANYWHERE") {
 
         @Override
         public NetworkType getNetwork() {
             return NetworkType.Main;
+        }
+
+        @Override
+        public long getCode() {
+            return 9527;
+        }
+    };
+    static final Address EVERYWHERE = new Address("EVERYWHERE") {
+
+        @Override
+        public NetworkType getNetwork() {
+            return NetworkType.Group;
         }
 
         @Override
