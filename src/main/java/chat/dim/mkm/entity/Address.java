@@ -136,9 +136,9 @@ public abstract class Address {
         assert object instanceof String;
         String string = (String) object;
         // Constant Address
-        if (string.equalsIgnoreCase("ANYWHERE")) {
+        if (string.equalsIgnoreCase("anywhere")) {
             return ANYWHERE;
-        } else if (string.equalsIgnoreCase("EVERYWHERE")) {
+        } else if (string.equalsIgnoreCase("everywhere")) {
             return EVERYWHERE;
         }
 
@@ -159,7 +159,7 @@ public abstract class Address {
     /**
      *  Address for broadcast
      */
-    static final Address ANYWHERE = new Address("ANYWHERE") {
+    static final Address ANYWHERE = new Address("anywhere") {
 
         @Override
         public NetworkType getNetwork() {
@@ -171,7 +171,7 @@ public abstract class Address {
             return 9527;
         }
     };
-    static final Address EVERYWHERE = new Address("EVERYWHERE") {
+    static final Address EVERYWHERE = new Address("everywhere") {
 
         @Override
         public NetworkType getNetwork() {
