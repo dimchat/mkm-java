@@ -245,10 +245,8 @@ public abstract class Meta extends Dictionary {
     static {
         // MKM
         register(VersionMKM, DefaultMeta.class);
-        // BTC
-        register(VersionBTC, BTCMeta.class);
-        register(VersionExBTC, BTCMeta.class);
-        // ETH
+        // BTC, ExBTC
+        // ETH, ExETH
         // ...
     }
 }
@@ -269,25 +267,5 @@ final class DefaultMeta extends Meta {
     public Address generateAddress(NetworkType network) {
         assert version == VersionMKM;
         return BTCAddress.generate(fingerprint, network);
-    }
-}
-
-/**
- *  Meta to build ID with BTC address
- *
- *  version:
- *      0x02 - BTC
- *      0x03 - ExBTC
- */
-final class BTCMeta extends Meta {
-
-    public BTCMeta(Map<String, Object> dictionary) throws NoSuchFieldException, ClassNotFoundException {
-        super(dictionary);
-    }
-
-    @Override
-    public Address generateAddress(NetworkType network) {
-        assert (version & VersionBTC) == VersionBTC;
-        return BTCAddress.generate(key.getData(), network);
     }
 }

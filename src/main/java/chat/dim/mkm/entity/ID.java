@@ -156,9 +156,10 @@ public final class ID {
         assert object instanceof String;
         String string = (String) object;
         // Constant ID
-        if (string.equalsIgnoreCase("anyone@anywhere")) {
+        String lowercase = string.toLowerCase();
+        if (lowercase.equals("anyone@anywhere")) {
             return ANYONE;
-        } else if (string.equalsIgnoreCase("everyone@everywhere")) {
+        } else if (lowercase.equals("everyone@everywhere")) {
             return EVERYONE;
         }
         return new ID(string);

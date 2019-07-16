@@ -136,9 +136,10 @@ public abstract class Address {
         assert object instanceof String;
         String string = (String) object;
         // Constant Address
-        if (string.equalsIgnoreCase("anywhere")) {
+        String lowercase = string.toLowerCase();
+        if (lowercase.equals("anywhere")) {
             return ANYWHERE;
-        } else if (string.equalsIgnoreCase("everywhere")) {
+        } else if (lowercase.equals("everywhere")) {
             return EVERYWHERE;
         }
 
@@ -185,8 +186,8 @@ public abstract class Address {
     };
 
     static {
-        // BTC
-        register(BTCAddress.class); // default
+        // default (BTC)
+        register(BTCAddress.class);
         // ETH
         // ...
     }
