@@ -36,7 +36,7 @@ import java.lang.reflect.Constructor;
 import java.nio.charset.Charset;
 import java.util.*;
 
-public class Profile extends TAO {
+public class Profile extends TAI {
 
     /**
      *  Entity name
@@ -167,12 +167,12 @@ public class Profile extends TAO {
 }
 
 /**
- *  The Additional Object
+ *  The Additional Information
  *
  *      'Meta' is the information for entity which never changed, which contains the key for verify signature;
- *      'TAO' is the variable part, which contains the key for asymmetric encryption.
+ *      'TAI' is the variable part, which contains the key for asymmetric encryption.
  */
-abstract class TAO extends Dictionary {
+abstract class TAI extends Dictionary {
 
     public final ID identifier;
 
@@ -181,7 +181,7 @@ abstract class TAO extends Dictionary {
     private byte[] signature; // User(identifier).sign(data)
     private boolean valid;  // true on signature matched
 
-    TAO(Map<String, Object> dictionary) {
+    TAI(Map<String, Object> dictionary) {
         super(dictionary);
         // ID
         identifier = ID.getInstance(dictionary.get("ID"));
@@ -197,7 +197,7 @@ abstract class TAO extends Dictionary {
         valid = false;
     }
 
-    TAO(ID identifier, String data, byte[] signature) {
+    TAI(ID identifier, String data, byte[] signature) {
         super();
         // ID
         this.identifier = identifier;

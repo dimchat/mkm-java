@@ -160,7 +160,7 @@ public abstract class Address {
     /**
      *  Address for broadcast
      */
-    static final Address ANYWHERE = new Address("anywhere") {
+    public static final Address ANYWHERE = new Address("anywhere") {
 
         @Override
         public NetworkType getNetwork() {
@@ -172,7 +172,7 @@ public abstract class Address {
             return 9527;
         }
     };
-    static final Address EVERYWHERE = new Address("everywhere") {
+    public static final Address EVERYWHERE = new Address("everywhere") {
 
         @Override
         public NetworkType getNetwork() {
