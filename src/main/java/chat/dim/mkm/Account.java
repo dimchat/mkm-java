@@ -31,6 +31,15 @@ import chat.dim.mkm.entity.ID;
 import chat.dim.mkm.entity.Meta;
 import chat.dim.mkm.entity.Profile;
 
+/**
+ *  Account for communication
+ *  ~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  This class is for creating account
+ *
+ *      functions:
+ *          verify(data, signature) - verify (encrypted content) data and signature
+ *          encrypt(data)           - encrypt (symmetric key) data
+ */
 public class Account extends Entity {
 
     public Account(ID identifier) {

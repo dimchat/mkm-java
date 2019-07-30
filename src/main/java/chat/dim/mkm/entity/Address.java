@@ -34,18 +34,13 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- *  Address like BitCoin
+ *  Address for MKM ID
+ *  ~~~~~~~~~~~~~~~~~~
+ *  This class is used to build address for ID
  *
- *      data format: "network+digest+code"
- *          network    --  1 byte
- *          digest     -- 20 bytes
- *          code       --  4 bytes
- *
- *      algorithm:
- *          fingerprint = sign(seed, SK);
- *          digest      = ripemd160(sha256(fingerprint));
- *          code        = sha256(sha256(network + digest)).prefix(4);
- *          address     = base58_encode(network + digest + code);
+ *      properties:
+ *          network - address type
+ *          number  - search number
  */
 public abstract class Address {
 
@@ -193,6 +188,20 @@ public abstract class Address {
     }
 }
 
+/**
+ *  Address like BitCoin
+ *
+ *      data format: "network+digest+code"
+ *          network    --  1 byte
+ *          digest     -- 20 bytes
+ *          code       --  4 bytes
+ *
+ *      algorithm:
+ *          fingerprint = sign(seed, SK);
+ *          digest      = ripemd160(sha256(fingerprint));
+ *          code        = sha256(sha256(network + digest)).prefix(4);
+ *          address     = base58_encode(network + digest + code);
+ */
 final class BTCAddress extends Address {
 
     private final NetworkType network;
@@ -231,8 +240,9 @@ final class BTCAddress extends Address {
     /**
      *  Generate address with fingerprint and network ID
      *
-     *  @param fingerprint = sign(seed, PK)
-     *  @param network - network ID
+     * @param fingerprint = meta.fingerprint or key.data
+     * @param network - address type
+     * @return Address object
      */
     static BTCAddress generate(byte[] fingerprint, NetworkType network) {
         // 1. digest = ripemd160(sha256(fingerprint))

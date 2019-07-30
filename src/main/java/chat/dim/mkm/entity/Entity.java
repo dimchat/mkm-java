@@ -25,6 +25,19 @@
  */
 package chat.dim.mkm.entity;
 
+/**
+ *  Entity (Account/Group)
+ *  ~~~~~~~~~~~~~~~~~~~~~~
+ *  Base class of Account and Group, ...
+ *
+ *  properties:
+ *      identifier - entity ID
+ *      type       - entity type
+ *      number     - search number
+ *      meta       - meta for generate ID
+ *      profile    - entity profile
+ *      name       - nickname
+ */
 public abstract class Entity {
 
     public final ID identifier;
@@ -97,6 +110,14 @@ public abstract class Entity {
     }
 
     public Profile getProfile() {
-        return dataSource.getProfile(identifier);
+        Profile tai = dataSource.getProfile(identifier);
+        if (tai != null) {
+            // verify it with meta.key
+            Meta meta = getMeta();
+            if (meta != null) {
+                tai.verify(meta.key);
+            }
+        }
+        return tai;
     }
 }

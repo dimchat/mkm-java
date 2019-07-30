@@ -39,6 +39,8 @@ import java.util.Map;
 
 /**
  *  Account/Group Meta data
+ *  ~~~~~~~~~~~~~~~~~~~~~~~
+ *  This class is used to generate entity ID
  *
  *      data format: {
  *          version: 1,          // algorithm version
@@ -49,12 +51,6 @@ import java.util.Map;
  *
  *      algorithm:
  *          fingerprint = sign(seed, SK);
- *
- *          CT      = fingerprint; // or key.data for BTC address
- *          hash    = ripemd160(sha256(CT));
- *          code    = sha256(sha256(network + hash)).prefix(4);
- *          address = base58_encode(network + hash + code);
- *          number  = uint(code);
  */
 public abstract class Meta extends Dictionary {
 
@@ -256,6 +252,13 @@ public abstract class Meta extends Dictionary {
  *
  *  version:
  *      0x01 - MKM
+ *
+ *  algorithm:
+ *      CT      = fingerprint; // or key.data for BTC address
+ *      hash    = ripemd160(sha256(CT));
+ *      code    = sha256(sha256(network + hash)).prefix(4);
+ *      address = base58_encode(network + hash + code);
+ *      number  = uint(code);
  */
 final class DefaultMeta extends Meta {
 

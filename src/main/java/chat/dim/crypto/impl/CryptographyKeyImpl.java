@@ -31,12 +31,14 @@ import java.util.Map;
 
 /**
  *  Cryptography Key
+ *  ~~~~~~~~~~~~~~~~
+ *  Cryptography key with designated algorithm
  *
- *      keyInfo format: {
- *          algorithm: "RSA", // ECC, AES, ...
- *          data     : "{BASE64_ENCODE}",
- *          ...
- *      }
+ *  key data format: {
+ *      algorithm : "RSA", // ECC, AES, ...
+ *      data      : "{BASE64_ENCODE}",
+ *      ...
+ *  }
  */
 public abstract class CryptographyKeyImpl extends Dictionary implements CryptographyKey {
 

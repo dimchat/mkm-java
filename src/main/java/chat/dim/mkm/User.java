@@ -31,6 +31,15 @@ import chat.dim.mkm.entity.ID;
 import java.security.InvalidParameterException;
 import java.util.List;
 
+/**
+ *  User for communication
+ *  ~~~~~~~~~~~~~~~~~~~~~~
+ *  This class is for creating user
+ *
+ *      functions:
+ *          sign(data)    - calculate signature of (encrypted content) data
+ *          decrypt(data) - decrypt (symmetric key) data
+ */
 public class User extends Account {
 
     public User(ID identifier) {

@@ -34,13 +34,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  Asymmetric Cryptography Key
+ *  Asymmetric Cryptography Public Key
+ *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *
- *      keyInfo format: {
- *          algorithm: "RSA", // ECC, ...
- *          data     : "{BASE64_ENCODE}",
- *          ...
- *      }
+ *  key data format: {
+ *      algorithm : "RSA", // "ECC", ...
+ *      data      : "{BASE64_ENCODE}",
+ *      ...
+ *  }
  */
 public abstract class PublicKeyImpl extends CryptographyKeyImpl implements PublicKey {
 

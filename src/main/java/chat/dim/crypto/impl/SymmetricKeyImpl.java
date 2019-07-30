@@ -35,12 +35,14 @@ import java.util.Map;
 
 /**
  *  Symmetric Cryptography Key
+ *  ~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  This class is used to encrypt or decrypt message data
  *
- *      keyInfo format: {
- *          algorithm: "AES",
- *          data     : "{BASE64_ENCODE}",
- *          ...
- *      }
+ *  key data format: {
+ *      algorithm : "AES", // "DES", ...
+ *      data      : "{BASE64_ENCODE}",
+ *      ...
+ *  }
  */
 public abstract class SymmetricKeyImpl extends CryptographyKeyImpl implements SymmetricKey {
 

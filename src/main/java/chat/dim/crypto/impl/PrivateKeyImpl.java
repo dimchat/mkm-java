@@ -34,13 +34,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  Asymmetric Cryptography Key
+ *  Asymmetric Cryptography Private Key
+ *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  This class is used to decrypt symmetric key or sign message data
  *
- *      keyInfo format: {
- *          algorithm: "RSA", // ECC, ...
- *          data     : "{BASE64_ENCODE}",
- *          ...
- *      }
+ *  key data format: {
+ *      algorithm : "RSA", // "ECC", ...
+ *      data      : "{BASE64_ENCODE}",
+ *      ...
+ *  }
  */
 public abstract class PrivateKeyImpl extends CryptographyKeyImpl implements PrivateKey {
 
