@@ -170,4 +170,8 @@ public final class ID {
      */
     public static final ID ANYONE = new ID("anyone", Address.ANYWHERE, null);
     public static final ID EVERYONE = new ID("everyone", Address.EVERYWHERE, null);
+
+    public boolean isBroadcast() {
+        return address.isBroadcast();
+    }
 }

@@ -32,12 +32,14 @@ public class ImmortalsTest {
         Log.info("broadcast: " + anyone.identifier);
         Log.info("number: " + anyone.getNumber());
         Log.info("anyone: " + anyone);
+        Log.info("is broadcast: " + anyone.identifier.isBroadcast());
 
         // Everyone
         Account everyone = new Account(ID.EVERYONE);
         everyone.dataSource = facebook;
         Log.info("broadcast: " + everyone.identifier);
         Log.info("number: " + everyone.getNumber());
-        Log.info("anyone: " + everyone);
+        Log.info("everyone: " + everyone);
+        Log.info("is broadcast: " + everyone.identifier.isBroadcast());
     }
 }

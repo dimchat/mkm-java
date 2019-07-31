@@ -88,6 +88,8 @@ public class EntityTest {
         Log.info("ID: " + identifier + ", detail: " + getIDInfo(identifier));
         Assert.assertEquals(4049699527L, identifier.getNumber());
 
+        Log.info("is broadcast: " + identifier.isBroadcast());
+
         Assert.assertEquals(identifier, ID.getInstance("moky@4DnqXWdTV8wuZgfqSCX9GjE2kNq7HJrUgQ/home"));
 
         List<ID> array = new ArrayList<>();

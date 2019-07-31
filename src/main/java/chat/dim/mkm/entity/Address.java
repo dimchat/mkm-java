@@ -180,6 +180,17 @@ public abstract class Address {
         }
     };
 
+    public boolean isBroadcast() {
+        NetworkType network = getNetwork();
+        if (network.isGroup()) {
+            return equals(EVERYWHERE);
+        }
+        if (network.isPerson()) {
+            return equals(ANYWHERE);
+        }
+        return false;
+    }
+
     static {
         // default (BTC)
         register(BTCAddress.class);
