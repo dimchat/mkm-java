@@ -1,9 +1,9 @@
 
+import java.util.Map;
+
 import chat.dim.mkm.entity.Address;
 import chat.dim.mkm.entity.Meta;
 import chat.dim.mkm.entity.NetworkType;
-
-import java.util.Map;
 
 public class ETHMeta extends Meta {
 

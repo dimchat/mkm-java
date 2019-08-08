@@ -1,15 +1,15 @@
 
-import chat.dim.crypto.PrivateKey;
-import chat.dim.crypto.PublicKey;
-import chat.dim.crypto.impl.PrivateKeyImpl;
-import chat.dim.crypto.impl.PublicKeyImpl;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+
+import chat.dim.crypto.PrivateKey;
+import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.impl.PrivateKeyImpl;
+import chat.dim.crypto.impl.PublicKeyImpl;
 
 public class CryptoRSATest {
 

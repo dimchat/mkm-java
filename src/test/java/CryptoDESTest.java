@@ -1,10 +1,10 @@
 
-import chat.dim.crypto.SymmetricKey;
-import chat.dim.crypto.impl.SymmetricKeyImpl;
-
 import org.junit.Test;
 
 import java.util.Map;
+
+import chat.dim.crypto.SymmetricKey;
+import chat.dim.crypto.impl.SymmetricKeyImpl;
 
 public class CryptoDESTest {
 

@@ -1,14 +1,14 @@
 
-import chat.dim.crypto.SymmetricKey;
-import chat.dim.crypto.impl.SymmetricKeyImpl;
-import chat.dim.format.Base64;
-
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
+
+import chat.dim.crypto.SymmetricKey;
+import chat.dim.crypto.impl.SymmetricKeyImpl;
+import chat.dim.format.Base64;
 
 public class CryptoAESTest {
 

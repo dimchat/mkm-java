@@ -1,3 +1,10 @@
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.impl.PrivateKeyImpl;
 import chat.dim.format.Base64;
@@ -7,12 +14,6 @@ import chat.dim.mkm.GroupDataSource;
 import chat.dim.mkm.User;
 import chat.dim.mkm.UserDataSource;
 import chat.dim.mkm.entity.*;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 public class Facebook implements UserDataSource, GroupDataSource {
 

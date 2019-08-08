@@ -1,12 +1,12 @@
 
+import org.junit.Test;
+
+import java.util.Map;
+
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.impl.PrivateKeyImpl;
 import chat.dim.crypto.impl.PublicKeyImpl;
-
-import org.junit.Test;
-
-import java.util.Map;
 
 public class CryptoECCTest {
 

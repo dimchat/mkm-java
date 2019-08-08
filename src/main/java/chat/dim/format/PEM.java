@@ -114,7 +114,7 @@ public final class PEM {
         return "-----BEGIN RSA PRIVATE KEY-----\r\n" + rfc2045(data) + "\r\n-----END RSA PRIVATE KEY-----";
     }
 
-    private static byte[] getPublicKeyData(String pem) throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException {
+    private static byte[] getPublicKeyData(String pem) throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
         String keyContent = getKeyContent(pem, "PUBLIC");
         boolean isPrivate = false;
         if (keyContent == null) {
@@ -126,10 +126,11 @@ public final class PEM {
             isPrivate = true;
         }
         byte[] data = Base64.decode(keyContent);
-        String format = "PKCS#1"; // TODO: check key data format
-        if (format.equals("PKCS#1")) {
-            // convert to X.509
+        try {
+            // convert from "PKCS#1" to "X.509"
             data = (new PKCS1(data, isPrivate)).toX509();
+        } catch (IllegalArgumentException e) {
+            //e.printStackTrace();
         }
         return data;
     }
@@ -140,10 +141,11 @@ public final class PEM {
             return null;
         }
         byte[] data = Base64.decode(keyContent);
-        String format = "PKCS#1"; // TODO: check key data format
-        if (format.equals("PKCS#1")) {
-            // convert to PKCS#8
+        try {
+            // convert from "PKCS#1" to "PKCS#8"
             data = (new PKCS1(data, true)).toPKCS8();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
         }
         return data;
     }
