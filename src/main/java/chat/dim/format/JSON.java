@@ -30,8 +30,6 @@ import chat.dim.mkm.entity.ID;
 import com.alibaba.fastjson.serializer.SerializeConfig;
 import com.alibaba.fastjson.serializer.ToStringSerializer;
 
-import java.util.Map;
-
 public class JSON {
 
     public static String encode(Object container) {
@@ -39,8 +37,8 @@ public class JSON {
     }
 
     @SuppressWarnings("unchecked")
-    public static Map<String, Object> decode(String jsonString) {
-        return (Map<String, Object>) parser.decode(jsonString);
+    public static Object decode(String jsonString) {
+        return parser.decode(jsonString);
     }
 
     // default parser

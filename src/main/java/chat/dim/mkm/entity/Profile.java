@@ -277,6 +277,7 @@ abstract class TAI extends Dictionary {
      * @param publicKey - public key in meta.key
      * @return true on signature matched
      */
+    @SuppressWarnings("unchecked")
     public boolean verify(PublicKey publicKey) {
         if (valid) {
             // already verified
@@ -290,7 +291,8 @@ abstract class TAI extends Dictionary {
             valid = true;
             // refresh properties
             properties.clear();
-            properties.putAll(JSON.decode(data));
+            Map<String, Object> dictionary = (Map<String, Object>) JSON.decode(data);
+            properties.putAll(dictionary);
         } else {
             data = null;
             signature = null;

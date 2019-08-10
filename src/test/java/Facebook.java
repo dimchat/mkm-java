@@ -223,7 +223,7 @@ public class Facebook implements UserDataSource, GroupDataSource {
 
     static User loadBuiltInAccount(String filename) throws IOException, ClassNotFoundException {
         String jsonString = Utils.readTextFile(filename);
-        Map<String, Object> dictionary = JSON.decode(jsonString);
+        Map dictionary = (Map) JSON.decode(jsonString);
 
         // ID
         ID identifier = ID.getInstance(dictionary.get("ID"));

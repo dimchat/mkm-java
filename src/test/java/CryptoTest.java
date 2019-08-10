@@ -74,13 +74,13 @@ public class CryptoTest {
     }
 
     private void checkX(String metaJson, String skJson) throws ClassNotFoundException {
-        Map metaDict = JSON.decode(metaJson);
+        Object metaDict = JSON.decode(metaJson);
         Meta meta = Meta.getInstance(metaDict);
         ID identifier = meta.generateID(NetworkType.Main);
         Log.info("meta: " + meta);
         Log.info("ID: " + identifier);
 
-        Map skDict = JSON.decode(skJson);
+        Object skDict = JSON.decode(skJson);
         PrivateKey sk = PrivateKeyImpl.getInstance(skDict);
         Log.info("private key: " + sk);
         Assert.assertTrue(meta.key.matches(sk));
