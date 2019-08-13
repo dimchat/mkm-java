@@ -109,11 +109,6 @@ public class Facebook implements UserDataSource, GroupDataSource {
     //---- EntityDataSource
 
     @Override
-    public boolean saveMeta(Meta meta, ID identifier) {
-        return entityDataSource != null && entityDataSource.saveMeta(meta, identifier);
-    }
-
-    @Override
     public Meta getMeta(ID entity) {
         Meta meta = metaMap.get(entity);
         if (meta != null) {

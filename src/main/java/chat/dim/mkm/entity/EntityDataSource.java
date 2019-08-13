@@ -28,15 +28,6 @@ package chat.dim.mkm.entity;
 public interface EntityDataSource {
 
     /**
-     *  Save meta for entity ID
-     *
-     * @param meta - meta info
-     * @param identifier - entity ID
-     * @return true on success
-     */
-    boolean saveMeta(Meta meta, ID identifier);
-
-    /**
      *  Get meta for entity ID
      *
      * @param identifier - entity ID
