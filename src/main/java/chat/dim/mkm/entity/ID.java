@@ -26,7 +26,7 @@
 package chat.dim.mkm.entity;
 
 /**
- *  ID for entity (Account/Group)
+ *  ID for entity (User/Group)
  *
  *      data format: "name@address[/terminal]"
  *

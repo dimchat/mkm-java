@@ -178,7 +178,7 @@ abstract class TAI extends Dictionary {
 
     private Map<String, Object> properties;
     private String data;      // JsON.encode(properties)
-    private byte[] signature; // User(identifier).sign(data)
+    private byte[] signature; // LocalUser(identifier).sign(data)
     private boolean valid;  // true on signature matched
 
     TAI(Map<String, Object> dictionary) {
@@ -190,7 +190,7 @@ abstract class TAI extends Dictionary {
         properties = new HashMap<>();
         // data = JsON.encode(properties)
         data = (String) dictionary.get("data");
-        // signature = User(identifier).sign(data)
+        // signature = LocalUser(identifier).sign(data)
         String base64 = (String) dictionary.get("signature");
         signature = (base64 == null) ? null : Base64.decode(base64);
         // verify flag

@@ -25,73 +25,96 @@
  */
 package chat.dim.mkm;
 
-import chat.dim.crypto.PrivateKey;
+import chat.dim.crypto.PublicKey;
+import chat.dim.mkm.entity.Entity;
 import chat.dim.mkm.entity.ID;
-
-import java.security.InvalidParameterException;
-import java.util.List;
+import chat.dim.mkm.entity.Meta;
+import chat.dim.mkm.entity.Profile;
 
 /**
- *  User for communication
- *  ~~~~~~~~~~~~~~~~~~~~~~
- *  This class is for creating user
+ *  User account for communication
+ *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  This class is for creating account
  *
  *      functions:
- *          sign(data)    - calculate signature of (encrypted content) data
- *          decrypt(data) - decrypt (symmetric key) data
+ *          verify(data, signature) - verify (encrypted content) data and signature
+ *          encrypt(data)           - encrypt (symmetric key) data
  */
-public class User extends Account {
+public class User extends Entity {
 
     public User(ID identifier) {
         super(identifier);
     }
 
     /**
-     *  Get all contacts of the user
-     *
-     * @return contact list
-     */
-    public List<ID> getContacts() {
-        UserDataSource dataSource = (UserDataSource) this.dataSource;
-        return dataSource.getContacts(identifier);
-    }
-
-    /**
-     *  Sign data with user's private key
+     *  Verify data with signature, use meta.key
      *
      * @param data - message data
-     * @return signature
+     * @param signature - message signature
+     * @return true on correct
      */
-    public byte[] sign(byte[] data) {
-        // get from data source
-        UserDataSource dataSource = (UserDataSource) this.dataSource;
-        PrivateKey privateKey = dataSource.getPrivateKeyForSignature(identifier);
-        return privateKey == null ? null : privateKey.sign(data);
+    public boolean verify(byte[] data, byte[] signature) {
+        PublicKey key;
+        /*
+        // 1. get key for signature from profile
+        key = getProfileKey();
+        if (key != null && key.verify(data, signature)) {
+            return true;
+        }
+        */
+        // 2. get key for signature from meta
+        key = getMetaKey();
+        if (key == null) {
+            throw new NullPointerException("failed to get verify key for: " + identifier);
+        }
+        // 3. verify with meta.key
+        return key.verify(data, signature);
     }
 
     /**
-     *  Decrypt data with user's private key(s)
+     *  Encrypt data, try profile.key first, if not found, use meta.key
      *
-     * @param ciphertext - encrypted data
-     * @return plain text
+     * @param plaintext - message data
+     * @return encrypted data
      */
-    public byte[] decrypt(byte[] ciphertext) {
-        // get from data source
-        UserDataSource dataSource = (UserDataSource) this.dataSource;
-        List<PrivateKey> privateKeys = dataSource.getPrivateKeysForDecryption(identifier);
-        byte[] plaintext = null;
-        for (PrivateKey privateKey : privateKeys) {
-            try {
-                plaintext = privateKey.decrypt(ciphertext);
-            } catch (InvalidParameterException e) {
-                // this key not match, try next one
-                e.printStackTrace();
-            }
-            if (plaintext != null) {
-                // OK!
-                break;
-            }
+    public byte[] encrypt(byte[] plaintext) {
+        // 1. get key for encryption from profile
+        PublicKey key = getProfileKey();
+        if (key == null) {
+            // 2. get key for encryption from meta instead
+            //    NOTICE: meta.key will never changed, so use profile.key to encrypt is the better way
+            key = getMetaKey();
         }
-        return plaintext;
+        if (key == null) {
+            throw new NullPointerException("failed to get encrypt key for: " + identifier);
+        }
+        // 3. encrypt with profile.key
+        return key.encrypt(plaintext);
+    }
+
+    private PublicKey getMetaKey() {
+        Meta meta = getMeta();
+        return meta == null ? null : meta.key;
+    }
+
+    private PublicKey getProfileKey() {
+        Profile profile = getProfile();
+        return profile == null ? null : profile.getKey();
+    }
+
+    @Override
+    public Profile getProfile() {
+        Profile profile = super.getProfile();
+        if (profile == null || profile.isValid()) {
+            return profile;
+        }
+        // try to verify with meta.key
+        PublicKey key = getMetaKey();
+        if (key != null && profile.verify(key)) {
+            // signature correct
+            return profile;
+        }
+        // profile error?
+        return profile;
     }
 }

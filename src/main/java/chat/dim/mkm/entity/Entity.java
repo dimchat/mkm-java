@@ -26,9 +26,9 @@
 package chat.dim.mkm.entity;
 
 /**
- *  Entity (Account/Group)
- *  ~~~~~~~~~~~~~~~~~~~~~~
- *  Base class of Account and Group, ...
+ *  Entity (User/Group)
+ *  ~~~~~~~~~~~~~~~~~~~
+ *  Base class of User and Group, ...
  *
  *  properties:
  *      identifier - entity ID

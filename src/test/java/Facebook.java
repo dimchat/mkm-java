@@ -9,9 +9,9 @@ import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.impl.PrivateKeyImpl;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
-import chat.dim.mkm.Account;
-import chat.dim.mkm.GroupDataSource;
 import chat.dim.mkm.User;
+import chat.dim.mkm.GroupDataSource;
+import chat.dim.mkm.LocalUser;
 import chat.dim.mkm.UserDataSource;
 import chat.dim.mkm.entity.*;
 
@@ -28,10 +28,9 @@ public class Facebook implements UserDataSource, GroupDataSource {
 
     // memory caches
     private Map<Address, PrivateKey> privateKeyMap = new HashMap<>();
-    private Map<Address, Meta>       metaMap       = new HashMap<>();
-    private Map<Address, Profile>    profileMap    = new HashMap<>();
-    private Map<Address, Account>    accountMap    = new HashMap<>();
-    private Map<Address, User>       userMap       = new HashMap<>();
+    private Map<ID, Meta>            metaMap       = new HashMap<>();
+    private Map<ID, Profile>         profileMap    = new HashMap<>();
+    private Map<ID, User>            userMap       = new HashMap<>();
 
     public EntityDataSource entityDataSource;
     public UserDataSource userDataSource;
@@ -43,56 +42,36 @@ public class Facebook implements UserDataSource, GroupDataSource {
     }
 
     public boolean cacheMeta(Meta meta, ID identifier) {
-        metaMap.put(identifier.address, meta);
+        metaMap.put(identifier, meta);
         return true;
     }
 
     public boolean cacheProfile(Profile profile) {
-        profileMap.put(profile.identifier.address, profile);
+        profileMap.put(profile.identifier, profile);
         return true;
-    }
-
-    public boolean cacheAccount(Account account) {
-        if (account instanceof User) {
-            return cacheUser((User) account);
-        }
-        if (account.dataSource == null) {
-            account.dataSource = this;
-        }
-        accountMap.put(account.identifier.address, account);
-        return true;
-    }
-
-    public Account getAccount(ID identifier) {
-        Account account = accountMap.get(identifier.address);
-        if (account == null) {
-            account = userMap.get(identifier.address);
-            if (account == null) {
-                account = new Account(identifier);
-            }
-        }
-        if (account.dataSource == null) {
-            account.dataSource = this;
-        }
-        return account;
     }
 
     public boolean cacheUser(User user) {
         if (user.dataSource == null) {
             user.dataSource = this;
         }
-        userMap.put(user.identifier.address, user);
+        userMap.put(user.identifier, user);
         return true;
     }
 
     public User getUser(ID identifier) {
-        User user = userMap.get(identifier.address);
-        if (user == null) {
+        User user = userMap.get(identifier);
+        if (user != null) {
+            return user;
+        }
+        PrivateKey key = getPrivateKeyForSignature(identifier);
+        if (key == null) {
             user = new User(identifier);
+        } else {
+            user = new LocalUser(identifier);
         }
-        if (user.dataSource == null) {
-            user.dataSource = this;
-        }
+        user.dataSource = this;
+        userMap.put(identifier, user);
         return user;
     }
 
@@ -136,7 +115,7 @@ public class Facebook implements UserDataSource, GroupDataSource {
 
     @Override
     public Meta getMeta(ID entity) {
-        Meta meta = metaMap.get(entity.address);
+        Meta meta = metaMap.get(entity);
         if (meta != null) {
             return meta;
         }
@@ -154,9 +133,9 @@ public class Facebook implements UserDataSource, GroupDataSource {
     public Profile getProfile(ID entity) {
         Profile profile = entityDataSource == null ? null : entityDataSource.getProfile(entity);
         if (profile == null) {
-            profile = profileMap.get(entity.address);
+            profile = profileMap.get(entity);
         } else {
-            profileMap.put(entity.address, profile);
+            profileMap.put(entity, profile);
         }
         return profile;
     }
@@ -221,7 +200,7 @@ public class Facebook implements UserDataSource, GroupDataSource {
         return profile;
     }
 
-    static User loadBuiltInAccount(String filename) throws IOException, ClassNotFoundException {
+    static LocalUser loadBuiltInAccount(String filename) throws IOException, ClassNotFoundException {
         String jsonString = Utils.readTextFile(filename);
         Map dictionary = (Map) JSON.decode(jsonString);
 
@@ -241,7 +220,7 @@ public class Facebook implements UserDataSource, GroupDataSource {
             throw new IllegalArgumentException("private key not match meta public key: " + privateKey);
         }
         // create user
-        User user = new User(identifier);
+        LocalUser user = new LocalUser(identifier);
         getInstance().cacheUser(user);
 
         // profile

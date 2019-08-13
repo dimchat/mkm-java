@@ -12,9 +12,9 @@ import java.util.Map;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.impl.PrivateKeyImpl;
-import chat.dim.mkm.Account;
-import chat.dim.mkm.Group;
 import chat.dim.mkm.User;
+import chat.dim.mkm.Group;
+import chat.dim.mkm.LocalUser;
 
 public class EntityTest {
 
@@ -124,7 +124,7 @@ public class EntityTest {
         facebook.cachePrivateKey(sk, identifier);
         facebook.cacheMeta(meta, identifier);
 
-        User user = new User(identifier);
+        LocalUser user = new LocalUser(identifier);
         user.dataSource = facebook;
         facebook.cacheUser(user);
 
@@ -143,13 +143,14 @@ public class EntityTest {
         ID identifier = ID.getInstance("moky@4DnqXWdTV8wuZgfqSCX9GjE2kNq7HJrUgQ");
         Log.info("ID: " + identifier + ", detail: " + getIDInfo(identifier));
 
-        Account account = facebook.getAccount(identifier);
+        User account = facebook.getUser(identifier);
         Log.info("account: " + account);
         Assert.assertEquals(4049699527L, account.getNumber());
 
-        User user = facebook.getUser(identifier);
+        identifier = ID.getInstance("moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
+        LocalUser user = (LocalUser) facebook.getUser(identifier);
         Log.info("user: " + user);
-        Assert.assertEquals(4049699527L, user.getNumber());
+        Assert.assertEquals(1840839527L, user.getNumber());
 
         if (account.equals(user)) {
             Log.info("same entity");

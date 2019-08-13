@@ -38,8 +38,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- *  Account/Group Meta data
- *  ~~~~~~~~~~~~~~~~~~~~~~~
+ *  User/Group Meta data
+ *  ~~~~~~~~~~~~~~~~~~~~
  *  This class is used to generate entity ID
  *
  *      data format: {

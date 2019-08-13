@@ -51,7 +51,7 @@ public class JSON {
 
         @Override
         public Object decode(String jsonString) {
-            return com.alibaba.fastjson.JSON.parseObject(jsonString);
+            return com.alibaba.fastjson.JSON.parse(jsonString);
         }
     };
 
