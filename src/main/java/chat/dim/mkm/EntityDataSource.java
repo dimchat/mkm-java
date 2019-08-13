@@ -23,42 +23,23 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.format;
+package chat.dim.mkm;
 
-import com.alibaba.fastjson.serializer.SerializeConfig;
-import com.alibaba.fastjson.serializer.ToStringSerializer;
+public interface EntityDataSource {
 
-import chat.dim.mkm.Address;
-import chat.dim.mkm.ID;
+    /**
+     *  Get meta for entity ID
+     *
+     * @param identifier - entity ID
+     * @return meta object
+     */
+    Meta getMeta(ID identifier);
 
-public class JSON {
-
-    public static String encode(Object container) {
-        return parser.encode(container);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Object decode(String jsonString) {
-        return parser.decode(jsonString);
-    }
-
-    // default parser
-    public static DataParser parser = new DataParser() {
-
-        @Override
-        public String encode(Object container) {
-            return com.alibaba.fastjson.JSON.toJSONString(container);
-        }
-
-        @Override
-        public Object decode(String jsonString) {
-            return com.alibaba.fastjson.JSON.parse(jsonString);
-        }
-    };
-
-    static {
-        SerializeConfig serializeConfig = SerializeConfig.getGlobalInstance();
-        serializeConfig.put(ID.class, ToStringSerializer.instance);
-        serializeConfig.put(Address.class, ToStringSerializer.instance);
-    }
+    /**
+     *  Get profile for entity ID
+     *
+     * @param identifier - entity ID
+     * @return profile object
+     */
+    Profile getProfile(ID identifier);
 }

@@ -25,11 +25,6 @@
  */
 package chat.dim.mkm;
 
-import chat.dim.mkm.entity.Entity;
-import chat.dim.mkm.entity.ID;
-import chat.dim.mkm.entity.Meta;
-import chat.dim.mkm.entity.Profile;
-
 import java.util.List;
 
 public class Group extends Entity {

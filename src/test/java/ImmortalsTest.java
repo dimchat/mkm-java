@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import chat.dim.mkm.User;
 import chat.dim.mkm.LocalUser;
-import chat.dim.mkm.entity.ID;
+import chat.dim.mkm.ID;
 
 public class ImmortalsTest {
 

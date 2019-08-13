@@ -23,9 +23,7 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto.impl;
-
-import chat.dim.format.PEM;
+package chat.dim.crypto.plugins;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -36,6 +34,9 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Map;
 
+import chat.dim.crypto.impl.PublicKeyImpl;
+import chat.dim.format.PEM;
+
 /**
  *  RSA Public Key
  *
@@ -44,7 +45,7 @@ import java.util.Map;
  *          data: "..."       // base64
  *      }
  */
-final class RSAPublicKey extends PublicKeyImpl {
+public final class RSAPublicKey extends PublicKeyImpl {
 
     private final java.security.interfaces.RSAPublicKey publicKey;
 

@@ -23,7 +23,11 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm.entity;
+package chat.dim.mkm;
+
+import java.lang.reflect.Constructor;
+import java.nio.charset.Charset;
+import java.util.*;
 
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
@@ -31,10 +35,6 @@ import chat.dim.crypto.impl.Dictionary;
 import chat.dim.crypto.impl.PublicKeyImpl;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
-
-import java.lang.reflect.Constructor;
-import java.nio.charset.Charset;
-import java.util.*;
 
 public class Profile extends TAI {
 

@@ -23,9 +23,7 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto.impl;
-
-import chat.dim.format.Base64;
+package chat.dim.crypto.plugins;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -37,6 +35,9 @@ import java.security.*;
 import java.util.Map;
 import java.util.Random;
 
+import chat.dim.crypto.impl.SymmetricKeyImpl;
+import chat.dim.format.Base64;
+
 /**
  *  AES Key
  *
@@ -47,7 +48,7 @@ import java.util.Random;
  *          iv       : "{BASE64_ENCODE}", // initialization vector
  *      }
  */
-final class AESKey extends SymmetricKeyImpl {
+public final class AESKey extends SymmetricKeyImpl {
 
     private final Cipher cipher;
 

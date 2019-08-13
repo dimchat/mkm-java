@@ -5,14 +5,13 @@ import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
-import java.util.Map;
 
 import chat.dim.format.*;
 import chat.dim.crypto.Digest;
 import chat.dim.crypto.PrivateKey;
-import chat.dim.mkm.entity.ID;
-import chat.dim.mkm.entity.Meta;
-import chat.dim.mkm.entity.NetworkType;
+import chat.dim.mkm.ID;
+import chat.dim.mkm.Meta;
+import chat.dim.mkm.NetworkType;
 
 public class CryptoTest {
 

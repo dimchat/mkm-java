@@ -25,13 +25,14 @@
  */
 package chat.dim.crypto.impl;
 
-import chat.dim.crypto.SymmetricKey;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+
+import chat.dim.crypto.SymmetricKey;
+import chat.dim.crypto.plugins.AESKey;
 
 /**
  *  Symmetric Cryptography Key

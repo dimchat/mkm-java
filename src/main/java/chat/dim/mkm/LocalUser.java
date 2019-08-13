@@ -25,11 +25,10 @@
  */
 package chat.dim.mkm;
 
-import chat.dim.crypto.PrivateKey;
-import chat.dim.mkm.entity.ID;
-
 import java.security.InvalidParameterException;
 import java.util.List;
+
+import chat.dim.crypto.PrivateKey;
 
 /**
  *  User for communication

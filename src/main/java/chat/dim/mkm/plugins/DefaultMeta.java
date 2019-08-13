@@ -23,23 +23,37 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm.entity;
+package chat.dim.mkm.plugins;
 
-public interface EntityDataSource {
+import java.util.Map;
 
-    /**
-     *  Get meta for entity ID
-     *
-     * @param identifier - entity ID
-     * @return meta object
-     */
-    Meta getMeta(ID identifier);
+import chat.dim.mkm.Address;
+import chat.dim.mkm.Meta;
+import chat.dim.mkm.NetworkType;
 
-    /**
-     *  Get profile for entity ID
-     *
-     * @param identifier - entity ID
-     * @return profile object
-     */
-    Profile getProfile(ID identifier);
+/**
+ *  Default Meta to build ID with 'name@address'
+ *
+ *  version:
+ *      0x01 - MKM
+ *
+ *  algorithm:
+ *      CT      = fingerprint; // or key.data for BTC address
+ *      hash    = ripemd160(sha256(CT));
+ *      code    = sha256(sha256(network + hash)).prefix(4);
+ *      address = base58_encode(network + hash + code);
+ *      number  = uint(code);
+ */
+public final class DefaultMeta extends Meta {
+
+    public DefaultMeta(Map<String, Object> dictionary) throws NoSuchFieldException, ClassNotFoundException {
+        super(dictionary);
+    }
+
+    @Override
+    public Address generateAddress(NetworkType network) {
+        assert version == VersionMKM;
+        return BTCAddress.generate(fingerprint, network);
+    }
 }
+

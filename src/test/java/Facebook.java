@@ -9,11 +9,7 @@ import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.impl.PrivateKeyImpl;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
-import chat.dim.mkm.User;
-import chat.dim.mkm.GroupDataSource;
-import chat.dim.mkm.LocalUser;
-import chat.dim.mkm.UserDataSource;
-import chat.dim.mkm.entity.*;
+import chat.dim.mkm.*;
 
 public class Facebook implements UserDataSource, GroupDataSource {
 

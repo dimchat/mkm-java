@@ -25,13 +25,14 @@
  */
 package chat.dim.crypto.impl;
 
-import chat.dim.crypto.PrivateKey;
-import chat.dim.crypto.PublicKey;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
+
+import chat.dim.crypto.PrivateKey;
+import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.plugins.RSAPublicKey;
 
 /**
  *  Asymmetric Cryptography Public Key

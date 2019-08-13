@@ -23,7 +23,7 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm.entity;
+package chat.dim.mkm;
 
 /**
  *  Entity (User/Group)

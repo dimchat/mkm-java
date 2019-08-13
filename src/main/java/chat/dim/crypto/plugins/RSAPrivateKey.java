@@ -23,10 +23,7 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto.impl;
-
-import chat.dim.crypto.PublicKey;
-import chat.dim.format.PEM;
+package chat.dim.crypto.plugins;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -40,6 +37,10 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
 
+import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.impl.PrivateKeyImpl;
+import chat.dim.format.PEM;
+
 /**
  *  RSA Private Key
  *
@@ -49,7 +50,7 @@ import java.util.Map;
  *          data         : "..." // base64_encode()
  *      }
  */
-final class RSAPrivateKey extends PrivateKeyImpl {
+public final class RSAPrivateKey extends PrivateKeyImpl {
 
     private final java.security.interfaces.RSAPrivateKey privateKey;
     private final java.security.interfaces.RSAPublicKey publicKey;

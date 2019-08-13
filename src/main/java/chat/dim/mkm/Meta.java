@@ -23,19 +23,20 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm.entity;
-
-import chat.dim.crypto.PrivateKey;
-import chat.dim.crypto.PublicKey;
-import chat.dim.crypto.impl.Dictionary;
-import chat.dim.crypto.impl.PublicKeyImpl;
-import chat.dim.format.Base64;
+package chat.dim.mkm;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+
+import chat.dim.crypto.PrivateKey;
+import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.impl.Dictionary;
+import chat.dim.crypto.impl.PublicKeyImpl;
+import chat.dim.format.Base64;
+import chat.dim.mkm.plugins.DefaultMeta;
 
 /**
  *  User/Group Meta data
@@ -244,31 +245,5 @@ public abstract class Meta extends Dictionary {
         // BTC, ExBTC
         // ETH, ExETH
         // ...
-    }
-}
-
-/**
- *  Default Meta to build ID with 'name@address'
- *
- *  version:
- *      0x01 - MKM
- *
- *  algorithm:
- *      CT      = fingerprint; // or key.data for BTC address
- *      hash    = ripemd160(sha256(CT));
- *      code    = sha256(sha256(network + hash)).prefix(4);
- *      address = base58_encode(network + hash + code);
- *      number  = uint(code);
- */
-final class DefaultMeta extends Meta {
-
-    public DefaultMeta(Map<String, Object> dictionary) throws NoSuchFieldException, ClassNotFoundException {
-        super(dictionary);
-    }
-
-    @Override
-    public Address generateAddress(NetworkType network) {
-        assert version == VersionMKM;
-        return BTCAddress.generate(fingerprint, network);
     }
 }

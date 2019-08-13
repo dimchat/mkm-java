@@ -25,9 +25,9 @@
  */
 package chat.dim.crypto.impl;
 
-import chat.dim.crypto.CryptographyKey;
-
 import java.util.Map;
+
+import chat.dim.crypto.CryptographyKey;
 
 /**
  *  Cryptography Key
