@@ -34,25 +34,35 @@ public class Group extends Entity {
     }
 
     public ID getFounder() {
-        GroupDataSource dataSource = (GroupDataSource) this.dataSource;
-        return dataSource.getFounder(identifier);
+        if (dataSource == null) {
+            return null;
+        }
+        GroupDataSource delegate = (GroupDataSource) dataSource;
+        return delegate.getFounder(identifier);
     }
 
     public ID getOwner() {
-        GroupDataSource dataSource = (GroupDataSource) this.dataSource;
-        return dataSource.getOwner(identifier);
+        if (dataSource == null) {
+            return null;
+        }
+        GroupDataSource delegate = (GroupDataSource) dataSource;
+        return delegate.getOwner(identifier);
     }
 
     public List<ID> getMembers() {
-        GroupDataSource dataSource = (GroupDataSource) this.dataSource;
-        return dataSource.getMembers(identifier);
+        if (dataSource == null) {
+            return null;
+        }
+        GroupDataSource delegate = (GroupDataSource) dataSource;
+        return delegate.getMembers(identifier);
     }
 
     @Override
     public Profile getProfile() {
         Profile profile = super.getProfile();
-        if (profile == null || profile.isValid()) {
-            return null;
+        if (profile == null || profile.isValid() || dataSource == null) {
+            // no need to verify
+            return profile;
         }
         // try to verify with owner's meta.key
         ID owner = getOwner();

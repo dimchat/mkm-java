@@ -102,6 +102,7 @@ public class User extends Entity {
     public Profile getProfile() {
         Profile profile = super.getProfile();
         if (profile == null || profile.isValid()) {
+            // no need to verify
             return profile;
         }
         // try to verify with meta.key
@@ -110,7 +111,7 @@ public class User extends Entity {
             // signature correct
             return profile;
         }
-        // profile error?
+        // profile error? continue to process by subclass
         return profile;
     }
 }

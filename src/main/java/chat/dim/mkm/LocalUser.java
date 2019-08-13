@@ -51,8 +51,11 @@ public class LocalUser extends User {
      * @return contact list
      */
     public List<ID> getContacts() {
-        UserDataSource dataSource = (UserDataSource) this.dataSource;
-        return dataSource.getContacts(identifier);
+        if (dataSource == null) {
+            return null;
+        }
+        UserDataSource delegate = (UserDataSource) dataSource;
+        return delegate.getContacts(identifier);
     }
 
     /**
@@ -62,9 +65,12 @@ public class LocalUser extends User {
      * @return signature
      */
     public byte[] sign(byte[] data) {
+        if (dataSource == null) {
+            return null;
+        }
         // get from data source
-        UserDataSource dataSource = (UserDataSource) this.dataSource;
-        PrivateKey privateKey = dataSource.getPrivateKeyForSignature(identifier);
+        UserDataSource delegate = (UserDataSource) dataSource;
+        PrivateKey privateKey = delegate.getPrivateKeyForSignature(identifier);
         return privateKey == null ? null : privateKey.sign(data);
     }
 
@@ -75,9 +81,12 @@ public class LocalUser extends User {
      * @return plain text
      */
     public byte[] decrypt(byte[] ciphertext) {
+        if (dataSource == null) {
+            return null;
+        }
         // get from data source
-        UserDataSource dataSource = (UserDataSource) this.dataSource;
-        List<PrivateKey> privateKeys = dataSource.getPrivateKeysForDecryption(identifier);
+        UserDataSource delegate = (UserDataSource) dataSource;
+        List<PrivateKey> privateKeys = delegate.getPrivateKeysForDecryption(identifier);
         byte[] plaintext = null;
         for (PrivateKey privateKey : privateKeys) {
             try {

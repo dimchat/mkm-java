@@ -97,27 +97,27 @@ public abstract class Entity {
     public String getName() {
         // get from profile
         Profile profile = getProfile();
-        String name = profile == null ? null : profile.getName();
-        if (name != null && name.length() > 0) {
-            return name;
+        if (profile != null) {
+            String name = profile.getName();
+            if (name != null && name.length() > 0) {
+                return name;
+            }
         }
         // get ID.name
         return identifier.name;
     }
 
     public Meta getMeta() {
+        if (dataSource == null) {
+            return null;
+        }
         return dataSource.getMeta(identifier);
     }
 
     public Profile getProfile() {
-        Profile tai = dataSource.getProfile(identifier);
-        if (tai != null) {
-            // verify it with meta.key
-            Meta meta = getMeta();
-            if (meta != null) {
-                tai.verify(meta.key);
-            }
+        if (dataSource == null) {
+            return null;
         }
-        return tai;
+        return dataSource.getProfile(identifier);
     }
 }
