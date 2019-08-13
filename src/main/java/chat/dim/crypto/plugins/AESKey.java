@@ -100,6 +100,9 @@ public final class AESKey extends SymmetricKeyImpl {
 
     private byte[] getInitVector() {
         Object iv = dictionary.get("iv");
+        if (iv == null) {
+            iv = dictionary.get("I");
+        }
         if (iv != null) {
             return Base64.decode((String) iv);
         }
@@ -113,6 +116,9 @@ public final class AESKey extends SymmetricKeyImpl {
     @Override
     public byte[] getData() {
         Object data = dictionary.get("data");
+        if (data == null) {
+            data = dictionary.get("D");
+        }
         if (data != null) {
             return Base64.decode((String) data);
         }

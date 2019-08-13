@@ -42,16 +42,18 @@ import chat.dim.crypto.CryptographyKey;
  */
 public abstract class CryptographyKeyImpl extends Dictionary implements CryptographyKey {
 
-    // key algorithm
-    protected final String algorithm;
-
-    // key data
-    protected byte[] data;
+    // key data (process by subclass)
+    protected byte[] data = null;
 
     CryptographyKeyImpl(Map<String, Object> dictionary) {
         super(dictionary);
-        this.algorithm = (String) dictionary.get("algorithm");
-        // process by subclass
-        this.data = null;
+    }
+
+    static String getAlgorithm(Map<String, Object> dictionary) {
+        Object algorithm = dictionary.get("algorithm");
+        if (algorithm == null) {
+            algorithm = dictionary.get("A");
+        }
+        return (String) algorithm;
     }
 }

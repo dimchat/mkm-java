@@ -91,7 +91,7 @@ public abstract class PrivateKeyImpl extends CryptographyKeyImpl implements Priv
         assert object instanceof Map;
         Map<String, Object> dictionary = (Map<String, Object>) object;
         // get subclass by key algorithm
-        String algorithm = (String) dictionary.get("algorithm");
+        String algorithm = getAlgorithm(dictionary);
         Class clazz = privateKeyClasses.get(algorithm);
         if (clazz == null) {
             throw new ClassNotFoundException("algorithm not support: " + algorithm);

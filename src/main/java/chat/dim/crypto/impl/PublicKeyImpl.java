@@ -88,7 +88,7 @@ public abstract class PublicKeyImpl extends CryptographyKeyImpl implements Publi
         assert object instanceof Map;
         Map<String, Object> dictionary = (Map<String, Object>) object;
         // get subclass by key algorithm
-        String algorithm = (String) dictionary.get("algorithm");
+        String algorithm = getAlgorithm(dictionary);
         Class clazz = publicKeyClasses.get(algorithm);
         if (clazz == null) {
             throw new ClassNotFoundException("algorithm not support: " + algorithm);

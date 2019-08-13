@@ -166,7 +166,7 @@ public final class RSAPrivateKey extends PrivateKeyImpl {
             throw new NullPointerException("generate public key content failed");
         }
         Map<String, Object> dictionary = new HashMap<>();
-        dictionary.put("algorithm", algorithm);
+        dictionary.put("algorithm", RSA);
         dictionary.put("data", pem);
         dictionary.put("mode", "ECB");
         dictionary.put("padding", "PKCS1");

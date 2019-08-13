@@ -1,4 +1,5 @@
 
+import chat.dim.format.JSON;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -21,6 +22,13 @@ public class CryptoAESTest {
 
         SymmetricKey key = SymmetricKeyImpl.getInstance(dictionary);
         Log.info("key: " + key);
+        String json = JSON.encode(key);
+        Log.info("JSON(" + json.length() + " bytes): " + json);
+        String algor = (String) key.get("A");
+        if (algor == null) {
+            algor = (String) key.get("algorithm");
+        }
+        Log.info("A: " + algor);
 
         String text;
         byte[] plaintext;
