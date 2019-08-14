@@ -114,7 +114,7 @@ public class EntityTest {
         Assert.assertTrue(meta.matches(identifier));
         Assert.assertTrue(meta.matches(identifier.address));
 
-        Assert.assertTrue(identifier.getType().isCommunicator());
+        Assert.assertTrue(identifier.getType().isUser());
         Assert.assertTrue(identifier.getType().isPerson());
 
         Facebook facebook = Facebook.getInstance();

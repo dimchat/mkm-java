@@ -71,7 +71,36 @@ public class Facebook implements UserDataSource, GroupDataSource {
         return user;
     }
 
-    //---- UserDataSource
+    //-------- EntityDataSource
+
+    @Override
+    public Meta getMeta(ID entity) {
+        Meta meta = metaMap.get(entity);
+        if (meta != null) {
+            return meta;
+        }
+        if (entityDataSource == null) {
+            return null;
+        }
+        meta = entityDataSource.getMeta(entity);
+        if (meta != null) {
+            cacheMeta(meta, entity);
+        }
+        return meta;
+    }
+
+    @Override
+    public Profile getProfile(ID entity) {
+        Profile profile = entityDataSource == null ? null : entityDataSource.getProfile(entity);
+        if (profile == null) {
+            profile = profileMap.get(entity);
+        } else {
+            profileMap.put(entity, profile);
+        }
+        return profile;
+    }
+
+    //------- UserDataSource
 
     @Override
     public PrivateKey getPrivateKeyForSignature(ID user) {
@@ -102,34 +131,7 @@ public class Facebook implements UserDataSource, GroupDataSource {
         return userDataSource == null ? null : userDataSource.getContacts(user);
     }
 
-    //---- EntityDataSource
-
-    @Override
-    public Meta getMeta(ID entity) {
-        Meta meta = metaMap.get(entity);
-        if (meta != null) {
-            return meta;
-        }
-        if (entityDataSource == null) {
-            return null;
-        }
-        meta = entityDataSource.getMeta(entity);
-        if (meta != null) {
-            cacheMeta(meta, entity);
-        }
-        return meta;
-    }
-
-    @Override
-    public Profile getProfile(ID entity) {
-        Profile profile = entityDataSource == null ? null : entityDataSource.getProfile(entity);
-        if (profile == null) {
-            profile = profileMap.get(entity);
-        } else {
-            profileMap.put(entity, profile);
-        }
-        return profile;
-    }
+    //-------- GroupDataSource
 
     @Override
     public ID getFounder(ID group) {

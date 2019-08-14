@@ -174,7 +174,7 @@ public enum NetworkType {
         return network;
     }
 
-    public boolean isCommunicator() {
+    public boolean isUser() {
         return (this.value & Main.value) != 0 || this.value == BTCMain.value;
     }
 
