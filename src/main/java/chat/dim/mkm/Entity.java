@@ -109,14 +109,14 @@ public abstract class Entity {
 
     public Meta getMeta() {
         if (dataSource == null) {
-            return null;
+            throw new NullPointerException("entity data source not set yet: " + identifier);
         }
         return dataSource.getMeta(identifier);
     }
 
     public Profile getProfile() {
         if (dataSource == null) {
-            return null;
+            throw new NullPointerException("entity data source not set yet: " + identifier);
         }
         return dataSource.getProfile(identifier);
     }

@@ -30,16 +30,16 @@ public interface EntityDataSource {
     /**
      *  Get meta for entity ID
      *
-     * @param entity - entity ID
+     * @param identifier - entity ID
      * @return meta object
      */
-    Meta getMeta(ID entity);
+    Meta getMeta(ID identifier);
 
     /**
      *  Get profile for entity ID
      *
-     * @param entity - entity ID
+     * @param identifier - entity ID
      * @return profile object
      */
-    Profile getProfile(ID entity);
+    Profile getProfile(ID identifier);
 }

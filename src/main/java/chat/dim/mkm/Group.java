@@ -29,38 +29,16 @@ import java.util.List;
 
 public class Group extends Entity {
 
+    private ID founder = null;
+
     public Group(ID identifier) {
         super(identifier);
-    }
-
-    public ID getFounder() {
-        if (dataSource == null) {
-            return null;
-        }
-        GroupDataSource delegate = (GroupDataSource) dataSource;
-        return delegate.getFounder(identifier);
-    }
-
-    public ID getOwner() {
-        if (dataSource == null) {
-            return null;
-        }
-        GroupDataSource delegate = (GroupDataSource) dataSource;
-        return delegate.getOwner(identifier);
-    }
-
-    public List<ID> getMembers() {
-        if (dataSource == null) {
-            return null;
-        }
-        GroupDataSource delegate = (GroupDataSource) dataSource;
-        return delegate.getMembers(identifier);
     }
 
     @Override
     public Profile getProfile() {
         Profile profile = super.getProfile();
-        if (profile == null || profile.isValid() || dataSource == null) {
+        if (profile == null || profile.isValid()) {
             // no need to verify
             return profile;
         }
@@ -73,5 +51,23 @@ public class Group extends Entity {
         }
         // profile error? continue to process by subclass
         return profile;
+    }
+
+    public ID getFounder() {
+        if (founder == null) {
+            GroupDataSource delegate = (GroupDataSource) dataSource;
+            founder = delegate.getFounder(identifier);
+        }
+        return founder;
+    }
+
+    public ID getOwner() {
+        GroupDataSource delegate = (GroupDataSource) dataSource;
+        return delegate.getOwner(identifier);
+    }
+
+    public List<ID> getMembers() {
+        GroupDataSource delegate = (GroupDataSource) dataSource;
+        return delegate.getMembers(identifier);
     }
 }

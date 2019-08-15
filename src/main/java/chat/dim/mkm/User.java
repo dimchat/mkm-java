@@ -42,6 +42,33 @@ public class User extends Entity {
         super(identifier);
     }
 
+    private PublicKey getMetaKey() {
+        Meta meta = getMeta();
+        return meta == null ? null : meta.key;
+    }
+
+    private PublicKey getProfileKey() {
+        Profile profile = getProfile();
+        return profile == null ? null : profile.getKey();
+    }
+
+    @Override
+    public Profile getProfile() {
+        Profile tai = super.getProfile();
+        if (tai == null || tai.isValid()) {
+            // no need to verify
+            return tai;
+        }
+        // try to verify with meta.key
+        PublicKey key = getMetaKey();
+        if (tai.verify(key)) {
+            // signature correct
+            return tai;
+        }
+        // profile error? continue to process by subclass
+        return tai;
+    }
+
     /**
      *  Verify data with signature, use meta.key
      *
@@ -52,18 +79,18 @@ public class User extends Entity {
     public boolean verify(byte[] data, byte[] signature) {
         PublicKey key;
         /*
-        // 1. get key for signature from profile
+        // 1. get public key from profile
         key = getProfileKey();
         if (key != null && key.verify(data, signature)) {
             return true;
         }
         */
-        // 2. get key for signature from meta
+        // 2. get public key from meta
         key = getMetaKey();
         if (key == null) {
             throw new NullPointerException("failed to get verify key for: " + identifier);
         }
-        // 3. verify with meta.key
+        // 3, verify it
         return key.verify(data, signature);
     }
 
@@ -78,40 +105,14 @@ public class User extends Entity {
         PublicKey key = getProfileKey();
         if (key == null) {
             // 2. get key for encryption from meta instead
-            //    NOTICE: meta.key will never changed, so use profile.key to encrypt is the better way
+            //    NOTICE: meta.key will never changed, so use profile.key to encrypt
+            //            is the better way
             key = getMetaKey();
         }
         if (key == null) {
             throw new NullPointerException("failed to get encrypt key for: " + identifier);
         }
-        // 3. encrypt with profile.key
+        // 3. encrypt it
         return key.encrypt(plaintext);
-    }
-
-    private PublicKey getMetaKey() {
-        Meta meta = getMeta();
-        return meta == null ? null : meta.key;
-    }
-
-    private PublicKey getProfileKey() {
-        Profile profile = getProfile();
-        return profile == null ? null : profile.getKey();
-    }
-
-    @Override
-    public Profile getProfile() {
-        Profile profile = super.getProfile();
-        if (profile == null || profile.isValid()) {
-            // no need to verify
-            return profile;
-        }
-        // try to verify with meta.key
-        PublicKey key = getMetaKey();
-        if (key != null && profile.verify(key)) {
-            // signature correct
-            return profile;
-        }
-        // profile error? continue to process by subclass
-        return profile;
     }
 }

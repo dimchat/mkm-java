@@ -45,6 +45,16 @@ public class LocalUser extends User {
         super(identifier);
     }
 
+    private PrivateKey getSignKey() {
+        UserDataSource delegate = (UserDataSource) dataSource;
+        return delegate.getPrivateKeyForSignature(identifier);
+    }
+
+    private List<PrivateKey> getDecryptKeys() {
+        UserDataSource delegate = (UserDataSource) dataSource;
+        return delegate.getPrivateKeysForDecryption(identifier);
+    }
+
     /**
      *  Get all contacts of the user
      *
@@ -65,13 +75,8 @@ public class LocalUser extends User {
      * @return signature
      */
     public byte[] sign(byte[] data) {
-        if (dataSource == null) {
-            return null;
-        }
-        // get from data source
-        UserDataSource delegate = (UserDataSource) dataSource;
-        PrivateKey privateKey = delegate.getPrivateKeyForSignature(identifier);
-        return privateKey == null ? null : privateKey.sign(data);
+        PrivateKey key = getSignKey();
+        return key.sign(data);
     }
 
     /**
@@ -81,25 +86,22 @@ public class LocalUser extends User {
      * @return plain text
      */
     public byte[] decrypt(byte[] ciphertext) {
-        if (dataSource == null) {
-            return null;
-        }
-        // get from data source
-        UserDataSource delegate = (UserDataSource) dataSource;
-        List<PrivateKey> privateKeys = delegate.getPrivateKeysForDecryption(identifier);
-        byte[] plaintext = null;
-        for (PrivateKey privateKey : privateKeys) {
+        byte[] plaintext;
+        List<PrivateKey> keys = getDecryptKeys();
+        for (PrivateKey key : keys) {
+            // try decrypting it with each private key
             try {
-                plaintext = privateKey.decrypt(ciphertext);
+                plaintext = key.decrypt(ciphertext);
+                if (plaintext != null) {
+                    // OK!
+                    return plaintext;
+                }
             } catch (InvalidParameterException e) {
                 // this key not match, try next one
                 e.printStackTrace();
             }
-            if (plaintext != null) {
-                // OK!
-                break;
-            }
         }
-        return plaintext;
+        // decryption failed
+        return null;
     }
 }
