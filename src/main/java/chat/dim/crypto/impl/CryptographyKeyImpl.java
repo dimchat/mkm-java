@@ -51,9 +51,6 @@ public abstract class CryptographyKeyImpl extends Dictionary implements Cryptogr
 
     static String getAlgorithm(Map<String, Object> dictionary) {
         Object algorithm = dictionary.get("algorithm");
-        if (algorithm == null) {
-            algorithm = dictionary.get("A");
-        }
         return (String) algorithm;
     }
 }
