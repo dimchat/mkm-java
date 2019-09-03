@@ -228,7 +228,13 @@ final class PKCS1 {
         System.arraycopy(data, 0, out, header.length, data.length);
         return out;
         */
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
+        KeyFactory keyFactory;
+        try {
+            keyFactory = KeyFactory.getInstance("RSA", "BC");
+        } catch (NoSuchAlgorithmException e) {
+            //e.printStackTrace();
+            keyFactory = KeyFactory.getInstance("RSA");
+        }
         if (isPrivate) {
             // get public key data from private key data
             org.bouncycastle.asn1.pkcs.RSAPrivateKey privateKey;
@@ -243,11 +249,17 @@ final class PKCS1 {
     }
 
     // convert PKCS#1 to PKCS#8
-    byte[] toPKCS8() throws NoSuchProviderException, NoSuchAlgorithmException, InvalidKeySpecException {
+    byte[] toPKCS8() throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
         if (!isPrivate) {
             throw new InvalidKeySpecException("it's not private key data");
         }
-        KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
+        KeyFactory keyFactory;
+        try {
+            keyFactory = KeyFactory.getInstance("RSA", "BC");
+        } catch (NoSuchAlgorithmException e) {
+            //e.printStackTrace();
+            keyFactory = KeyFactory.getInstance("RSA");
+        }
         org.bouncycastle.asn1.pkcs.RSAPrivateKey privateKey;
         privateKey = org.bouncycastle.asn1.pkcs.RSAPrivateKey.getInstance(data);
         RSAPrivateCrtKeySpec keySpec = new RSAPrivateCrtKeySpec(privateKey.getModulus(), privateKey.getPublicExponent(),

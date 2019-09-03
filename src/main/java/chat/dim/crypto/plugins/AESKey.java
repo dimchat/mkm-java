@@ -60,7 +60,14 @@ public final class AESKey extends SymmetricKeyImpl {
         // TODO: check algorithm parameters
         // 1. check mode = 'CBC'
         // 2. check padding = 'PKCS7Padding'
-        cipher = Cipher.getInstance("AES/CBC/PKCS7Padding", "BC");
+        Cipher aes;
+        try {
+            aes = Cipher.getInstance("AES/CBC/PKCS7Padding", "BC");
+        } catch (NoSuchAlgorithmException e) {
+            //e.printStackTrace();
+            aes = Cipher.getInstance("AES/CBC/PKCS7Padding");
+        }
+        cipher = aes;
         keySpec = new SecretKeySpec(getData(), "AES");
         ivSpec = new IvParameterSpec(getInitVector());
     }

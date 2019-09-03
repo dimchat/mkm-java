@@ -84,7 +84,13 @@ public final class RSAPublicKey extends PublicKeyImpl {
         }
         // X.509
         X509EncodedKeySpec keySpec = new X509EncodedKeySpec(publicKeyData);
-        KeyFactory factory = KeyFactory.getInstance("RSA", "BC");
+        KeyFactory factory;
+        try {
+            factory = KeyFactory.getInstance("RSA", "BC");
+        } catch (NoSuchAlgorithmException e) {
+            //e.printStackTrace();
+            factory = KeyFactory.getInstance("RSA");
+        }
         return (java.security.interfaces.RSAPublicKey) factory.generatePublic(keySpec);
     }
 
@@ -99,7 +105,13 @@ public final class RSAPublicKey extends PublicKeyImpl {
             throw new InvalidParameterException("RSA plain text length error: " + plaintext.length);
         }
         try {
-            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
+            Cipher cipher;
+            try {
+                cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
+            } catch (NoSuchAlgorithmException e) {
+                //e.printStackTrace();
+                cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            }
             cipher.init(Cipher.ENCRYPT_MODE, publicKey);
             return cipher.doFinal(plaintext);
         } catch (NoSuchProviderException | NoSuchAlgorithmException | NoSuchPaddingException |
@@ -113,7 +125,13 @@ public final class RSAPublicKey extends PublicKeyImpl {
     @Override
     public boolean verify(byte[] data, byte[] signature) {
         try {
-            Signature signer = Signature.getInstance("SHA256withRSA", "BC");
+            Signature signer;
+            try {
+                signer = Signature.getInstance("SHA256withRSA", "BC");
+            } catch (NoSuchAlgorithmException e) {
+                //e.printStackTrace();
+                signer = Signature.getInstance("SHA256withRSA");
+            }
             signer.initVerify(publicKey);
             signer.update(data);
             return signer.verify(signature);

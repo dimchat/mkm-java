@@ -98,7 +98,13 @@ public final class RSAPrivateKey extends PrivateKeyImpl {
 
     private KeyPair generate(int sizeInBits)
             throws NoSuchAlgorithmException, IOException, NoSuchProviderException {
-        KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA", "BC");
+        KeyPairGenerator generator;
+        try {
+            generator = KeyPairGenerator.getInstance("RSA", "BC");
+        } catch (NoSuchAlgorithmException e) {
+            //e.printStackTrace();
+            generator = KeyPairGenerator.getInstance("RSA");
+        }
         generator.initialize(sizeInBits);
         KeyPair keyPair = generator.generateKeyPair();
 
@@ -123,7 +129,13 @@ public final class RSAPrivateKey extends PrivateKeyImpl {
     private static KeyPair parse(String fileContent)
             throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
         PEM pemFile = new PEM(fileContent);
-        KeyFactory factory = KeyFactory.getInstance("RSA", "BC");
+        KeyFactory factory;
+        try {
+            factory = KeyFactory.getInstance("RSA", "BC");
+        } catch (NoSuchAlgorithmException e) {
+            //e.printStackTrace();
+            factory = KeyFactory.getInstance("RSA");
+        }
         // private key
         java.security.interfaces.RSAPrivateKey privateKey;
         byte[] privateKeyData = pemFile.privateKeyData;
@@ -185,7 +197,13 @@ public final class RSAPrivateKey extends PrivateKeyImpl {
             throw new InvalidParameterException("RSA cipher text length error: " + ciphertext.length);
         }
         try {
-            Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
+            Cipher cipher;
+            try {
+                cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding", "BC");
+            } catch (NoSuchAlgorithmException e) {
+                //e.printStackTrace();
+                cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
+            }
             cipher.init(Cipher.DECRYPT_MODE, privateKey);
             return cipher.doFinal(ciphertext);
         } catch (NoSuchProviderException | NoSuchAlgorithmException | NoSuchPaddingException |
@@ -198,7 +216,13 @@ public final class RSAPrivateKey extends PrivateKeyImpl {
     @Override
     public byte[] sign(byte[] data) {
         try {
-            Signature signer = Signature.getInstance("SHA256withRSA", "BC");
+            Signature signer;
+            try {
+                signer = Signature.getInstance("SHA256withRSA", "BC");
+            } catch (NoSuchAlgorithmException e) {
+                //e.printStackTrace();
+                signer = Signature.getInstance("SHA256withRSA");
+            }
             signer.initSign(privateKey);
             signer.update(data);
             return signer.sign();

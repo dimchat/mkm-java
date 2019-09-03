@@ -61,9 +61,6 @@ public class LocalUser extends User {
      * @return contact list
      */
     public List<ID> getContacts() {
-        if (dataSource == null) {
-            return null;
-        }
         UserDataSource delegate = (UserDataSource) dataSource;
         return delegate.getContacts(identifier);
     }
@@ -98,7 +95,7 @@ public class LocalUser extends User {
                 }
             } catch (InvalidParameterException e) {
                 // this key not match, try next one
-                e.printStackTrace();
+                //e.printStackTrace();
             }
         }
         // decryption failed
