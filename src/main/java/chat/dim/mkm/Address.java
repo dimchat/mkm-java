@@ -180,10 +180,10 @@ public abstract class Address {
 
     public boolean isBroadcast() {
         NetworkType network = getNetwork();
-        if (network.isGroup()) {
+        if (network.value == EVERYWHERE.getNetwork().value) {
             return equals(EVERYWHERE);
         }
-        if (network.isPerson()) {
+        if (network.value == ANYWHERE.getNetwork().value) {
             return equals(ANYWHERE);
         }
         return false;
