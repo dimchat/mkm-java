@@ -128,11 +128,14 @@ public abstract class Address {
         }
         assert object instanceof String;
         String string = (String) object;
-        // Constant Address
-        String lowercase = string.toLowerCase();
-        if (lowercase.equals("anywhere")) {
+        // Address for broadcast
+        int len = string.length();
+        // anywhere
+        if (len == ANYWHERE.string.length() && string.equalsIgnoreCase(ANYWHERE.string)) {
             return ANYWHERE;
-        } else if (lowercase.equals("everywhere")) {
+        }
+        // everywhere
+        if (len == EVERYWHERE.string.length() && string.equalsIgnoreCase(EVERYWHERE.string)) {
             return EVERYWHERE;
         }
 
