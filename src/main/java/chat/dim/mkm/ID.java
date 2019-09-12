@@ -67,7 +67,11 @@ public final class ID {
         }
     }
 
-    ID(String name, Address address, String terminal) {
+    public ID(String name, Address address) {
+        this(name, address, null);
+    }
+
+    public ID(String name, Address address, String terminal) {
         String string = address.toString();
         if (name != null && name.length() > 0) {
             string = name + "@" + string;
