@@ -48,8 +48,8 @@ public class Facebook implements UserDataSource, GroupDataSource {
     }
 
     public boolean cacheUser(User user) {
-        if (user.dataSource == null) {
-            user.dataSource = this;
+        if (user.getDataSource() == null) {
+            user.setDataSource(this);
         }
         userMap.put(user.identifier, user);
         return true;
@@ -66,7 +66,7 @@ public class Facebook implements UserDataSource, GroupDataSource {
         } else {
             user = new LocalUser(identifier);
         }
-        user.dataSource = this;
+        user.setDataSource(this);
         userMap.put(identifier, user);
         return user;
     }

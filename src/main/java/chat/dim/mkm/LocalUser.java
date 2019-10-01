@@ -45,14 +45,17 @@ public class LocalUser extends User {
         super(identifier);
     }
 
+    @Override
+    public UserDataSource getDataSource() {
+        return (UserDataSource) super.getDataSource();
+    }
+
     private PrivateKey getSignKey() {
-        UserDataSource delegate = (UserDataSource) dataSource;
-        return delegate.getPrivateKeyForSignature(identifier);
+        return getDataSource().getPrivateKeyForSignature(identifier);
     }
 
     private List<PrivateKey> getDecryptKeys() {
-        UserDataSource delegate = (UserDataSource) dataSource;
-        return delegate.getPrivateKeysForDecryption(identifier);
+        return getDataSource().getPrivateKeysForDecryption(identifier);
     }
 
     /**
@@ -61,8 +64,7 @@ public class LocalUser extends User {
      * @return contact list
      */
     public List<ID> getContacts() {
-        UserDataSource delegate = (UserDataSource) dataSource;
-        return delegate.getContacts(identifier);
+        return getDataSource().getContacts(identifier);
     }
 
     /**

@@ -122,7 +122,7 @@ public class EntityTest {
         facebook.cacheMeta(meta, identifier);
 
         LocalUser user = new LocalUser(identifier);
-        user.dataSource = facebook;
+        user.setDataSource(facebook);
         facebook.cacheUser(user);
 
         byte[] signature = user.sign(data);
@@ -167,7 +167,7 @@ public class EntityTest {
     public void testGroup() {
         ID identifier = ID.getInstance("Group-1280719982@7oMeWadRw4qat2sL4mTdcQSDAqZSo7LH5G");
         Group group = new Group(identifier);
-        group.dataSource = facebook;
+        group.setDataSource(facebook);
 
         Log.info("founder: " + group.getFounder());
         Log.info("owner: " + group.getOwner());

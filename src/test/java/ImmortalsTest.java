@@ -29,7 +29,7 @@ public class ImmortalsTest {
 
         // Everyone
         User anyone = new User(ID.ANYONE);
-        anyone.dataSource = facebook;
+        anyone.setDataSource(facebook);
         Log.info("broadcast: " + anyone.identifier);
         Log.info("number: " + anyone.getNumber());
         Log.info("anyone: " + anyone);
@@ -37,7 +37,7 @@ public class ImmortalsTest {
 
         // Everyone
         User everyone = new User(ID.EVERYONE);
-        everyone.dataSource = facebook;
+        everyone.setDataSource(facebook);
         Log.info("broadcast: " + everyone.identifier);
         Log.info("number: " + everyone.getNumber());
         Log.info("everyone: " + everyone);

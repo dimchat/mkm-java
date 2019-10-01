@@ -36,6 +36,11 @@ public class Group extends Entity {
     }
 
     @Override
+    public GroupDataSource getDataSource() {
+        return (GroupDataSource) super.getDataSource();
+    }
+
+    @Override
     public Profile getProfile() {
         Profile profile = super.getProfile();
         if (profile == null || profile.isValid()) {
@@ -44,7 +49,7 @@ public class Group extends Entity {
         }
         // try to verify with owner's meta.key
         ID owner = getOwner();
-        Meta meta = dataSource.getMeta(owner);
+        Meta meta = getDataSource().getMeta(owner);
         if (meta != null && profile.verify(meta.key)) {
             // signature correct
             return profile;
@@ -55,19 +60,16 @@ public class Group extends Entity {
 
     public ID getFounder() {
         if (founder == null) {
-            GroupDataSource delegate = (GroupDataSource) dataSource;
-            founder = delegate.getFounder(identifier);
+            founder = getDataSource().getFounder(identifier);
         }
         return founder;
     }
 
     public ID getOwner() {
-        GroupDataSource delegate = (GroupDataSource) dataSource;
-        return delegate.getOwner(identifier);
+        return getDataSource().getOwner(identifier);
     }
 
     public List<ID> getMembers() {
-        GroupDataSource delegate = (GroupDataSource) dataSource;
-        return delegate.getMembers(identifier);
+        return getDataSource().getMembers(identifier);
     }
 }

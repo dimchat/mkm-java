@@ -25,6 +25,8 @@
  */
 package chat.dim.mkm;
 
+import java.lang.ref.WeakReference;
+
 /**
  *  Entity (User/Group)
  *  ~~~~~~~~~~~~~~~~~~~
@@ -42,12 +44,11 @@ public abstract class Entity {
 
     public final ID identifier;
 
-    public EntityDataSource dataSource;
+    private WeakReference<EntityDataSource> dataSourceRef = null;
 
     public Entity(ID identifier) {
         super();
         this.identifier = identifier;
-        this.dataSource = null;
     }
 
     @Override
@@ -69,6 +70,17 @@ public abstract class Entity {
     public String toString() {
         String clazzName = getClass().getSimpleName();
         return "<" + clazzName + "|" + getType() + " " + identifier + " (" + getNumber() + ") \"" + getName() + "\">";
+    }
+
+    public EntityDataSource getDataSource() {
+        if (dataSourceRef == null) {
+            return null;
+        }
+        return dataSourceRef.get();
+    }
+
+    public void setDataSource(EntityDataSource dataSource) {
+        dataSourceRef = new WeakReference<>(dataSource);
     }
 
     /**
@@ -108,16 +120,10 @@ public abstract class Entity {
     }
 
     public Meta getMeta() {
-        if (dataSource == null) {
-            throw new NullPointerException("entity data source not set yet: " + identifier);
-        }
-        return dataSource.getMeta(identifier);
+        return getDataSource().getMeta(identifier);
     }
 
     public Profile getProfile() {
-        if (dataSource == null) {
-            throw new NullPointerException("entity data source not set yet: " + identifier);
-        }
-        return dataSource.getProfile(identifier);
+        return getDataSource().getProfile(identifier);
     }
 }
