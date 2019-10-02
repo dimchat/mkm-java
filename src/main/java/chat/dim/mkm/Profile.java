@@ -55,7 +55,7 @@ public class Profile extends TAI {
      *
      *  @param dictionary - profile info
      */
-    protected Profile(Map<String, Object> dictionary) {
+    public Profile(Map<String, Object> dictionary) {
         super(dictionary);
 
         // public key
