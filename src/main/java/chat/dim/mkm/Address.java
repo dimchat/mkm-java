@@ -29,7 +29,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import chat.dim.mkm.plugins.BTCAddress;
+import chat.dim.mkm.plugins.DefaultAddress;
 
 /**
  *  Address for MKM ID
@@ -194,7 +194,7 @@ public abstract class Address {
 
     static {
         // default (BTC)
-        register(BTCAddress.class);
+        register(DefaultAddress.class);
         // ETH
         // ...
     }

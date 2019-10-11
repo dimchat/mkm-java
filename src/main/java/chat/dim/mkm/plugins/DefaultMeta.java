@@ -53,7 +53,7 @@ public final class DefaultMeta extends Meta {
     @Override
     public Address generateAddress(NetworkType network) {
         assert version == VersionMKM;
-        return BTCAddress.generate(fingerprint, network);
+        return DefaultAddress.generate(fingerprint, network);
     }
 }
 

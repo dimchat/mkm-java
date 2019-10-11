@@ -46,12 +46,12 @@ import chat.dim.mkm.NetworkType;
  *          code        = sha256(sha256(network + digest)).prefix(4);
  *          address     = base58_encode(network + digest + code);
  */
-public final class BTCAddress extends Address {
+public final class DefaultAddress extends Address {
 
     private final NetworkType network;
     private final long code;
 
-    public BTCAddress(String string) {
+    public DefaultAddress(String string) {
         super(string);
         // decode
         byte[] data = Base58.decode(string);
@@ -88,7 +88,7 @@ public final class BTCAddress extends Address {
      * @param network - address type
      * @return Address object
      */
-    static BTCAddress generate(byte[] fingerprint, NetworkType network) {
+    static DefaultAddress generate(byte[] fingerprint, NetworkType network) {
         // 1. digest = ripemd160(sha256(fingerprint))
         byte[] digest = Digest.ripemd160(Digest.sha256(fingerprint));
         // 2. head = network + digest
@@ -101,7 +101,7 @@ public final class BTCAddress extends Address {
         byte[] data = new byte[25];
         System.arraycopy(head, 0, data, 0, 21);
         System.arraycopy(cc,0, data, 21, 4);
-        return new BTCAddress(Base58.encode(data));
+        return new DefaultAddress(Base58.encode(data));
     }
 
     private static byte[] checkCode(byte[] data) {
