@@ -25,8 +25,6 @@
  */
 package chat.dim.crypto.impl;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,8 +72,14 @@ public abstract class PublicKeyImpl extends CryptographyKeyImpl implements Publi
     @SuppressWarnings("unchecked")
     public static void register(String algorithm, Class clazz) {
         // check whether clazz is subclass of PublicKey
-        clazz = clazz.asSubclass(PublicKey.class);
+        assert PublicKey.class.isAssignableFrom(clazz); // asSubclass
         publicKeyClasses.put(algorithm, clazz);
+    }
+
+    private static Class keyClass(Map<String, Object> dictionary) {
+        // get subclass by key algorithm
+        String algorithm = getAlgorithm(dictionary);
+        return publicKeyClasses.get(algorithm);
     }
 
     @SuppressWarnings("unchecked")
@@ -87,19 +91,12 @@ public abstract class PublicKeyImpl extends CryptographyKeyImpl implements Publi
         }
         assert object instanceof Map;
         Map<String, Object> dictionary = (Map<String, Object>) object;
-        // get subclass by key algorithm
-        String algorithm = getAlgorithm(dictionary);
-        Class clazz = publicKeyClasses.get(algorithm);
-        if (clazz == null) {
-            throw new ClassNotFoundException("algorithm not support: " + algorithm);
+        Class clazz = keyClass(dictionary);
+        if (clazz != null) {
+            // create instance by subclass (with algorithm)
+            return (PublicKey) createInstance(clazz, dictionary);
         }
-        try {
-            Constructor constructor = clazz.getConstructor(Map.class);
-            return (PublicKey) constructor.newInstance(dictionary);
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            return null;
-        }
+        throw new ClassNotFoundException("key error: " + dictionary);
     }
 
     static {

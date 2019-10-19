@@ -28,6 +28,7 @@ package chat.dim.crypto.impl;
 import java.util.Map;
 
 import chat.dim.crypto.CryptographyKey;
+import chat.dim.mkm.Dictionary;
 
 /**
  *  Cryptography Key

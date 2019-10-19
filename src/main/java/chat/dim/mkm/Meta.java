@@ -25,15 +25,12 @@
  */
 package chat.dim.mkm;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
-import chat.dim.crypto.impl.Dictionary;
 import chat.dim.crypto.impl.PublicKeyImpl;
 import chat.dim.format.Base64;
 import chat.dim.mkm.plugins.DefaultMeta;
@@ -211,8 +208,14 @@ public abstract class Meta extends Dictionary {
         if (clazz.equals(Meta.class)) {
             throw new IllegalArgumentException("should not add Meta.class itself!");
         }
-        clazz = clazz.asSubclass(Meta.class);
+        assert Meta.class.isAssignableFrom(clazz); // asSubclass
         metaClasses.put(version, clazz);
+    }
+
+    private static Class metaClass(Map<String, Object> dictionary) {
+        // get subclass by meta version
+        int version = (int) dictionary.get("version");
+        return metaClasses.get(version);
     }
 
     @SuppressWarnings("unchecked")
@@ -224,19 +227,12 @@ public abstract class Meta extends Dictionary {
         }
         assert object instanceof Map;
         Map<String, Object> dictionary = (Map<String, Object>) object;
-        // get subclass by meta version
-        int version = (int) dictionary.get("version");
-        Class clazz = metaClasses.get(version);
-        if (clazz == null) {
-            throw new ClassNotFoundException("meta not support: " + dictionary);
+        Class clazz = metaClass(dictionary);
+        if (clazz != null) {
+            // create instance by subclass (with meta version)
+            return (Meta) createInstance(clazz, dictionary);
         }
-        try {
-            Constructor constructor = clazz.getConstructor(Map.class);
-            return (Meta) constructor.newInstance(dictionary);
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            e.printStackTrace();
-            return null;
-        }
+        throw new ClassNotFoundException("meta not support: " + dictionary);
     }
 
     static {

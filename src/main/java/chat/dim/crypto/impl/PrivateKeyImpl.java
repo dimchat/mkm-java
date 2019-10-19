@@ -25,8 +25,6 @@
  */
 package chat.dim.crypto.impl;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -77,8 +75,14 @@ public abstract class PrivateKeyImpl extends CryptographyKeyImpl implements Priv
     @SuppressWarnings("unchecked")
     public static void register(String algorithm, Class clazz) {
         // check whether clazz is subclass of PrivateKey
-        clazz = clazz.asSubclass(PrivateKey.class);
+        assert PrivateKey.class.isAssignableFrom(clazz); // asSubclass
         privateKeyClasses.put(algorithm, clazz);
+    }
+
+    private static Class keyClass(Map<String, Object> dictionary) {
+        // get subclass by key algorithm
+        String algorithm = getAlgorithm(dictionary);
+        return privateKeyClasses.get(algorithm);
     }
 
     @SuppressWarnings("unchecked")
@@ -90,19 +94,12 @@ public abstract class PrivateKeyImpl extends CryptographyKeyImpl implements Priv
         }
         assert object instanceof Map;
         Map<String, Object> dictionary = (Map<String, Object>) object;
-        // get subclass by key algorithm
-        String algorithm = getAlgorithm(dictionary);
-        Class clazz = privateKeyClasses.get(algorithm);
-        if (clazz == null) {
-            throw new ClassNotFoundException("algorithm not support: " + algorithm);
+        Class clazz = keyClass(dictionary);
+        if (clazz != null) {
+            // create instance by subclass (with algorithm)
+            return (PrivateKey) createInstance(clazz, dictionary);
         }
-        try {
-            Constructor constructor = clazz.getConstructor(Map.class);
-            return (PrivateKey) constructor.newInstance(dictionary);
-        } catch (NoSuchMethodException | InstantiationException | IllegalAccessException | InvocationTargetException e) {
-            e.printStackTrace();
-            return null;
-        }
+        throw new ClassNotFoundException("key error: " + dictionary);
     }
 
     public static PrivateKey generate(String algorithm) throws ClassNotFoundException {

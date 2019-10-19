@@ -31,7 +31,6 @@ import java.util.*;
 
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
-import chat.dim.crypto.impl.Dictionary;
 import chat.dim.crypto.impl.PublicKeyImpl;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
@@ -131,7 +130,7 @@ public class Profile extends TAI {
     @SuppressWarnings("unchecked")
     public static void register(Class clazz) {
         // check whether clazz is subclass of Profile
-        clazz = clazz.asSubclass(Profile.class);
+        assert Profile.class.isAssignableFrom(clazz); // asSubclass
         if (!profileClasses.contains(clazz)) {
             profileClasses.add(0, clazz);
         }
