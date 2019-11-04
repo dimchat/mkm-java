@@ -43,7 +43,8 @@ public class Facebook implements UserDataSource, GroupDataSource {
     }
 
     public boolean cacheProfile(Profile profile) {
-        profileMap.put(profile.identifier, profile);
+        ID identifier = ID.getInstance(profile.getIdentifier());
+        profileMap.put(identifier, profile);
         return true;
     }
 
@@ -174,7 +175,7 @@ public class Facebook implements UserDataSource, GroupDataSource {
                 if (key.equals("name") || key.equals("names")) {
                     continue;
                 }
-                profile.setData((String) key, dictionary.get(key));
+                profile.setProperty((String) key, dictionary.get(key));
             }
             // sign profile
             profile.sign(privateKey);

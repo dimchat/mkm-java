@@ -45,14 +45,14 @@ public class Profile extends TAI {
     /**
      *  Entity name
      */
-    private String name;
+    private String name = null;
 
     /**
      *  Public key (used for encryption, can be same with meta.key)
      *
      *      RSA
      */
-    private PublicKey key;
+    private PublicKey key = null;
 
     /**
      *  Called by 'getInstance()' to create Profile
@@ -61,9 +61,6 @@ public class Profile extends TAI {
      */
     public Profile(Map<String, Object> dictionary) {
         super(dictionary);
-
-        // public key
-        key = null;
     }
 
     /**
@@ -75,9 +72,6 @@ public class Profile extends TAI {
      */
     public Profile(ID identifier, String data, byte[] signature) {
         super(identifier, data, signature);
-
-        // public key
-        key = null;
     }
 
     /**
@@ -96,11 +90,11 @@ public class Profile extends TAI {
         }
 
         // get name
-        name = (String) getData("name");
+        name = (String) getProperty("name");
 
         // get public key
         try {
-            key = PublicKeyImpl.getInstance(getData("key"));
+            key = PublicKeyImpl.getInstance(getProperty("key"));
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
             key = null;
@@ -116,7 +110,7 @@ public class Profile extends TAI {
 
     public void setName(String value) {
         name = value;
-        setData("name", name);
+        setProperty("name", name);
     }
 
     public PublicKey getKey() {
@@ -125,7 +119,7 @@ public class Profile extends TAI {
 
     public void setKey(PublicKey publicKey) {
         key = publicKey;
-        setData("key", key);
+        setProperty("key", key);
     }
 
     //-------- Runtime --------
@@ -178,49 +172,55 @@ public class Profile extends TAI {
  */
 abstract class TAI extends Dictionary {
 
-    public final ID identifier;
+    private Object identifier = null; // ID or String
 
-    private Map<String, Object> properties;
-    private String data;      // JsON.encode(properties)
-    private byte[] signature; // LocalUser(identifier).sign(data)
-    private boolean valid;  // true on signature matched
+    private Map<String, Object> properties = new HashMap<>();
+    private String data = null;       // JsON.encode(properties)
+    private byte[] signature = null;  // LocalUser(identifier).sign(data)
 
-    TAI(Map<String, Object> dictionary) {
-        super(dictionary);
-        // ID
-        identifier = ID.getInstance(dictionary.get("ID"));
+    private boolean valid = false;    // true on signature matched
 
-        // properties
-        properties = new HashMap<>();
-        // data = JsON.encode(properties)
-        data = (String) dictionary.get("data");
-        // signature = LocalUser(identifier).sign(data)
-        String base64 = (String) dictionary.get("signature");
-        signature = (base64 == null) ? null : Base64.decode(base64);
-        // verify flag
-        valid = false;
+    TAI(Map<String, Object> map) {
+        super(map);
     }
 
     TAI(ID identifier, String data, byte[] signature) {
         super();
         // ID
-        this.identifier = identifier;
-        this.dictionary.put("ID", identifier);
+        dictionary.put("ID", identifier);
 
-        // properties
-        this.properties = new HashMap<>();
         // json data
-        this.data = data;
         if (data != null) {
-            this.dictionary.put("data", data);
+            dictionary.put("data", data);
         }
         // signature
-        this.signature = signature;
         if (signature != null) {
-            this.dictionary.put("signature", Base64.encode(signature));
+            dictionary.put("signature", Base64.encode(signature));
         }
-        // verify flag
-        this.valid = false;
+    }
+
+    public Object getIdentifier() {
+        if (identifier == null) {
+            identifier = dictionary.get("ID");
+        }
+        return identifier;
+    }
+
+    protected String getData() {
+        if (data == null) {
+            data = (String) dictionary.get("data");
+        }
+        return data;
+    }
+
+    protected byte[] getSignature() {
+        if (signature == null) {
+            String base64 = (String) dictionary.get("signature");
+            if (base64 != null) {
+                signature = Base64.decode(base64);
+            }
+        }
+        return signature;
     }
 
     public boolean isValid() {
@@ -234,7 +234,7 @@ abstract class TAI extends Dictionary {
      * @param key - property key
      * @param value - property data
      */
-    public void setData(String key, Object value) {
+    public void setProperty(String key, Object value) {
         // 1. update data in properties
         if (value == null) {
             properties.remove(key);
@@ -256,7 +256,7 @@ abstract class TAI extends Dictionary {
      * @param key - property key
      * @return property data
      */
-    public Object getData(String key) {
+    public Object getProperty(String key) {
         if (!valid) {
             return null;
         }
@@ -268,7 +268,7 @@ abstract class TAI extends Dictionary {
      *
      * @return profile properties key set
      */
-    public Set<String> dataKeys() {
+    public Set<String> propertyKeys() {
         if (!valid) {
             return null;
         }
@@ -287,19 +287,19 @@ abstract class TAI extends Dictionary {
             // already verified
             return true;
         }
+        String data = getData();
+        byte[] signature = getSignature();
         if (data == null || signature == null) {
             // data error
             return false;
         }
         if (publicKey.verify(data.getBytes(Charset.forName("UTF-8")), signature)) {
-            valid = true;
             // refresh properties
             properties.clear();
             Map<String, Object> dictionary = (Map<String, Object>) JSON.decode(data);
             properties.putAll(dictionary);
-        } else {
-            data = null;
-            signature = null;
+            // set valid
+            valid = true;
         }
         return valid;
     }
@@ -312,7 +312,7 @@ abstract class TAI extends Dictionary {
      */
     public byte[] sign(PrivateKey privateKey) {
         if (valid) {
-            // already signed
+            // already signed/verified
             return signature;
         }
         data = JSON.encode(properties);

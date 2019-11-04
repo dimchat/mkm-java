@@ -47,11 +47,11 @@ public class EntityTest {
 
     private String getProfileInfo(Profile profile) {
         Map<String, Object> info = new HashMap<>();
-        info.put("ID", profile.identifier);
+        info.put("ID", profile.getIdentifier());
         info.put("name", profile.getName());
         info.put("key", profile.getKey());
-        info.put("avatar", profile.getData("avatar"));
-        info.put("properties", profile.dataKeys());
+        info.put("avatar", profile.getProperty("avatar"));
+        info.put("properties", profile.propertyKeys());
         info.put("valid", profile.isValid());
         return info.toString();
     }
