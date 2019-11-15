@@ -33,24 +33,9 @@ package chat.dim.mkm;
 import java.util.List;
 
 import chat.dim.crypto.PrivateKey;
+import chat.dim.crypto.PublicKey;
 
 public interface UserDataSource extends EntityDataSource {
-
-    /**
-     *  Get user's private key for signature
-     *
-     * @param user - user ID
-     * @return private key
-     */
-    PrivateKey getPrivateKeyForSignature(ID user);
-
-    /**
-     *  Get user's private keys for decryption
-     *
-     * @param user - user ID
-     * @return private keys(paired with [profile.key, meta.key])
-     */
-    List<PrivateKey> getPrivateKeysForDecryption(ID user);
 
     /**
      *  Get contacts list
@@ -59,4 +44,40 @@ public interface UserDataSource extends EntityDataSource {
      * @return contacts list (ID)
      */
     List<ID> getContacts(ID user);
+
+    /**
+     *  Get user's public key for encryption
+     *  profile.key or meta.key
+     *
+     * @param user - user ID
+     * @return public key
+     */
+    PublicKey getPublicKeyForEncryption(ID user);
+
+    /**
+     *  Get user's private keys for decryption
+     *  which paired with [profile.key, meta.key]
+     *
+     * @param user - user ID
+     * @return private keys
+     */
+    List<PrivateKey> getPrivateKeysForDecryption(ID user);
+
+    /**
+     *  Get user's private key for signature
+     *  which paired with profile.key or meta.key
+     *
+     * @param user - user ID
+     * @return private key
+     */
+    PrivateKey getPrivateKeyForSignature(ID user);
+
+    /**
+     *  Get user's public keys for verification
+     *  [profile.key, meta.key]
+     *
+     * @param user - user ID
+     * @return public keys
+     */
+    List<PublicKey> getPublicKeysForVerification(ID user);
 }

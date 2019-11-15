@@ -30,16 +30,25 @@
  */
 package chat.dim.mkm;
 
+import java.security.InvalidParameterException;
+import java.util.ArrayList;
+import java.util.List;
+
+import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 
 /**
  *  User account for communication
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- *  This class is for creating account
+ *  This class is for creating user account
  *
- *      functions:
- *          verify(data, signature) - verify (encrypted content) data and signature
- *          encrypt(data)           - encrypt (symmetric key) data
+ *  functions:
+ *      (User)
+ *      1. verify(data, signature) - verify (encrypted content) data and signature
+ *      2. encrypt(data)           - encrypt (symmetric key) data
+ *      (LocalUser)
+ *      3. sign(data)    - calculate signature of (encrypted content) data
+ *      4. decrypt(data) - decrypt (symmetric key) data
  */
 public class User extends Entity {
 
@@ -47,14 +56,18 @@ public class User extends Entity {
         super(identifier);
     }
 
-    private PublicKey getMetaKey() {
-        Meta meta = getMeta();
-        return meta == null ? null : meta.key;
+    @Override
+    public UserDataSource getDataSource() {
+        return (UserDataSource) super.getDataSource();
     }
 
-    private PublicKey getProfileKey() {
-        Profile profile = getProfile();
-        return profile == null ? null : profile.getKey();
+    /**
+     *  Get all contacts of the user
+     *
+     * @return contact list
+     */
+    public List<ID> getContacts() {
+        return getDataSource().getContacts(identifier);
     }
 
     @Override
@@ -74,29 +87,71 @@ public class User extends Entity {
         return tai;
     }
 
+    private PublicKey getMetaKey() {
+        Meta meta = getMeta();
+        assert meta != null;
+        return meta.key;
+    }
+
+    private PublicKey getProfileKey() {
+        Profile profile = getProfile();
+        if (profile == null) {
+            return null;
+        }
+        return profile.getKey();
+    }
+
+    // NOTICE: meta.key will never changed, so use profile.key to encrypt
+    //         is the better way
+    private PublicKey getEncryptKey() {
+        // 0. get key from data source
+        PublicKey key = getDataSource().getPublicKeyForEncryption(identifier);
+        if (key != null) {
+            return key;
+        }
+        // 1. get key from profile
+        key = getProfileKey();
+        if (key != null) {
+            return key;
+        }
+        // 2. get key for encryption from meta instead
+        return getMetaKey();
+    }
+
+    private List<PublicKey> getVerifyKeys() {
+        // 0. get keys from data source
+        List<PublicKey> keys = getDataSource().getPublicKeysForVerification(identifier);
+        if (keys != null && keys.size() > 0) {
+            return keys;
+        }
+        keys = new ArrayList<>();
+        PublicKey key;
+        // 1. get key from profile
+        key = getProfileKey();
+        if (key != null) {
+            keys.add(key);
+        }
+        // 2. get public key from meta
+        key = getMetaKey();
+        keys.add(key);
+        return keys;
+    }
+
     /**
-     *  Verify data with signature, use meta.key
+     *  Verify data and signature with user's public keys
      *
      * @param data - message data
      * @param signature - message signature
      * @return true on correct
      */
     public boolean verify(byte[] data, byte[] signature) {
-        PublicKey key;
-        /*
-        // 1. get public key from profile
-        key = getProfileKey();
-        if (key != null && key.verify(data, signature)) {
-            return true;
+        List<PublicKey> keys = getVerifyKeys();
+        for (PublicKey key : keys) {
+            if (key.verify(data, signature)) {
+                return true;
+            }
         }
-        */
-        // 2. get public key from meta
-        key = getMetaKey();
-        if (key == null) {
-            throw new NullPointerException("failed to get verify key for: " + identifier);
-        }
-        // 3, verify it
-        return key.verify(data, signature);
+        return false;
     }
 
     /**
@@ -106,18 +161,55 @@ public class User extends Entity {
      * @return encrypted data
      */
     public byte[] encrypt(byte[] plaintext) {
-        // 1. get key for encryption from profile
-        PublicKey key = getProfileKey();
-        if (key == null) {
-            // 2. get key for encryption from meta instead
-            //    NOTICE: meta.key will never changed, so use profile.key to encrypt
-            //            is the better way
-            key = getMetaKey();
-        }
-        if (key == null) {
-            throw new NullPointerException("failed to get encrypt key for: " + identifier);
-        }
-        // 3. encrypt it
+        PublicKey key = getEncryptKey();
+        assert key != null;
         return key.encrypt(plaintext);
+    }
+
+    //-------- interfaces for local user
+
+    private PrivateKey getSignKey() {
+        return getDataSource().getPrivateKeyForSignature(identifier);
+    }
+
+    private List<PrivateKey> getDecryptKeys() {
+        return getDataSource().getPrivateKeysForDecryption(identifier);
+    }
+
+    /**
+     *  Sign data with user's private key
+     *
+     * @param data - message data
+     * @return signature
+     */
+    public byte[] sign(byte[] data) {
+        PrivateKey key = getSignKey();
+        return key.sign(data);
+    }
+
+    /**
+     *  Decrypt data with user's private key(s)
+     *
+     * @param ciphertext - encrypted data
+     * @return plain text
+     */
+    public byte[] decrypt(byte[] ciphertext) {
+        byte[] plaintext;
+        List<PrivateKey> keys = getDecryptKeys();
+        for (PrivateKey key : keys) {
+            // try decrypting it with each private key
+            try {
+                plaintext = key.decrypt(ciphertext);
+                if (plaintext != null) {
+                    // OK!
+                    return plaintext;
+                }
+            } catch (InvalidParameterException e) {
+                // this key not match, try next one
+                //e.printStackTrace();
+            }
+        }
+        // decryption failed
+        return null;
     }
 }

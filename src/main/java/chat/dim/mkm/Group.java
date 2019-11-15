@@ -47,20 +47,20 @@ public class Group extends Entity {
 
     @Override
     public Profile getProfile() {
-        Profile profile = super.getProfile();
-        if (profile == null || profile.isValid()) {
+        Profile tai = super.getProfile();
+        if (tai == null || tai.isValid()) {
             // no need to verify
-            return profile;
+            return tai;
         }
         // try to verify with owner's meta.key
         ID owner = getOwner();
         Meta meta = getDataSource().getMeta(owner);
-        if (meta != null && profile.verify(meta.key)) {
+        if (meta != null && tai.verify(meta.key)) {
             // signature correct
-            return profile;
+            return tai;
         }
         // profile error? continue to process by subclass
-        return profile;
+        return tai;
     }
 
     public ID getFounder() {

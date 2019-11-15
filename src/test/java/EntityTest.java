@@ -121,7 +121,7 @@ public class EntityTest {
         facebook.cachePrivateKey(sk, identifier);
         facebook.cacheMeta(meta, identifier);
 
-        LocalUser user = new LocalUser(identifier);
+        User user = new User(identifier);
         user.setDataSource(facebook);
         facebook.cacheUser(user);
 
@@ -145,7 +145,7 @@ public class EntityTest {
         Assert.assertEquals(4049699527L, account.getNumber());
 
         identifier = ID.getInstance("moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
-        LocalUser user = (LocalUser) facebook.getUser(identifier);
+        User user = facebook.getUser(identifier);
         Log.info("user: " + user);
         Assert.assertEquals(1840839527L, user.getNumber());
 

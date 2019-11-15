@@ -4,7 +4,6 @@ import org.junit.Test;
 import java.io.IOException;
 
 import chat.dim.mkm.User;
-import chat.dim.mkm.LocalUser;
 import chat.dim.mkm.ID;
 
 public class ImmortalsTest {
@@ -14,14 +13,14 @@ public class ImmortalsTest {
     @Test
     public void testImmortals() throws IOException, ClassNotFoundException {
         // Immortal Hulk
-        LocalUser hulk = Facebook.loadBuiltInAccount("/mkm_hulk.js");
+        User hulk = Facebook.loadBuiltInAccount("/mkm_hulk.js");
         Log.info("hulk: " + hulk);
 
         Log.info("name: " + hulk.getName());
         Log.info("profile: " + facebook.getProfile(hulk.identifier));
 
         // Monkey King
-        LocalUser moki = Facebook.loadBuiltInAccount("/mkm_moki.js");
+        User moki = Facebook.loadBuiltInAccount("/mkm_moki.js");
         Log.info("moki: " + moki);
 
         Log.info("name: " + moki.getName());

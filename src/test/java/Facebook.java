@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import chat.dim.crypto.PrivateKey;
+import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.impl.PrivateKeyImpl;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
@@ -61,12 +62,7 @@ public class Facebook implements UserDataSource, GroupDataSource {
         if (user != null) {
             return user;
         }
-        PrivateKey key = getPrivateKeyForSignature(identifier);
-        if (key == null) {
-            user = new User(identifier);
-        } else {
-            user = new LocalUser(identifier);
-        }
+        user = new User(identifier);
         user.setDataSource(this);
         userMap.put(identifier, user);
         return user;
@@ -104,32 +100,48 @@ public class Facebook implements UserDataSource, GroupDataSource {
     //------- UserDataSource
 
     @Override
+    public List<ID> getContacts(ID user) {
+        return userDataSource == null ? null : userDataSource.getContacts(user);
+    }
+
+    @Override
     public PrivateKey getPrivateKeyForSignature(ID user) {
-        PrivateKey key = privateKeyMap.get(user.address);
-        if (key == null && userDataSource != null) {
+        PrivateKey key;
+        if (userDataSource != null) {
             key = userDataSource.getPrivateKeyForSignature(user);
+            if (key != null) {
+                privateKeyMap.put(user.address, key);
+            }
         }
-        return key;
+        return privateKeyMap.get(user.address);
+    }
+
+    @Override
+    public List<PublicKey> getPublicKeysForVerification(ID user) {
+        return null;
+    }
+
+    @Override
+    public PublicKey getPublicKeyForEncryption(ID user) {
+        return null;
     }
 
     @Override
     public List<PrivateKey> getPrivateKeysForDecryption(ID user) {
-        List<PrivateKey> list = userDataSource == null ? null : userDataSource.getPrivateKeysForDecryption(user);
-        if (list != null && list.size() > 0) {
-            privateKeyMap.put(user.address, list.get(0));
-            return list;
+        List<PrivateKey> list;
+        if (userDataSource != null) {
+            list = userDataSource.getPrivateKeysForDecryption(user);
+            if (list != null && list.size() > 0) {
+                privateKeyMap.put(user.address, list.get(0));
+                return list;
+            }
         }
+        list = new ArrayList<>();
         PrivateKey key = privateKeyMap.get(user.address);
         if (key != null) {
-            list = new ArrayList<>();
             list.add(key);
         }
         return list;
-    }
-
-    @Override
-    public List<ID> getContacts(ID user) {
-        return userDataSource == null ? null : userDataSource.getContacts(user);
     }
 
     //-------- GroupDataSource
@@ -194,7 +206,7 @@ public class Facebook implements UserDataSource, GroupDataSource {
         return profile;
     }
 
-    static LocalUser loadBuiltInAccount(String filename) throws IOException, ClassNotFoundException {
+    static User loadBuiltInAccount(String filename) throws IOException, ClassNotFoundException {
         String jsonString = Utils.readTextFile(filename);
         Map dictionary = (Map) JSON.decode(jsonString);
 
@@ -214,7 +226,7 @@ public class Facebook implements UserDataSource, GroupDataSource {
             throw new IllegalArgumentException("private key not match meta public key: " + privateKey);
         }
         // create user
-        LocalUser user = new LocalUser(identifier);
+        User user = new User(identifier);
         getInstance().cacheUser(user);
 
         // profile
