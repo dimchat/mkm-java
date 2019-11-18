@@ -7,16 +7,16 @@ import chat.dim.mkm.NetworkType;
 
 public class ETHMeta extends Meta {
 
-    public ETHMeta(Map<String, Object> dictionary) throws NoSuchFieldException, ClassNotFoundException {
+    public ETHMeta(Map<String, Object> dictionary) {
         super(dictionary);
     }
 
     public Address generateAddress(NetworkType network) {
-        if ((version & VersionBTC) != VersionBTC) {
+        if ((getVersion() & VersionBTC) != VersionBTC) {
             throw new ArithmeticException("meta version error");
         }
         // BTC, ExBTC
-        return ETHAddress.generate(key.getData(), network);
+        return ETHAddress.generate(getKey().getData(), network);
     }
 
     static {

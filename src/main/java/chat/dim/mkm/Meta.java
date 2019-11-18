@@ -89,21 +89,21 @@ public abstract class Meta extends Dictionary {
      *      0x02 - btc_address
      *      0x03 - username@btc_address
      */
-    public final int version;
+    private int version = 0;
 
     /**
      *  Public key (used for signature)
      *
      *      RSA / ECC
      */
-    public final PublicKey key;
+    private PublicKey key = null;
 
     /**
      *  Seed to generate fingerprint
      *
      *      Username / Group-X
      */
-    public final String seed;
+    private String seed = null;
 
     /**
      *  Fingerprint to verify ID and public key
@@ -111,33 +111,161 @@ public abstract class Meta extends Dictionary {
      *      Build: fingerprint = sign(seed, privateKey)
      *      Check: verify(seed, fingerprint, publicKey)
      */
-    public final byte[] fingerprint;
+    private byte[] fingerprint = null;
 
-    protected Meta(Map<String, Object> dictionary) throws NoSuchFieldException, ClassNotFoundException {
+    private int status = 0;  // 1 for valid, -1 for invalid
+
+    protected Meta(Map<String, Object> dictionary) {
         super(dictionary);
-        this.version = (int) dictionary.get("version");
-        this.key = PublicKeyImpl.getInstance(dictionary.get("key"));
-        if (key == null) {
-            throw new NoSuchFieldException("meta key error: " + dictionary);
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (super.equals(other)) {
+            // same dictionary
+            return true;
         }
-        // check valid
-        if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
-            String name = (String) dictionary.get("seed");
-            String base64 = (String) dictionary.get("fingerprint");
-            if (name == null || base64 == null) {
-                throw new NoSuchFieldException("meta error: " + dictionary);
+        Meta meta;
+        if (other instanceof Meta) {
+            meta = (Meta) other;
+        } else if (other instanceof Map) {
+            try {
+                meta = Meta.getInstance(other);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+                return false;
             }
-            byte[] signature = Base64.decode(base64);
-            if (!key.verify(name.getBytes(Charset.forName("UTF-8")), signature)) {
-                throw new ArithmeticException("fingerprint not match: " + dictionary);
-            }
-            this.seed = name;
-            this.fingerprint = signature;
         } else {
-            this.seed = null;
-            this.fingerprint = null;
+            assert other == null; // unsupported type
+            return false;
+        }
+        ID identifier = meta.generateID(NetworkType.Main);
+        return matches(identifier);
+    }
+
+    public int getVersion() {
+        if (version == 0) {
+            version = (int) dictionary.get("version");
+        }
+        return version;
+    }
+
+    private boolean containsSeed() {
+        return containsSeed(getVersion());
+    }
+
+    private static boolean containsSeed(int version) {
+        // MKM, ExBTC, ExETH, ...
+        return (version & VersionMKM) == VersionMKM;
+    }
+
+    public PublicKey getKey() {
+        if (key == null) {
+            try {
+                key = PublicKeyImpl.getInstance(dictionary.get("key"));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return key;
+    }
+
+    public String getSeed() {
+        if (seed == null) {
+            if (containsSeed()) {
+                seed = (String) dictionary.get("seed");
+                assert seed != null && seed.length() > 0;
+            }
+        }
+        return seed;
+    }
+
+    public byte[] getFingerprint() {
+        if (fingerprint == null) {
+            if (containsSeed()) {
+                String base64 = (String) dictionary.get("fingerprint");
+                assert base64 != null && base64.length() > 0;
+                fingerprint = Base64.decode(base64);
+            }
+        }
+        return fingerprint;
+    }
+
+    /**
+     *  Check meta valid
+     *  (must call this when received a new meta from network)
+     *
+     * @return true on valid
+     */
+    public boolean isValid() {
+        if (status == 0) {
+            PublicKey key = getKey();
+            if (key == null) {
+                // meta.key should not be empty
+                status = -1;
+            } else if (containsSeed()) {
+                String seed = getSeed();
+                byte[] fingerprint = getFingerprint();
+                if (seed == null || fingerprint == null) {
+                    // seed and fingerprint should not be empty
+                    status = -1;
+                } else if (key.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint)) {
+                    // fingerprint matched
+                    status = 1;
+                } else {
+                    // fingerprint not matched
+                    status = -1;
+                }
+            } else {
+                status = 1;
+            }
+        }
+        return status == 1;
+    }
+
+    public boolean matches(PublicKey pk) {
+        // check whether the public key equals to meta.key
+        if (pk.equals(getKey())) {
+            return true;
+        }
+        // check with seed & fingerprint
+        if (containsSeed()) {
+            // check whether keys equal by verifying signature
+            return pk.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint);
+        } else {
+            // ID with BTC/ETH address has no username
+            // so we can just compare the key.data to check matching
+            return false;
         }
     }
+
+    /**
+     *  Check whether meta match with entity ID
+     *  (must call this when received a new meta from network)
+     *
+     * @param identifier - entity ID
+     * @return true on matched
+     */
+    public boolean matches(ID identifier) {
+        return generateID(identifier.getType()).equals(identifier);
+    }
+
+    public boolean matches(Address address) {
+        return generateAddress(address.getNetwork()).equals(address);
+    }
+
+    public ID generateID(NetworkType network) {
+        Address address = generateAddress(network);
+        return new ID(getSeed(), address, null);
+    }
+
+    /**
+     *  Generate address with meta info and address type
+     *
+     * @param network - address network type
+     * @return Address object
+     */
+    public abstract Address generateAddress(NetworkType network);
 
     /**
      *  Generate meta info with seed and private key
@@ -151,7 +279,7 @@ public abstract class Meta extends Dictionary {
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("version", version);
         dictionary.put("key", sk.getPublicKey());
-        if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
+        if (containsSeed(version)) {
             // generate fingerprint with private key
             byte[] fingerprint = sk.sign(seed.getBytes(Charset.forName("UTF-8")));
             dictionary.put("seed", seed);
@@ -159,49 +287,6 @@ public abstract class Meta extends Dictionary {
         }
         return Meta.getInstance(dictionary);
     }
-
-    public boolean matches(PublicKey pk) {
-        if (key.equals(pk)) {
-            return true;
-        }
-        if ((version & VersionMKM) == VersionMKM) { // MKM, ExBTC, ExETH, ...
-            // check whether keys equal by verifying signature
-            return pk.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint);
-        } else { // BTC, ETH, ...
-            // ID with BTC/ETH address has no username
-            // so we can just compare the key.data to check matching
-            return false;
-        }
-    }
-
-    public boolean matches(ID identifier) {
-        if (seed == null) {
-            String name = identifier.name;
-            if (name != null && name.length() > 0) {
-                return false;
-            }
-        } else if (!seed.equals(identifier.name)) {
-            return false;
-        }
-        return matches(identifier.address);
-    }
-
-    public boolean matches(Address address) {
-        return generateAddress(address.getNetwork()).equals(address);
-    }
-
-    public ID generateID(NetworkType network) {
-        Address address = generateAddress(network);
-        return new ID(seed, address, null);
-    }
-
-    /**
-     *  Generate address with meta info and address type
-     *
-     * @param network - address network type
-     * @return Address object
-     */
-    public abstract Address generateAddress(NetworkType network);
 
     //-------- Runtime --------
 
@@ -233,11 +318,11 @@ public abstract class Meta extends Dictionary {
         assert object instanceof Map;
         Map<String, Object> dictionary = (Map<String, Object>) object;
         Class clazz = metaClass(dictionary);
-        if (clazz != null) {
-            // create instance by subclass (with meta version)
-            return (Meta) createInstance(clazz, dictionary);
+        if (clazz == null) {
+            throw new ClassNotFoundException("meta not support: " + dictionary);
         }
-        throw new ClassNotFoundException("meta not support: " + dictionary);
+        // create instance by subclass (with meta version)
+        return (Meta) createInstance(clazz, dictionary);
     }
 
     static {

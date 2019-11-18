@@ -34,25 +34,14 @@ import java.lang.reflect.Constructor;
 import java.nio.charset.Charset;
 import java.util.*;
 
-import chat.dim.crypto.PrivateKey;
-import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.EncryptKey;
+import chat.dim.crypto.SignKey;
+import chat.dim.crypto.VerifyKey;
 import chat.dim.crypto.impl.PublicKeyImpl;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
 
 public class Profile extends TAI {
-
-    /**
-     *  Entity name
-     */
-    private String name = null;
-
-    /**
-     *  Public key (used for encryption, can be same with meta.key)
-     *
-     *      RSA
-     */
-    private PublicKey key = null;
 
     /**
      *  Called by 'getInstance()' to create Profile
@@ -83,41 +72,55 @@ public class Profile extends TAI {
         this(identifier, null, null);
     }
 
-    @Override
-    public boolean verify(PublicKey publicKey) {
-        if (!super.verify(publicKey)) {
-            return false;
-        }
-
-        // get name
-        name = (String) getProperty("name");
-
-        // get public key
-        try {
-            key = PublicKeyImpl.getInstance(getProperty("key"));
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            key = null;
-        }
-        return true;
-    }
-
     //---- properties getter/setter
 
+    /**
+     *  Get entity name
+     *
+     * @return name string
+     */
+    @SuppressWarnings("unchecked")
     public String getName() {
-        return name;
+        String name = (String) getProperty("name");
+        if (name != null) {
+            return name;
+        }
+        // get from 'names'
+        Object array = getProperty("names");
+        if (array != null) {
+            List<String> names = (List<String>) array;
+            if (names.size() > 0) {
+                return names.get(0);
+            }
+        }
+        return null;
     }
 
     public void setName(String value) {
-        name = value;
-        setProperty("name", name);
+        setProperty("name", value);
     }
 
-    public PublicKey getKey() {
+
+    /**
+     *  Public key (used for encryption, can be same with meta.key)
+     *
+     *      RSA
+     */
+    private EncryptKey key = null;
+    
+    public EncryptKey getKey() {
+        if (key == null) {
+            // get public key
+            try {
+                key = (EncryptKey) PublicKeyImpl.getInstance(getProperty("key"));
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
         return key;
     }
 
-    public void setKey(PublicKey publicKey) {
+    public void setKey(EncryptKey publicKey) {
         key = publicKey;
         setProperty("key", key);
     }
@@ -155,12 +158,7 @@ public class Profile extends TAI {
                 //e.printStackTrace();
             }
         }
-        throw new IllegalArgumentException("unknown profile: " + dictionary);
-    }
-
-    static {
-        register(Profile.class); // default
-        // ...
+        return new Profile(dictionary);
     }
 }
 
@@ -174,11 +172,11 @@ abstract class TAI extends Dictionary {
 
     private Object identifier = null; // ID or String
 
-    private Map<String, Object> properties = new HashMap<>();
     private String data = null;       // JsON.encode(properties)
     private byte[] signature = null;  // LocalUser(identifier).sign(data)
 
-    private boolean valid = false;    // true on signature matched
+    private Map<String, Object> properties =null;
+    private int status = 0;           // 1 for valid, -1 for invalid
 
     TAI(Map<String, Object> map) {
         super(map);
@@ -224,7 +222,54 @@ abstract class TAI extends Dictionary {
     }
 
     public boolean isValid() {
-        return valid;
+        return status >= 0;
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> getProperties() {
+        if (status == -1) {
+            // invalid
+            return null;
+        }
+        if (properties == null) {
+            String data = getData();
+            if (data == null) {
+                // create new properties
+                properties = new HashMap<>();
+            } else {
+                Object dict = JSON.decode(data);
+                assert dict instanceof Map;
+                properties = (Map<String, Object>) dict;
+            }
+        }
+        return properties;
+    }
+
+    /**
+     *  Get all keys for properties
+     *
+     * @return profile properties key set
+     */
+    public Set<String> propertyKeys() {
+        Map<String, Object> dict = getProperties();
+        if (dict == null) {
+            return null;
+        }
+        return dict.keySet();
+    }
+
+    /**
+     *  Get profile property data with key
+     *
+     * @param key - property key
+     * @return property data
+     */
+    public Object getProperty(String key) {
+        Map<String, Object> dict = getProperties();
+        if (dict == null) {
+            return null;
+        }
+        return dict.get(key);
     }
 
     /**
@@ -235,73 +280,43 @@ abstract class TAI extends Dictionary {
      * @param value - property data
      */
     public void setProperty(String key, Object value) {
-        // 1. update data in properties
+        status = 0;
+        Map<String, Object> dict = getProperties();
+        assert dict != null;
+        // 1. update value with key in properties
         if (value == null) {
-            properties.remove(key);
+            dict.remove(key);
         } else {
-            properties.put(key, value);
+            dict.put(key, value);
         }
-
         // 2. reset data signature after properties changed
         dictionary.remove("data");
         dictionary.remove("signature");
         data = null;
         signature = null;
-        valid = false;
     }
 
     /**
-     *  Get profile property data with key
-     *
-     * @param key - property key
-     * @return property data
-     */
-    public Object getProperty(String key) {
-        if (!valid) {
-            return null;
-        }
-        return properties.get(key);
-    }
-
-    /**
-     *  Get all keys for properties
-     *
-     * @return profile properties key set
-     */
-    public Set<String> propertyKeys() {
-        if (!valid) {
-            return null;
-        }
-        return properties.keySet();
-    }
-
-    /**
-     *  Verify 'data' and 'signature', if OK, refresh properties from 'data'
+     *  Verify 'data' and 'signature' with public key
      *
      * @param publicKey - public key in meta.key
      * @return true on signature matched
      */
-    @SuppressWarnings("unchecked")
-    public boolean verify(PublicKey publicKey) {
-        if (valid) {
-            // already verified
+    public boolean verify(VerifyKey publicKey) {
+        if (status == 1) {
+            // already verify OK
             return true;
         }
         String data = getData();
         byte[] signature = getSignature();
         if (data == null || signature == null) {
             // data error
-            return false;
+            status = -1;
+        } else if (publicKey.verify(data.getBytes(Charset.forName("UTF-8")), signature)) {
+            // signature matched
+            status = 1;
         }
-        if (publicKey.verify(data.getBytes(Charset.forName("UTF-8")), signature)) {
-            // refresh properties
-            properties.clear();
-            Map<String, Object> dictionary = (Map<String, Object>) JSON.decode(data);
-            properties.putAll(dictionary);
-            // set valid
-            valid = true;
-        }
-        return valid;
+        return status == 1;
     }
 
     /**
@@ -310,16 +325,16 @@ abstract class TAI extends Dictionary {
      * @param privateKey - private key match meta.key
      * @return signature
      */
-    public byte[] sign(PrivateKey privateKey) {
-        if (valid) {
+    public byte[] sign(SignKey privateKey) {
+        if (status == 1) {
             // already signed/verified
             return signature;
         }
-        data = JSON.encode(properties);
+        status = 1;
+        data = JSON.encode(getProperties());
         signature = privateKey.sign(data.getBytes(Charset.forName("UTF-8")));
         dictionary.put("data", data);
         dictionary.put("signature", Base64.encode(signature));
-        valid = true;
         return signature;
     }
 }

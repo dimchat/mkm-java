@@ -32,9 +32,27 @@ package chat.dim.mkm;
 
 import java.util.List;
 
-import chat.dim.crypto.PrivateKey;
-import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.DecryptKey;
+import chat.dim.crypto.EncryptKey;
+import chat.dim.crypto.SignKey;
+import chat.dim.crypto.VerifyKey;
 
+/**
+ *  User Data Source
+ *  ~~~~~~~~~~~~~~~~
+ *
+ *  (Encryption/decryption)
+ *  1. public key for encryption
+ *     if profile.key not exists, means it is the same key with meta.key
+ *  2. private keys for decryption
+ *     the private keys paired with [profile.key, meta.key]
+ *
+ *  (Signature/Verification)
+ *  3. private key for signature
+ *     the private key paired with meta.key
+ *  4. public keys for verification
+ *     [meta.key]
+ */
 public interface UserDataSource extends EntityDataSource {
 
     /**
@@ -47,30 +65,30 @@ public interface UserDataSource extends EntityDataSource {
 
     /**
      *  Get user's public key for encryption
-     *  profile.key or meta.key
+     *  (profile.key or meta.key)
      *
      * @param user - user ID
      * @return public key
      */
-    PublicKey getPublicKeyForEncryption(ID user);
+    EncryptKey getPublicKeyForEncryption(ID user);
 
     /**
      *  Get user's private keys for decryption
-     *  which paired with [profile.key, meta.key]
+     *  (which paired with [profile.key, meta.key])
      *
      * @param user - user ID
      * @return private keys
      */
-    List<PrivateKey> getPrivateKeysForDecryption(ID user);
+    List<DecryptKey> getPrivateKeysForDecryption(ID user);
 
     /**
      *  Get user's private key for signature
-     *  which paired with profile.key or meta.key
+     *  (which paired with profile.key or meta.key)
      *
      * @param user - user ID
      * @return private key
      */
-    PrivateKey getPrivateKeyForSignature(ID user);
+    SignKey getPrivateKeyForSignature(ID user);
 
     /**
      *  Get user's public keys for verification
@@ -79,5 +97,5 @@ public interface UserDataSource extends EntityDataSource {
      * @param user - user ID
      * @return public keys
      */
-    List<PublicKey> getPublicKeysForVerification(ID user);
+    List<VerifyKey> getPublicKeysForVerification(ID user);
 }

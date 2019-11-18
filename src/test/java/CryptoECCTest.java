@@ -5,6 +5,8 @@ import java.util.Map;
 
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.EncryptKey;
+import chat.dim.crypto.DecryptKey;
 import chat.dim.crypto.impl.PrivateKeyImpl;
 import chat.dim.crypto.impl.PublicKeyImpl;
 
@@ -15,7 +17,7 @@ public class CryptoECCTest {
     }
 }
 
-final class ECCPrivateKey extends PrivateKeyImpl {
+final class ECCPrivateKey extends PrivateKeyImpl implements DecryptKey {
 
     public ECCPrivateKey(Map<String, Object> dictionary) {
         super(dictionary);
@@ -46,7 +48,7 @@ final class ECCPrivateKey extends PrivateKeyImpl {
     }
 }
 
-final class ECCPublicKey extends PublicKeyImpl {
+final class ECCPublicKey extends PublicKeyImpl implements EncryptKey {
 
     public ECCPublicKey(Map<String, Object> dictionary) {
         super(dictionary);

@@ -78,7 +78,7 @@ public abstract class PublicKeyImpl extends CryptographyKeyImpl implements Publi
 
     private static Class keyClass(Map<String, Object> dictionary) {
         // get subclass by key algorithm
-        String algorithm = getAlgorithm(dictionary);
+        String algorithm = (String) dictionary.get("algorithm");
         return publicKeyClasses.get(algorithm);
     }
 

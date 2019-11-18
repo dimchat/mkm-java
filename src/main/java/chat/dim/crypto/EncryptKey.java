@@ -25,12 +25,14 @@
  */
 package chat.dim.crypto;
 
-public interface PrivateKey extends SignKey {
+public interface EncryptKey extends CryptographyKey {
 
     /**
-     *  Get public key from private key
+     *  ciphertext = encrypt(plaintext, PW)
+     *  ciphertext = encrypt(plaintext, PK)
      *
-     * @return public key paired to this private key
+     * @param plaintext - plain data
+     * @return ciphertext
      */
-    PublicKey getPublicKey();
+    byte[] encrypt(byte[] plaintext);
 }

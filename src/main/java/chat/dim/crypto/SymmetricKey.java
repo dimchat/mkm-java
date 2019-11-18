@@ -25,24 +25,8 @@
  */
 package chat.dim.crypto;
 
-public interface SymmetricKey extends CryptographyKey {
+public interface SymmetricKey extends EncryptKey, DecryptKey {
 
     String AES = "AES"; //-- "AES/CBC/PKCS7Padding"
     String DES = "DES";
-
-    /**
-     *  ciphertext = encrypt(plaintext, PW)
-     *
-     * @param plaintext - plain data
-     * @return ciphertext
-     */
-    byte[] encrypt(byte[] plaintext);
-
-    /**
-     *  plaintext = decrypt(ciphertext, PW);
-     *
-     * @param ciphertext - encrypted data
-     * @return plaintext
-     */
-    byte[] decrypt(byte[] ciphertext);
 }

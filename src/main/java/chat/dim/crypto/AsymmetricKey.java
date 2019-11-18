@@ -25,12 +25,8 @@
  */
 package chat.dim.crypto;
 
-public interface PrivateKey extends SignKey {
+public interface AsymmetricKey extends CryptographyKey {
 
-    /**
-     *  Get public key from private key
-     *
-     * @return public key paired to this private key
-     */
-    PublicKey getPublicKey();
+    String RSA = "RSA"; //-- "RSA/ECB/PKCS1Padding", "SHA256withRSA"
+    String ECC = "ECC";
 }

@@ -1,4 +1,6 @@
 
+import chat.dim.crypto.DecryptKey;
+import chat.dim.crypto.EncryptKey;
 import chat.dim.crypto.impl.PrivateKeyImpl;
 import org.junit.Assert;
 import org.junit.Test;
@@ -82,12 +84,12 @@ public class CryptoTest {
         Object skDict = JSON.decode(skJson);
         PrivateKey sk = PrivateKeyImpl.getInstance(skDict);
         Log.info("private key: " + sk);
-        Assert.assertTrue(meta.key.matches(sk));
+        Assert.assertTrue(meta.getKey().matches(sk));
 
         String name = "moky";
         byte[] data = name.getBytes(Charset.forName("UTF-8"));
-        byte[] CT = meta.key.encrypt(data);
-        byte[] PT = sk.decrypt(CT);
+        byte[] CT = ((EncryptKey) meta.getKey()).encrypt(data);
+        byte[] PT = ((DecryptKey) sk).decrypt(CT);
         String hex = Utils.hexEncode(CT);
         String res = new String(PT, Charset.forName("UTF-8"));
         Log.info("encryption: " + name + ", -> " + hex + " -> " + res);

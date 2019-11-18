@@ -34,8 +34,7 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-import chat.dim.crypto.PrivateKey;
-import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.*;
 
 /**
  *  User account for communication
@@ -70,32 +69,16 @@ public class User extends Entity {
         return getDataSource().getContacts(identifier);
     }
 
-    @Override
-    public Profile getProfile() {
-        Profile tai = super.getProfile();
-        if (tai == null || tai.isValid()) {
-            // no need to verify
-            return tai;
-        }
-        // try to verify with meta.key
-        PublicKey key = getMetaKey();
-        if (tai.verify(key)) {
-            // signature correct
-            return tai;
-        }
-        // profile error? continue to process by subclass
-        return tai;
-    }
-
-    private PublicKey getMetaKey() {
+    private VerifyKey getMetaKey() {
         Meta meta = getMeta();
         assert meta != null;
-        return meta.key;
+        return meta.getKey();
     }
 
-    private PublicKey getProfileKey() {
+    private EncryptKey getProfileKey() {
         Profile profile = getProfile();
-        if (profile == null) {
+        if (profile == null || !profile.isValid()) {
+            // profile not found or not valid
             return null;
         }
         return profile.getKey();
@@ -103,9 +86,9 @@ public class User extends Entity {
 
     // NOTICE: meta.key will never changed, so use profile.key to encrypt
     //         is the better way
-    private PublicKey getEncryptKey() {
+    private EncryptKey getEncryptKey() {
         // 0. get key from data source
-        PublicKey key = getDataSource().getPublicKeyForEncryption(identifier);
+        EncryptKey key = getDataSource().getPublicKeyForEncryption(identifier);
         if (key != null) {
             return key;
         }
@@ -114,26 +97,36 @@ public class User extends Entity {
         if (key != null) {
             return key;
         }
-        // 2. get key for encryption from meta instead
-        return getMetaKey();
+        // 2. get key from meta
+        Object mKey = getMetaKey();
+        if (mKey instanceof EncryptKey) {
+            return (EncryptKey) mKey;
+        }
+        assert false; // failed to get encrypt key
+        return null;
     }
 
-    private List<PublicKey> getVerifyKeys() {
+    // NOTICE: I suggest using the private key paired with meta.key to sign message
+    //         so here should return the meta.key
+    private List<VerifyKey> getVerifyKeys() {
         // 0. get keys from data source
-        List<PublicKey> keys = getDataSource().getPublicKeysForVerification(identifier);
+        List<VerifyKey> keys = getDataSource().getPublicKeysForVerification(identifier);
         if (keys != null && keys.size() > 0) {
             return keys;
         }
         keys = new ArrayList<>();
-        PublicKey key;
+        /*
         // 1. get key from profile
-        key = getProfileKey();
-        if (key != null) {
-            keys.add(key);
+        Object pKey = getProfileKey();
+        if (pKey instanceof VerifyKey) {
+            keys.add((VerifyKey) pKey);
         }
-        // 2. get public key from meta
-        key = getMetaKey();
-        keys.add(key);
+        */
+        // 2. get key from meta
+        VerifyKey mKey = getMetaKey();
+        assert mKey != null;
+        keys.add(mKey);
+        // OK
         return keys;
     }
 
@@ -145,8 +138,8 @@ public class User extends Entity {
      * @return true on correct
      */
     public boolean verify(byte[] data, byte[] signature) {
-        List<PublicKey> keys = getVerifyKeys();
-        for (PublicKey key : keys) {
+        List<VerifyKey> keys = getVerifyKeys();
+        for (VerifyKey key : keys) {
             if (key.verify(data, signature)) {
                 return true;
             }
@@ -161,18 +154,23 @@ public class User extends Entity {
      * @return encrypted data
      */
     public byte[] encrypt(byte[] plaintext) {
-        PublicKey key = getEncryptKey();
+        EncryptKey key = getEncryptKey();
         assert key != null;
         return key.encrypt(plaintext);
     }
 
-    //-------- interfaces for local user
+    //
+    //  Interfaces for Local User
+    //
 
-    private PrivateKey getSignKey() {
+    // NOTICE: I suggest using the private key to sign message
+    private SignKey getSignKey() {
         return getDataSource().getPrivateKeyForSignature(identifier);
     }
 
-    private List<PrivateKey> getDecryptKeys() {
+    // NOTICE: if you provide a public key in profile for encryption
+    //         here you should return the private key paired with profile.key
+    private List<DecryptKey> getDecryptKeys() {
         return getDataSource().getPrivateKeysForDecryption(identifier);
     }
 
@@ -183,7 +181,8 @@ public class User extends Entity {
      * @return signature
      */
     public byte[] sign(byte[] data) {
-        PrivateKey key = getSignKey();
+        SignKey key = getSignKey();
+        assert key != null;
         return key.sign(data);
     }
 
@@ -195,8 +194,9 @@ public class User extends Entity {
      */
     public byte[] decrypt(byte[] ciphertext) {
         byte[] plaintext;
-        List<PrivateKey> keys = getDecryptKeys();
-        for (PrivateKey key : keys) {
+        List<DecryptKey> keys = getDecryptKeys();
+        assert keys.size() > 0;
+        for (DecryptKey key : keys) {
             // try decrypting it with each private key
             try {
                 plaintext = key.decrypt(ciphertext);

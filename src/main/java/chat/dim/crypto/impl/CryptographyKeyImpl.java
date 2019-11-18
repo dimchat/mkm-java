@@ -49,9 +49,4 @@ public abstract class CryptographyKeyImpl extends Dictionary implements Cryptogr
     CryptographyKeyImpl(Map<String, Object> dictionary) {
         super(dictionary);
     }
-
-    static String getAlgorithm(Map<String, Object> dictionary) {
-        Object algorithm = dictionary.get("algorithm");
-        return (String) algorithm;
-    }
 }

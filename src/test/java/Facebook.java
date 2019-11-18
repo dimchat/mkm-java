@@ -5,8 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import chat.dim.crypto.PrivateKey;
-import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.*;
 import chat.dim.crypto.impl.PrivateKeyImpl;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
@@ -105,39 +104,39 @@ public class Facebook implements UserDataSource, GroupDataSource {
     }
 
     @Override
-    public PrivateKey getPrivateKeyForSignature(ID user) {
-        PrivateKey key;
+    public SignKey getPrivateKeyForSignature(ID user) {
+        SignKey key;
         if (userDataSource != null) {
             key = userDataSource.getPrivateKeyForSignature(user);
             if (key != null) {
-                privateKeyMap.put(user.address, key);
+                privateKeyMap.put(user.address, (PrivateKey) key);
             }
         }
         return privateKeyMap.get(user.address);
     }
 
     @Override
-    public List<PublicKey> getPublicKeysForVerification(ID user) {
+    public List<VerifyKey> getPublicKeysForVerification(ID user) {
         return null;
     }
 
     @Override
-    public PublicKey getPublicKeyForEncryption(ID user) {
+    public EncryptKey getPublicKeyForEncryption(ID user) {
         return null;
     }
 
     @Override
-    public List<PrivateKey> getPrivateKeysForDecryption(ID user) {
-        List<PrivateKey> list;
+    public List<DecryptKey> getPrivateKeysForDecryption(ID user) {
+        List<DecryptKey> list;
         if (userDataSource != null) {
             list = userDataSource.getPrivateKeysForDecryption(user);
             if (list != null && list.size() > 0) {
-                privateKeyMap.put(user.address, list.get(0));
+                privateKeyMap.put(user.address, (PrivateKey) list.get(0));
                 return list;
             }
         }
         list = new ArrayList<>();
-        PrivateKey key = privateKeyMap.get(user.address);
+        DecryptKey key = (DecryptKey) privateKeyMap.get(user.address);
         if (key != null) {
             list.add(key);
         }
@@ -219,7 +218,7 @@ public class Facebook implements UserDataSource, GroupDataSource {
         getInstance().cacheMeta(meta, identifier);
         // private key
         PrivateKey privateKey = PrivateKeyImpl.getInstance(dictionary.get("privateKey"));
-        if (meta.key.matches(privateKey)) {
+        if (meta.getKey().matches(privateKey)) {
             // store private key into keychain
             getInstance().cachePrivateKey(privateKey, identifier);
         } else {

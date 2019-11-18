@@ -38,10 +38,10 @@ public class EntityTest {
 
     private String getMetaInfo(Meta meta) {
         Map<String, Object> info = new HashMap<>();
-        info.put("version", meta.version);
-        info.put("key", meta.key);
-        info.put("seed", meta.seed);
-        info.put("fingerprint", meta.fingerprint);
+        info.put("version", meta.getVersion());
+        info.put("key", meta.getKey());
+        info.put("seed", meta.getSeed());
+        info.put("fingerprint", meta.getFingerprint());
         return info.toString();
     }
 

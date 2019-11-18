@@ -1,4 +1,6 @@
 
+import chat.dim.crypto.DecryptKey;
+import chat.dim.crypto.EncryptKey;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -23,10 +25,10 @@ public class CryptoRSATest {
 
         String text = "moky";
         byte[] plaintext = text.getBytes("UTF-8");
-        byte[] ciphertext = pk.encrypt(plaintext);
+        byte[] ciphertext = ((EncryptKey) pk).encrypt(plaintext);
         Log.info("RSA encrypt(\"" + text + "\") = " + Utils.hexEncode(ciphertext));
 
-        byte[] data = sk.decrypt(ciphertext);
+        byte[] data = ((DecryptKey) sk).decrypt(ciphertext);
         String decrypt = new String(data);
         Log.info("decrypt to " + decrypt);
 

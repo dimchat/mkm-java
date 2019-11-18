@@ -25,27 +25,7 @@
  */
 package chat.dim.crypto;
 
-public interface PublicKey extends CryptographyKey {
-
-    String RSA = "RSA"; //-- "RSA/ECB/PKCS1Padding", "SHA256withRSA"
-    String ECC = "ECC";
-
-    /**
-     *  ciphertext = encrypt(plaintext, PK)
-     *
-     * @param plaintext - data to be encrypted
-     * @return ciphertext
-     */
-    byte[] encrypt(byte[] plaintext);
-
-    /**
-     *  OK = verify(data, signature, PK)
-     *
-     * @param data - data
-     * @param signature - signature of data
-     * @return true on signature matched
-     */
-    boolean verify(byte[] data, byte[] signature);
+public interface PublicKey extends VerifyKey {
 
     /**
      *  Check whether they are key pair

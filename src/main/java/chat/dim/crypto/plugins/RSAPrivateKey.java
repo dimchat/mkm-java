@@ -37,6 +37,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.HashMap;
 import java.util.Map;
 
+import chat.dim.crypto.DecryptKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.impl.PrivateKeyImpl;
 import chat.dim.format.PEM;
@@ -50,7 +51,7 @@ import chat.dim.format.PEM;
  *          data         : "..." // base64_encode()
  *      }
  */
-public final class RSAPrivateKey extends PrivateKeyImpl {
+public final class RSAPrivateKey extends PrivateKeyImpl implements DecryptKey {
 
     private final java.security.interfaces.RSAPrivateKey privateKey;
     private final java.security.interfaces.RSAPublicKey publicKey;

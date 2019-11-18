@@ -34,6 +34,7 @@ import java.security.spec.InvalidKeySpecException;
 import java.security.spec.X509EncodedKeySpec;
 import java.util.Map;
 
+import chat.dim.crypto.EncryptKey;
 import chat.dim.crypto.impl.PublicKeyImpl;
 import chat.dim.format.PEM;
 
@@ -45,7 +46,7 @@ import chat.dim.format.PEM;
  *          data: "..."       // base64
  *      }
  */
-public final class RSAPublicKey extends PublicKeyImpl {
+public final class RSAPublicKey extends PublicKeyImpl implements EncryptKey {
 
     private final java.security.interfaces.RSAPublicKey publicKey;
 

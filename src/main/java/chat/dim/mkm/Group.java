@@ -45,24 +45,6 @@ public class Group extends Entity {
         return (GroupDataSource) super.getDataSource();
     }
 
-    @Override
-    public Profile getProfile() {
-        Profile tai = super.getProfile();
-        if (tai == null || tai.isValid()) {
-            // no need to verify
-            return tai;
-        }
-        // try to verify with owner's meta.key
-        ID owner = getOwner();
-        Meta meta = getDataSource().getMeta(owner);
-        if (meta != null && tai.verify(meta.key)) {
-            // signature correct
-            return tai;
-        }
-        // profile error? continue to process by subclass
-        return tai;
-    }
-
     public ID getFounder() {
         if (founder == null) {
             founder = getDataSource().getFounder(identifier);

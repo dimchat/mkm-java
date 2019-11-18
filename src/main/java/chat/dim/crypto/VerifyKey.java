@@ -25,12 +25,14 @@
  */
 package chat.dim.crypto;
 
-public interface PrivateKey extends SignKey {
+public interface VerifyKey extends AsymmetricKey {
 
     /**
-     *  Get public key from private key
+     *  OK = verify(data, signature, PK)
      *
-     * @return public key paired to this private key
+     * @param data - data
+     * @param signature - signature of data
+     * @return true on signature matched
      */
-    PublicKey getPublicKey();
+    boolean verify(byte[] data, byte[] signature);
 }

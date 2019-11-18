@@ -81,7 +81,7 @@ public abstract class SymmetricKeyImpl extends CryptographyKeyImpl implements Sy
 
     private static Class keyClass(Map<String, Object> dictionary) {
         // get subclass by key algorithm
-        String algorithm = getAlgorithm(dictionary);
+        String algorithm = (String) dictionary.get("algorithm");
         return symmetricKeyClasses.get(algorithm);
     }
 

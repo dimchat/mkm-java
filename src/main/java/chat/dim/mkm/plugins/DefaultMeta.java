@@ -51,14 +51,15 @@ import chat.dim.mkm.NetworkType;
  */
 public final class DefaultMeta extends Meta {
 
-    public DefaultMeta(Map<String, Object> dictionary) throws NoSuchFieldException, ClassNotFoundException {
+    public DefaultMeta(Map<String, Object> dictionary) {
         super(dictionary);
     }
 
     @Override
     public Address generateAddress(NetworkType network) {
-        assert version == VersionMKM;
-        return DefaultAddress.generate(fingerprint, network);
+        assert getVersion() == VersionMKM;
+        assert isValid();
+        return DefaultAddress.generate(getFingerprint(), network);
     }
 }
 

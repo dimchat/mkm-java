@@ -25,12 +25,13 @@
  */
 package chat.dim.crypto;
 
-public interface PrivateKey extends SignKey {
+public interface SignKey extends AsymmetricKey {
 
     /**
-     *  Get public key from private key
+     *  signature = sign(data, SK);
      *
-     * @return public key paired to this private key
+     * @param data - data to be signed
+     * @return signature
      */
-    PublicKey getPublicKey();
+    byte[] sign(byte[] data);
 }
