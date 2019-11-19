@@ -204,14 +204,14 @@ abstract class TAI extends Dictionary {
         return identifier;
     }
 
-    protected String getData() {
+    private String getData() {
         if (data == null) {
             data = (String) dictionary.get("data");
         }
         return data;
     }
 
-    protected byte[] getSignature() {
+    private byte[] getSignature() {
         if (signature == null) {
             String base64 = (String) dictionary.get("signature");
             if (base64 != null) {
@@ -237,9 +237,8 @@ abstract class TAI extends Dictionary {
                 // create new properties
                 properties = new HashMap<>();
             } else {
-                Object dict = JSON.decode(data);
-                assert dict instanceof Map;
-                properties = (Map<String, Object>) dict;
+                properties = (Map<String, Object>) JSON.decode(data);
+                assert properties != null;
             }
         }
         return properties;
@@ -316,6 +315,8 @@ abstract class TAI extends Dictionary {
             // signature matched
             status = 1;
         }
+        // NOTICE: if status is 0, it doesn't mean the profile is invalid,
+        //         try another key
         return status == 1;
     }
 

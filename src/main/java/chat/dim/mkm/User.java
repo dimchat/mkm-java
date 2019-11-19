@@ -126,7 +126,6 @@ public class User extends Entity {
         VerifyKey mKey = getMetaKey();
         assert mKey != null;
         keys.add(mKey);
-        // OK
         return keys;
     }
 
@@ -163,7 +162,8 @@ public class User extends Entity {
     //  Interfaces for Local User
     //
 
-    // NOTICE: I suggest using the private key to sign message
+    // NOTICE: I suggest use the private key which paired to meta.key
+    //         to sign message
     private SignKey getSignKey() {
         return getDataSource().getPrivateKeyForSignature(identifier);
     }
