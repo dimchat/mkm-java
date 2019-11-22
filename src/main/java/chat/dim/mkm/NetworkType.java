@@ -30,6 +30,8 @@
  */
 package chat.dim.mkm;
 
+import java.util.Locale;
+
 /*
  *  @enum MKMNetworkID
  *
@@ -137,46 +139,39 @@ public enum NetworkType {
     }
 
     public static NetworkType fromByte(byte b) {
-        NetworkType network = null;
         int i = b & 0xFF;
-        switch (i) {
-            case 0x00: {
-                network = BTCMain;
-                break;
-            }
-            case 0x08: {
-                network = Main;
-                break;
-            }
-            case 0x10: {
-                network = Polylogue;
-                break;
-            }
-            case 0x30: {
-                network = Chatroom;
-                break;
-            }
-            case 0x76: {
-                network = Provider;
-                break;
-            }
-            case 0x88: {
-                network = Station;
-                break;
-            }
-            case 0x80: {
-                network = Thing;
-                break;
-            }
-            case 0xC8: {
-                network = Robot;
-                break;
-            }
-            default: {
-                break;
-            }
+
+        if (BTCMain.value == i) {
+            return BTCMain;
         }
-        return network;
+
+        if (Main.value == i) {
+            return Main;
+        }
+
+        if (Polylogue.value == i) {
+            return Polylogue;
+        }
+        if (Chatroom.value == i) {
+            return Chatroom;
+        }
+
+        if (Provider.value == i) {
+            return Provider;
+        }
+        if (Station.value == i) {
+            return Station;
+        }
+
+        if (Thing.value == i) {
+            return Thing;
+        }
+        if (Robot.value == i) {
+            return Robot;
+        }
+
+        String text = String.format(Locale.CHINA, "Network ID not supported: %d", i);
+        throw new TypeNotPresentException(text, null);
     }
 
     public boolean isUser() {
