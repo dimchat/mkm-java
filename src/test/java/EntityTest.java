@@ -1,4 +1,5 @@
 
+import chat.dim.crypto.SignKey;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -51,7 +52,7 @@ public class EntityTest {
         info.put("name", profile.getName());
         info.put("key", profile.getKey());
         info.put("avatar", profile.getProperty("avatar"));
-        info.put("properties", profile.propertyKeys());
+        info.put("properties", profile.propertyNames());
         info.put("valid", profile.isValid());
         return info.toString();
     }
@@ -133,6 +134,28 @@ public class EntityTest {
         byte[] plaintext = user.decrypt(ciphertext);
         Assert.assertArrayEquals(data, plaintext);
         Log.info("decryption OK!");
+    }
+
+    @Test
+    public void testProfile() {
+        Map<String, Object> dict = new HashMap<>();
+        dict.put("ID", "moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
+        dict.put("data", "{\"name\":\"齐天大圣\"}");
+        dict.put("signature", "oMdD4Ssop/gOpzwAYpt+Cp3tVJswm+u5i1bu1UlEzzFt+g3ohmE1z018WmSgsBpCls6vXwJEhKS1O5gN9N8XCYhnYx/Q56M0n2NOSifcbQuZciOfQU1c2RMXgUEizIwL2tiFoam22qxyScKIjXcu7rD4XhBC0Gn/EhQpJCqWTMo=");
+        Profile profile = Profile.getInstance(dict);
+        Log.info("profile: " + profile);
+
+        ID identifier = ID.getInstance("moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
+        Meta meta = facebook.getMeta(identifier);
+        profile.verify(meta.getKey());
+        Log.info("profile: " + profile);
+
+        profile.setProperty("age", 18);
+        Log.info("profile: " + profile);
+
+        SignKey key = facebook.getPrivateKeyForSignature(identifier);
+        profile.sign(key);
+        Log.info("profile: " + profile);
     }
 
     @Test

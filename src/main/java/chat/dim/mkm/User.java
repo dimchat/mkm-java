@@ -71,7 +71,7 @@ public class User extends Entity {
 
     private VerifyKey getMetaKey() {
         Meta meta = getMeta();
-        assert meta != null;
+        assert meta != null; // if meta not exists, user won't be created
         return meta.getKey();
     }
 
@@ -102,8 +102,7 @@ public class User extends Entity {
         if (mKey instanceof EncryptKey) {
             return (EncryptKey) mKey;
         }
-        assert false; // failed to get encrypt key
-        return null;
+        throw new NullPointerException("failed to get encrypt key for user: " + identifier);
     }
 
     // NOTICE: I suggest using the private key paired with meta.key to sign message
@@ -140,6 +139,7 @@ public class User extends Entity {
         List<VerifyKey> keys = getVerifyKeys();
         for (VerifyKey key : keys) {
             if (key.verify(data, signature)) {
+                // matched!
                 return true;
             }
         }
@@ -195,7 +195,7 @@ public class User extends Entity {
     public byte[] decrypt(byte[] ciphertext) {
         byte[] plaintext;
         List<DecryptKey> keys = getDecryptKeys();
-        assert keys.size() > 0;
+        assert keys != null && keys.size() > 0;
         for (DecryptKey key : keys) {
             // try decrypting it with each private key
             try {
