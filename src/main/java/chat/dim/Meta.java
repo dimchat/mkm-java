@@ -28,7 +28,7 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm;
+package chat.dim;
 
 import java.nio.charset.Charset;
 import java.util.HashMap;
@@ -36,9 +36,10 @@ import java.util.Map;
 
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
-import chat.dim.crypto.impl.PublicKeyImpl;
 import chat.dim.format.Base64;
-import chat.dim.mkm.plugins.DefaultMeta;
+import chat.dim.impl.PublicKeyImpl;
+import chat.dim.plugins.DefaultMeta;
+import chat.dim.type.Dictionary;
 
 /**
  *  User/Group Meta data

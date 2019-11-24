@@ -1,4 +1,9 @@
 /* license: https://mit-license.org
+ *
+ *  Ming-Ke-Ming : Decentralized User Identity Authentication
+ *
+ *                                Written in 2019 by Moky <albert.moky@gmail.com>
+ *
  * ==============================================================================
  * The MIT License (MIT)
  *
@@ -23,17 +28,33 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim;
 
-import java.util.Map;
+import java.util.List;
 
-public interface CryptographyKey extends Map<String, Object> {
+public interface GroupDataSource extends EntityDataSource {
 
     /**
-     *  Get key data
+     *  Get group founder
      *
-     * @return key data
+     * @param group - group ID
+     * @return fonder ID
      */
-    byte[] getData();
-}
+    ID getFounder(ID group);
 
+    /**
+     *  Get group owner
+     *
+     * @param group - group ID
+     * @return owner ID
+     */
+    ID getOwner(ID group);
+
+    /**
+     *  Get group members list
+     *
+     * @param group - group ID
+     * @return members list (ID)
+     */
+    List<ID> getMembers(ID group);
+}

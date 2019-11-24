@@ -1,6 +1,6 @@
 
-import chat.dim.mkm.Address;
-import chat.dim.mkm.NetworkType;
+import chat.dim.Address;
+import chat.dim.NetworkType;
 
 public final class ETHAddress extends Address {
 

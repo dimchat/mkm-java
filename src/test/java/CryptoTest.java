@@ -1,19 +1,19 @@
 
-import chat.dim.crypto.DecryptKey;
-import chat.dim.crypto.EncryptKey;
-import chat.dim.crypto.impl.PrivateKeyImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 
+import chat.dim.ID;
+import chat.dim.Meta;
+import chat.dim.NetworkType;
+import chat.dim.impl.PrivateKeyImpl;
 import chat.dim.format.*;
 import chat.dim.crypto.Digest;
 import chat.dim.crypto.PrivateKey;
-import chat.dim.mkm.ID;
-import chat.dim.mkm.Meta;
-import chat.dim.mkm.NetworkType;
+import chat.dim.crypto.DecryptKey;
+import chat.dim.crypto.EncryptKey;
 
 public class CryptoTest {
 
@@ -116,12 +116,12 @@ public class CryptoTest {
 
             @Override
             public String encode(byte[] data) {
-                return chat.dim.format.bitcoinj.Base58.encode(data);
+                return chat.dim.bitcoinj.Base58.encode(data);
             }
 
             @Override
             public byte[] decode(String string) {
-                return chat.dim.format.bitcoinj.Base58.decode(string);
+                return chat.dim.bitcoinj.Base58.decode(string);
             }
         };
 

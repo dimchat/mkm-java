@@ -3,8 +3,8 @@ import org.junit.Test;
 
 import java.io.IOException;
 
-import chat.dim.mkm.User;
-import chat.dim.mkm.ID;
+import chat.dim.User;
+import chat.dim.ID;
 
 public class ImmortalsTest {
 

@@ -28,7 +28,9 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm;
+package chat.dim;
+
+import chat.dim.format.JSON;
 
 /**
  *  ID for entity (User/Group)
@@ -40,16 +42,14 @@ package chat.dim.mkm;
  *          address  - a string to identify an entity
  *          terminal - entity login resource(device), OPTIONAL
  */
-public final class ID {
-
-    private final String string;
+public final class ID extends chat.dim.type.String {
 
     public final String name;
     public final Address address;
     public final String terminal;
 
     private ID(String string) {
-        this.string = string;
+        super(string);
         // terminal
         String[] pair = string.split("/");
         if (pair.length == 1) {
@@ -77,6 +77,13 @@ public final class ID {
     }
 
     public ID(String name, Address address, String terminal) {
+        super(concat(name, address, terminal));
+        this.name = name;
+        this.address = address;
+        this.terminal = terminal;
+    }
+
+    private static String concat(String name, Address address, String terminal) {
         String string = address.toString();
         if (name != null && name.length() > 0) {
             string = name + "@" + string;
@@ -84,10 +91,7 @@ public final class ID {
         if (terminal != null && terminal.length() > 0) {
             string = string + "/" + terminal;
         }
-        this.string = string;
-        this.name = name;
-        this.address = address;
-        this.terminal = terminal;
+        return string;
     }
 
     /**
@@ -115,16 +119,6 @@ public final class ID {
      */
     public boolean isValid() {
         return address != null;
-    }
-
-    @Override
-    public String toString() {
-        return string;
-    }
-
-    @Override
-    public int hashCode() {
-        return string.hashCode();
     }
 
     @SuppressWarnings("Contract")
@@ -175,5 +169,13 @@ public final class ID {
 
     public boolean isBroadcast() {
         return address.isBroadcast();
+    }
+
+    static {
+        //
+        //  Register class for JsON
+        //
+
+        JSON.registerStringClass(ID.class);
     }
 }

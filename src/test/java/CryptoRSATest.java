@@ -1,6 +1,8 @@
 
 import chat.dim.crypto.DecryptKey;
 import chat.dim.crypto.EncryptKey;
+import chat.dim.impl.PrivateKeyImpl;
+import chat.dim.impl.PublicKeyImpl;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -10,8 +12,6 @@ import java.util.Map;
 
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
-import chat.dim.crypto.impl.PrivateKeyImpl;
-import chat.dim.crypto.impl.PublicKeyImpl;
 
 public class CryptoRSATest {
 

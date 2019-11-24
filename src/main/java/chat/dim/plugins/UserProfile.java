@@ -28,12 +28,12 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm.plugins;
+package chat.dim.plugins;
 
+import chat.dim.ID;
+import chat.dim.Profile;
 import chat.dim.crypto.EncryptKey;
-import chat.dim.crypto.impl.PublicKeyImpl;
-import chat.dim.mkm.ID;
-import chat.dim.mkm.Profile;
+import chat.dim.impl.PublicKeyImpl;
 
 import java.util.List;
 import java.util.Map;

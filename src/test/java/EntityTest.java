@@ -1,5 +1,4 @@
 
-import chat.dim.crypto.SignKey;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,10 +8,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import chat.dim.mkm.*;
+import chat.dim.*;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
-import chat.dim.crypto.impl.PrivateKeyImpl;
+import chat.dim.crypto.SignKey;
+import chat.dim.impl.PrivateKeyImpl;
 
 public class EntityTest {
 

@@ -28,33 +28,23 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm;
+package chat.dim;
 
-import java.util.List;
-
-public interface GroupDataSource extends EntityDataSource {
+public interface EntityDataSource {
 
     /**
-     *  Get group founder
+     *  Get meta for entity ID
      *
-     * @param group - group ID
-     * @return fonder ID
+     * @param identifier - entity ID
+     * @return meta object
      */
-    ID getFounder(ID group);
+    Meta getMeta(ID identifier);
 
     /**
-     *  Get group owner
+     *  Get profile for entity ID
      *
-     * @param group - group ID
-     * @return owner ID
+     * @param identifier - entity ID
+     * @return profile object
      */
-    ID getOwner(ID group);
-
-    /**
-     *  Get group members list
-     *
-     * @param group - group ID
-     * @return members list (ID)
-     */
-    List<ID> getMembers(ID group);
+    Profile getProfile(ID identifier);
 }

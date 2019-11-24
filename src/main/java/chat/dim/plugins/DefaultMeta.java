@@ -1,4 +1,9 @@
 /* license: https://mit-license.org
+ *
+ *  Ming-Ke-Ming : Decentralized User Identity Authentication
+ *
+ *                                Written in 2019 by Moky <albert.moky@gmail.com>
+ *
  * ==============================================================================
  * The MIT License (MIT)
  *
@@ -23,42 +28,38 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.format;
+package chat.dim.plugins;
 
-import com.alibaba.fastjson.serializer.SerializeConfig;
-import com.alibaba.fastjson.serializer.ToStringSerializer;
+import java.util.Map;
 
-import chat.dim.mkm.Address;
-import chat.dim.mkm.ID;
+import chat.dim.Address;
+import chat.dim.Meta;
+import chat.dim.NetworkType;
 
-public class JSON {
+/**
+ *  Default Meta to build ID with 'name@address'
+ *
+ *  version:
+ *      0x01 - MKM
+ *
+ *  algorithm:
+ *      CT      = fingerprint; // or key.data for BTC address
+ *      hash    = ripemd160(sha256(CT));
+ *      code    = sha256(sha256(network + hash)).prefix(4);
+ *      address = base58_encode(network + hash + code);
+ *      number  = uint(code);
+ */
+public final class DefaultMeta extends Meta {
 
-    public static String encode(Object container) {
-        return parser.encode(container);
+    public DefaultMeta(Map<String, Object> dictionary) {
+        super(dictionary);
     }
 
-    @SuppressWarnings("unchecked")
-    public static Object decode(String jsonString) {
-        return parser.decode(jsonString);
-    }
-
-    // default parser
-    public static DataParser parser = new DataParser() {
-
-        @Override
-        public String encode(Object container) {
-            return com.alibaba.fastjson.JSON.toJSONString(container);
-        }
-
-        @Override
-        public Object decode(String jsonString) {
-            return com.alibaba.fastjson.JSON.parse(jsonString);
-        }
-    };
-
-    static {
-        SerializeConfig serializeConfig = SerializeConfig.getGlobalInstance();
-        serializeConfig.put(ID.class, ToStringSerializer.instance);
-        serializeConfig.put(Address.class, ToStringSerializer.instance);
+    @Override
+    public Address generateAddress(NetworkType network) {
+        assert getVersion() == VersionMKM;
+        assert isValid();
+        return DefaultAddress.generate(getFingerprint(), network);
     }
 }
+

@@ -1,5 +1,4 @@
 
-import chat.dim.format.JSON;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -8,8 +7,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import chat.dim.crypto.SymmetricKey;
-import chat.dim.crypto.impl.SymmetricKeyImpl;
 import chat.dim.format.Base64;
+import chat.dim.format.JSON;
+import chat.dim.impl.SymmetricKeyImpl;
 
 public class CryptoAESTest {
 

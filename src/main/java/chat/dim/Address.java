@@ -28,13 +28,14 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm;
+package chat.dim;
 
 import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import chat.dim.mkm.plugins.DefaultAddress;
+import chat.dim.format.JSON;
+import chat.dim.plugins.DefaultAddress;
 
 /**
  *  Address for MKM ID
@@ -45,9 +46,7 @@ import chat.dim.mkm.plugins.DefaultAddress;
  *          network - address type
  *          number  - search number
  */
-public abstract class Address {
-
-    private final String string;
+public abstract class Address extends chat.dim.type.String {
 
     /**
      *  Called by 'getInstance()' to create address
@@ -55,7 +54,7 @@ public abstract class Address {
      *  @param string - Encoded address string
      */
     protected Address(String string) {
-        this.string  = string;
+        super(string);
     }
 
     /**
@@ -71,34 +70,6 @@ public abstract class Address {
      * @return check code
      */
     public abstract long getCode();
-
-    @Override
-    public String toString() {
-        return string;
-    }
-
-    @Override
-    public int hashCode() {
-        return string.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (super.equals(other)) {
-            // same object
-            return true;
-        } else if (other instanceof Address) {
-            // check with inner string
-            Address address = (Address) other;
-            return string.equals(address.string);
-        } else if (other instanceof String) {
-            // same string
-            return string.equals(other);
-        } else {
-            // null or unknown object
-            return false;
-        }
-    }
 
     //-------- Runtime --------
 
@@ -198,6 +169,17 @@ public abstract class Address {
     }
 
     static {
+
+        //
+        //  Register class for JsON
+        //
+
+        JSON.registerStringClass(Address.class);
+
+        //
+        //  Register subclass for Address
+        //
+
         // default (BTC)
         register(DefaultAddress.class);
         // ETH

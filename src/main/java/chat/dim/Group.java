@@ -1,4 +1,9 @@
 /* license: https://mit-license.org
+ *
+ *  Ming-Ke-Ming : Decentralized User Identity Authentication
+ *
+ *                                Written in 2019 by Moky <albert.moky@gmail.com>
+ *
  * ==============================================================================
  * The MIT License (MIT)
  *
@@ -23,14 +28,35 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim;
 
-public interface PrivateKey extends SignKey {
+import java.util.List;
 
-    /**
-     *  Get public key from private key
-     *
-     * @return public key paired to this private key
-     */
-    PublicKey getPublicKey();
+public class Group extends Entity {
+
+    private ID founder = null;
+
+    public Group(ID identifier) {
+        super(identifier);
+    }
+
+    @Override
+    public GroupDataSource getDataSource() {
+        return (GroupDataSource) super.getDataSource();
+    }
+
+    public ID getFounder() {
+        if (founder == null) {
+            founder = getDataSource().getFounder(identifier);
+        }
+        return founder;
+    }
+
+    public ID getOwner() {
+        return getDataSource().getOwner(identifier);
+    }
+
+    public List<ID> getMembers() {
+        return getDataSource().getMembers(identifier);
+    }
 }

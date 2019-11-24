@@ -28,7 +28,7 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm;
+package chat.dim;
 
 import java.lang.reflect.Constructor;
 import java.nio.charset.Charset;
@@ -39,7 +39,8 @@ import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
-import chat.dim.mkm.plugins.UserProfile;
+import chat.dim.plugins.UserProfile;
+import chat.dim.type.Dictionary;
 
 public class Profile extends Dictionary implements TAI {
 

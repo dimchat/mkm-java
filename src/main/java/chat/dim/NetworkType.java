@@ -28,9 +28,7 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm;
-
-import java.util.Locale;
+package chat.dim;
 
 /*
  *  @enum MKMNetworkID
@@ -170,7 +168,7 @@ public enum NetworkType {
             return Robot;
         }
 
-        String text = String.format(Locale.CHINA, "Network ID not supported: %d", i);
+        String text = String.format("Network ID not supported: %d", i);
         throw new TypeNotPresentException(text, null);
     }
 

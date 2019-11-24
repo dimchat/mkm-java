@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import chat.dim.*;
 import chat.dim.crypto.*;
-import chat.dim.crypto.impl.PrivateKeyImpl;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
-import chat.dim.mkm.*;
+import chat.dim.impl.PrivateKeyImpl;
 
 public class Facebook implements UserDataSource, GroupDataSource {
 
