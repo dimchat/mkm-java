@@ -83,6 +83,7 @@ public class UserProfile extends Profile {
      *
      * @return nickname
      */
+    @Override
     @SuppressWarnings("unchecked")
     public String getName() {
         String name = super.getName();
@@ -97,5 +98,25 @@ public class UserProfile extends Profile {
             }
         }
         return name;
+    }
+
+    @SuppressWarnings("unchecked")
+    public String getAvatar() {
+        String url = (String) getProperty("avatar");
+        if (url == null) {
+            // get from 'photos'
+            Object array = getProperty("photos");
+            if (array != null) {
+                List<String> photos = (List<String>) array;
+                if (photos.size() > 0) {
+                    url = photos.get(0);
+                }
+            }
+        }
+        return url;
+    }
+
+    public void setAvatar(String url) {
+        setProperty("avatar", url);
     }
 }
