@@ -42,7 +42,13 @@ public class UserProfile extends Profile {
 
     public UserProfile(Map<String, Object> dictionary) {
         super(dictionary);
-        if (!dictionary.containsKey("key")) {
+        Object identifier = dictionary.get("ID");
+        if (identifier instanceof ID) {
+            if (!((ID) identifier).getType().isUser()) {
+                throw new ClassCastException("not a user profile: " + dictionary);
+            }
+        } else if (!dictionary.containsKey("avatar") &&
+                !dictionary.containsKey("key")) {
             throw new ClassCastException("not a user profile: " + dictionary);
         }
     }
