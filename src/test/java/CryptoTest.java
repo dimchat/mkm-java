@@ -110,45 +110,4 @@ public class CryptoTest {
         String s2 = "{\"algorithm\":\"RSA\",\"data\":\"-----BEGIN RSA PRIVATE KEY-----\\nMIICXAIBAAKBgQDRylHsye4B9UU52IZ0WazKzjXd\\/0SlflLYYFOLsFbAO4yc\\/ycC\\nVobC2F9QbEiUXEEZ6VmElMZM41N+BYVFtvKBT7067cxTONQIS4RPDGD\\/L8vf\\/0yt\\nDgBcGMGNaahCSSnW2zlQhyyNQ3btQmx5i3UNjRftdJ7M6yRsSSw5zWnWZwIDAQAB\\nAoGAKeT00kwK9yIjVmdqhk6oJoHimPgSndfptGMcG\\/+1e0MJFAsSH7HmzH9IHXfa\\nUKJRr9p9MXBCX3VgJYD1udPMfnCxCnL9CLnqxjPWJ+SISumV2g8PYVEPCVnN+zBp\\njBLpoeQS43c4heyF3DM41x6QrSGXtofUJ1W4U0VejnvlosECQQDvqp\\/6rkT4mjqj\\nMAGHWnIr2cbnt2UqQH85viSx3pLyPXn5FnDI1EiEU\\/Pi+XuxoTCtxWd+gx9aWRpY\\n+mXcK\\/YnAkEA4BZ0ukPDr8e5KmQN7x5x\\/CfHhqPRGVk4VH9z+icJ0\\/DvH9+7Nj30\\n5i8T6kAyGWdYoxkhQydmwi6Fpx6SxGWFwQJAQxkV6OzZSnCDciSCiQ59YGF8Gmtx\\n2z5rYBMn2tRhd4hWmbH6qX8lPkbyxNzsEHL8Weoma3jyUi0X\\/0k7M0TriQJBALv6\\nGnEl50HNiMbGp+mu4G9l7zpCsWVSMq6vO9rcZKIlunJCfAlEb+uoEkyvDVfCGdi3\\ne++ZXdoGrJdETlnx0AECQDQEW7kuBhHQ4cZ9v+qY7PfM87qM7EdsCm1QTNJ48n9I\\nJWeoVaoTQkKb+vB\\/JOjuNx9FHmqySKkNMkTqPNlFCFI=\\n-----END RSA PRIVATE KEY-----\\n\",\"digest\":\"SHA256\",\"mode\":\"ECB\",\"padding\":\"PKCS1\"}";
         checkX(s1, s2);
     }
-
-    static {
-        Base58.coder = new BaseCoder() {
-
-            @Override
-            public String encode(byte[] data) {
-                return chat.dim.bitcoinj.Base58.encode(data);
-            }
-
-            @Override
-            public byte[] decode(String string) {
-                return chat.dim.bitcoinj.Base58.decode(string);
-            }
-        };
-
-        Base64.coder = new BaseCoder() {
-
-            @Override
-            public String encode(byte[] data) {
-                return java.util.Base64.getEncoder().encodeToString(data);
-            }
-
-            @Override
-            public byte[] decode(String string) {
-                return java.util.Base64.getDecoder().decode(string);
-            }
-        };
-
-        JSON.parser = new DataParser() {
-
-            @Override
-            public String encode(Object container) {
-                return com.alibaba.fastjson.JSON.toJSONString(container);
-            }
-
-            @Override
-            public Object decode(String jsonString) {
-                return com.alibaba.fastjson.JSON.parseObject(jsonString);
-            }
-        };
-    }
 }
