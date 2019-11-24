@@ -36,6 +36,7 @@ import java.util.List;
 
 import chat.dim.format.JSON;
 import chat.dim.plugins.DefaultAddress;
+import chat.dim.protocol.NetworkType;
 
 /**
  *  Address for MKM ID

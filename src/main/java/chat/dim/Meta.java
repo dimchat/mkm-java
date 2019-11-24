@@ -39,6 +39,8 @@ import chat.dim.crypto.PublicKey;
 import chat.dim.format.Base64;
 import chat.dim.impl.PublicKeyImpl;
 import chat.dim.plugins.DefaultMeta;
+import chat.dim.protocol.MetaType;
+import chat.dim.protocol.NetworkType;
 import chat.dim.type.Dictionary;
 
 /**
@@ -59,38 +61,13 @@ import chat.dim.type.Dictionary;
 public abstract class Meta extends Dictionary {
 
     /**
-     *  enum MKMMetaVersion
-     *
-     *  abstract Defined for algorithm that generating address.
-     *
-     *  discussion Generate and check ID/Address
-     *
-     *      MKMMetaVersion_MKM give a seed string first, and sign this seed to get
-     *      fingerprint; after that, use the fingerprint to generate address.
-     *      This will get a firmly relationship between (username, address and key).
-     *
-     *      MKMMetaVersion_BTC use the key data to generate address directly.
-     *      This can build a BTC address for the entity ID (no username).
-     *
-     *      MKMMetaVersion_ExBTC use the key data to generate address directly, and
-     *      sign the seed to get fingerprint (just for binding username and key).
-     *      This can build a BTC address, and bind a username to the entity ID.
-     */
-    public static final int VersionMKM     = 0x01;  // 0000 0001
-    public static final int VersionBTC     = 0x02;  // 0000 0010
-    public static final int VersionExBTC   = 0x03;  // 0000 0011
-    public static final int VersionETH     = 0x04;  // 0000 0100
-    public static final int VersionExETH   = 0x05;  // 0000 0101
-    public static final int VersionDefault = VersionMKM;
-
-    /**
      *  Meta algorithm version
      *
      *      0x01 - username@address
      *      0x02 - btc_address
      *      0x03 - username@btc_address
      */
-    private int version = 0;
+    private MetaType version = null;
 
     /**
      *  Public key (used for signature)
@@ -144,9 +121,9 @@ public abstract class Meta extends Dictionary {
         return matches(identifier);
     }
 
-    public int getVersion() {
-        if (version == 0) {
-            version = (int) dictionary.get("version");
+    public MetaType getVersion() {
+        if (version == null) {
+            version = MetaType.fromInt((int) dictionary.get("version"));
         }
         return version;
     }
@@ -155,9 +132,9 @@ public abstract class Meta extends Dictionary {
         return containsSeed(getVersion());
     }
 
-    private static boolean containsSeed(int version) {
+    private static boolean containsSeed(MetaType version) {
         // MKM, ExBTC, ExETH, ...
-        return (version & VersionMKM) == VersionMKM;
+        return (version.value & MetaType.MKM.value) == MetaType.MKM.value;
     }
 
     public PublicKey getKey() {
@@ -276,9 +253,9 @@ public abstract class Meta extends Dictionary {
      * @param seed - user/group name
      * @return Meta object
      */
-    public static Meta generate(int version, PrivateKey sk, String seed) throws ClassNotFoundException {
+    public static Meta generate(MetaType version, PrivateKey sk, String seed) throws ClassNotFoundException {
         Map<String, Object> dictionary = new HashMap<>();
-        dictionary.put("version", version);
+        dictionary.put("version", version.value);
         dictionary.put("key", sk.getPublicKey());
         if (containsSeed(version)) {
             // generate fingerprint with private key
@@ -291,10 +268,10 @@ public abstract class Meta extends Dictionary {
 
     //-------- Runtime --------
 
-    private static Map<Integer, Class> metaClasses = new HashMap<>();
+    private static Map<MetaType, Class> metaClasses = new HashMap<>();
 
     @SuppressWarnings("unchecked")
-    public static void register(int version, Class clazz) {
+    public static void register(MetaType version, Class clazz) {
         // check whether clazz is subclass of Meta
         if (clazz.equals(Meta.class)) {
             throw new IllegalArgumentException("should not add Meta.class itself!");
@@ -305,7 +282,7 @@ public abstract class Meta extends Dictionary {
 
     private static Class metaClass(Map<String, Object> dictionary) {
         // get subclass by meta version
-        int version = (int) dictionary.get("version");
+        MetaType version = MetaType.fromInt((int) dictionary.get("version"));
         return metaClasses.get(version);
     }
 
@@ -328,7 +305,7 @@ public abstract class Meta extends Dictionary {
 
     static {
         // MKM
-        register(VersionMKM, DefaultMeta.class);
+        register(MetaType.MKM, DefaultMeta.class);
         // BTC, ExBTC
         // ETH, ExETH
         // ...

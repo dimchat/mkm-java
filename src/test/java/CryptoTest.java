@@ -7,13 +7,14 @@ import java.nio.charset.Charset;
 
 import chat.dim.ID;
 import chat.dim.Meta;
-import chat.dim.NetworkType;
 import chat.dim.impl.PrivateKeyImpl;
 import chat.dim.format.*;
 import chat.dim.crypto.Digest;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.DecryptKey;
 import chat.dim.crypto.EncryptKey;
+import chat.dim.protocol.MetaType;
+import chat.dim.protocol.NetworkType;
 
 public class CryptoTest {
 
@@ -69,7 +70,7 @@ public class CryptoTest {
     public void testMeta() throws ClassNotFoundException {
         String username = "moky";
         PrivateKey sk = PrivateKeyImpl.generate("RSA");
-        Meta meta = Meta.generate(Meta.VersionDefault, sk, username);
+        Meta meta = Meta.generate(MetaType.Default, sk, username);
         Log.info("meta: " + JSON.encode(meta));
         Log.info("SK: " + JSON.encode(sk));
     }

@@ -3,7 +3,8 @@ import java.util.Map;
 
 import chat.dim.Address;
 import chat.dim.Meta;
-import chat.dim.NetworkType;
+import chat.dim.protocol.MetaType;
+import chat.dim.protocol.NetworkType;
 
 public class ETHMeta extends Meta {
 
@@ -12,7 +13,7 @@ public class ETHMeta extends Meta {
     }
 
     public Address generateAddress(NetworkType network) {
-        if ((getVersion() & VersionBTC) != VersionBTC) {
+        if ((getVersion().value & MetaType.BTC.value) != MetaType.BTC.value) {
             throw new ArithmeticException("meta version error");
         }
         // BTC, ExBTC
@@ -20,7 +21,7 @@ public class ETHMeta extends Meta {
     }
 
     static {
-        Meta.register(Meta.VersionETH, ETHMeta.class);
-        Meta.register(Meta.VersionExETH, ETHMeta.class);
+        Meta.register(MetaType.ETH, ETHMeta.class);
+        Meta.register(MetaType.ExETH, ETHMeta.class);
     }
 }

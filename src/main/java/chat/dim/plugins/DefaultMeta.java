@@ -34,7 +34,8 @@ import java.util.Map;
 
 import chat.dim.Address;
 import chat.dim.Meta;
-import chat.dim.NetworkType;
+import chat.dim.protocol.MetaType;
+import chat.dim.protocol.NetworkType;
 
 /**
  *  Default Meta to build ID with 'name@address'
@@ -57,7 +58,7 @@ public final class DefaultMeta extends Meta {
 
     @Override
     public Address generateAddress(NetworkType network) {
-        assert getVersion() == VersionMKM;
+        assert getVersion() == MetaType.MKM;
         assert isValid();
         return DefaultAddress.generate(getFingerprint(), network);
     }

@@ -33,9 +33,9 @@ package chat.dim.plugins;
 import java.util.Arrays;
 
 import chat.dim.Address;
-import chat.dim.NetworkType;
 import chat.dim.crypto.Digest;
 import chat.dim.format.Base58;
+import chat.dim.protocol.NetworkType;
 
 /**
  *  Address like BitCoin

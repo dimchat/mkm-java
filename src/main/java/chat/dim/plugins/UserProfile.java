@@ -30,13 +30,13 @@
  */
 package chat.dim.plugins;
 
+import java.util.List;
+import java.util.Map;
+
 import chat.dim.ID;
 import chat.dim.Profile;
 import chat.dim.crypto.EncryptKey;
 import chat.dim.impl.PublicKeyImpl;
-
-import java.util.List;
-import java.util.Map;
 
 public class UserProfile extends Profile {
 

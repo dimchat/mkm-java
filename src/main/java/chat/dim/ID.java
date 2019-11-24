@@ -31,6 +31,7 @@
 package chat.dim;
 
 import chat.dim.format.JSON;
+import chat.dim.protocol.NetworkType;
 
 /**
  *  ID for entity (User/Group)

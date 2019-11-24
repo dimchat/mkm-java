@@ -32,6 +32,8 @@ package chat.dim;
 
 import java.lang.ref.WeakReference;
 
+import chat.dim.protocol.NetworkType;
+
 /**
  *  Entity (User/Group)
  *  ~~~~~~~~~~~~~~~~~~~

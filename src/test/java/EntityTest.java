@@ -13,6 +13,8 @@ import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.SignKey;
 import chat.dim.impl.PrivateKeyImpl;
+import chat.dim.protocol.MetaType;
+import chat.dim.protocol.NetworkType;
 
 public class EntityTest {
 
@@ -106,7 +108,7 @@ public class EntityTest {
         PublicKey pk = sk.getPublicKey();
         String seed = "moky";
         byte[] data = seed.getBytes(Charset.forName("UTF-8"));
-        Meta meta = Meta.generate(Meta.VersionDefault, sk, seed);
+        Meta meta = Meta.generate(MetaType.Default, sk, seed);
         Log.info("meta: " + meta + ", detail: " + getMetaInfo(meta));
         Assert.assertTrue(meta.matches(pk));
 
