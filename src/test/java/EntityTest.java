@@ -82,7 +82,7 @@ public class EntityTest {
     public void testID() {
         ID identifier;
 
-        identifier = ID.getInstance("moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
+        identifier = Immortals.MOKI;
         Log.info("ID: " + identifier + ", detail: " + getIDInfo(identifier));
         Assert.assertEquals(1840839527L, identifier.getNumber());
 
@@ -121,12 +121,12 @@ public class EntityTest {
         Assert.assertTrue(identifier.getType().isPerson());
 
         Facebook facebook = Facebook.getInstance();
-        facebook.cachePrivateKey(sk, identifier);
-        facebook.cacheMeta(meta, identifier);
+        facebook.cache(sk, identifier);
+        facebook.cache(meta, identifier);
 
         User user = new User(identifier);
         user.setDataSource(facebook);
-        facebook.cacheUser(user);
+        facebook.cache(user);
 
         byte[] signature = user.sign(data);
         Assert.assertTrue(user.verify(data, signature));
@@ -169,7 +169,7 @@ public class EntityTest {
         Log.info("account: " + account);
         Assert.assertEquals(4049699527L, account.getNumber());
 
-        identifier = ID.getInstance("moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
+        identifier = Immortals.MOKI;
         User user = facebook.getUser(identifier);
         Log.info("user: " + user);
         Assert.assertEquals(1840839527L, user.getNumber());

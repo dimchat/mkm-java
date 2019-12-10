@@ -1,7 +1,6 @@
 
+import chat.dim.Immortals;
 import org.junit.Test;
-
-import java.io.IOException;
 
 import chat.dim.User;
 import chat.dim.ID;
@@ -11,16 +10,16 @@ public class ImmortalsTest {
     private Facebook facebook = Facebook.getInstance();
 
     @Test
-    public void testImmortals() throws IOException, ClassNotFoundException {
+    public void testImmortals() {
         // Immortal Hulk
-        User hulk = Facebook.loadBuiltInAccount("/mkm_hulk.js");
+        User hulk = facebook.getUser(Immortals.HULK);
         Log.info("hulk: " + hulk);
 
         Log.info("name: " + hulk.getName());
         Log.info("profile: " + facebook.getProfile(hulk.identifier));
 
         // Monkey King
-        User moki = Facebook.loadBuiltInAccount("/mkm_moki.js");
+        User moki = facebook.getUser(Immortals.MOKI);
         Log.info("moki: " + moki);
 
         Log.info("name: " + moki.getName());
