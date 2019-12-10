@@ -40,10 +40,12 @@ import java.util.Map;
 import chat.dim.crypto.*;
 import chat.dim.format.JSON;
 import chat.dim.impl.PrivateKeyImpl;
-import chat.dim.protocol.NetworkType;
 
 /**
  *  Built-in accounts (for test)
+ *
+ *      1. Immortal Hulk - hulk@4YeVEN3aUnvC1DNUufCq1bs9zoBSJTzVEj
+ *      2. Monkey King   - moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk
  */
 public class Immortals implements UserDataSource {
 
@@ -62,48 +64,40 @@ public class Immortals implements UserDataSource {
     public Immortals() {
         super();
         try {
-            loadBuiltInAccount("moki");
-            loadBuiltInAccount("hulk");
+            loadBuiltInAccount(MOKI);
+            loadBuiltInAccount(HULK);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    private void loadBuiltInAccount(String name) throws IOException, ClassNotFoundException {
-        // load meta and generate ID
-        ID identifier = loadIDWithMeta("/" + name + "_meta.js");
-        if (identifier == null) {
-            throw new NullPointerException("failed to load account: " + name);
-        }
+    private void loadBuiltInAccount(ID identifier) throws IOException, ClassNotFoundException {
+        assert identifier.isValid();
+        idMap.put(identifier.toString(), identifier);
+        // load meta for ID
+        Meta meta = loadMeta("mkm/" + identifier.name + "_meta.js", identifier);
+        assert meta != null;
+        assert meta.matches(identifier);
         // load private key for ID
-        PrivateKey key = loadPrivateKey("/" + name + "_secret.js", identifier);
+        PrivateKey key = loadPrivateKey("mkm/" + identifier.name + "_secret.js", identifier);
         assert key != null;
         // load profile for ID
-        Profile profile = loadProfile("/" + name + "_profile.js", identifier);
+        Profile profile = loadProfile("mkm/" + identifier.name + "_profile.js", identifier);
         assert profile != null;
     }
 
-    private ID loadIDWithMeta(String filename) throws IOException, ClassNotFoundException {
-        return loadIDWithMeta(filename, NetworkType.Main);
-    }
-    public ID loadIDWithMeta(String filename, NetworkType type) throws IOException, ClassNotFoundException {
-        assert type.isUser();
-        Map dict = readJSONFile(filename);
-        assert dict != null;
+    private Meta loadMeta(String filename, ID identifier) throws IOException, ClassNotFoundException {
+        Map dict = ResourceLoader.readJSONFile(filename);
         Meta meta = Meta.getInstance(dict);
-        if (meta == null || !meta.isValid()) {
+        if (meta == null || !meta.matches(identifier)) {
             throw new NullPointerException("meta error: " + dict);
         }
-        ID identifier = meta.generateID(type);
-        assert identifier.isValid();
-        idMap.put(identifier.toString(), identifier);
         metaMap.put(identifier, meta);
-        return identifier;
+        return meta;
     }
 
-    public PrivateKey loadPrivateKey(String filename, ID identifier) throws IOException, ClassNotFoundException {
-        Map dict = readJSONFile(filename);
-        assert dict != null;
+    private PrivateKey loadPrivateKey(String filename, ID identifier) throws IOException, ClassNotFoundException {
+        Map dict = ResourceLoader.readJSONFile(filename);
         PrivateKey key = PrivateKeyImpl.getInstance(dict);
         if (key == null) {
             throw new NullPointerException("private key error: " + dict);
@@ -112,11 +106,12 @@ public class Immortals implements UserDataSource {
         return key;
     }
 
-    public Profile loadProfile(String filename, ID identifier) throws IOException {
-        Map dict = readJSONFile(filename);
-        assert dict != null;
+    private Profile loadProfile(String filename, ID identifier) throws IOException {
+        Map dict = ResourceLoader.readJSONFile(filename);
         Profile profile = Profile.getInstance(dict);
-        assert identifier.equals(profile.getIdentifier());
+        if (profile == null || !identifier.equals(profile.getIdentifier())) {
+            throw new NullPointerException("profile error: " + dict);
+        }
         // copy 'name'
         Object name = dict.get("name");
         if (name == null) {
@@ -153,26 +148,6 @@ public class Immortals implements UserDataSource {
         profile.sign(key);
         profileMap.put(identifier, profile);
         return profile;
-    }
-
-    private static Map readJSONFile(String filename) throws IOException {
-        String json = readTextFile(filename);
-        return (Map) JSON.decode(json);
-    }
-
-    private static String readTextFile(String filename) throws IOException {
-        byte[] data = readResourceFile(filename);
-        return new String(data, "UTF-8");
-    }
-
-    private static byte[] readResourceFile(String filename) throws IOException {
-        InputStream is = Immortals.class.getResourceAsStream(filename);
-        assert is != null;
-        int size = is.available();
-        byte[] data = new byte[size];
-        int len = is.read(data, 0, size);
-        assert len == size;
-        return data;
     }
 
     //--------
@@ -255,5 +230,29 @@ public class Immortals implements UserDataSource {
     public List<VerifyKey> getPublicKeysForVerification(ID user) {
         // NOTICE: return nothing to use meta.key
         return null;
+    }
+}
+
+
+class ResourceLoader {
+
+    static Map readJSONFile(String filename) throws IOException {
+        String json = readTextFile(filename);
+        return (Map) JSON.decode(json);
+    }
+
+    private static String readTextFile(String filename) throws IOException {
+        byte[] data = readResourceFile(filename);
+        return new String(data, "UTF-8");
+    }
+
+    private static byte[] readResourceFile(String filename) throws IOException {
+        InputStream is = ResourceLoader.class.getClassLoader().getResourceAsStream(filename);
+        assert is != null;
+        int size = is.available();
+        byte[] data = new byte[size];
+        int len = is.read(data, 0, size);
+        assert len == size;
+        return data;
     }
 }

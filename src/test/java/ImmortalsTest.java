@@ -7,19 +7,20 @@ import chat.dim.ID;
 
 public class ImmortalsTest {
 
+    private Immortals immortals = new Immortals();
     private Facebook facebook = Facebook.getInstance();
 
     @Test
     public void testImmortals() {
         // Immortal Hulk
-        User hulk = facebook.getUser(Immortals.HULK);
+        User hulk = facebook.getUser(immortals.getID(Immortals.HULK));
         Log.info("hulk: " + hulk);
 
         Log.info("name: " + hulk.getName());
         Log.info("profile: " + facebook.getProfile(hulk.identifier));
 
         // Monkey King
-        User moki = facebook.getUser(Immortals.MOKI);
+        User moki = facebook.getUser(immortals.getID(Immortals.MOKI));
         Log.info("moki: " + moki);
 
         Log.info("name: " + moki.getName());
