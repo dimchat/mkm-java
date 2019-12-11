@@ -125,25 +125,35 @@ public final class ID extends chat.dim.type.String {
     @SuppressWarnings("Contract")
     @Override
     public boolean equals(Object other) {
+        if (other == null) {
+            // object empty
+            return false;
+        }
         if (super.equals(other)) {
             // same object
             return true;
         }
-        // convert to ID object
-        ID identifier = ID.getInstance(other);
-        if (identifier == null) {
-            // null
-            return false;
+        if (other instanceof ID) {
+            ID identifier = (ID) other;
+            // check address
+            if (!address.equals(identifier.address)) {
+                return false;
+            }
+            // check name
+            if (name == null || name.length() == 0) {
+                return identifier.name == null || identifier.name.length() == 0;
+            } else {
+                return name.equals(identifier.name);
+            }
         }
-        // check address
-        if (!address.equals(identifier.address)) {
-            return false;
-        }
-        // check name
-        if (name == null || name.length() == 0) {
-            return identifier.name == null || identifier.name.length() == 0;
+        assert other instanceof String;
+        // comparing without terminal
+        String[] pair = ((String) other).split("/");
+        assert pair[0].length() > 0;
+        if (terminal == null || terminal.length() == 0) {
+            return pair[0].equals(string);
         } else {
-            return name.equals(identifier.name);
+            return pair[0].equals(string.split("/")[0]);
         }
     }
 
