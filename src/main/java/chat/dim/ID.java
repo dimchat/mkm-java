@@ -135,12 +135,16 @@ public final class ID extends chat.dim.type.String {
             // null
             return false;
         }
-        // check with name & address
-        if (name != null && !name.equals(identifier.name)) {
-            // ID.name not match
+        // check address
+        if (!address.equals(identifier.address)) {
             return false;
         }
-        return address.equals(identifier.address);
+        // check name
+        if (name == null || name.length() == 0) {
+            return identifier.name == null || identifier.name.length() == 0;
+        } else {
+            return name.equals(identifier.name);
+        }
     }
 
     //-------- Runtime --------

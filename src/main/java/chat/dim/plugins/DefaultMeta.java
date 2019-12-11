@@ -30,9 +30,11 @@
  */
 package chat.dim.plugins;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import chat.dim.Address;
+import chat.dim.ID;
 import chat.dim.Meta;
 import chat.dim.protocol.MetaType;
 import chat.dim.protocol.NetworkType;
@@ -56,10 +58,33 @@ public final class DefaultMeta extends Meta {
         super(dictionary);
     }
 
+    // memory cache
+    private Map<NetworkType, ID> idMap = new HashMap<>();
+
+    @Override
+    public ID generateID(NetworkType network) {
+        // check cache
+        ID identifier = idMap.get(network);
+        if (identifier == null) {
+            // generate and cache it
+            identifier = super.generateID(network);
+            idMap.put(network, identifier);
+        }
+        return identifier;
+    }
+
     @Override
     public Address generateAddress(NetworkType network) {
         assert getVersion() == MetaType.MKM;
-        assert isValid();
+        if (!isValid()) {
+            throw new IllegalStateException("meta invalid: " + this);
+        }
+        // check cache
+        ID identifier = idMap.get(network);
+        if (identifier != null) {
+            return identifier.address;
+        }
+        // generate
         return DefaultAddress.generate(getFingerprint(), network);
     }
 }
