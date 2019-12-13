@@ -82,7 +82,7 @@ public class EntityTest {
     public void testID() {
         ID identifier;
 
-        identifier = Immortals.MOKI;
+        identifier = ID.getInstance(Immortals.MOKI);
         Log.info("ID: " + identifier + ", detail: " + getIDInfo(identifier));
         Assert.assertEquals(1840839527L, identifier.getNumber());
 
@@ -169,7 +169,7 @@ public class EntityTest {
         Log.info("account: " + account);
         Assert.assertEquals(4049699527L, account.getNumber());
 
-        identifier = Immortals.MOKI;
+        identifier = ID.getInstance(Immortals.MOKI);
         User user = facebook.getUser(identifier);
         Log.info("user: " + user);
         Assert.assertEquals(1840839527L, user.getNumber());

@@ -54,8 +54,8 @@ public class CryptoAESTest {
         Assert.assertEquals(key, key2);
 //        Assert.assertTrue(key.equals(key2));
 
-        text = "XX5qfromb3R078VVK7LwVA=="; // NoPadding
-//        text = "0xtbqZN6x2aWTZn0DpCoCA==";
+//        text = "XX5qfromb3R078VVK7LwVA=="; // NoPadding
+        text = "0xtbqZN6x2aWTZn0DpCoCA==";
         ciphertext = Base64.decode(text);
         plaintext = key2.decrypt(ciphertext);
         Log.info("FIXED: " + text + " -> " + (plaintext == null ? null : new String(plaintext)));

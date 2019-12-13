@@ -49,10 +49,10 @@ import chat.dim.impl.PrivateKeyImpl;
  */
 public class Immortals implements UserDataSource {
 
-    // Immortal Hulk
-    public static final ID HULK = ID.getInstance("hulk@4YeVEN3aUnvC1DNUufCq1bs9zoBSJTzVEj");
-    // Monkey King
-    public static final ID MOKI = ID.getInstance("moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
+    // Immortal Hulk (195-183-9394)
+    public static final String HULK = "hulk@4YeVEN3aUnvC1DNUufCq1bs9zoBSJTzVEj";
+    // Monkey King (184-083-9527)
+    public static final String MOKI = "moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk";
 
     // memory caches
     private Map<String, ID>     idMap         = new HashMap<>();
@@ -64,54 +64,45 @@ public class Immortals implements UserDataSource {
     public Immortals() {
         super();
         try {
-            loadBuiltInAccount(MOKI);
-            loadBuiltInAccount(HULK);
+            // load built-in users
+            loadBuiltInAccount(ID.getInstance(MOKI));
+            loadBuiltInAccount(ID.getInstance(HULK));
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
 
     private void loadBuiltInAccount(ID identifier) throws IOException, ClassNotFoundException {
-        assert identifier.isValid();
-        idMap.put(identifier.toString(), identifier);
+        boolean OK = cache(identifier);
+        assert OK;
         // load meta for ID
-        Meta meta = loadMeta("mkm/" + identifier.name + "_meta.js", identifier);
-        assert meta != null;
-        assert meta.matches(identifier);
+        Meta meta = loadMeta("mkm/" + identifier.name + "_meta.js");
+        OK = cache(meta, identifier);
+        assert OK;
         // load private key for ID
-        PrivateKey key = loadPrivateKey("mkm/" + identifier.name + "_secret.js", identifier);
-        assert key != null;
+        PrivateKey key = loadPrivateKey("mkm/" + identifier.name + "_secret.js");
+        OK = cache(key, identifier);
+        assert OK;
         // load profile for ID
-        Profile profile = loadProfile("mkm/" + identifier.name + "_profile.js", identifier);
-        assert profile != null;
+        Profile profile = loadProfile("mkm/" + identifier.name + "_profile.js");
+        OK = cache(profile, identifier);
+        assert OK;
     }
 
-    private Meta loadMeta(String filename, ID identifier) throws IOException, ClassNotFoundException {
+    private Meta loadMeta(String filename) throws IOException, ClassNotFoundException {
         Map dict = ResourceLoader.readJSONFile(filename);
-        Meta meta = Meta.getInstance(dict);
-        if (meta == null || !meta.matches(identifier)) {
-            throw new NullPointerException("meta error: " + dict);
-        }
-        metaMap.put(identifier, meta);
-        return meta;
+        return Meta.getInstance(dict);
     }
 
-    private PrivateKey loadPrivateKey(String filename, ID identifier) throws IOException, ClassNotFoundException {
+    private PrivateKey loadPrivateKey(String filename) throws IOException, ClassNotFoundException {
         Map dict = ResourceLoader.readJSONFile(filename);
-        PrivateKey key = PrivateKeyImpl.getInstance(dict);
-        if (key == null) {
-            throw new NullPointerException("private key error: " + dict);
-        }
-        privateKeyMap.put(identifier, key);
-        return key;
+        return PrivateKeyImpl.getInstance(dict);
     }
 
-    private Profile loadProfile(String filename, ID identifier) throws IOException {
+    private Profile loadProfile(String filename) throws IOException {
         Map dict = ResourceLoader.readJSONFile(filename);
         Profile profile = Profile.getInstance(dict);
-        if (profile == null || !identifier.equals(profile.getIdentifier())) {
-            throw new NullPointerException("profile error: " + dict);
-        }
+        assert profile != null;
         // copy 'name'
         Object name = dict.get("name");
         if (name == null) {
@@ -140,17 +131,55 @@ public class Immortals implements UserDataSource {
             assert avatar instanceof String;
             profile.setProperty("avatar", avatar);
         }
-        // sign and cache
-        PrivateKey key = privateKeyMap.get(identifier);
-        if (key == null) {
-            throw new NullPointerException("failed to get private key for ID: " + identifier);
-        }
-        profile.sign(key);
-        profileMap.put(identifier, profile);
+        // sign
+        byte[] signature = sign(profile);
+        assert signature != null;
         return profile;
     }
 
-    //--------
+    private byte[] sign(Profile profile) {
+        ID identifier = getID(profile.getIdentifier());
+        SignKey key = getPrivateKeyForSignature(identifier);
+        assert key != null;
+        return profile.sign(key);
+    }
+
+    //-------- cache
+
+    private boolean cache(ID identifier) {
+        assert identifier.isValid();
+        idMap.put(identifier.toString(), identifier);
+        return true;
+    }
+
+    private boolean cache(Meta meta, ID identifier) {
+        assert meta.matches(identifier);
+        metaMap.put(identifier, meta);
+        return true;
+    }
+
+    private boolean cache(PrivateKey key, ID identifier) {
+        assert getMeta(identifier).getKey().matches(key);
+        privateKeyMap.put(identifier, key);
+        return true;
+    }
+
+    private boolean cache(Profile profile, ID identifier) {
+        assert profile.isValid();
+        assert identifier.equals(profile.getIdentifier());
+        profileMap.put(identifier, profile);
+        return true;
+    }
+
+    private boolean cache(User user) {
+        if (user.getDataSource() == null) {
+            user.setDataSource(this);
+        }
+        userMap.put(user.identifier, user);
+        return true;
+    }
+
+    //-------- create
 
     public ID getID(Object string) {
         if (string == null) {
@@ -166,10 +195,11 @@ public class Immortals implements UserDataSource {
         assert identifier.getType().isUser();
         User user = userMap.get(identifier);
         if (user == null) {
+            // only create exists account
             if (idMap.containsValue(identifier)) {
                 user = new User(identifier);
-                user.setDataSource(this);
-                userMap.put(identifier, user);
+                boolean OK = cache(user);
+                assert OK;
             }
         }
         return user;
@@ -191,6 +221,7 @@ public class Immortals implements UserDataSource {
 
     @Override
     public List<ID> getContacts(ID user) {
+        assert user.getType().isUser();
         if (!idMap.containsValue(user)) {
             return null;
         }
@@ -206,12 +237,14 @@ public class Immortals implements UserDataSource {
 
     @Override
     public EncryptKey getPublicKeyForEncryption(ID user) {
+        assert user.getType().isUser();
         // NOTICE: return nothing to use profile.key or meta.key
         return null;
     }
 
     @Override
     public List<DecryptKey> getPrivateKeysForDecryption(ID user) {
+        assert user.getType().isUser();
         PrivateKey key = privateKeyMap.get(user);
         if (key instanceof DecryptKey) {
             List<DecryptKey> array = new ArrayList<>();
@@ -223,11 +256,13 @@ public class Immortals implements UserDataSource {
 
     @Override
     public SignKey getPrivateKeyForSignature(ID user) {
+        assert user.getType().isUser();
         return privateKeyMap.get(user);
     }
 
     @Override
     public List<VerifyKey> getPublicKeysForVerification(ID user) {
+        assert user.getType().isUser();
         // NOTICE: return nothing to use meta.key
         return null;
     }
