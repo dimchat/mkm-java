@@ -209,9 +209,9 @@ public abstract class Meta extends Dictionary {
         // check with seed & fingerprint
         if (containsSeed()) {
             // check whether keys equal by verifying signature
-            String seed = getSeed();
+            byte[] seed = getSeed().getBytes(Charset.forName("UTF-8"));
             byte[] fingerprint = getFingerprint();
-            return pk.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint);
+            return pk.verify(seed, fingerprint);
         } else {
             // ID with BTC/ETH address has no username
             // so we can just compare the key.data to check matching

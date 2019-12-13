@@ -193,14 +193,23 @@ public class Profile extends Dictionary implements TAI {
 
     @Override
     public boolean verify(VerifyKey publicKey) {
-        if (status == 1) {
+        if (status > 0) {
             // already verify OK
             return true;
         }
         byte[] data = getData();
         byte[] signature = getSignature();
-        if (data == null || signature == null) {
-            // data error
+        if (data == null) {
+            // NOTICE: if data is empty, signature should be empty at the same time
+            //         this happen while profile not found
+            if (signature == null) {
+                status = 0;
+            } else {
+                // data signature error
+                status = -1;
+            }
+        } else if (signature == null) {
+            // signature error
             status = -1;
         } else if (publicKey.verify(data, signature)) {
             // signature matched
@@ -213,7 +222,7 @@ public class Profile extends Dictionary implements TAI {
 
     @Override
     public byte[] sign(SignKey privateKey) {
-        if (status == 1) {
+        if (status > 0) {
             // already signed/verified
             assert data != null && signature != null;
             return signature;
