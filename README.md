@@ -185,7 +185,7 @@ you must verify it with the consensus algorithm before accept its **public key**
         return new ID(seed, address, null);
     }
     
-    public abstract Address generateAddress(NetworkType network);
+    protected abstract Address generateAddress(NetworkType network);
 ```
 
 ### <span id="id-terminal">1.3. Terminal</span>

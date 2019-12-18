@@ -149,7 +149,9 @@ public class EntityTest {
 
         ID identifier = ID.getInstance("moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk");
         Meta meta = facebook.getMeta(identifier);
-        profile.verify(meta.getKey());
+        if (meta.isValid()) {
+            profile.verify(meta.getKey());
+        }
         Log.info("profile: " + profile);
 
         profile.setProperty("age", 18);

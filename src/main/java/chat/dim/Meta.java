@@ -128,15 +128,6 @@ public abstract class Meta extends Dictionary {
         return version;
     }
 
-    private boolean containsSeed() {
-        return containsSeed(getVersion());
-    }
-
-    private static boolean containsSeed(MetaType version) {
-        // MKM, ExBTC, ExETH, ...
-        return (version.value & MetaType.MKM.value) == MetaType.MKM.value;
-    }
-
     public PublicKey getKey() {
         if (key == null) {
             try {
@@ -150,7 +141,7 @@ public abstract class Meta extends Dictionary {
 
     public String getSeed() {
         if (seed == null) {
-            if (containsSeed()) {
+            if (getVersion().hasSeed()) {
                 seed = (String) dictionary.get("seed");
                 assert seed != null && seed.length() > 0;
             }
@@ -160,7 +151,7 @@ public abstract class Meta extends Dictionary {
 
     public byte[] getFingerprint() {
         if (fingerprint == null) {
-            if (containsSeed()) {
+            if (getVersion().hasSeed()) {
                 String base64 = (String) dictionary.get("fingerprint");
                 assert base64 != null && base64.length() > 0;
                 fingerprint = Base64.decode(base64);
@@ -181,7 +172,7 @@ public abstract class Meta extends Dictionary {
             if (key == null) {
                 // meta.key should not be empty
                 status = -1;
-            } else if (containsSeed()) {
+            } else if (getVersion().hasSeed()) {
                 String seed = getSeed();
                 byte[] fingerprint = getFingerprint();
                 if (seed == null || fingerprint == null) {
@@ -202,16 +193,19 @@ public abstract class Meta extends Dictionary {
     }
 
     public boolean matches(PublicKey pk) {
+        if (!isValid()) {
+            return false;
+        }
         // check whether the public key equals to meta.key
         if (pk.equals(getKey())) {
             return true;
         }
         // check with seed & fingerprint
-        if (containsSeed()) {
+        if (getVersion().hasSeed()) {
             // check whether keys equal by verifying signature
-            byte[] seed = getSeed().getBytes(Charset.forName("UTF-8"));
+            String seed = getSeed();
             byte[] fingerprint = getFingerprint();
-            return pk.verify(seed, fingerprint);
+            return pk.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint);
         } else {
             // ID with BTC/ETH address has no username
             // so we can just compare the key.data to check matching
@@ -245,7 +239,7 @@ public abstract class Meta extends Dictionary {
      * @param network - address network type
      * @return Address object
      */
-    public abstract Address generateAddress(NetworkType network);
+    protected abstract Address generateAddress(NetworkType network);
 
     /**
      *  Generate meta info with seed and private key
@@ -259,7 +253,7 @@ public abstract class Meta extends Dictionary {
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("version", version.value);
         dictionary.put("key", sk.getPublicKey());
-        if (containsSeed(version)) {
+        if (version.hasSeed()) {
             // generate fingerprint with private key
             byte[] fingerprint = sk.sign(seed.getBytes(Charset.forName("UTF-8")));
             dictionary.put("seed", seed);

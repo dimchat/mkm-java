@@ -133,7 +133,7 @@ public enum NetworkType {
     }
 
     public byte toByte() {
-        return (byte)this.value;
+        return (byte)value;
     }
 
     public static NetworkType fromByte(byte b) {
@@ -173,30 +173,30 @@ public enum NetworkType {
     }
 
     public boolean isUser() {
-        return (this.value & Main.value) != 0 || this.value == BTCMain.value;
+        return (value & Main.value) != 0 || value == BTCMain.value;
     }
 
     public boolean isPerson() {
-        return this.value == Main.value || this.value == BTCMain.value;
+        return value == Main.value || value == BTCMain.value;
     }
 
     public boolean isGroup() {
-        return (this.value & Group.value) != 0;
+        return (value & Group.value) != 0;
     }
 
     public boolean isStation() {
-        return this.value == Station.value;
+        return value == Station.value;
     }
 
     public boolean isProvider() {
-        return this.value == Provider.value;
+        return value == Provider.value;
     }
 
     public boolean isThing() {
-        return (this.value & Thing.value) != 0;
+        return (value & Thing.value) != 0;
     }
 
     public boolean isRobot() {
-        return this.value == Robot.value;
+        return value == Robot.value;
     }
 }

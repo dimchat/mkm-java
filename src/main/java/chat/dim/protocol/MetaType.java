@@ -93,4 +93,8 @@ public enum MetaType {
         String text = String.format("Meta version not supported: %d", i);
         throw new TypeNotPresentException(text, null);
     }
+
+    public boolean hasSeed() {
+        return (value & MKM.value) == MKM.value;
+    }
 }

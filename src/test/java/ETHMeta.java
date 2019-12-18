@@ -12,7 +12,7 @@ public class ETHMeta extends Meta {
         super(dictionary);
     }
 
-    public Address generateAddress(NetworkType network) {
+    protected Address generateAddress(NetworkType network) {
         if ((getVersion().value & MetaType.BTC.value) != MetaType.BTC.value) {
             throw new ArithmeticException("meta version error");
         }

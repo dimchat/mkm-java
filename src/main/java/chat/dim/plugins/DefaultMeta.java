@@ -68,17 +68,16 @@ public final class DefaultMeta extends Meta {
         if (identifier == null) {
             // generate and cache it
             identifier = super.generateID(network);
+            assert identifier.isValid();
             idMap.put(network, identifier);
         }
         return identifier;
     }
 
     @Override
-    public Address generateAddress(NetworkType network) {
+    protected Address generateAddress(NetworkType network) {
         assert getVersion() == MetaType.MKM;
-        if (!isValid()) {
-            throw new IllegalStateException("meta invalid: " + this);
-        }
+        assert isValid();
         // check cache
         ID identifier = idMap.get(network);
         if (identifier != null) {
@@ -88,4 +87,3 @@ public final class DefaultMeta extends Meta {
         return DefaultAddress.generate(getFingerprint(), network);
     }
 }
-
