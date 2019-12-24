@@ -54,22 +54,24 @@ public final class ID extends chat.dim.type.String {
         // terminal
         String[] pair = string.split("/");
         if (pair.length == 1) {
+            // no terminal
             this.terminal = null;
-        } else if (pair.length == 2) {
-            this.terminal = pair[1];
         } else {
-            throw new IllegalArgumentException("ID error: " + string);
+            assert pair.length == 2;
+            // got terminal
+            this.terminal = pair[1];
         }
         // name @ address
         pair = pair[0].split("@");
         if (pair.length == 1) {
+            // got address without name
             this.name = null;
             this.address = Address.getInstance(pair[0]);
-        } else if (pair.length == 2) {
+        } else {
+            assert pair.length == 2;
+            // got name & address
             this.name = pair[0];
             this.address = Address.getInstance(pair[1]);
-        } else {
-            throw new IllegalArgumentException("ID error: " + string);
         }
     }
 
@@ -101,6 +103,7 @@ public final class ID extends chat.dim.type.String {
      * @return address type as network ID
      */
     public NetworkType getType() {
+        assert address != null;
         return address.getNetwork();
     }
 
@@ -110,6 +113,7 @@ public final class ID extends chat.dim.type.String {
      * @return number for searching this ID
      */
     public long getNumber() {
+        assert address != null;
         return address.getCode();
     }
 
@@ -119,7 +123,7 @@ public final class ID extends chat.dim.type.String {
      * @return False on address error
      */
     public boolean isValid() {
-        return address != null;
+        return getNumber() > 0;
     }
 
     @SuppressWarnings("Contract")
@@ -183,6 +187,7 @@ public final class ID extends chat.dim.type.String {
     public static final ID EVERYONE = new ID("everyone", Address.EVERYWHERE, null);
 
     public boolean isBroadcast() {
+        assert address != null;
         return address.isBroadcast();
     }
 
