@@ -90,17 +90,17 @@ public class Immortals implements UserDataSource {
     }
 
     private Meta loadMeta(String filename) throws IOException, ClassNotFoundException {
-        Map dict = ResourceLoader.readJSONFile(filename);
+        Map dict = ResourceLoader.loadJSON(filename);
         return Meta.getInstance(dict);
     }
 
     private PrivateKey loadPrivateKey(String filename) throws IOException, ClassNotFoundException {
-        Map dict = ResourceLoader.readJSONFile(filename);
+        Map dict = ResourceLoader.loadJSON(filename);
         return PrivateKeyImpl.getInstance(dict);
     }
 
     private Profile loadProfile(String filename) throws IOException {
-        Map dict = ResourceLoader.readJSONFile(filename);
+        Map dict = ResourceLoader.loadJSON(filename);
         Profile profile = Profile.getInstance(dict);
         assert profile != null;
         // copy 'name'
@@ -266,28 +266,30 @@ public class Immortals implements UserDataSource {
         // NOTICE: return nothing to use meta.key
         return null;
     }
-}
 
+    /**
+     *  Resource Loader for built-in accounts
+     */
+    private static class ResourceLoader {
 
-class ResourceLoader {
+        static Map loadJSON(String filename) throws IOException {
+            String json = loadText(filename);
+            return (Map) JSON.decode(json);
+        }
 
-    static Map readJSONFile(String filename) throws IOException {
-        String json = readTextFile(filename);
-        return (Map) JSON.decode(json);
-    }
+        private static String loadText(String filename) throws IOException {
+            byte[] data = loadData(filename);
+            return new String(data, "UTF-8");
+        }
 
-    private static String readTextFile(String filename) throws IOException {
-        byte[] data = readResourceFile(filename);
-        return new String(data, "UTF-8");
-    }
-
-    private static byte[] readResourceFile(String filename) throws IOException {
-        InputStream is = ResourceLoader.class.getClassLoader().getResourceAsStream(filename);
-        assert is != null;
-        int size = is.available();
-        byte[] data = new byte[size];
-        int len = is.read(data, 0, size);
-        assert len == size;
-        return data;
+        private static byte[] loadData(String filename) throws IOException {
+            InputStream is = ResourceLoader.class.getClassLoader().getResourceAsStream(filename);
+            assert is != null;
+            int size = is.available();
+            byte[] data = new byte[size];
+            int len = is.read(data, 0, size);
+            assert len == size;
+            return data;
+        }
     }
 }
