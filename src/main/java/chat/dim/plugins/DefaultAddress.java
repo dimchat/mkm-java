@@ -96,7 +96,7 @@ public final class DefaultAddress extends Address {
      */
     static DefaultAddress generate(byte[] fingerprint, NetworkType network) {
         // 1. digest = ripemd160(sha256(fingerprint))
-        byte[] digest = RIPEMD160.hash(SHA256.hash(fingerprint));
+        byte[] digest = RIPEMD160.digest(SHA256.digest(fingerprint));
         // 2. head = network + digest
         byte[] head = new byte[21];
         head[0] = network.toByte();
@@ -111,7 +111,7 @@ public final class DefaultAddress extends Address {
     }
 
     private static byte[] checkCode(byte[] data) {
-        byte[] sha256d = SHA256.hash(SHA256.hash(data));
+        byte[] sha256d = SHA256.digest(SHA256.digest(data));
         assert sha256d != null : "sha256 error";
         byte[] cc = new byte[4];
         System.arraycopy(sha256d, 0, cc, 0, 4);

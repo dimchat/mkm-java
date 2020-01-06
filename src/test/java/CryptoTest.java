@@ -30,14 +30,14 @@ public class CryptoTest {
         String exp;
 
         // sha256（moky）= cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d
-        hash = SHA256.hash(data);
+        hash = SHA256.digest(data);
         res = Utils.hexEncode(hash);
         exp = "cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d";
         Log.info("sha256(" + string + ") = " + res);
         Assert.assertEquals(exp, res);
 
         // ripemd160(moky) = 44bd174123aee452c6ec23a6ab7153fa30fa3b91
-        hash = RIPEMD160.hash(data);
+        hash = RIPEMD160.digest(data);
         res = Utils.hexEncode(hash);
         exp = "44bd174123aee452c6ec23a6ab7153fa30fa3b91";
         Log.info("ripemd160(" + string + ") = " + res);

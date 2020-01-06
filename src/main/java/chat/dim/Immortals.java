@@ -37,7 +37,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import chat.dim.crypto.*;
+import chat.dim.crypto.DecryptKey;
+import chat.dim.crypto.EncryptKey;
+import chat.dim.crypto.PrivateKey;
+import chat.dim.crypto.SignKey;
+import chat.dim.crypto.VerifyKey;
 import chat.dim.format.JSON;
 
 /**

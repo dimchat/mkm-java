@@ -34,7 +34,10 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
-import chat.dim.crypto.*;
+import chat.dim.crypto.DecryptKey;
+import chat.dim.crypto.EncryptKey;
+import chat.dim.crypto.SignKey;
+import chat.dim.crypto.VerifyKey;
 
 /**
  *  User account for communication

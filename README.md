@@ -125,7 +125,7 @@ The **Address** field was created with the **Fingerprint** in Meta and a **Netwo
 public final class BTCAddress extends Address {
 
     private static byte[] checkCode(byte[] data) {
-        byte[] sha256d = Digest.sha256(Digest.sha256(data));
+        byte[] sha256d = SHA256.digest(SHA256.digest(data));
         byte[] cc = new byte[4];
         System.arraycopy(sha256d, 0, cc, 0, 4);
         return cc;
@@ -137,7 +137,7 @@ public final class BTCAddress extends Address {
 
     static BTCAddress generate(byte[] fingerprint, NetworkType network) {
         // 1. digest = ripemd160(sha256(fingerprint))
-        byte[] digest = Digest.ripemd160(Digest.sha256(fingerprint));
+        byte[] digest = RIPEMD160.digest(SHA256.digest(fingerprint));
         // 2. head = network + digest
         byte[] head = new byte[21];
         head[0] = network.toByte();
