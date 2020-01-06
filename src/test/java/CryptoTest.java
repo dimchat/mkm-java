@@ -9,7 +9,6 @@ import java.nio.charset.Charset;
 
 import chat.dim.ID;
 import chat.dim.Meta;
-import chat.dim.impl.PrivateKeyImpl;
 import chat.dim.format.*;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.DecryptKey;
@@ -69,7 +68,7 @@ public class CryptoTest {
     @Test
     public void testMeta() throws ClassNotFoundException {
         String username = "moky";
-        PrivateKey sk = PrivateKeyImpl.generate("RSA");
+        PrivateKey sk = PrivateKey.generate("RSA");
         Meta meta = Meta.generate(MetaType.Default, sk, username);
         Log.info("meta: " + JSON.encode(meta));
         Log.info("SK: " + JSON.encode(sk));
@@ -83,7 +82,7 @@ public class CryptoTest {
         Log.info("ID: " + identifier);
 
         Object skDict = JSON.decode(skJson);
-        PrivateKey sk = PrivateKeyImpl.getInstance(skDict);
+        PrivateKey sk = PrivateKey.getInstance(skDict);
         Log.info("private key: " + sk);
         Assert.assertTrue(meta.getKey().matches(sk));
 

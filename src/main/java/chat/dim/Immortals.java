@@ -39,7 +39,6 @@ import java.util.Map;
 
 import chat.dim.crypto.*;
 import chat.dim.format.JSON;
-import chat.dim.impl.PrivateKeyImpl;
 
 /**
  *  Built-in accounts (for test)
@@ -96,7 +95,7 @@ public class Immortals implements UserDataSource {
 
     private PrivateKey loadPrivateKey(String filename) throws IOException, ClassNotFoundException {
         Map dict = ResourceLoader.loadJSON(filename);
-        return PrivateKeyImpl.getInstance(dict);
+        return PrivateKey.getInstance(dict);
     }
 
     private Profile loadProfile(String filename) throws IOException {

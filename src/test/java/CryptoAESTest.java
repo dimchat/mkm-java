@@ -9,7 +9,6 @@ import java.util.Map;
 import chat.dim.crypto.SymmetricKey;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
-import chat.dim.impl.SymmetricKeyImpl;
 
 public class CryptoAESTest {
 
@@ -20,7 +19,7 @@ public class CryptoAESTest {
         dictionary.put("data", "C2+xGizLL1G1+z9QLPYNdp/bPP/seDvNw45SXPAvQqk=");
         dictionary.put("iv", "SxPwi6u4+ZLXLdAFJezvSQ==");
 
-        SymmetricKey key = SymmetricKeyImpl.getInstance(dictionary);
+        SymmetricKey key = SymmetricKey.getInstance(dictionary);
         Log.info("key: " + key);
         String json = JSON.encode(key);
         Log.info("JSON(" + json.length() + " bytes): " + json);
@@ -49,7 +48,7 @@ public class CryptoAESTest {
 
         Assert.assertEquals("0xtbqZN6x2aWTZn0DpCoCA==", Base64.encode(ciphertext));
 
-        SymmetricKey key2 = SymmetricKeyImpl.getInstance(dictionary);
+        SymmetricKey key2 = SymmetricKey.getInstance(dictionary);
         Log.info("key2: " + key2);
         Assert.assertEquals(key, key2);
 //        Assert.assertTrue(key.equals(key2));
@@ -63,7 +62,7 @@ public class CryptoAESTest {
 //        log("FIXED: " + text + " -> " + (plaintext == null ? null : new String(plaintext)));
 
         // random key
-        key = SymmetricKeyImpl.generate(SymmetricKey.AES);
+        key = SymmetricKey.generate(SymmetricKey.AES);
         Log.info("key: " + key);
 
         text = "moky";

@@ -36,7 +36,7 @@ import java.util.Map;
 import chat.dim.ID;
 import chat.dim.Profile;
 import chat.dim.crypto.EncryptKey;
-import chat.dim.impl.PublicKeyImpl;
+import chat.dim.crypto.PublicKey;
 
 public class UserProfile extends Profile {
 
@@ -70,7 +70,7 @@ public class UserProfile extends Profile {
         if (key == null) {
             // get public key
             try {
-                key = (EncryptKey) PublicKeyImpl.getInstance(getProperty("key"));
+                key = (EncryptKey) PublicKey.getInstance(getProperty("key"));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }

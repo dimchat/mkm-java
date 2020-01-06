@@ -7,8 +7,6 @@ import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.EncryptKey;
 import chat.dim.crypto.DecryptKey;
-import chat.dim.impl.PrivateKeyImpl;
-import chat.dim.impl.PublicKeyImpl;
 
 public class CryptoECCTest {
 
@@ -17,7 +15,7 @@ public class CryptoECCTest {
     }
 }
 
-final class ECCPrivateKey extends PrivateKeyImpl implements DecryptKey {
+final class ECCPrivateKey extends PrivateKey implements DecryptKey {
 
     public ECCPrivateKey(Map<String, Object> dictionary) {
         super(dictionary);
@@ -44,11 +42,11 @@ final class ECCPrivateKey extends PrivateKeyImpl implements DecryptKey {
     }
 
     static {
-        PrivateKeyImpl.register(PrivateKey.ECC, ECCPrivateKey.class);
+        register(PrivateKey.ECC, ECCPrivateKey.class);
     }
 }
 
-final class ECCPublicKey extends PublicKeyImpl implements EncryptKey {
+final class ECCPublicKey extends PublicKey implements EncryptKey {
 
     public ECCPublicKey(Map<String, Object> dictionary) {
         super(dictionary);
@@ -70,6 +68,6 @@ final class ECCPublicKey extends PublicKeyImpl implements EncryptKey {
     }
 
     static {
-        PublicKeyImpl.register(PublicKey.ECC, ECCPublicKey.class);
+        register(PublicKey.ECC, ECCPublicKey.class);
     }
 }

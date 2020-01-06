@@ -12,7 +12,6 @@ import chat.dim.*;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.SignKey;
-import chat.dim.impl.PrivateKeyImpl;
 import chat.dim.protocol.MetaType;
 import chat.dim.protocol.NetworkType;
 
@@ -104,7 +103,7 @@ public class EntityTest {
 
     @Test
     public void testMeta() throws ClassNotFoundException {
-        PrivateKey sk = PrivateKeyImpl.generate(PrivateKey.RSA);
+        PrivateKey sk = PrivateKey.generate(PrivateKey.RSA);
         PublicKey pk = sk.getPublicKey();
         String seed = "moky";
         byte[] data = seed.getBytes(Charset.forName("UTF-8"));

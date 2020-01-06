@@ -37,7 +37,6 @@ import java.util.Map;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.format.Base64;
-import chat.dim.impl.PublicKeyImpl;
 import chat.dim.plugins.DefaultMeta;
 import chat.dim.protocol.MetaType;
 import chat.dim.protocol.NetworkType;
@@ -131,7 +130,7 @@ public abstract class Meta extends Dictionary {
     public PublicKey getKey() {
         if (key == null) {
             try {
-                key = PublicKeyImpl.getInstance(dictionary.get("key"));
+                key = PublicKey.getInstance(dictionary.get("key"));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }

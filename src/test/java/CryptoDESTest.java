@@ -4,7 +4,6 @@ import org.junit.Test;
 import java.util.Map;
 
 import chat.dim.crypto.SymmetricKey;
-import chat.dim.impl.SymmetricKeyImpl;
 
 public class CryptoDESTest {
 
@@ -14,7 +13,7 @@ public class CryptoDESTest {
     }
 }
 
-final class DESKey extends SymmetricKeyImpl {
+final class DESKey extends SymmetricKey {
 
     public DESKey(Map<String, Object> dictionary) {
         super(dictionary);
@@ -37,6 +36,6 @@ final class DESKey extends SymmetricKeyImpl {
     }
 
     static {
-        SymmetricKeyImpl.register(SymmetricKey.DES, DESKey.class);
+        register(SymmetricKey.DES, DESKey.class);
     }
 }
