@@ -32,7 +32,7 @@ public class Facebook implements UserDataSource, GroupDataSource {
     }
 
     public boolean cache(Meta meta, ID identifier) {
-        assert meta.matches(identifier);
+        assert meta.matches(identifier) : "meta not match ID: " + identifier + ", " + meta;
         metaMap.put(identifier, meta);
         return true;
     }

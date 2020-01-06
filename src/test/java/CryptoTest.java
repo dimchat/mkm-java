@@ -1,4 +1,6 @@
 
+import chat.dim.digest.RIPEMD160;
+import chat.dim.digest.SHA256;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -9,7 +11,6 @@ import chat.dim.ID;
 import chat.dim.Meta;
 import chat.dim.impl.PrivateKeyImpl;
 import chat.dim.format.*;
-import chat.dim.crypto.Digest;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.DecryptKey;
 import chat.dim.crypto.EncryptKey;
@@ -30,15 +31,14 @@ public class CryptoTest {
         String exp;
 
         // sha256（moky）= cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d
-        hash = Digest.sha256(data);
-        assert hash != null;
+        hash = SHA256.hash(data);
         res = Utils.hexEncode(hash);
         exp = "cb98b739dd699aa44bb6ebba128d20f2d1e10bb3b4aa5ff4e79295b47e9ed76d";
         Log.info("sha256(" + string + ") = " + res);
         Assert.assertEquals(exp, res);
 
         // ripemd160(moky) = 44bd174123aee452c6ec23a6ab7153fa30fa3b91
-        hash = Digest.ripemd160(data);
+        hash = RIPEMD160.hash(data);
         res = Utils.hexEncode(hash);
         exp = "44bd174123aee452c6ec23a6ab7153fa30fa3b91";
         Log.info("ripemd160(" + string + ") = " + res);

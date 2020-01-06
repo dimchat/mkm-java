@@ -55,7 +55,7 @@ public class UserProfile extends Profile {
 
     public UserProfile(ID identifier) {
         super(identifier);
-        assert identifier.getType().isUser();
+        assert identifier.getType().isUser() : "user ID error: " + identifier;
     }
 
     /**

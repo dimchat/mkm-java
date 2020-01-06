@@ -51,25 +51,30 @@ public final class ID extends chat.dim.type.String {
 
     private ID(String string) {
         super(string);
-        // terminal
+        // split ID string
         String[] pair = string.split("/");
+        // terminal
         if (pair.length == 1) {
             // no terminal
             this.terminal = null;
         } else {
-            assert pair.length == 2;
             // got terminal
+            assert pair.length == 2 : "ID error: " + string;
+            assert pair[1].length() > 0 : "ID.terminal error: " + string;
             this.terminal = pair[1];
         }
         // name @ address
+        assert pair[0].length() > 0 : "ID error: " + string;
         pair = pair[0].split("@");
+        assert pair[0].length() > 0 : "ID error: " + string;
         if (pair.length == 1) {
             // got address without name
             this.name = null;
             this.address = Address.getInstance(pair[0]);
         } else {
-            assert pair.length == 2;
             // got name & address
+            assert pair.length == 2 : "ID error: " + string;
+            assert pair[1].length() > 0 : "ID.address error: " + string;
             this.name = pair[0];
             this.address = Address.getInstance(pair[1]);
         }
@@ -103,7 +108,7 @@ public final class ID extends chat.dim.type.String {
      * @return address type as network ID
      */
     public NetworkType getType() {
-        assert address != null;
+        assert address != null : "ID.address should not be empty: " + string;
         return address.getNetwork();
     }
 
@@ -113,7 +118,7 @@ public final class ID extends chat.dim.type.String {
      * @return number for searching this ID
      */
     public long getNumber() {
-        assert address != null;
+        assert address != null : "ID.address should not be empty: " + string;
         return address.getCode();
     }
 
@@ -150,10 +155,10 @@ public final class ID extends chat.dim.type.String {
                 return name.equals(identifier.name);
             }
         }
-        assert other instanceof String;
+        assert other instanceof String : "ID error: " + other;
         // comparing without terminal
         String[] pair = ((String) other).split("/");
-        assert pair[0].length() > 0;
+        assert pair[0].length() > 0 : "ID error: " + other;
         if (terminal == null || terminal.length() == 0) {
             return pair[0].equals(string);
         } else {
@@ -175,7 +180,7 @@ public final class ID extends chat.dim.type.String {
         } else if (object instanceof ID) {
             return (ID) object;
         }
-        assert object instanceof String;
+        assert object instanceof String : "ID must be a string: " + object;
         String string = (String) object;
         return new ID(string);
     }
@@ -187,7 +192,7 @@ public final class ID extends chat.dim.type.String {
     public static final ID EVERYONE = new ID("everyone", Address.EVERYWHERE, null);
 
     public boolean isBroadcast() {
-        assert address != null;
+        assert address != null : "ID.address should not be empty: " + string;
         return address.isBroadcast();
     }
 

@@ -148,7 +148,7 @@ public class Profile extends Dictionary implements TAI {
                 properties = new HashMap<>();
             } else {
                 properties = (Map<String, Object>) JSON.decode(data);
-                assert properties != null;
+                assert properties != null : "profile data error: " + data;
             }
         }
         return properties;
@@ -175,10 +175,11 @@ public class Profile extends Dictionary implements TAI {
     @Override
     public void setProperty(String name, Object value) {
         // 1. reset status
+        assert status >= 0 : "status error: " + this;
         status = 0;
         // 2. update property value with name
         Map<String, Object> dict = getProperties();
-        assert dict != null;
+        assert dict != null : "failed to get properties: " + this;
         if (value == null) {
             dict.remove(name);
         } else {
@@ -224,7 +225,7 @@ public class Profile extends Dictionary implements TAI {
     public byte[] sign(SignKey privateKey) {
         if (status > 0) {
             // already signed/verified
-            assert data != null && signature != null;
+            assert data != null && signature != null : "profile data/signature error";
             return signature;
         }
         status = 1;
@@ -268,7 +269,7 @@ public class Profile extends Dictionary implements TAI {
     @SuppressWarnings("unchecked")
     public static void register(Class clazz) {
         // check whether clazz is subclass of Profile
-        assert Profile.class.isAssignableFrom(clazz); // asSubclass
+        assert Profile.class.isAssignableFrom(clazz) : "error: " + clazz;
         if (!profileClasses.contains(clazz)) {
             profileClasses.add(0, clazz);
         }
@@ -281,7 +282,7 @@ public class Profile extends Dictionary implements TAI {
         } else if (object instanceof Profile) {
             return (Profile) object;
         }
-        assert object instanceof Map;
+        assert object instanceof Map : "profile error: " + object;
         Map<String, Object> dictionary = (Map<String, Object>) object;
         // try each subclass to parse profile
         Constructor constructor;

@@ -33,7 +33,8 @@ package chat.dim.plugins;
 import java.util.Arrays;
 
 import chat.dim.Address;
-import chat.dim.crypto.Digest;
+import chat.dim.digest.RIPEMD160;
+import chat.dim.digest.SHA256;
 import chat.dim.format.Base58;
 import chat.dim.protocol.NetworkType;
 
@@ -95,7 +96,7 @@ public final class DefaultAddress extends Address {
      */
     static DefaultAddress generate(byte[] fingerprint, NetworkType network) {
         // 1. digest = ripemd160(sha256(fingerprint))
-        byte[] digest = Digest.ripemd160(Digest.sha256(fingerprint));
+        byte[] digest = RIPEMD160.hash(SHA256.hash(fingerprint));
         // 2. head = network + digest
         byte[] head = new byte[21];
         head[0] = network.toByte();
@@ -110,8 +111,8 @@ public final class DefaultAddress extends Address {
     }
 
     private static byte[] checkCode(byte[] data) {
-        byte[] sha256d = Digest.sha256(Digest.sha256(data));
-        assert sha256d != null;
+        byte[] sha256d = SHA256.hash(SHA256.hash(data));
+        assert sha256d != null : "sha256 error";
         byte[] cc = new byte[4];
         System.arraycopy(sha256d, 0, cc, 0, 4);
         return cc;

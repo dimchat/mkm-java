@@ -103,7 +103,7 @@ public abstract class Address extends chat.dim.type.String {
         } else if (object instanceof Address) {
             return (Address) object;
         }
-        assert object instanceof String;
+        assert object instanceof String : "address error: " + object;
         String string = (String) object;
         // Address for broadcast
         int len = string.length();

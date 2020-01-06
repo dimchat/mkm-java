@@ -126,7 +126,6 @@ public final class BTCAddress extends Address {
 
     private static byte[] checkCode(byte[] data) {
         byte[] sha256d = Digest.sha256(Digest.sha256(data));
-        assert sha256d != null;
         byte[] cc = new byte[4];
         System.arraycopy(sha256d, 0, cc, 0, 4);
         return cc;

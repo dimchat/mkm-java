@@ -114,7 +114,7 @@ public abstract class Meta extends Dictionary {
                 return false;
             }
         } else {
-            assert other == null; // unsupported type
+            assert other == null : "meta error: " + other; // unsupported type
             return false;
         }
         ID identifier = meta.generateID(NetworkType.Main);
@@ -143,7 +143,7 @@ public abstract class Meta extends Dictionary {
         if (seed == null) {
             if (getVersion().hasSeed()) {
                 seed = (String) dictionary.get("seed");
-                assert seed != null && seed.length() > 0;
+                assert seed != null && seed.length() > 0 : "meta.seed should not be empty: " + this;
             }
         }
         return seed;
@@ -153,7 +153,7 @@ public abstract class Meta extends Dictionary {
         if (fingerprint == null) {
             if (getVersion().hasSeed()) {
                 String base64 = (String) dictionary.get("fingerprint");
-                assert base64 != null && base64.length() > 0;
+                assert base64 != null && base64.length() > 0 : "meta.fingerprint should not be empty: " + this;
                 fingerprint = Base64.decode(base64);
             }
         }
@@ -272,7 +272,7 @@ public abstract class Meta extends Dictionary {
         if (clazz.equals(Meta.class)) {
             throw new IllegalArgumentException("should not add Meta.class itself!");
         }
-        assert Meta.class.isAssignableFrom(clazz); // asSubclass
+        assert Meta.class.isAssignableFrom(clazz) : "error: " + clazz;
         metaClasses.put(version, clazz);
     }
 
@@ -289,7 +289,7 @@ public abstract class Meta extends Dictionary {
         } else if (object instanceof Meta) {
             return (Meta) object;
         }
-        assert object instanceof Map;
+        assert object instanceof Map : "meta error: " + object;
         Map<String, Object> dictionary = (Map<String, Object>) object;
         Class clazz = metaClass(dictionary);
         if (clazz == null) {

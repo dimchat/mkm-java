@@ -71,7 +71,8 @@ public class User extends Entity {
 
     private VerifyKey getMetaKey() {
         Meta meta = getMeta();
-        assert meta != null; // if meta not exists, user won't be created
+        // if meta not exists, user won't be created
+        assert meta != null : "failed to get meta for user: " + identifier;
         return meta.getKey();
     }
 
@@ -123,7 +124,7 @@ public class User extends Entity {
         */
         // 2. get key from meta
         VerifyKey mKey = getMetaKey();
-        assert mKey != null;
+        assert mKey != null : "failed to get meta key for user: " + identifier;
         keys.add(mKey);
         return keys;
     }
@@ -154,7 +155,7 @@ public class User extends Entity {
      */
     public byte[] encrypt(byte[] plaintext) {
         EncryptKey key = getEncryptKey();
-        assert key != null;
+        assert key != null : "failed to get encrypt key for user: " + identifier;
         return key.encrypt(plaintext);
     }
 
@@ -182,7 +183,7 @@ public class User extends Entity {
      */
     public byte[] sign(byte[] data) {
         SignKey key = getSignKey();
-        assert key != null;
+        assert key != null : "failed to get sign key for user: " + identifier;
         return key.sign(data);
     }
 
@@ -195,7 +196,7 @@ public class User extends Entity {
     public byte[] decrypt(byte[] ciphertext) {
         byte[] plaintext;
         List<DecryptKey> keys = getDecryptKeys();
-        assert keys != null && keys.size() > 0;
+        assert keys != null && keys.size() > 0 : "failed to get decrypt keys for user: " + identifier;
         for (DecryptKey key : keys) {
             // try decrypting it with each private key
             try {

@@ -68,7 +68,7 @@ public final class DefaultMeta extends Meta {
         if (identifier == null) {
             // generate and cache it
             identifier = super.generateID(network);
-            assert identifier.isValid();
+            assert identifier.isValid() : "failed to generate ID: " + this;
             idMap.put(network, identifier);
         }
         return identifier;
@@ -76,8 +76,10 @@ public final class DefaultMeta extends Meta {
 
     @Override
     protected Address generateAddress(NetworkType network) {
-        assert getVersion() == MetaType.MKM;
-        assert isValid();
+        assert getVersion() == MetaType.MKM : "meta version error";
+        if (!isValid()) {
+            throw new IllegalArgumentException("meta invalid: " + dictionary);
+        }
         // check cache
         ID identifier = idMap.get(network);
         if (identifier != null) {
