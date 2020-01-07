@@ -25,9 +25,6 @@
  */
 package chat.dim.format;
 
-import com.alibaba.fastjson.serializer.SerializeConfig;
-import com.alibaba.fastjson.serializer.ToStringSerializer;
-
 public class JSON {
 
     public static String encode(Object container) {
@@ -44,17 +41,12 @@ public class JSON {
 
         @Override
         public String encode(Object container) {
-            return com.alibaba.fastjson.JSON.toJSONString(container);
+            throw new UnsupportedOperationException("implement me!");
         }
 
         @Override
         public Object decode(String json) {
-            return com.alibaba.fastjson.JSON.parse(json);
+            throw new UnsupportedOperationException("implement me!");
         }
     };
-
-    public static boolean registerStringClass(Class clazz) {
-        SerializeConfig serializeConfig = SerializeConfig.getGlobalInstance();
-        return serializeConfig.put(clazz, ToStringSerializer.instance);
-    }
 }

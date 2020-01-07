@@ -28,7 +28,6 @@ package chat.dim.crypto;
 import java.util.HashMap;
 import java.util.Map;
 
-import chat.dim.plugins.RSAPrivateKey;
 import chat.dim.type.Dictionary;
 
 /**
@@ -112,14 +111,5 @@ public abstract class PrivateKey extends Dictionary implements AsymmetricKey, Si
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", algorithm);
         return getInstance(dictionary);
-    }
-
-    static {
-        // RSA
-        register(RSA, RSAPrivateKey.class); // default
-        register("SHA256withRSA", RSAPrivateKey.class);
-        register("RSA/ECB/PKCS1Padding", RSAPrivateKey.class);
-        // ECC
-        // ...
     }
 }

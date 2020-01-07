@@ -1,4 +1,9 @@
 /* license: https://mit-license.org
+ *
+ *  Ming-Ke-Ming : Decentralized User Identity Authentication
+ *
+ *                                Written in 2019 by Moky <albert.moky@gmail.com>
+ *
  * ==============================================================================
  * The MIT License (MIT)
  *
@@ -23,19 +28,36 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.digest;
+package chat.dim;
 
-public class RIPEMD160 {
+import chat.dim.plugins.DefaultAddress;
+import chat.dim.plugins.UserProfile;
+import com.alibaba.fastjson.serializer.SerializeConfig;
+import com.alibaba.fastjson.serializer.ToStringSerializer;
 
-    public static byte[] digest(byte[] data) {
-        return hash.digest(data);
+import chat.dim.crypto.Plus;
+import chat.dim.plugins.DefaultMeta;
+import chat.dim.protocol.MetaType;
+
+public class MKMPlus extends Plus {
+
+    static {
+
+        /*
+         *  Register classes
+         */
+        // JsON
+        SerializeConfig serializeConfig = SerializeConfig.getGlobalInstance();
+        serializeConfig.put(Address.class, ToStringSerializer.instance);
+        serializeConfig.put(ID.class, ToStringSerializer.instance);
+
+        // Address
+        Address.register(DefaultAddress.class);
+
+        // Meta
+        Meta.register(MetaType.MKM, DefaultMeta.class);
+
+        // Profile
+        Profile.register(UserProfile.class);
     }
-
-    public static Hash hash = new Hash() {
-
-        @Override
-        public byte[] digest(byte[] data) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-    };
 }

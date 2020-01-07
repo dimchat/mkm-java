@@ -18,7 +18,7 @@ plugins {
 
 group 'chat.dim'
 //version '1.0-SNAPSHOT'
-version '0.7.0'
+version '0.1.0'
 
 sourceCompatibility = 1.8
 
@@ -29,7 +29,8 @@ repositories {
 }
 
 dependencies {
-    compile group: 'chat.dim', name: 'Crypto', version: '0.3.0'
+    compile group: 'chat.dim', name: 'MingKeMing', version: '0.7.0'
+    compile group: 'chat.dim', name: 'CryptoPlus', version: '0.1.0'
 
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
@@ -55,8 +56,8 @@ install {
         pom {
             project {
                 packaging 'jar'
-                name 'MingKeMing'
-                description 'Common Identity Module for decentralized user identity authentication.'
+                name 'MingKeMingPlus'
+                description 'Extensions for decentralized user identity authentication.'
                 url siteUrl
                 licenses {
                     license {
@@ -135,8 +136,8 @@ bintray {
     pkg {
         userOrg = 'dimchat'
         repo = 'core'
-        name = 'mkm'
-        desc = 'Common Identity Module for decentralized user identity authentication.'
+        name = 'mkmplus'
+        desc = 'Extensions for decentralized user identity authentication.'
         websiteUrl = siteUrl
         vcsUrl = gitUrl
         licenses = ['MIT']

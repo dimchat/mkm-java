@@ -34,8 +34,6 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.List;
 
-import chat.dim.format.JSON;
-import chat.dim.plugins.DefaultAddress;
 import chat.dim.protocol.NetworkType;
 
 /**
@@ -167,24 +165,6 @@ public abstract class Address extends chat.dim.type.String {
             return equals(ANYWHERE);
         }
         return false;
-    }
-
-    static {
-
-        //
-        //  Register class for JsON
-        //
-
-        JSON.registerStringClass(Address.class);
-
-        //
-        //  Register subclass for Address
-        //
-
-        // default (BTC)
-        register(DefaultAddress.class);
-        // ETH
-        // ...
     }
 }
 

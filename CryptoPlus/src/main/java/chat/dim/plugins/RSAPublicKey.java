@@ -33,7 +33,6 @@ import java.security.InvalidKeyException;
 import java.security.InvalidParameterException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.Security;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.util.Map;
@@ -123,9 +122,5 @@ public final class RSAPublicKey extends PublicKey implements EncryptKey {
             e.printStackTrace();
             return false;
         }
-    }
-
-    static {
-        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
     }
 }

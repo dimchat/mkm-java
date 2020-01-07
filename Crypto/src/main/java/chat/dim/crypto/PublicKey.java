@@ -28,7 +28,6 @@ package chat.dim.crypto;
 import java.util.HashMap;
 import java.util.Map;
 
-import chat.dim.plugins.RSAPublicKey;
 import chat.dim.type.Dictionary;
 
 /**
@@ -101,14 +100,5 @@ public abstract class PublicKey extends Dictionary implements AsymmetricKey, Ver
             return (PublicKey) createInstance(clazz, dictionary);
         }
         throw new ClassNotFoundException("key error: " + dictionary);
-    }
-
-    static {
-        // RSA
-        register(RSA, RSAPublicKey.class); // default
-        register("SHA256withRSA", RSAPublicKey.class);
-        register("RSA/ECB/PKCS1Padding", RSAPublicKey.class);
-        // ECC
-        // ...
     }
 }

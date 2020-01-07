@@ -35,7 +35,6 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.Security;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.util.HashMap;
@@ -135,14 +134,14 @@ public final class RSAPrivateKey extends PrivateKey implements DecryptKey {
             throw new NullPointerException("public key not found");
         }
         String pem = PEM.encodePublicKey(publicKey);
-        Map<String, Object> dictionary = new HashMap<>();
-        dictionary.put("algorithm", RSA);
-        dictionary.put("data", pem);
-        dictionary.put("mode", "ECB");
-        dictionary.put("padding", "PKCS1");
-        dictionary.put("digest", "SHA256");
+        Map<String, Object> keyInfo = new HashMap<>();
+        keyInfo.put("algorithm", dictionary.get("algorithm"));
+        keyInfo.put("data", pem);
+        keyInfo.put("mode", "ECB");
+        keyInfo.put("padding", "PKCS1");
+        keyInfo.put("digest", "SHA256");
         try {
-            return new RSAPublicKey(dictionary);
+            return new RSAPublicKey(keyInfo);
         } catch (NoSuchFieldException e) {
             e.printStackTrace();
             return null;
@@ -188,9 +187,5 @@ public final class RSAPrivateKey extends PrivateKey implements DecryptKey {
             e.printStackTrace();
             return null;
         }
-    }
-
-    static {
-        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
     }
 }

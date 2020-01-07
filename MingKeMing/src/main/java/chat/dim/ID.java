@@ -30,7 +30,6 @@
  */
 package chat.dim;
 
-import chat.dim.format.JSON;
 import chat.dim.protocol.NetworkType;
 
 /**
@@ -194,13 +193,5 @@ public final class ID extends chat.dim.type.String {
     public boolean isBroadcast() {
         assert address != null : "ID.address should not be empty: " + string;
         return address.isBroadcast();
-    }
-
-    static {
-        //
-        //  Register class for JsON
-        //
-
-        JSON.registerStringClass(ID.class);
     }
 }

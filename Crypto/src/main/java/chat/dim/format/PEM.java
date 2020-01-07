@@ -25,19 +25,8 @@
  */
 package chat.dim.format;
 
-import java.io.IOException;
-import java.security.KeyFactory;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
-import java.security.interfaces.RSAPrivateKey;
-import java.security.interfaces.RSAPublicKey;
-import java.security.spec.InvalidKeySpecException;
-import java.security.spec.PKCS8EncodedKeySpec;
-import java.security.spec.X509EncodedKeySpec;
-
-import chat.dim.plugins.PEMFile;
 
 public class PEM {
 
@@ -62,75 +51,22 @@ public class PEM {
 
         @Override
         public String encodePublicKey(PublicKey key) {
-            try {
-                PEMFile file = new PEMFile(key);
-                return file.toString();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
+            throw new UnsupportedOperationException("implement me!");
         }
 
         @Override
         public String encodePrivateKey(PrivateKey key) {
-            try {
-                PEMFile file = new PEMFile(key);
-                return file.toString();
-            } catch (IOException e) {
-                e.printStackTrace();
-                return null;
-            }
+            throw new UnsupportedOperationException("implement me!");
         }
 
         @Override
         public PublicKey decodePublicKey(String pem) {
-            PEMFile file = null;
-            try {
-                file = new PEMFile(pem);
-            } catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchProviderException e) {
-                e.printStackTrace();
-            }
-            byte[] keyData = file == null ? null : file.publicKeyData;
-            if (keyData != null) {
-                // X.509
-                X509EncodedKeySpec keySpec = new X509EncodedKeySpec(keyData);
-                try {
-                    return getFactory().generatePublic(keySpec);
-                } catch (InvalidKeySpecException | NoSuchProviderException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
+            throw new UnsupportedOperationException("implement me!");
         }
 
         @Override
         public PrivateKey decodePrivateKey(String pem) {
-            PEMFile file = null;
-            try {
-                file = new PEMFile(pem);
-            } catch (InvalidKeySpecException | NoSuchAlgorithmException | NoSuchProviderException e) {
-                e.printStackTrace();
-            }
-            byte[] keyData = file == null ? null : file.privateKeyData;
-            if (keyData != null) {
-                // PKCS#8
-                PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(keyData);
-                try {
-                    return getFactory().generatePrivate(keySpec);
-                } catch (InvalidKeySpecException | NoSuchProviderException | NoSuchAlgorithmException e) {
-                    e.printStackTrace();
-                }
-            }
-            return null;
-        }
-
-        private KeyFactory getFactory() throws NoSuchProviderException, NoSuchAlgorithmException {
-            try {
-                return KeyFactory.getInstance("RSA", "BC");
-            } catch (NoSuchAlgorithmException e) {
-                //e.printStackTrace();
-                return KeyFactory.getInstance("RSA");
-            }
+            throw new UnsupportedOperationException("implement me!");
         }
     };
 }

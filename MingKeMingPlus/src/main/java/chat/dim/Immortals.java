@@ -50,7 +50,7 @@ import chat.dim.format.JSON;
  *      1. Immortal Hulk - hulk@4YeVEN3aUnvC1DNUufCq1bs9zoBSJTzVEj
  *      2. Monkey King   - moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk
  */
-public class Immortals implements UserDataSource {
+public class Immortals extends MKMPlus implements UserDataSource {
 
     // Immortal Hulk (195-183-9394)
     public static final String HULK = "hulk@4YeVEN3aUnvC1DNUufCq1bs9zoBSJTzVEj";
@@ -133,7 +133,8 @@ public class Immortals implements UserDataSource {
             profile.setProperty("avatar", avatar);
         }
         // sign
-        sign(profile);
+        byte[] s = sign(profile);
+        assert s != null : "failed to sign profile: " + profile;
         return profile;
     }
 

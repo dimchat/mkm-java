@@ -37,7 +37,6 @@ import java.util.Map;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.format.Base64;
-import chat.dim.plugins.DefaultMeta;
 import chat.dim.protocol.MetaType;
 import chat.dim.protocol.NetworkType;
 import chat.dim.type.Dictionary;
@@ -296,13 +295,5 @@ public abstract class Meta extends Dictionary {
         }
         // create instance by subclass (with meta version)
         return (Meta) createInstance(clazz, dictionary);
-    }
-
-    static {
-        // MKM
-        register(MetaType.MKM, DefaultMeta.class);
-        // BTC, ExBTC
-        // ETH, ExETH
-        // ...
     }
 }

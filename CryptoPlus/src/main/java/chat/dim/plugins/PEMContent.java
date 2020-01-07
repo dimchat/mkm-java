@@ -39,14 +39,14 @@ import java.security.spec.RSAPublicKeySpec;
 
 import chat.dim.format.Base64;
 
-public final class PEMFile {
+public final class PEMContent {
 
     private final String fileContent; // PKCS#1 @DER @PEM
 
     public final byte[] publicKeyData;       // X.509
     public final byte[] privateKeyData;      // PKCS#8
 
-    public PEMFile(String fileContent) throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException {
+    public PEMContent(String fileContent) throws InvalidKeySpecException, NoSuchAlgorithmException, NoSuchProviderException {
         super();
 
         this.fileContent = fileContent;
@@ -54,7 +54,7 @@ public final class PEMFile {
         this.privateKeyData = getPrivateKeyData(fileContent);
     }
 
-    public PEMFile(java.security.PublicKey publicKey) throws IOException {
+    public PEMContent(java.security.PublicKey publicKey) throws IOException {
         super();
 
         this.fileContent = getFileContent(publicKey);
@@ -62,7 +62,7 @@ public final class PEMFile {
         this.privateKeyData = null;
     }
 
-    public PEMFile(java.security.PrivateKey privateKey) throws IOException {
+    public PEMContent(java.security.PrivateKey privateKey) throws IOException {
         super();
 
         this.fileContent = getFileContent(privateKey);

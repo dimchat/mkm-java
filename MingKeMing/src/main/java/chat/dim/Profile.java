@@ -43,7 +43,6 @@ import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
-import chat.dim.plugins.UserProfile;
 import chat.dim.type.Dictionary;
 
 public class Profile extends Dictionary implements TAI {
@@ -300,11 +299,6 @@ public class Profile extends Dictionary implements TAI {
             }
         }
         return new Profile(dictionary);
-    }
-
-    static {
-        // user profile
-        register(UserProfile.class);
     }
 }
 

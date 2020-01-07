@@ -40,12 +40,12 @@ public final class Hex {
 
         @Override
         public String encode(byte[] data) {
-            return org.bouncycastle.util.encoders.Hex.toHexString(data);
+            throw new UnsupportedOperationException("implement me!");
         }
 
         @Override
         public byte[] decode(String string) {
-            return org.bouncycastle.util.encoders.Hex.decode(string);
+            throw new UnsupportedOperationException("implement me!");
         }
     };
 }

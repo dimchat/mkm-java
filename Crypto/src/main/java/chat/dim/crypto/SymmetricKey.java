@@ -29,7 +29,6 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import chat.dim.plugins.AESKey;
 import chat.dim.type.Dictionary;
 
 /**
@@ -109,13 +108,5 @@ public abstract class SymmetricKey extends Dictionary implements EncryptKey, Dec
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("algorithm", algorithm);
         return getInstance(dictionary);
-    }
-
-    static {
-        // AES
-        register(AES, AESKey.class); // default
-        register("AES/CBC/PKCS7Padding", AESKey.class);
-        // DES
-        // ...
     }
 }

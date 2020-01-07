@@ -35,7 +35,6 @@ import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.Security;
 import java.util.Map;
 import java.util.Random;
 
@@ -177,9 +176,5 @@ public final class AESKey extends SymmetricKey {
             e.printStackTrace();
             return null;
         }
-    }
-
-    static {
-        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
     }
 }
