@@ -40,12 +40,12 @@ public final class Base58 {
 
         @Override
         public String encode(byte[] data) {
-            return chat.dim.bitcoinj.Base58.encode(data);
+            throw new UnsupportedOperationException("implement me!");
         }
 
         @Override
         public byte[] decode(String string) {
-            return chat.dim.bitcoinj.Base58.decode(string);
+            throw new UnsupportedOperationException("implement me!");
         }
     };
 }
