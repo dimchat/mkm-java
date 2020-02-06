@@ -102,6 +102,13 @@ public enum NetworkType {
      */
     Thing          (0x80), // 1000 0000 (IoT)
     Robot          (0xC8); // 1100 1000
+
+    public final int value;
+
+    NetworkType(int value) {
+        this.value = value;
+    }
+}
 ```
 
 ### <span id="id-name">1.1. Name</span>
@@ -111,7 +118,7 @@ The **Name** field is a username, or just a random string for group:
 2. It should be composed by a-z, A-Z, 0-9, or charactors '_', '-', '.';
 3. It cannot contain key charactors('@', '/').
 
-```python
+```java
 # Name examples
 user_name  = "Albert.Moky";
 group_name = "Group-9527";
@@ -156,37 +163,6 @@ public final class BTCAddress extends Address {
 When you get a meta for the entity ID from the network,
 you must verify it with the consensus algorithm before accept its **public key**.
 
-```java
-    /**
-     *  Meta algorithm
-     *      1. compare meta.seed with ID.name
-     *      2. build address with meta, compare it with ID.address
-     *      3. if matches, get public key from meta
-     */
-    public boolean matches(ID identifier) {
-        if (seed == null) {
-            String name = identifier.name;
-            if (name != null && name.length() > 0) {
-                return false;
-            }
-        } else if (!seed.equals(identifier.name)) {
-            return false;
-        }
-        return matches(identifier.address);
-    }
-
-    public boolean matches(Address address) {
-        return generateAddress(address.getNetwork()).equals(address);
-    }
-
-    public ID generateID(NetworkType network) {
-        Address address = generateAddress(network);
-        return new ID(seed, address, null);
-    }
-    
-    protected abstract Address generateAddress(NetworkType network);
-```
-
 ### <span id="id-terminal">1.3. Terminal</span>
 
 A resource identifier as **Login Point**.
@@ -199,7 +175,7 @@ A **Search Number** is defined for easy remember. Its value is converted from th
 
 ### ID
 
-```python
+```java
 # ID examples
 ID1 = "hulk@4YeVEN3aUnvC1DNUufCq1bs9zoBSJTzVEj";  // Immortal Hulk
 ID2 = "moki@4WDfe3zZ4T7opFSi3iDAKiuTnUHjxmXekk";  // Monkey King
