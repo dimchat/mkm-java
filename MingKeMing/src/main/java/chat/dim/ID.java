@@ -30,8 +30,6 @@
  */
 package chat.dim;
 
-import chat.dim.protocol.NetworkType;
-
 /**
  *  ID for entity (User/Group)
  *
@@ -106,7 +104,7 @@ public final class ID extends chat.dim.type.String {
      *
      * @return address type as network ID
      */
-    public NetworkType getType() {
+    public byte getType() {
         assert address != null : "ID.address should not be empty: " + string;
         return address.getNetwork();
     }
@@ -193,5 +191,14 @@ public final class ID extends chat.dim.type.String {
     public boolean isBroadcast() {
         assert address != null : "ID.address should not be empty: " + string;
         return address.isBroadcast();
+    }
+
+    public boolean isUser() {
+        assert address != null : "ID.address should not be empty: " + string;
+        return address.isUser();
+    }
+    public boolean isGroup() {
+        assert address != null : "ID.address should not be empty: " + string;
+        return address.isGroup();
     }
 }

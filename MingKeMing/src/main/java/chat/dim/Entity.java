@@ -32,8 +32,6 @@ package chat.dim;
 
 import java.lang.ref.WeakReference;
 
-import chat.dim.protocol.NetworkType;
-
 /**
  *  Entity (User/Group)
  *  ~~~~~~~~~~~~~~~~~~~
@@ -93,9 +91,9 @@ public abstract class Entity {
     /**
      *  Get entity type
      *
-     * @return type
+     * @return ID(address) type as entity type
      */
-    public NetworkType getType() {
+    public byte getType() {
         return identifier.getType();
     }
 

@@ -70,31 +70,4 @@ public enum MetaType {
     MetaType(int value) {
         this.value = value;
     }
-
-    public static MetaType fromInt(int i) {
-        if (MKM.value == i) {
-            return MKM;
-        }
-
-        if (BTC.value == i) {
-            return BTC;
-        }
-        if (ExBTC.value == i) {
-            return ExBTC;
-        }
-
-        if (ETH.value == i) {
-            return ETH;
-        }
-        if (ExETH.value == i) {
-            return ExETH;
-        }
-
-        String text = String.format("Meta version not supported: %d", i);
-        throw new TypeNotPresentException(text, null);
-    }
-
-    public boolean hasSeed() {
-        return (value & MKM.value) == MKM.value;
-    }
 }

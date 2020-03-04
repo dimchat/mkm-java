@@ -61,7 +61,7 @@ public abstract class Address extends chat.dim.type.String {
      *
      * @return Network ID
      */
-    public abstract NetworkType getNetwork();
+    public abstract byte getNetwork();
 
     /**
      *  get search number
@@ -134,8 +134,8 @@ public abstract class Address extends chat.dim.type.String {
     public static final Address ANYWHERE = new Address("anywhere") {
 
         @Override
-        public NetworkType getNetwork() {
-            return NetworkType.Main;
+        public byte getNetwork() {
+            return NetworkType.Main.value;
         }
 
         @Override
@@ -146,8 +146,8 @@ public abstract class Address extends chat.dim.type.String {
     public static final Address EVERYWHERE = new Address("everywhere") {
 
         @Override
-        public NetworkType getNetwork() {
-            return NetworkType.Group;
+        public byte getNetwork() {
+            return NetworkType.Group.value;
         }
 
         @Override
@@ -157,14 +157,21 @@ public abstract class Address extends chat.dim.type.String {
     };
 
     public boolean isBroadcast() {
-        NetworkType network = getNetwork();
-        if (network.value == EVERYWHERE.getNetwork().value) {
+        int network = getNetwork();
+        if (network == EVERYWHERE.getNetwork()) {
             return equals(EVERYWHERE);
         }
-        if (network.value == ANYWHERE.getNetwork().value) {
+        if (network == ANYWHERE.getNetwork()) {
             return equals(ANYWHERE);
         }
         return false;
+    }
+
+    public boolean isUser() {
+        return NetworkType.isUser(getNetwork());
+    }
+    public boolean isGroup() {
+        return NetworkType.isGroup(getNetwork());
     }
 }
 

@@ -65,7 +65,7 @@ public abstract class Meta extends Dictionary {
      *      0x02 - btc_address
      *      0x03 - username@btc_address
      */
-    private MetaType version = null;
+    private int version = 0;
 
     /**
      *  Public key (used for signature)
@@ -119,9 +119,9 @@ public abstract class Meta extends Dictionary {
         return matches(identifier);
     }
 
-    public MetaType getVersion() {
-        if (version == null) {
-            version = MetaType.fromInt((int) dictionary.get("version"));
+    public int getVersion() {
+        if (version == 0) {
+            version = (int) dictionary.get("version");
         }
         return version;
     }
@@ -137,9 +137,13 @@ public abstract class Meta extends Dictionary {
         return key;
     }
 
+    private static boolean hasSeed(int version) {
+        return (version & MetaType.MKM.value) == MetaType.MKM.value;
+    }
+
     public String getSeed() {
         if (seed == null) {
-            if (getVersion().hasSeed()) {
+            if (hasSeed(getVersion())) {
                 seed = (String) dictionary.get("seed");
                 assert seed != null && seed.length() > 0 : "meta.seed should not be empty: " + this;
             }
@@ -149,7 +153,7 @@ public abstract class Meta extends Dictionary {
 
     public byte[] getFingerprint() {
         if (fingerprint == null) {
-            if (getVersion().hasSeed()) {
+            if (hasSeed(getVersion())) {
                 String base64 = (String) dictionary.get("fingerprint");
                 assert base64 != null && base64.length() > 0 : "meta.fingerprint should not be empty: " + this;
                 fingerprint = Base64.decode(base64);
@@ -170,7 +174,7 @@ public abstract class Meta extends Dictionary {
             if (key == null) {
                 // meta.key should not be empty
                 status = -1;
-            } else if (getVersion().hasSeed()) {
+            } else if (hasSeed(getVersion())) {
                 String seed = getSeed();
                 byte[] fingerprint = getFingerprint();
                 if (seed == null || fingerprint == null) {
@@ -199,7 +203,7 @@ public abstract class Meta extends Dictionary {
             return true;
         }
         // check with seed & fingerprint
-        if (getVersion().hasSeed()) {
+        if (hasSeed(getVersion())) {
             // check whether keys equal by verifying signature
             String seed = getSeed();
             byte[] fingerprint = getFingerprint();
@@ -227,6 +231,9 @@ public abstract class Meta extends Dictionary {
     }
 
     public ID generateID(NetworkType network) {
+        return generateID(network.value);
+    }
+    public ID generateID(byte network) {
         Address address = generateAddress(network);
         return new ID(getSeed(), address, null);
     }
@@ -237,7 +244,7 @@ public abstract class Meta extends Dictionary {
      * @param network - address network type
      * @return Address object
      */
-    protected abstract Address generateAddress(NetworkType network);
+    protected abstract Address generateAddress(byte network);
 
     /**
      *  Generate meta info with seed and private key
@@ -248,10 +255,13 @@ public abstract class Meta extends Dictionary {
      * @return Meta object
      */
     public static Meta generate(MetaType version, PrivateKey sk, String seed) throws ClassNotFoundException {
+        return generate(version.value, sk, seed);
+    }
+    public static Meta generate(int version, PrivateKey sk, String seed) throws ClassNotFoundException {
         Map<String, Object> dictionary = new HashMap<>();
-        dictionary.put("version", version.value);
+        dictionary.put("version", version);
         dictionary.put("key", sk.getPublicKey());
-        if (version.hasSeed()) {
+        if (hasSeed(version)) {
             // generate fingerprint with private key
             byte[] fingerprint = sk.sign(seed.getBytes(Charset.forName("UTF-8")));
             dictionary.put("seed", seed);
@@ -262,22 +272,20 @@ public abstract class Meta extends Dictionary {
 
     //-------- Runtime --------
 
-    private static Map<MetaType, Class> metaClasses = new HashMap<>();
+    private static Map<Integer, Class> metaClasses = new HashMap<>();
+
+    public static void register(MetaType version, Class clazz) {
+        register(version.value, clazz);
+    }
 
     @SuppressWarnings("unchecked")
-    public static void register(MetaType version, Class clazz) {
+    public static void register(int version, Class clazz) {
         // check whether clazz is subclass of Meta
         if (clazz.equals(Meta.class)) {
             throw new IllegalArgumentException("should not add Meta.class itself!");
         }
         assert Meta.class.isAssignableFrom(clazz) : "error: " + clazz;
         metaClasses.put(version, clazz);
-    }
-
-    private static Class metaClass(Map<String, Object> dictionary) {
-        // get subclass by meta version
-        MetaType version = MetaType.fromInt((int) dictionary.get("version"));
-        return metaClasses.get(version);
     }
 
     @SuppressWarnings("unchecked")
@@ -289,7 +297,8 @@ public abstract class Meta extends Dictionary {
         }
         assert object instanceof Map : "meta error: " + object;
         Map<String, Object> dictionary = (Map<String, Object>) object;
-        Class clazz = metaClass(dictionary);
+        int version = (int) dictionary.get("version");
+        Class clazz = metaClasses.get(version);
         if (clazz == null) {
             throw new ClassNotFoundException("meta not support: " + dictionary);
         }

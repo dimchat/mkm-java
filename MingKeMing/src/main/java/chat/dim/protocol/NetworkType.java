@@ -126,77 +126,20 @@ public enum NetworkType {
     Robot          (0xC8); // 1100 1000
 
     // Network ID
-    public final int value;
+    public final byte value;
 
-    NetworkType(int value) {
+    NetworkType(byte value) {
         this.value = value;
     }
-
-    public byte toByte() {
-        return (byte)value;
+    NetworkType(int value) {
+        this.value = (byte)value;
     }
 
-    public static NetworkType fromByte(byte b) {
-        int i = b & 0xFF;
-
-        if (BTCMain.value == i) {
-            return BTCMain;
-        }
-
-        if (Main.value == i) {
-            return Main;
-        }
-
-        if (Polylogue.value == i) {
-            return Polylogue;
-        }
-        if (Chatroom.value == i) {
-            return Chatroom;
-        }
-
-        if (Provider.value == i) {
-            return Provider;
-        }
-        if (Station.value == i) {
-            return Station;
-        }
-
-        if (Thing.value == i) {
-            return Thing;
-        }
-        if (Robot.value == i) {
-            return Robot;
-        }
-
-        String text = String.format("Network ID not supported: %d", i);
-        throw new TypeNotPresentException(text, null);
+    public static boolean isUser(byte type) {
+        return (type & Main.value) == Main.value || type == BTCMain.value;
     }
 
-    public boolean isUser() {
-        return (value & Main.value) != 0 || value == BTCMain.value;
-    }
-
-    public boolean isPerson() {
-        return value == Main.value || value == BTCMain.value;
-    }
-
-    public boolean isGroup() {
-        return (value & Group.value) != 0;
-    }
-
-    public boolean isStation() {
-        return value == Station.value;
-    }
-
-    public boolean isProvider() {
-        return value == Provider.value;
-    }
-
-    public boolean isThing() {
-        return (value & Thing.value) != 0;
-    }
-
-    public boolean isRobot() {
-        return value == Robot.value;
+    public static boolean isGroup(byte type) {
+        return (type & Group.value) == Group.value;
     }
 }
