@@ -70,4 +70,8 @@ public enum MetaType {
     MetaType(int value) {
         this.value = value;
     }
+
+    public boolean equals(int other) {
+        return this.value == other;
+    }
 }

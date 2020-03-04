@@ -135,6 +135,10 @@ public enum NetworkType {
         this.value = (byte)value;
     }
 
+    public boolean equals(byte other) {
+        return this.value == other;
+    }
+
     public static boolean isUser(byte type) {
         return (type & Main.value) == Main.value || type == BTCMain.value;
     }
