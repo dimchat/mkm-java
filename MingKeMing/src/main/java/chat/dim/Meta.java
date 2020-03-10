@@ -126,6 +126,10 @@ public abstract class Meta extends Dictionary {
         return version;
     }
 
+    public boolean hasSeed() {
+        return MetaType.hasSeed(getVersion());
+    }
+
     public PublicKey getKey() {
         if (key == null) {
             try {
@@ -137,13 +141,9 @@ public abstract class Meta extends Dictionary {
         return key;
     }
 
-    private static boolean hasSeed(int version) {
-        return (version & MetaType.MKM.value) == MetaType.MKM.value;
-    }
-
     public String getSeed() {
         if (seed == null) {
-            if (hasSeed(getVersion())) {
+            if (hasSeed()) {
                 seed = (String) dictionary.get("seed");
                 assert seed != null && seed.length() > 0 : "meta.seed should not be empty: " + this;
             }
@@ -153,7 +153,7 @@ public abstract class Meta extends Dictionary {
 
     public byte[] getFingerprint() {
         if (fingerprint == null) {
-            if (hasSeed(getVersion())) {
+            if (hasSeed()) {
                 String base64 = (String) dictionary.get("fingerprint");
                 assert base64 != null && base64.length() > 0 : "meta.fingerprint should not be empty: " + this;
                 fingerprint = Base64.decode(base64);
@@ -174,7 +174,7 @@ public abstract class Meta extends Dictionary {
             if (key == null) {
                 // meta.key should not be empty
                 status = -1;
-            } else if (hasSeed(getVersion())) {
+            } else if (hasSeed()) {
                 String seed = getSeed();
                 byte[] fingerprint = getFingerprint();
                 if (seed == null || fingerprint == null) {
@@ -203,7 +203,7 @@ public abstract class Meta extends Dictionary {
             return true;
         }
         // check with seed & fingerprint
-        if (hasSeed(getVersion())) {
+        if (hasSeed()) {
             // check whether keys equal by verifying signature
             String seed = getSeed();
             byte[] fingerprint = getFingerprint();
@@ -261,7 +261,7 @@ public abstract class Meta extends Dictionary {
         Map<String, Object> dictionary = new HashMap<>();
         dictionary.put("version", version);
         dictionary.put("key", sk.getPublicKey());
-        if (hasSeed(version)) {
+        if (MetaType.hasSeed(version)) {
             // generate fingerprint with private key
             byte[] fingerprint = sk.sign(seed.getBytes(Charset.forName("UTF-8")));
             dictionary.put("seed", seed);
