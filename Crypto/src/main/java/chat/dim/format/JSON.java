@@ -27,12 +27,11 @@ package chat.dim.format;
 
 public class JSON {
 
-    public static String encode(Object container) {
+    public static byte[] encode(Object container) {
         return parser.encode(container);
     }
 
-    @SuppressWarnings("unchecked")
-    public static Object decode(String json) {
+    public static Object decode(byte[] json) {
         return parser.decode(json);
     }
 
@@ -40,12 +39,12 @@ public class JSON {
     public static DataParser parser = new DataParser() {
 
         @Override
-        public String encode(Object container) {
+        public byte[] encode(Object object) {
             throw new UnsupportedOperationException("implement me!");
         }
 
         @Override
-        public Object decode(String json) {
+        public Object decode(byte[] json) {
             throw new UnsupportedOperationException("implement me!");
         }
     };

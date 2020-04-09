@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2020 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,48 +25,30 @@
  */
 package chat.dim.format;
 
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.nio.charset.Charset;
 
-public class PEM {
+public class UTF8 {
 
-    public static String encodePublicKey(PublicKey key) {
-        return parser.encodePublicKey(key);
+    public static byte[] encode(String string) {
+        return parser.encode(string);
     }
 
-    public static String encodePrivateKey(PrivateKey key) {
-        return parser.encodePrivateKey(key);
-    }
-
-    public static PublicKey decodePublicKey(String pem) {
-        return parser.decodePublicKey(pem);
-    }
-
-    public static PrivateKey decodePrivateKey(String pem) {
-        return parser.decodePrivateKey(pem);
+    public static String decode(byte[] utf8) {
+        return (String) parser.decode(utf8);
     }
 
     // default parser
-    public static KeyParser parser = new KeyParser() {
+    public static DataParser parser = new DataParser() {
 
         @Override
-        public String encodePublicKey(PublicKey key) {
-            throw new UnsupportedOperationException("implement me!");
+        public byte[] encode(Object object) {
+            String string = (String) object;
+            return string.getBytes(Charset.forName("UTF-8"));
         }
 
         @Override
-        public String encodePrivateKey(PrivateKey key) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-
-        @Override
-        public PublicKey decodePublicKey(String pem) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-
-        @Override
-        public PrivateKey decodePrivateKey(String pem) {
-            throw new UnsupportedOperationException("implement me!");
+        public Object decode(byte[] data) {
+            return new String(data, Charset.forName("UTF-8"));
         }
     };
 }

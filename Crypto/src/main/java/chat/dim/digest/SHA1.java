@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2020 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,42 +23,31 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.format;
+package chat.dim.digest;
 
-import java.security.PrivateKey;
-import java.security.PublicKey;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
-public interface KeyParser {
+public class SHA1 {
 
-    /**
-     *  Encode public key to text string
-     *
-     * @param key - public key
-     * @return PEM string
-     */
-    String encodePublicKey(PublicKey key);
+    public static byte[] digest(byte[] data) {
+        return hash.digest(data);
+    }
 
-    /**
-     *  Encode private key to text string
-     *
-     * @param key - private key
-     * @return PEM string
-     */
-    String encodePrivateKey(PrivateKey key);
+    public static Hash hash = new Hash() {
 
-    /**
-     *  Decode text string to public key
-     *
-     * @param pem - text string
-     * @return public key
-     */
-    PublicKey decodePublicKey(String pem);
-
-    /**
-     *  Decode text string to private key
-     *
-     * @param pem - text string
-     * @return private key
-     */
-    PrivateKey decodePrivateKey(String pem);
+        @Override
+        public byte[] digest(byte[] data) {
+            MessageDigest md;
+            try {
+                md = MessageDigest.getInstance("SHA-1");
+            } catch (NoSuchAlgorithmException e) {
+                e.printStackTrace();
+                return null;
+            }
+            md.reset();
+            md.update(data);
+            return md.digest();
+        }
+    };
 }

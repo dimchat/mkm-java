@@ -37,6 +37,7 @@ import java.util.Map;
 import chat.dim.crypto.PrivateKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.format.Base64;
+import chat.dim.format.UTF8;
 import chat.dim.protocol.MetaType;
 import chat.dim.protocol.NetworkType;
 import chat.dim.type.Dictionary;
@@ -180,7 +181,7 @@ public abstract class Meta extends Dictionary {
                 if (seed == null || fingerprint == null) {
                     // seed and fingerprint should not be empty
                     status = -1;
-                } else if (key.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint)) {
+                } else if (key.verify(UTF8.encode(seed), fingerprint)) {
                     // fingerprint matched
                     status = 1;
                 } else {
@@ -207,7 +208,7 @@ public abstract class Meta extends Dictionary {
             // check whether keys equal by verifying signature
             String seed = getSeed();
             byte[] fingerprint = getFingerprint();
-            return pk.verify(seed.getBytes(Charset.forName("UTF-8")), fingerprint);
+            return pk.verify(UTF8.encode(seed), fingerprint);
         } else {
             // ID with BTC/ETH address has no username
             // so we can just compare the key.data to check matching
@@ -263,7 +264,7 @@ public abstract class Meta extends Dictionary {
         dictionary.put("key", sk.getPublicKey());
         if (MetaType.hasSeed(version)) {
             // generate fingerprint with private key
-            byte[] fingerprint = sk.sign(seed.getBytes(Charset.forName("UTF-8")));
+            byte[] fingerprint = sk.sign(UTF8.encode(seed));
             dictionary.put("seed", seed);
             dictionary.put("fingerprint", Base64.encode(fingerprint));
         }

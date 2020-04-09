@@ -43,6 +43,7 @@ import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
 import chat.dim.format.JSON;
+import chat.dim.format.UTF8;
 import chat.dim.type.Dictionary;
 
 public class Profile extends Dictionary implements TAI {
@@ -117,7 +118,7 @@ public class Profile extends Dictionary implements TAI {
         if (data == null) {
             String json = (String) dictionary.get("data");
             if (json != null) {
-                data = json.getBytes(Charset.forName("UTF-8"));
+                data = UTF8.encode(json);
             }
         }
         return data;
@@ -150,7 +151,7 @@ public class Profile extends Dictionary implements TAI {
                 // create new properties
                 properties = new HashMap<>();
             } else {
-                properties = (Map<String, Object>) JSON.decode(data);
+                properties = (Map<String, Object>) JSON.decode(UTF8.encode(data));
                 assert properties != null : "profile data error: " + data;
             }
         }
@@ -232,10 +233,9 @@ public class Profile extends Dictionary implements TAI {
             return signature;
         }
         status = 1;
-        String json = JSON.encode(getProperties());
-        data = json.getBytes(Charset.forName("UTF-8"));
+        data = JSON.encode(getProperties());
         signature = privateKey.sign(data);
-        dictionary.put("data", json);
+        dictionary.put("data", UTF8.decode(data));
         dictionary.put("signature", Base64.encode(signature));
         return signature;
     }

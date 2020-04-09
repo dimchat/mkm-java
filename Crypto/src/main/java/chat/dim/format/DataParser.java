@@ -30,16 +30,16 @@ public interface DataParser {
     /**
      *  Encode container object to text string
      *
-     * @param container - Map or list object
-     * @return JsON string
+     * @param object - Map, List, or String
+     * @return JsON string (UTF-8 bytes)
      */
-    String encode(Object container);
+    byte[] encode(Object object);
 
     /**
      *  Decode text string to object
      *
-     * @param json - JsON string
-     * @return Map or list object
+     * @param json - JsON string (UTF-8 bytes)
+     * @return Map, List, or String
      */
-    Object decode(String json);
+    Object decode(byte[] json);
 }
