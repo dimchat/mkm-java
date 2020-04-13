@@ -41,14 +41,14 @@ public class UTF8 {
     public static DataParser parser = new DataParser() {
 
         @Override
-        public byte[] encode(Object object) {
-            String string = (String) object;
-            return string.getBytes(Charset.forName("UTF-8"));
+        public byte[] encode(Object string) {
+            String s = (String) string;
+            return s.getBytes(Charset.forName("UTF-8"));
         }
 
         @Override
-        public Object decode(byte[] data) {
-            return new String(data, Charset.forName("UTF-8"));
+        public Object decode(byte[] utf8) {
+            return new String(utf8, Charset.forName("UTF-8"));
         }
     };
 }

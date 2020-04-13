@@ -122,7 +122,7 @@ public abstract class Meta extends Dictionary {
 
     public int getVersion() {
         if (version == 0) {
-            version = (int) dictionary.get("version");
+            version = (int) get("version");
         }
         return version;
     }
@@ -134,7 +134,7 @@ public abstract class Meta extends Dictionary {
     public PublicKey getKey() {
         if (key == null) {
             try {
-                key = PublicKey.getInstance(dictionary.get("key"));
+                key = PublicKey.getInstance(get("key"));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -145,7 +145,7 @@ public abstract class Meta extends Dictionary {
     public String getSeed() {
         if (seed == null) {
             if (hasSeed()) {
-                seed = (String) dictionary.get("seed");
+                seed = (String) get("seed");
                 assert seed != null && seed.length() > 0 : "meta.seed should not be empty: " + this;
             }
         }
@@ -155,7 +155,7 @@ public abstract class Meta extends Dictionary {
     public byte[] getFingerprint() {
         if (fingerprint == null) {
             if (hasSeed()) {
-                String base64 = (String) dictionary.get("fingerprint");
+                String base64 = (String) get("fingerprint");
                 assert base64 != null && base64.length() > 0 : "meta.fingerprint should not be empty: " + this;
                 fingerprint = Base64.decode(base64);
             }

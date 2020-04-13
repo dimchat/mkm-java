@@ -75,15 +75,15 @@ public class Profile extends Dictionary implements TAI {
     public Profile(ID identifier, String data, byte[] signature) {
         super();
         // ID
-        dictionary.put("ID", identifier);
+        put("ID", identifier);
 
         // json data
         if (data != null) {
-            dictionary.put("data", data);
+            put("data", data);
         }
         // signature
         if (signature != null) {
-            dictionary.put("signature", Base64.encode(signature));
+            put("signature", Base64.encode(signature));
         }
     }
 
@@ -104,7 +104,7 @@ public class Profile extends Dictionary implements TAI {
     @Override
     public Object getIdentifier() {
         if (identifier == null) {
-            identifier = dictionary.get("ID");
+            identifier = get("ID");
         }
         return identifier;
     }
@@ -116,7 +116,7 @@ public class Profile extends Dictionary implements TAI {
      */
     private byte[] getData() {
         if (data == null) {
-            String json = (String) dictionary.get("data");
+            String json = (String) get("data");
             if (json != null) {
                 data = UTF8.encode(json);
             }
@@ -131,7 +131,7 @@ public class Profile extends Dictionary implements TAI {
      */
     private byte[] getSignature() {
         if (signature == null) {
-            String base64 = (String) dictionary.get("signature");
+            String base64 = (String) get("signature");
             if (base64 != null) {
                 signature = Base64.decode(base64);
             }
@@ -146,7 +146,7 @@ public class Profile extends Dictionary implements TAI {
             return null;
         }
         if (properties == null) {
-            String data = (String) dictionary.get("data");
+            String data = (String) get("data");
             if (data == null) {
                 // create new properties
                 properties = new HashMap<>();
@@ -190,8 +190,8 @@ public class Profile extends Dictionary implements TAI {
             dict.put(name, value);
         }
         // 3. clear data signature after properties changed
-        dictionary.remove("data");
-        dictionary.remove("signature");
+        remove("data");
+        remove("signature");
         data = null;
         signature = null;
     }
@@ -235,8 +235,8 @@ public class Profile extends Dictionary implements TAI {
         status = 1;
         data = JSON.encode(getProperties());
         signature = privateKey.sign(data);
-        dictionary.put("data", UTF8.decode(data));
-        dictionary.put("signature", Base64.encode(signature));
+        put("data", UTF8.decode(data));
+        put("signature", Base64.encode(signature));
         return signature;
     }
 

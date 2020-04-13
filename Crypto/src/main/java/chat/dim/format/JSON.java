@@ -39,7 +39,7 @@ public class JSON {
     public static DataParser parser = new DataParser() {
 
         @Override
-        public byte[] encode(Object object) {
+        public byte[] encode(Object container) {
             throw new UnsupportedOperationException("implement me!");
         }
 
