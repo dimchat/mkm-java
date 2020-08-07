@@ -34,23 +34,23 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class Dictionary implements Map<String, Object> {
+public abstract class Dictionary<K, V> implements Map<K, V> {
 
-    protected final Map<String, Object> dictionary;
+    protected final Map<K, V> dictionary;
 
     protected Dictionary() {
         super();
         dictionary = new HashMap<>();
     }
 
-    protected Dictionary(Map<String, Object> map) {
+    protected Dictionary(Map<K, V> map) {
         super();
         assert map != null : "cannot initialize with an empty map!";
         dictionary = map;
     }
 
     @SuppressWarnings("unchecked")
-    protected static Object createInstance(Class clazz, Map<String, Object> dictionary) {
+    protected static Object createInstance(Class clazz, Map dictionary) {
         // try 'Clazz.getInstance(dict)'
         try {
             Method method = clazz.getMethod("getInstance", Object.class);
@@ -111,22 +111,22 @@ public abstract class Dictionary implements Map<String, Object> {
     }
 
     @Override
-    public Object get(Object key) {
+    public V get(Object key) {
         return dictionary.get(key);
     }
 
     @Override
-    public Object put(String key, Object value) {
+    public V put(K key, V value) {
         return dictionary.put(key, value);
     }
 
     @Override
-    public Object remove(Object key) {
+    public V remove(Object key) {
         return dictionary.remove(key);
     }
 
     @Override
-    public void putAll(Map<? extends String, ?> m) {
+    public void putAll(Map<? extends K, ? extends V> m) {
         dictionary.putAll(m);
     }
 
@@ -136,17 +136,17 @@ public abstract class Dictionary implements Map<String, Object> {
     }
 
     @Override
-    public Set<String> keySet() {
+    public Set<K> keySet() {
         return dictionary.keySet();
     }
 
     @Override
-    public Collection<Object> values() {
+    public Collection<V> values() {
         return dictionary.values();
     }
 
     @Override
-    public Set<Entry<String, Object>> entrySet() {
+    public Set<Entry<K, V>> entrySet() {
         return dictionary.entrySet();
     }
 }

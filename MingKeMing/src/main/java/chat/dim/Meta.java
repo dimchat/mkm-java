@@ -30,7 +30,6 @@
  */
 package chat.dim;
 
-import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -57,7 +56,7 @@ import chat.dim.type.Dictionary;
  *      algorithm:
  *          fingerprint = sign(seed, SK);
  */
-public abstract class Meta extends Dictionary {
+public abstract class Meta extends Dictionary<String, Object> {
 
     /**
      *  Meta algorithm version

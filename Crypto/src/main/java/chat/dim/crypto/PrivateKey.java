@@ -41,7 +41,7 @@ import chat.dim.type.Dictionary;
  *      ...
  *  }
  */
-public abstract class PrivateKey extends Dictionary implements AsymmetricKey, SignKey {
+public abstract class PrivateKey extends Dictionary<String, Object> implements AsymmetricKey, SignKey {
 
     public PrivateKey(Map<String, Object> keyInfo) {
         super(keyInfo);

@@ -42,7 +42,7 @@ import chat.dim.type.Dictionary;
  *      ...
  *  }
  */
-public abstract class SymmetricKey extends Dictionary implements EncryptKey, DecryptKey {
+public abstract class SymmetricKey extends Dictionary<String, Object> implements EncryptKey, DecryptKey {
 
     public static final String AES = "AES"; //-- "AES/CBC/PKCS7Padding"
     public static final String DES = "DES";

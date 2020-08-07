@@ -31,7 +31,6 @@
 package chat.dim;
 
 import java.lang.reflect.Constructor;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -46,7 +45,7 @@ import chat.dim.format.JSON;
 import chat.dim.format.UTF8;
 import chat.dim.type.Dictionary;
 
-public class Profile extends Dictionary implements TAI {
+public class Profile extends Dictionary<String, Object> implements TAI {
 
     private Object identifier = null; // ID or String
 

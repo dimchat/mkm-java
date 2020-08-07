@@ -40,7 +40,7 @@ import chat.dim.type.Dictionary;
  *      ...
  *  }
  */
-public abstract class PublicKey extends Dictionary implements AsymmetricKey, VerifyKey {
+public abstract class PublicKey extends Dictionary<String, Object> implements AsymmetricKey, VerifyKey {
 
     public PublicKey(Map<String, Object> keyInfo) {
         super(keyInfo);
