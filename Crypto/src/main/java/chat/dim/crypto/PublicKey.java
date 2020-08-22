@@ -72,7 +72,6 @@ public abstract class PublicKey extends Dictionary<String, Object> implements As
 
     private static Map<String, Class> publicKeyClasses = new HashMap<>();
 
-    @SuppressWarnings("unchecked")
     public static void register(String algorithm, Class clazz) {
         // check whether clazz is subclass of PublicKey
         assert PublicKey.class.isAssignableFrom(clazz) : "error: " + clazz;
@@ -85,20 +84,17 @@ public abstract class PublicKey extends Dictionary<String, Object> implements As
         return publicKeyClasses.get(algorithm);
     }
 
-    @SuppressWarnings("unchecked")
-    public static PublicKey getInstance(Object object) throws ClassNotFoundException {
-        if (object == null) {
+    public static PublicKey getInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
+        if (dictionary == null) {
             return null;
-        } else if (object instanceof PublicKey) {
-            return (PublicKey) object;
+        } else if (dictionary instanceof PublicKey) {
+            return (PublicKey) dictionary;
         }
-        assert object instanceof Map : "public key info must be a map";
-        Map<String, Object> dictionary = (Map<String, Object>) object;
         Class clazz = keyClass(dictionary);
-        if (clazz != null) {
-            // create instance by subclass (with algorithm)
-            return (PublicKey) createInstance(clazz, dictionary);
+        if (clazz == null) {
+            throw new ClassNotFoundException("key error: " + dictionary);
         }
-        throw new ClassNotFoundException("key error: " + dictionary);
+        // create instance by subclass (with algorithm)
+        return (PublicKey) createInstance(clazz, dictionary);
     }
 }

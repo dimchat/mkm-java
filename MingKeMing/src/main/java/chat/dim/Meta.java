@@ -95,6 +95,7 @@ public abstract class Meta extends Dictionary<String, Object> {
         super(dictionary);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean equals(Object other) {
         if (super.equals(other)) {
@@ -106,7 +107,7 @@ public abstract class Meta extends Dictionary<String, Object> {
             meta = (Meta) other;
         } else if (other instanceof Map) {
             try {
-                meta = Meta.getInstance(other);
+                meta = Meta.getInstance((Map<String, Object>) other);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
                 return false;
@@ -130,10 +131,14 @@ public abstract class Meta extends Dictionary<String, Object> {
         return MetaType.hasSeed(getVersion());
     }
 
+    @SuppressWarnings("unchecked")
     public PublicKey getKey() {
         if (key == null) {
             try {
-                key = PublicKey.getInstance(get("key"));
+                Object info = get("key");
+                if (info instanceof Map) {
+                    key = PublicKey.getInstance((Map<String, Object>) info);
+                }
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
@@ -278,7 +283,6 @@ public abstract class Meta extends Dictionary<String, Object> {
         register(version.value, clazz);
     }
 
-    @SuppressWarnings("unchecked")
     public static void register(int version, Class clazz) {
         // check whether clazz is subclass of Meta
         if (clazz.equals(Meta.class)) {
@@ -288,17 +292,19 @@ public abstract class Meta extends Dictionary<String, Object> {
         metaClasses.put(version, clazz);
     }
 
-    @SuppressWarnings("unchecked")
-    public static Meta getInstance(Object object) throws ClassNotFoundException {
-        if (object == null) {
-            return null;
-        } else if (object instanceof Meta) {
-            return (Meta) object;
-        }
-        assert object instanceof Map : "meta error: " + object;
-        Map<String, Object> dictionary = (Map<String, Object>) object;
+    private static Class metaClass(Map<String, Object> dictionary) {
+        // get subclass by meta version
         int version = (int) dictionary.get("version");
-        Class clazz = metaClasses.get(version);
+        return metaClasses.get(version);
+    }
+
+    public static Meta getInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
+        if (dictionary == null) {
+            return null;
+        } else if (dictionary instanceof Meta) {
+            return (Meta) dictionary;
+        }
+        Class clazz = metaClass(dictionary);
         if (clazz == null) {
             throw new ClassNotFoundException("meta not support: " + dictionary);
         }

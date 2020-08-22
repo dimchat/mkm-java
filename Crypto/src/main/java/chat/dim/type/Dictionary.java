@@ -53,7 +53,7 @@ public abstract class Dictionary<K, V> implements Map<K, V> {
     protected static Object createInstance(Class clazz, Map dictionary) {
         // try 'Clazz.getInstance(dict)'
         try {
-            Method method = clazz.getMethod("getInstance", Object.class);
+            Method method = clazz.getMethod("getInstance", Map.class);
             if (method.getDeclaringClass().equals(clazz)) {
                 // only invoke the method 'getInstance' declared in this class
                 return method.invoke(null, dictionary);

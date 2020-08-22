@@ -150,8 +150,11 @@ public class Profile extends Dictionary<String, Object> implements TAI {
                 // create new properties
                 properties = new HashMap<>();
             } else {
-                properties = (Map<String, Object>) JSON.decode(UTF8.encode(data));
-                assert properties != null : "profile data error: " + data;
+                Object info = JSON.decode(UTF8.encode(data));
+                assert info != null : "profile data error: " + data;
+                if (info instanceof Map) {
+                    properties = (Map<String, Object>) info;
+                }
             }
         }
         return properties;
@@ -278,23 +281,18 @@ public class Profile extends Dictionary<String, Object> implements TAI {
     }
 
     @SuppressWarnings("unchecked")
-    public static Profile getInstance(Object object) {
-        if (object == null) {
+    public static Profile getInstance(Map<String, Object> dictionary) {
+        if (dictionary == null) {
             return null;
-        } else if (object instanceof Profile) {
-            return (Profile) object;
+        } else if (dictionary instanceof Profile) {
+            return (Profile) dictionary;
         }
-        assert object instanceof Map : "profile error: " + object;
-        Map<String, Object> dictionary = (Map<String, Object>) object;
         // try each subclass to parse profile
-        Constructor constructor;
-        for (Class clazz: profileClasses) {
-            try {
-                constructor = clazz.getConstructor(Map.class);
-                return (Profile) constructor.newInstance(dictionary);
-            } catch (Exception e) {
-                // profile data error, try next
-                //e.printStackTrace();
+        Profile profile;
+        for (Class clazz : profileClasses) {
+            profile = (Profile) createInstance(clazz, dictionary);
+            if (profile != null) {
+                return profile;
             }
         }
         return new Profile(dictionary);
