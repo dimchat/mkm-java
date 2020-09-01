@@ -25,21 +25,21 @@
  */
 package chat.dim.format;
 
-public interface DataParser {
+public interface DataParser<T> {
 
     /**
      *  Encode container/string object to bytes
      *
      * @param object - Map, List, or String
-     * @return JsON data or UTF-8 string bytes
+     * @return JsON data (UTF-8 string bytes)
      */
-    byte[] encode(Object object);
+    byte[] encode(T object);
 
     /**
      *  Decode bytes to container/string object
      *
-     * @param data - JsON data or UTF-8 string bytes
+     * @param data - JsON data (UTF-8 string bytes)
      * @return Map, List, or String
      */
-    Object decode(byte[] data);
+    T decode(byte[] data);
 }

@@ -34,20 +34,19 @@ public class UTF8 {
     }
 
     public static String decode(byte[] utf8) {
-        return (String) parser.decode(utf8);
+        return parser.decode(utf8);
     }
 
     // default parser
-    public static DataParser parser = new DataParser() {
+    public static DataParser<String> parser = new DataParser<String>() {
 
         @Override
-        public byte[] encode(Object string) {
-            String s = (String) string;
-            return s.getBytes(Charset.forName("UTF-8"));
+        public byte[] encode(String string) {
+            return string.getBytes(Charset.forName("UTF-8"));
         }
 
         @Override
-        public Object decode(byte[] utf8) {
+        public String decode(byte[] utf8) {
             return new String(utf8, Charset.forName("UTF-8"));
         }
     };

@@ -30,7 +30,6 @@
  */
 package chat.dim;
 
-import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -41,7 +40,7 @@ import chat.dim.crypto.EncryptKey;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
-import chat.dim.format.JSON;
+import chat.dim.format.JSONMap;
 import chat.dim.format.UTF8;
 import chat.dim.type.Dictionary;
 
@@ -150,11 +149,9 @@ public class Profile extends Dictionary<String, Object> implements TAI {
                 // create new properties
                 properties = new HashMap<>();
             } else {
-                Object info = JSON.decode(UTF8.encode(data));
+                Map info = JSONMap.decode(UTF8.encode(data));
                 assert info != null : "profile data error: " + data;
-                if (info instanceof Map) {
-                    properties = (Map<String, Object>) info;
-                }
+                properties = (Map<String, Object>) info;
             }
         }
         return properties;
@@ -235,7 +232,7 @@ public class Profile extends Dictionary<String, Object> implements TAI {
             return signature;
         }
         status = 1;
-        data = JSON.encode(getProperties());
+        data = JSONMap.encode(getProperties());
         signature = privateKey.sign(data);
         put("data", UTF8.decode(data));
         put("signature", Base64.encode(signature));

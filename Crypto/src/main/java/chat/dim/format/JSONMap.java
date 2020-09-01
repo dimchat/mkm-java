@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2020 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,27 +25,29 @@
  */
 package chat.dim.format;
 
-public class JSON {
+import java.util.Map;
 
-    public static byte[] encode(Object container) {
-        return parser.encode(container);
+public class JSONMap {
+
+    public static byte[] encode(Map dictionary) {
+        return parser.encode(dictionary);
     }
 
-    public static Object decode(byte[] json) {
+    public static Map decode(byte[] json) {
         return parser.decode(json);
     }
 
     // default parser
-    public static DataParser<Object> parser = new DataParser<Object>() {
+    public static DataParser<Map> parser = new DataParser<Map>() {
 
         @Override
-        public byte[] encode(Object container) {
-            throw new UnsupportedOperationException("implement me!");
+        public byte[] encode(Map dictionary) {
+            return JSON.parser.encode(dictionary);
         }
 
         @Override
-        public Object decode(byte[] json) {
-            throw new UnsupportedOperationException("implement me!");
+        public Map decode(byte[] json) {
+            return (Map) JSON.parser.decode(json);
         }
     };
 }
