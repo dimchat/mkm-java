@@ -49,8 +49,19 @@ public final class Identifier extends chat.dim.type.String implements ID {
     private final Address address;
     private final String terminal;
 
+    static String concat(String name, Address address, String terminal) {
+        String string = address.toString();
+        if (name != null && name.length() > 0) {
+            string = name + "@" + string;
+        }
+        if (terminal != null && terminal.length() > 0) {
+            string = string + "/" + terminal;
+        }
+        return string;
+    }
+
     public Identifier(String name, Address address, String terminal) {
-        super(IDParser.concat(name, address, terminal));
+        super(concat(name, address, terminal));
         this.name = name;
         this.address = address;
         this.terminal = terminal;
@@ -114,17 +125,4 @@ public final class Identifier extends chat.dim.type.String implements ID {
     public String getTerminal() {
         return terminal;
     }
-
-    /**
-     *  Create/get instance of ID
-     *
-     * @param identifier - identifier string/object
-     * @return Address object
-     */
-    public static ID parse(Object identifier) {
-        return parser.parseID(identifier);
-    }
-
-    // default parser
-    public static IDParser parser = new IDParser();
 }

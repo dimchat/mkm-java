@@ -33,24 +33,16 @@ package chat.dim.mkm;
 import java.util.HashMap;
 import java.util.Map;
 
+import chat.dim.Entity;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Address;
+import chat.dim.protocol.Meta;
+import chat.dim.protocol.Profile;
 
-public class IDParser implements ID.Parser, Address.Parser {
+public abstract class EntityParser implements Entity.Parser {
 
     protected final Map<String, ID> idMap = new HashMap<>();
     protected final Map<String, Address> addressMap = new HashMap<>();
-
-    static String concat(String name, Address address, String terminal) {
-        String string = address.toString();
-        if (name != null && name.length() > 0) {
-            string = name + "@" + string;
-        }
-        if (terminal != null && terminal.length() > 0) {
-            string = string + "/" + terminal;
-        }
-        return string;
-    }
 
     private ID createID(String string) {
         String name;
@@ -86,24 +78,6 @@ public class IDParser implements ID.Parser, Address.Parser {
         return new Identifier(name, address, terminal);
     }
 
-    /**
-     *  Create address from string
-     *
-     * @param string - address string
-     * @return Address
-     */
-    public Address createAddress(String string) {
-        // Address for broadcast
-        if (Address.ANYWHERE.equalsIgnoreCase(string)) {
-            return Address.ANYWHERE;
-        }
-        if (Address.EVERYWHERE.equalsIgnoreCase(string)) {
-            return Address.EVERYWHERE;
-        }
-        // implements by sub class
-        return null;
-    }
-
     @Override
     public ID parseID(Object identifier) {
         if (identifier == null) {
@@ -122,12 +96,30 @@ public class IDParser implements ID.Parser, Address.Parser {
         return id;
     }
 
+    /**
+     *  Create address from string
+     *
+     * @param string - address string
+     * @return Address
+     */
+    protected Address createAddress(String string) {
+        // Address for broadcast
+        if (Address.ANYWHERE.equalsIgnoreCase(string)) {
+            return Address.ANYWHERE;
+        }
+        if (Address.EVERYWHERE.equalsIgnoreCase(string)) {
+            return Address.EVERYWHERE;
+        }
+        // implements by sub class
+        return null;
+    }
+
     @Override
     public Address parseAddress(Object address) {
         if (address == null) {
             return null;
-        } else if (address instanceof chat.dim.protocol.Address) {
-            return (chat.dim.protocol.Address) address;
+        } else if (address instanceof Address) {
+            return (Address) address;
         }
         assert address instanceof String : "address error: " + address;
         String string = (String) address;
@@ -140,5 +132,47 @@ public class IDParser implements ID.Parser, Address.Parser {
             }
         }
         return add;
+    }
+
+    /**
+     *  Create meta from map info
+     *
+     * @param meta - meta info
+     * @return Meta
+     */
+    protected abstract Meta createMeta(Map<String, Object> meta);
+
+    @Override
+    public Meta parseMeta(Object meta) {
+        if (meta == null) {
+            return null;
+        } else if (meta instanceof Meta) {
+            return (Meta) meta;
+        }
+        assert meta instanceof Map : "meta error: " + meta;
+        //noinspection unchecked
+        return createMeta((Map<String, Object>) meta);
+    }
+
+    /**
+     *  Create profile from map info
+     *
+     * @param profile - profile info
+     * @return Profile
+     */
+    protected Profile createProfile(Map<String, Object> profile) {
+        return new BaseProfile(profile);
+    }
+
+    @Override
+    public Profile parseProfile(Object profile) {
+        if (profile == null) {
+            return null;
+        } else if (profile instanceof Meta) {
+            return (Profile) profile;
+        }
+        assert profile instanceof Map : "profile error: " + profile;
+        //noinspection unchecked
+        return createProfile((Map<String, Object>) profile);
     }
 }

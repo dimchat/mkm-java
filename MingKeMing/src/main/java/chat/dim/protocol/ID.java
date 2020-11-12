@@ -61,10 +61,10 @@ public interface ID {
     interface Parser {
 
         /**
-         *  Parse string object to address
+         *  Parse string object to ID
          *
-         * @param identifier - ID string/object
-         * @return Address
+         * @param identifier - ID string
+         * @return ID
          */
         ID parseID(Object identifier);
     }

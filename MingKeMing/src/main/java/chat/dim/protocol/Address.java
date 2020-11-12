@@ -54,7 +54,7 @@ public interface Address {
         /**
          *  Parse string object to address
          *
-         * @param address - address string/object
+         * @param address - address string
          * @return Address
          */
         Address parseAddress(Object address);

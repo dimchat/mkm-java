@@ -31,7 +31,10 @@
 package chat.dim;
 
 import java.lang.ref.WeakReference;
+import java.util.Map;
 
+import chat.dim.mkm.EntityParser;
+import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
 import chat.dim.protocol.Profile;
@@ -116,5 +119,51 @@ public abstract class Entity {
 
     public Profile getProfile() {
         return getDataSource().getProfile(identifier);
+    }
+
+    /**
+     *  Entituy Parser
+     *  ~~~~~~~~~~~~~~
+     */
+    public interface Parser extends ID.Parser, Address.Parser, Meta.Parser, Profile.Parser {
+
+    }
+
+    // default parser
+    public static Parser parser = new EntityParser() {
+        @Override
+        protected Meta createMeta(Map<String, Object> meta) {
+            throw new UnsupportedOperationException("implement me!");
+        }
+    };
+
+    /**
+     *  Parse string object to ID
+     *
+     * @param identifier - ID string
+     * @return ID
+     */
+    public static ID parseID(Object identifier) {
+        return parser.parseID(identifier);
+    }
+
+    /**
+     *  Parse map object to meta
+     *
+     * @param meta - meta info
+     * @return Meta
+     */
+    public static Meta parseMeta(Object meta) {
+        return parser.parseMeta(meta);
+    }
+
+    /**
+     *  Parse map object to profile
+     *
+     * @param profile - profile info
+     * @return Profile
+     */
+    public static Profile parseProfile(Object profile) {
+        return parser.parseProfile(profile);
     }
 }

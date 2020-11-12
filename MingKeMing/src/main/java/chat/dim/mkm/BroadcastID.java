@@ -39,7 +39,7 @@ public final class BroadcastID extends chat.dim.type.String implements ID {
     private final BroadcastAddress address;
 
     public BroadcastID(String name, BroadcastAddress address) {
-        super(IDParser.concat(name, address, null));
+        super(Identifier.concat(name, address, null));
         this.name = name;
         this.address = address;
     }
