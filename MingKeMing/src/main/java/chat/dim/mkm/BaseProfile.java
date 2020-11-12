@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import chat.dim.Entity;
 import chat.dim.crypto.EncryptKey;
 import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.SignKey;
@@ -47,18 +48,17 @@ import chat.dim.type.Dictionary;
 
 public class BaseProfile extends Dictionary<String, Object> implements Profile {
 
-    private Object identifier = null; // ID or String
-
     private byte[] data = null;       // JsON.encode(properties)
     private byte[] signature = null;  // LocalUser(identifier).sign(data)
 
     private Map<String, Object> properties = null;
     private int status = 0;           // 1 for valid, -1 for invalid
 
+    private ID identifier = null;
     private EncryptKey key = null;
 
     /**
-     *  Called by 'getInstance()' to create Profile
+     *  Create Profile
      *
      *  @param dictionary - profile info
      */
@@ -103,9 +103,9 @@ public class BaseProfile extends Dictionary<String, Object> implements Profile {
     }
 
     @Override
-    public Object getIdentifier() {
+    public ID getIdentifier() {
         if (identifier == null) {
-            identifier = get("ID");
+            identifier = Entity.parseID(get("ID"));
         }
         return identifier;
     }
@@ -259,6 +259,11 @@ public class BaseProfile extends Dictionary<String, Object> implements Profile {
         setProperty("name", value);
     }
 
+    /**
+     *  Public key (used for encryption, can be same with meta.key)
+     *
+     *      RSA
+     */
     @Override
     public EncryptKey getKey() {
         if (key == null) {

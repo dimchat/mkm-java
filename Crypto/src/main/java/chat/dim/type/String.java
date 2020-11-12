@@ -27,7 +27,7 @@ package chat.dim.type;
 
 public class String {
 
-    protected final java.lang.String string;
+    private final java.lang.String string;
 
     protected String(java.lang.String str) {
         super();

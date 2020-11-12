@@ -40,6 +40,13 @@ import chat.dim.mkm.BroadcastAddress;
 public interface Address {
 
     /**
+     *  Get address type
+     *
+     * @return network type
+     */
+    byte getNetwork();
+
+    /**
      *  Address for broadcast
      */
     BroadcastAddress ANYWHERE = new BroadcastAddress("anywhere", NetworkType.Main);

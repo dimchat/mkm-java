@@ -32,12 +32,19 @@ package chat.dim.mkm;
 
 import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
+import chat.dim.protocol.NetworkType;
 
 public final class BroadcastID extends chat.dim.type.String implements ID {
 
     private final String name;
     private final BroadcastAddress address;
 
+    /**
+     *  Create ID
+     *
+     * @param name - ID.name
+     * @param address - ID.address
+     */
     public BroadcastID(String name, BroadcastAddress address) {
         super(Identifier.concat(name, address, null));
         this.name = name;
@@ -64,8 +71,9 @@ public final class BroadcastID extends chat.dim.type.String implements ID {
      *
      * @return address type as network ID
      */
+    @Override
     public byte getType() {
-        assert address != null : "ID.address should not be empty: " + string;
+        assert address != null : "ID.address should not be empty: " + toString();
         return address.getNetwork();
     }
 }

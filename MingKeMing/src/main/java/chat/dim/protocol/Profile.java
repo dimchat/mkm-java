@@ -50,7 +50,7 @@ public interface Profile extends TAI {
      *
      * @return entity ID
      */
-    Object getIdentifier();
+    ID getIdentifier();
 
     //---- properties getter/setter
 

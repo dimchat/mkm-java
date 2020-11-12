@@ -81,7 +81,16 @@ public abstract class Entity {
     @Override
     public String toString() {
         String clazzName = getClass().getSimpleName();
-        return "<" + clazzName + "|" + identifier + " \"" + getName() + "\">";
+        return "<" + clazzName + "|" + getType() + " " + identifier + " \"" + getName() + "\">";
+    }
+
+    /**
+     *  Get ID.type
+     *
+     * @return network type
+     */
+    public byte getType() {
+        return identifier.getType();
     }
 
     public EntityDataSource getDataSource() {

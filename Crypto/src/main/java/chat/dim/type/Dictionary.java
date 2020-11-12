@@ -36,7 +36,7 @@ import java.util.Set;
 
 public abstract class Dictionary<K, V> implements Map<K, V> {
 
-    protected final Map<K, V> dictionary;
+    private final Map<K, V> dictionary;
 
     protected Dictionary() {
         super();
@@ -47,6 +47,10 @@ public abstract class Dictionary<K, V> implements Map<K, V> {
         super();
         assert map != null : "cannot initialize with an empty map!";
         dictionary = map;
+    }
+
+    public Map<K, V> getMap() {
+        return dictionary;
     }
 
     @SuppressWarnings("unchecked")

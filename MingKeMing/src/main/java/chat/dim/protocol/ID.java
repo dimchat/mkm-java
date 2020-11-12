@@ -49,6 +49,13 @@ public interface ID {
     String getTerminal();
 
     /**
+     *  Get ID.type
+     *
+     * @return network type
+     */
+    byte getType();
+
+    /**
      *  ID for broadcast
      */
     BroadcastID ANYONE = new BroadcastID("anyone", Address.ANYWHERE);

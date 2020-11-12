@@ -38,9 +38,10 @@ public final class BroadcastAddress extends chat.dim.type.String implements Addr
     private final NetworkType network;
 
     /**
-     *  Called by 'getInstance()' to create address
+     *  Create address
      *
-     *  @param string - Encoded address string
+     * @param string - Encoded address string
+     * @param network - address type
      */
     public BroadcastAddress(String string, NetworkType network) {
         super(string);

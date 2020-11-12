@@ -32,6 +32,7 @@ package chat.dim.mkm;
 
 import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
+import chat.dim.protocol.NetworkType;
 
 /**
  *  ID for entity (User/Group)
@@ -105,9 +106,9 @@ public final class Identifier extends chat.dim.type.String implements ID {
         String[] pair = ((String) other).split("/");
         assert pair[0].length() > 0 : "ID error: " + other;
         if (terminal == null || terminal.length() == 0) {
-            return pair[0].equals(string);
+            return pair[0].equals(toString());
         } else {
-            return pair[0].equals(string.split("/")[0]);
+            return pair[0].equals(toString().split("/")[0]);
         }
     }
 
@@ -124,5 +125,16 @@ public final class Identifier extends chat.dim.type.String implements ID {
     @Override
     public String getTerminal() {
         return terminal;
+    }
+
+    /**
+     *  Get Network ID
+     *
+     * @return address type as network ID
+     */
+    @Override
+    public byte getType() {
+        assert address != null : "ID.address should not be empty: " + toString();
+        return address.getNetwork();
     }
 }
