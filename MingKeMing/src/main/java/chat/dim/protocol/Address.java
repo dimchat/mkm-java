@@ -28,37 +28,35 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim;
+package chat.dim.protocol;
 
-import java.util.List;
+import chat.dim.mkm.BroadcastAddress;
 
-import chat.dim.protocol.ID;
+/**
+ *  Address for MKM ID
+ *  ~~~~~~~~~~~~~~~~~~
+ *  This class is used to build address for ID
+ */
+public interface Address {
 
-public class Group extends Entity {
+    /**
+     *  Address for broadcast
+     */
+    BroadcastAddress ANYWHERE = new BroadcastAddress("anywhere", NetworkType.Main);
+    BroadcastAddress EVERYWHERE = new BroadcastAddress("everywhere", NetworkType.Group);
 
-    private ID founder = null;
+    /**
+     *  Address Parser
+     *  ~~~~~~~~~~~~~~
+     */
+    interface Parser {
 
-    public Group(ID identifier) {
-        super(identifier);
-    }
-
-    @Override
-    public GroupDataSource getDataSource() {
-        return (GroupDataSource) super.getDataSource();
-    }
-
-    public ID getFounder() {
-        if (founder == null) {
-            founder = getDataSource().getFounder(identifier);
-        }
-        return founder;
-    }
-
-    public ID getOwner() {
-        return getDataSource().getOwner(identifier);
-    }
-
-    public List<ID> getMembers() {
-        return getDataSource().getMembers(identifier);
+        /**
+         *  Parse string object to address
+         *
+         * @param address - address string/object
+         * @return Address
+         */
+        Address parseAddress(Object address);
     }
 }

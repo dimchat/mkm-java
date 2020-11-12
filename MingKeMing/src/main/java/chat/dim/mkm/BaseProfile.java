@@ -28,38 +28,41 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim;
+package chat.dim.mkm;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import chat.dim.crypto.EncryptKey;
+import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
 import chat.dim.format.JSONMap;
 import chat.dim.format.UTF8;
+import chat.dim.protocol.ID;
+import chat.dim.protocol.Profile;
 import chat.dim.type.Dictionary;
 
-public class Profile extends Dictionary<String, Object> implements TAI {
+public class BaseProfile extends Dictionary<String, Object> implements Profile {
 
     private Object identifier = null; // ID or String
 
     private byte[] data = null;       // JsON.encode(properties)
     private byte[] signature = null;  // LocalUser(identifier).sign(data)
 
-    private Map<String, Object> properties =null;
+    private Map<String, Object> properties = null;
     private int status = 0;           // 1 for valid, -1 for invalid
+
+    private EncryptKey key = null;
 
     /**
      *  Called by 'getInstance()' to create Profile
      *
      *  @param dictionary - profile info
      */
-    public Profile(Map<String, Object> dictionary) {
+    public BaseProfile(Map<String, Object> dictionary) {
         super(dictionary);
     }
 
@@ -70,7 +73,7 @@ public class Profile extends Dictionary<String, Object> implements TAI {
      * @param data - profile data in JsON format
      * @param signature - signature of profile data
      */
-    public Profile(ID identifier, String data, byte[] signature) {
+    public BaseProfile(ID identifier, String data, byte[] signature) {
         super();
         // ID
         put("ID", identifier);
@@ -90,7 +93,7 @@ public class Profile extends Dictionary<String, Object> implements TAI {
      *
      * @param identifier - entity ID
      */
-    public Profile(ID identifier) {
+    public BaseProfile(ID identifier) {
         this(identifier, null, null);
     }
 
@@ -246,53 +249,39 @@ public class Profile extends Dictionary<String, Object> implements TAI {
      *
      * @return name string
      */
+    @Override
     public String getName() {
-        return  (String) getProperty("name");
+        return (String) getProperty("name");
     }
 
+    @Override
     public void setName(String value) {
         setProperty("name", value);
     }
 
     @Override
     public EncryptKey getKey() {
-        // TODO: get public key if this is user profile
-        return null;
-    }
-
-    public void setKey(EncryptKey publicKey) {
-        // TODO: set public key if this is user profile
-    }
-
-    //-------- Runtime --------
-
-    private static List<Class> profileClasses = new ArrayList<>();
-
-    @SuppressWarnings("unchecked")
-    public static void register(Class clazz) {
-        // check whether clazz is subclass of Profile
-        assert Profile.class.isAssignableFrom(clazz) : "error: " + clazz;
-        if (!profileClasses.contains(clazz)) {
-            profileClasses.add(0, clazz);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    public static Profile getInstance(Map<String, Object> dictionary) {
-        if (dictionary == null) {
-            return null;
-        } else if (dictionary instanceof Profile) {
-            return (Profile) dictionary;
-        }
-        // try each subclass to parse profile
-        Profile profile;
-        for (Class clazz : profileClasses) {
-            profile = (Profile) createInstance(clazz, dictionary);
-            if (profile != null) {
-                return profile;
+        if (key == null) {
+            Object info = getProperty("key");
+            if (info instanceof Map) {
+                try {
+                    //noinspection unchecked
+                    PublicKey pKey = PublicKey.getInstance((Map<String, Object>) info);
+                    if (pKey instanceof EncryptKey) {
+                        key = (EncryptKey) pKey;
+                    }
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
             }
         }
-        return new Profile(dictionary);
+        return key;
+    }
+
+    @Override
+    public void setKey(EncryptKey publicKey) {
+        setProperty("key", publicKey);
+        key = publicKey;
     }
 }
 

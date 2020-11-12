@@ -1,13 +1,8 @@
 /* license: https://mit-license.org
- *
- *  Ming-Ke-Ming : Decentralized User Identity Authentication
- *
- *                                Written in 2019 by Moky <albert.moky@gmail.com>
- *
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2020 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,37 +23,19 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim;
+package chat.dim.digest;
 
-import java.util.List;
+public class Keccak256 {
 
-import chat.dim.protocol.ID;
-
-public class Group extends Entity {
-
-    private ID founder = null;
-
-    public Group(ID identifier) {
-        super(identifier);
+    public static byte[] digest(byte[] data) {
+        return hash.digest(data);
     }
 
-    @Override
-    public GroupDataSource getDataSource() {
-        return (GroupDataSource) super.getDataSource();
-    }
+    public static Hash hash = new Hash() {
 
-    public ID getFounder() {
-        if (founder == null) {
-            founder = getDataSource().getFounder(identifier);
+        @Override
+        public byte[] digest(byte[] data) {
+            throw new UnsupportedOperationException("implement me!");
         }
-        return founder;
-    }
-
-    public ID getOwner() {
-        return getDataSource().getOwner(identifier);
-    }
-
-    public List<ID> getMembers() {
-        return getDataSource().getMembers(identifier);
-    }
+    };
 }

@@ -30,6 +30,10 @@
  */
 package chat.dim;
 
+import chat.dim.protocol.ID;
+import chat.dim.protocol.Meta;
+import chat.dim.protocol.Profile;
+
 public interface EntityDataSource {
 
     /**

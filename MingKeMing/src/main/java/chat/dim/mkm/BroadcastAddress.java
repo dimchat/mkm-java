@@ -2,12 +2,12 @@
  *
  *  Ming-Ke-Ming : Decentralized User Identity Authentication
  *
- *                                Written in 2019 by Moky <albert.moky@gmail.com>
+ *                                Written in 2020 by Moky <albert.moky@gmail.com>
  *
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2020 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,37 +28,31 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim;
+package chat.dim.mkm;
 
-import java.util.List;
+import chat.dim.protocol.Address;
+import chat.dim.protocol.NetworkType;
 
-import chat.dim.protocol.ID;
+public final class BroadcastAddress extends chat.dim.type.String implements Address {
 
-public class Group extends Entity {
+    private final NetworkType network;
 
-    private ID founder = null;
-
-    public Group(ID identifier) {
-        super(identifier);
+    /**
+     *  Called by 'getInstance()' to create address
+     *
+     *  @param string - Encoded address string
+     */
+    public BroadcastAddress(String string, NetworkType network) {
+        super(string);
+        this.network = network;
     }
 
-    @Override
-    public GroupDataSource getDataSource() {
-        return (GroupDataSource) super.getDataSource();
-    }
-
-    public ID getFounder() {
-        if (founder == null) {
-            founder = getDataSource().getFounder(identifier);
-        }
-        return founder;
-    }
-
-    public ID getOwner() {
-        return getDataSource().getOwner(identifier);
-    }
-
-    public List<ID> getMembers() {
-        return getDataSource().getMembers(identifier);
+    /**
+     *  get address type
+     *
+     * @return Network ID
+     */
+    public byte getNetwork() {
+        return network.value;
     }
 }

@@ -60,7 +60,7 @@ public abstract class PrivateKey extends Dictionary<String, Object> implements A
             // same dictionary
             return true;
         } else if (other instanceof PrivateKey) {
-            // check by encryption
+            // check by public key
             PublicKey publicKey = getPublicKey();
             if (publicKey == null) {
                 throw new NullPointerException("failed to get public key: " + this);

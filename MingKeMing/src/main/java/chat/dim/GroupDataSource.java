@@ -32,6 +32,8 @@ package chat.dim;
 
 import java.util.List;
 
+import chat.dim.protocol.ID;
+
 public interface GroupDataSource extends EntityDataSource {
 
     /**

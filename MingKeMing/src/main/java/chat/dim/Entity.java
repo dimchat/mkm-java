@@ -32,6 +32,10 @@ package chat.dim;
 
 import java.lang.ref.WeakReference;
 
+import chat.dim.protocol.ID;
+import chat.dim.protocol.Meta;
+import chat.dim.protocol.Profile;
+
 /**
  *  Entity (User/Group)
  *  ~~~~~~~~~~~~~~~~~~~
@@ -74,7 +78,7 @@ public abstract class Entity {
     @Override
     public String toString() {
         String clazzName = getClass().getSimpleName();
-        return "<" + clazzName + "|" + getType() + " " + identifier + " (" + getNumber() + ") \"" + getName() + "\">";
+        return "<" + clazzName + "|" + identifier + " \"" + getName() + "\">";
     }
 
     public EntityDataSource getDataSource() {
@@ -86,24 +90,6 @@ public abstract class Entity {
 
     public void setDataSource(EntityDataSource dataSource) {
         dataSourceRef = new WeakReference<>(dataSource);
-    }
-
-    /**
-     *  Get entity type
-     *
-     * @return ID(address) type as entity type
-     */
-    public byte getType() {
-        return identifier.getType();
-    }
-
-    /**
-     *  Get Search Number
-     *
-     * @return number for searching this entity
-     */
-    public long getNumber() {
-        return identifier.getNumber();
     }
 
     /**
@@ -121,7 +107,7 @@ public abstract class Entity {
             }
         }
         // get ID.name
-        return identifier.name;
+        return identifier.getName();
     }
 
     public Meta getMeta() {

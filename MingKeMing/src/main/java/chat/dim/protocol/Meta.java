@@ -28,86 +28,89 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim;
+package chat.dim.protocol;
 
-import java.util.Set;
-
-import chat.dim.crypto.EncryptKey;
-import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 
 /**
- *  The Additional Information
+ *  User/Group Meta data
+ *  ~~~~~~~~~~~~~~~~~~~~
+ *  This class is used to generate entity meta
  *
- *      'Meta' is the information for entity which never changed,
- *          which contains the key for verify signature;
- *      'TAI' is the variable part,
- *          which could contain a public key for asymmetric encryption.
+ *      data format: {
+ *          version: 1,          // algorithm version
+ *          seed: "moKy",        // user/group name
+ *          key: "{public key}", // PK = secp256k1(SK);
+ *          fingerprint: "..."   // CT = sign(seed, SK);
+ *      }
+ *
+ *      algorithm:
+ *          fingerprint = sign(seed, SK);
  */
-public interface TAI {
+public interface Meta {
 
     /**
-     *  Check if signature matched
+     *  Meta algorithm version
      *
-     * @return False on signature not matched
+     *      0x01 - username@address
+     *      0x02 - btc_address
+     *      0x03 - username@btc_address
+     */
+    int getType();
+
+    /**
+     *  Public key (used for signature)
+     *
+     *      RSA / ECC
+     */
+    VerifyKey getKey();
+
+    /**
+     *  Seed to generate fingerprint
+     *
+     *      Username / Group-X
+     */
+    String getSeed();
+
+    /**
+     *  Fingerprint to verify ID and public key
+     *
+     *      Build: fingerprint = sign(seed, privateKey)
+     *      Check: verify(seed, fingerprint, publicKey)
+     */
+    byte[] getFingerprint();
+
+    /**
+     *  Check meta valid
+     *  (must call this when received a new meta from network)
+     *
+     * @return true on valid
      */
     boolean isValid();
 
     /**
-     *  Get entity ID
+     *  Check whether meta match with entity ID
+     *  (must call this when received a new meta from network)
      *
-     * @return entity ID
+     * @param identifier - entity ID
+     * @return true on matched
      */
-    Object getIdentifier();
+    boolean matches(ID identifier);
+
+    boolean matches(VerifyKey pk);
 
     /**
-     *  Get public key to encrypt message for user
-     *
-     * @return public key
+     *  Meta Parser
+     *  ~~~~~~~~~~~
      */
-    EncryptKey getKey();
+    interface Parser {
 
-    //-------- properties
-
-    /**
-     *  Get all names for properties
-     *
-     * @return profile properties key set
-     */
-    Set<String> propertyNames();
-
-    /**
-     *  Get profile property data with key
-     *
-     * @param name - property name
-     * @return property data
-     */
-    Object getProperty(String name);
-
-    /**
-     *  Update profile property with key and data
-     *  (this will reset 'data' and 'signature')
-     *
-     * @param name - property name
-     * @param value - property data
-     */
-    void setProperty(String name, Object value);
-
-    //-------- signature
-
-    /**
-     *  Verify 'data' and 'signature' with public key
-     *
-     * @param publicKey - public key in meta.key
-     * @return true on signature matched
-     */
-    boolean verify(VerifyKey publicKey);
-
-    /**
-     *  Encode properties to 'data' and sign it to 'signature'
-     *
-     * @param privateKey - private key match meta.key
-     * @return signature
-     */
-    byte[] sign(SignKey privateKey);
+        /**
+         *  Parse map object to meta
+         *
+         * @param meta - meta info
+         * @return Meta
+         */
+        Meta parseMeta(Object meta);
+    }
 }

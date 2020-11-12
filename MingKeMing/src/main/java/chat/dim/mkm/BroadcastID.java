@@ -2,12 +2,12 @@
  *
  *  Ming-Ke-Ming : Decentralized User Identity Authentication
  *
- *                                Written in 2019 by Moky <albert.moky@gmail.com>
+ *                                Written in 2020 by Moky <albert.moky@gmail.com>
  *
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2020 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,37 +28,44 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim;
+package chat.dim.mkm;
 
-import java.util.List;
-
+import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
 
-public class Group extends Entity {
+public final class BroadcastID extends chat.dim.type.String implements ID {
 
-    private ID founder = null;
+    private final String name;
+    private final BroadcastAddress address;
 
-    public Group(ID identifier) {
-        super(identifier);
+    public BroadcastID(String name, BroadcastAddress address) {
+        super(IDParser.concat(name, address, null));
+        this.name = name;
+        this.address = address;
     }
 
     @Override
-    public GroupDataSource getDataSource() {
-        return (GroupDataSource) super.getDataSource();
+    public String getName() {
+        return name;
     }
 
-    public ID getFounder() {
-        if (founder == null) {
-            founder = getDataSource().getFounder(identifier);
-        }
-        return founder;
+    @Override
+    public Address getAddress() {
+        return address;
     }
 
-    public ID getOwner() {
-        return getDataSource().getOwner(identifier);
+    @Override
+    public String getTerminal() {
+        return null;
     }
 
-    public List<ID> getMembers() {
-        return getDataSource().getMembers(identifier);
+    /**
+     *  Get Network ID
+     *
+     * @return address type as network ID
+     */
+    public byte getType() {
+        assert address != null : "ID.address should not be empty: " + string;
+        return address.getNetwork();
     }
 }

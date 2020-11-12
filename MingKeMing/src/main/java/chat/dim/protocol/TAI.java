@@ -28,75 +28,71 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim;
+package chat.dim.protocol;
 
-import java.util.List;
+import java.util.Set;
 
-import chat.dim.crypto.DecryptKey;
-import chat.dim.crypto.EncryptKey;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
-import chat.dim.protocol.ID;
 
 /**
- *  User Data Source
- *  ~~~~~~~~~~~~~~~~
+ *  The Additional Information
  *
- *  (Encryption/decryption)
- *  1. public key for encryption
- *     if profile.key not exists, means it is the same key with meta.key
- *  2. private keys for decryption
- *     the private keys paired with [profile.key, meta.key]
- *
- *  (Signature/Verification)
- *  3. private key for signature
- *     the private key paired with meta.key
- *  4. public keys for verification
- *     [meta.key]
+ *      'Meta' is the information for entity which never changed,
+ *          which contains the key for verify signature;
+ *      'TAI' is the variable part,
+ *          which could contain a public key for asymmetric encryption.
  */
-public interface UserDataSource extends EntityDataSource {
+public interface TAI {
 
     /**
-     *  Get contacts list
+     *  Check if signature matched
      *
-     * @param user - user ID
-     * @return contacts list (ID)
+     * @return False on signature not matched
      */
-    List<ID> getContacts(ID user);
+    boolean isValid();
+
+    //-------- signature
 
     /**
-     *  Get user's public key for encryption
-     *  (profile.key or meta.key)
+     *  Verify 'data' and 'signature' with public key
      *
-     * @param user - user ID
-     * @return public key
+     * @param publicKey - public key in meta.key
+     * @return true on signature matched
      */
-    EncryptKey getPublicKeyForEncryption(ID user);
+    boolean verify(VerifyKey publicKey);
 
     /**
-     *  Get user's private keys for decryption
-     *  (which paired with [profile.key, meta.key])
+     *  Encode properties to 'data' and sign it to 'signature'
      *
-     * @param user - user ID
-     * @return private keys
+     * @param privateKey - private key match meta.key
+     * @return signature
      */
-    List<DecryptKey> getPrivateKeysForDecryption(ID user);
+    byte[] sign(SignKey privateKey);
+
+    //-------- properties
 
     /**
-     *  Get user's private key for signature
-     *  (which paired with profile.key or meta.key)
+     *  Get all names for properties
      *
-     * @param user - user ID
-     * @return private key
+     * @return profile properties key set
      */
-    SignKey getPrivateKeyForSignature(ID user);
+    Set<String> propertyNames();
 
     /**
-     *  Get user's public keys for verification
-     *  [profile.key, meta.key]
+     *  Get profile property data with key
      *
-     * @param user - user ID
-     * @return public keys
+     * @param name - property name
+     * @return property data
      */
-    List<VerifyKey> getPublicKeysForVerification(ID user);
+    Object getProperty(String name);
+
+    /**
+     *  Update profile property with key and data
+     *  (this will reset 'data' and 'signature')
+     *
+     * @param name - property name
+     * @param value - property data
+     */
+    void setProperty(String name, Object value);
 }

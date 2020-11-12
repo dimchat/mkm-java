@@ -28,37 +28,44 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim;
+package chat.dim.protocol;
 
-import java.util.List;
+import chat.dim.mkm.BroadcastID;
 
-import chat.dim.protocol.ID;
+/**
+ *  ID for entity (User/Group)
+ *
+ *      data format: "name@address[/terminal]"
+ *
+ *      fields:
+ *          name     - entity name, the seed of fingerprint to build address
+ *          address  - a string to identify an entity
+ *          terminal - entity login resource(device), OPTIONAL
+ */
+public interface ID {
 
-public class Group extends Entity {
+    String getName();
+    Address getAddress();
+    String getTerminal();
 
-    private ID founder = null;
+    /**
+     *  ID for broadcast
+     */
+    BroadcastID ANYONE = new BroadcastID("anyone", Address.ANYWHERE);
+    BroadcastID EVERYONE = new BroadcastID("everyone", Address.EVERYWHERE);
 
-    public Group(ID identifier) {
-        super(identifier);
-    }
+    /**
+     *  ID Parser
+     *  ~~~~~~~~~
+     */
+    interface Parser {
 
-    @Override
-    public GroupDataSource getDataSource() {
-        return (GroupDataSource) super.getDataSource();
-    }
-
-    public ID getFounder() {
-        if (founder == null) {
-            founder = getDataSource().getFounder(identifier);
-        }
-        return founder;
-    }
-
-    public ID getOwner() {
-        return getDataSource().getOwner(identifier);
-    }
-
-    public List<ID> getMembers() {
-        return getDataSource().getMembers(identifier);
+        /**
+         *  Parse string object to address
+         *
+         * @param identifier - ID string/object
+         * @return Address
+         */
+        ID parseID(Object identifier);
     }
 }

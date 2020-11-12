@@ -35,6 +35,10 @@ public class String {
         string = str;
     }
 
+    public int length() {
+        return string.length();
+    }
+
     @Override
     public java.lang.String toString() {
         return string;
@@ -55,8 +59,26 @@ public class String {
             String str = (String) other;
             return string.equals(str.string);
         } else if (other instanceof java.lang.String) {
-            // same string
+            // check string
             return string.equals(other);
+        } else {
+            // null or unknown object
+            return false;
+        }
+    }
+
+    public boolean equalsIgnoreCase(Object other) {
+        if (super.equals(other)) {
+            // same object
+            return true;
+        } else if (other instanceof String) {
+            // check with inner string
+            String str = (String) other;
+            return string.equalsIgnoreCase(str.string);
+        } else if (other instanceof java.lang.String) {
+            // check string
+            java.lang.String str = (java.lang.String) other;
+            return string.equalsIgnoreCase(str);
         } else {
             // null or unknown object
             return false;

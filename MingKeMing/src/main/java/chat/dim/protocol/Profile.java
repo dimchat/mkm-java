@@ -28,37 +28,67 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim;
+package chat.dim.protocol;
 
-import java.util.List;
+import chat.dim.crypto.EncryptKey;
 
-import chat.dim.protocol.ID;
+/**
+ *  User/Group Profile data
+ *  ~~~~~~~~~~~~~~~~~~~~~~~
+ *  This class is used to generate entity profile
+ *
+ *      data format: {
+ *          ID: "EntityID",   // entity ID
+ *          data: "{JSON}",   // data = json_encode(info)
+ *          signature: "..."  // signature = sign(data, SK);
+ *      }
+ */
+public interface Profile extends TAI {
 
-public class Group extends Entity {
+    /**
+     *  Get entity ID
+     *
+     * @return entity ID
+     */
+    Object getIdentifier();
 
-    private ID founder = null;
+    //---- properties getter/setter
 
-    public Group(ID identifier) {
-        super(identifier);
-    }
+    /**
+     *  Get entity name
+     *
+     * @return name string
+     */
+    String getName();
 
-    @Override
-    public GroupDataSource getDataSource() {
-        return (GroupDataSource) super.getDataSource();
-    }
+    void setName(String value);
 
-    public ID getFounder() {
-        if (founder == null) {
-            founder = getDataSource().getFounder(identifier);
-        }
-        return founder;
-    }
+    /**
+     *  Get public key to encrypt message for user
+     *
+     * @return public key
+     */
+    EncryptKey getKey();
 
-    public ID getOwner() {
-        return getDataSource().getOwner(identifier);
-    }
+    /**
+     *  Set public key for other user to encrypt message
+     *
+     * @param publicKey - public key in profile.key
+     */
+    void setKey(EncryptKey publicKey);
 
-    public List<ID> getMembers() {
-        return getDataSource().getMembers(identifier);
+    /**
+     *  Profile Parser
+     *  ~~~~~~~~~~~~~~
+     */
+    interface Parser {
+
+        /**
+         *  Parse map object to profile
+         *
+         * @param profile - profile info
+         * @return Profile
+         */
+        Profile parseProfile(Object profile);
     }
 }
