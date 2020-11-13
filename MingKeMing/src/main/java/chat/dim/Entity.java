@@ -161,7 +161,7 @@ public abstract class Entity {
      * @param meta - meta info
      * @return Meta
      */
-    public static Meta parseMeta(Object meta) {
+    public static Meta parseMeta(Map<String, Object> meta) {
         return parser.parseMeta(meta);
     }
 
@@ -171,7 +171,7 @@ public abstract class Entity {
      * @param profile - profile info
      * @return Profile
      */
-    public static Profile parseProfile(Object profile) {
+    public static Profile parseProfile(Map<String, Object> profile) {
         return parser.parseProfile(profile);
     }
 }

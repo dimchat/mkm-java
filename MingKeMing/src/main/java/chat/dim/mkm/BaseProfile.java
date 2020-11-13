@@ -78,7 +78,7 @@ public class BaseProfile extends Dictionary implements Profile {
         super();
 
         // ID
-        put("ID", identifier);
+        put("ID", identifier.toString());
         this.identifier = identifier;
 
         // json data
@@ -287,7 +287,7 @@ public class BaseProfile extends Dictionary implements Profile {
 
     @Override
     public void setKey(EncryptKey publicKey) {
-        setProperty("key", publicKey);
+        setProperty("key", publicKey.getMap());
         key = publicKey;
     }
 }

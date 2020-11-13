@@ -51,6 +51,9 @@ import chat.dim.crypto.VerifyKey;
  */
 public interface Meta extends Map<String, Object> {
 
+    Map<String, Object> getMap();
+    Map<String, Object> copyMap();
+
     /**
      *  Meta algorithm version
      *
@@ -113,6 +116,6 @@ public interface Meta extends Map<String, Object> {
          * @param meta - meta info
          * @return Meta
          */
-        Meta parseMeta(Object meta);
+        Meta parseMeta(Map<String, Object> meta);
     }
 }

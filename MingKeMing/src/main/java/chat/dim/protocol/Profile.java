@@ -47,6 +47,9 @@ import chat.dim.crypto.EncryptKey;
  */
 public interface Profile extends TAI, Map<String, Object> {
 
+    Map<String, Object> getMap();
+    Map<String, Object> copyMap();
+
     /**
      *  Get entity ID
      *
@@ -91,6 +94,6 @@ public interface Profile extends TAI, Map<String, Object> {
          * @param profile - profile info
          * @return Profile
          */
-        Profile parseProfile(Object profile);
+        Profile parseProfile(Map<String, Object> profile);
     }
 }

@@ -102,7 +102,7 @@ public abstract class BaseMeta extends Dictionary implements Meta {
         this.version = version;
 
         // public key
-        put("key", key);
+        put("key", key.getMap());
         this.key = key;
 
         if (seed != null) {

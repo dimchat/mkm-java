@@ -145,14 +145,13 @@ public abstract class EntityParser implements Entity.Parser {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Meta parseMeta(Object meta) {
+    public Meta parseMeta(Map<String, Object> meta) {
         if (meta == null) {
             return null;
         } else if (meta instanceof Meta) {
             return (Meta) meta;
         }
-        assert meta instanceof Map : "meta error: " + meta;
-        return createMeta((Map<String, Object>) meta);
+        return createMeta(meta);
     }
 
     /**
@@ -167,13 +166,12 @@ public abstract class EntityParser implements Entity.Parser {
 
     @SuppressWarnings("unchecked")
     @Override
-    public Profile parseProfile(Object profile) {
+    public Profile parseProfile(Map<String, Object> profile) {
         if (profile == null) {
             return null;
-        } else if (profile instanceof Meta) {
+        } else if (profile instanceof Profile) {
             return (Profile) profile;
         }
-        assert profile instanceof Map : "profile error: " + profile;
-        return createProfile((Map<String, Object>) profile);
+        return createProfile(profile);
     }
 }
