@@ -90,8 +90,30 @@ public abstract class BaseMeta extends Dictionary<String, Object> implements Met
 
     private int status = 0;  // 1 for valid, -1 for invalid
 
-    protected BaseMeta(Map<String, Object> dictionary) {
+    public BaseMeta(Map<String, Object> dictionary) {
         super(dictionary);
+    }
+
+    public BaseMeta(int version, VerifyKey key, String seed, byte[] fingerprint) {
+        super();
+
+        // meta type
+        put("version", version);
+        this.version = version;
+
+        // public key
+        put("key", key);
+        this.key = key;
+
+        if (seed != null) {
+            put("seed", seed);
+            this.seed = seed;
+        }
+
+        if (fingerprint != null) {
+            put("fingerprint", Base64.encode(fingerprint));
+            this.fingerprint = fingerprint;
+        }
     }
 
     @Override

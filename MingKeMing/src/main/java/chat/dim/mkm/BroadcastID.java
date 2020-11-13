@@ -32,7 +32,6 @@ package chat.dim.mkm;
 
 import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
-import chat.dim.protocol.NetworkType;
 
 public final class BroadcastID extends chat.dim.type.String implements ID {
 

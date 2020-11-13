@@ -30,6 +30,8 @@
  */
 package chat.dim.protocol;
 
+import java.util.Map;
+
 import chat.dim.crypto.VerifyKey;
 
 /**
@@ -47,7 +49,7 @@ import chat.dim.crypto.VerifyKey;
  *      algorithm:
  *          fingerprint = sign(seed, SK);
  */
-public interface Meta {
+public interface Meta extends Map<String, Object> {
 
     /**
      *  Meta algorithm version

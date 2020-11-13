@@ -33,7 +33,6 @@ package chat.dim;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 
-import chat.dim.mkm.EntityParser;
 import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
@@ -131,8 +130,8 @@ public abstract class Entity {
     }
 
     /**
-     *  Entituy Parser
-     *  ~~~~~~~~~~~~~~
+     *  Entity Parser
+     *  ~~~~~~~~~~~~~
      */
     public interface Parser extends ID.Parser, Address.Parser, Meta.Parser, Profile.Parser {
 

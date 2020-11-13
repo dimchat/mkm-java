@@ -75,16 +75,21 @@ public class BaseProfile extends Dictionary<String, Object> implements Profile {
      */
     public BaseProfile(ID identifier, String data, byte[] signature) {
         super();
+
         // ID
         put("ID", identifier);
+        this.identifier = identifier;
 
         // json data
         if (data != null) {
             put("data", data);
+            this.data = UTF8.encode(data);
         }
+
         // signature
         if (signature != null) {
             put("signature", Base64.encode(signature));
+            this.signature = signature;
         }
     }
 

@@ -32,7 +32,6 @@ package chat.dim.mkm;
 
 import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
-import chat.dim.protocol.NetworkType;
 
 /**
  *  ID for entity (User/Group)

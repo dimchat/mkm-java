@@ -30,6 +30,8 @@
  */
 package chat.dim.protocol;
 
+import java.util.Map;
+
 import chat.dim.crypto.EncryptKey;
 
 /**
@@ -43,7 +45,7 @@ import chat.dim.crypto.EncryptKey;
  *          signature: "..."  // signature = sign(data, SK);
  *      }
  */
-public interface Profile extends TAI {
+public interface Profile extends TAI, Map<String, Object> {
 
     /**
      *  Get entity ID
