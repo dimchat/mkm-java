@@ -25,11 +25,7 @@
  */
 package chat.dim.crypto;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
-
-import chat.dim.type.Dictionary;
 
 /**
  *  Symmetric Cryptography Key
@@ -42,67 +38,23 @@ import chat.dim.type.Dictionary;
  *      ...
  *  }
  */
-public abstract class SymmetricKey extends Dictionary<String, Object> implements EncryptKey, DecryptKey {
+public interface SymmetricKey extends EncryptKey, DecryptKey {
 
-    public static final String AES = "AES"; //-- "AES/CBC/PKCS7Padding"
-    public static final String DES = "DES";
+    String AES = "AES"; //-- "AES/CBC/PKCS7Padding"
+    String DES = "DES";
 
-    public SymmetricKey(Map<String, Object> keyInfo) {
-        super(keyInfo);
-    }
+    /**
+     *  Key Parser
+     *  ~~~~~~~~~~
+     */
+    interface Parser {
 
-    private static final byte[] promise = "Moky loves May Lee forever!".getBytes();
-
-    @Override
-    public boolean equals(Object other) {
-        if (super.equals(other)) {
-            // same dictionary
-            return true;
-        } else if (other instanceof SymmetricKey) {
-            // check by encryption
-            SymmetricKey key = (SymmetricKey) other;
-            byte[] ciphertext = key.encrypt(promise);
-            byte[] plaintext = decrypt(ciphertext);
-            return Arrays.equals(plaintext, promise);
-        } else {
-            // null or unknown object
-            return false;
-        }
-    }
-
-    //-------- Runtime --------
-
-    private static Map<String, Class> symmetricKeyClasses = new HashMap<>();
-
-    public static void register(String algorithm, Class clazz) {
-        // check whether clazz is subclass of SymmetricKey
-        assert SymmetricKey.class.isAssignableFrom(clazz) : "error: " + clazz;
-        symmetricKeyClasses.put(algorithm, clazz);
-    }
-
-    private static Class keyClass(Map<String, Object> dictionary) {
-        // get subclass by key algorithm
-        String algorithm = (String) dictionary.get("algorithm");
-        return symmetricKeyClasses.get(algorithm);
-    }
-
-    public static SymmetricKey getInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
-        if (dictionary == null) {
-            return null;
-        } else if (dictionary instanceof SymmetricKey) {
-            return (SymmetricKey) dictionary;
-        }
-        Class clazz = keyClass(dictionary);
-        if (clazz == null) {
-            throw new ClassNotFoundException("key error: " + dictionary);
-        }
-        // create instance by subclass (with algorithm)
-        return (SymmetricKey) createInstance(clazz, dictionary);
-    }
-
-    public static SymmetricKey generate(String algorithm) throws ClassNotFoundException {
-        Map<String, Object> dictionary = new HashMap<>();
-        dictionary.put("algorithm", algorithm);
-        return getInstance(dictionary);
+        /**
+         *  Parse map object to key
+         *
+         * @param key - key info
+         * @return SymmetricKey
+         */
+        SymmetricKey parseSymmetricKey(Map<String, Object> key);
     }
 }

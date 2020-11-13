@@ -143,6 +143,7 @@ public abstract class EntityParser implements Entity.Parser {
      */
     protected abstract Meta createMeta(Map<String, Object> meta);
 
+    @SuppressWarnings("unchecked")
     @Override
     public Meta parseMeta(Object meta) {
         if (meta == null) {
@@ -151,7 +152,6 @@ public abstract class EntityParser implements Entity.Parser {
             return (Meta) meta;
         }
         assert meta instanceof Map : "meta error: " + meta;
-        //noinspection unchecked
         return createMeta((Map<String, Object>) meta);
     }
 
@@ -165,6 +165,7 @@ public abstract class EntityParser implements Entity.Parser {
         return new BaseProfile(profile);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public Profile parseProfile(Object profile) {
         if (profile == null) {
@@ -173,7 +174,6 @@ public abstract class EntityParser implements Entity.Parser {
             return (Profile) profile;
         }
         assert profile instanceof Map : "profile error: " + profile;
-        //noinspection unchecked
         return createProfile((Map<String, Object>) profile);
     }
 }

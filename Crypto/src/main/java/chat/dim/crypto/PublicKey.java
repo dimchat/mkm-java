@@ -25,10 +25,7 @@
  */
 package chat.dim.crypto;
 
-import java.util.HashMap;
 import java.util.Map;
-
-import chat.dim.type.Dictionary;
 
 /**
  *  Asymmetric Cryptography Public Key
@@ -40,61 +37,20 @@ import chat.dim.type.Dictionary;
  *      ...
  *  }
  */
-public abstract class PublicKey extends Dictionary<String, Object> implements AsymmetricKey, VerifyKey {
-
-    public PublicKey(Map<String, Object> keyInfo) {
-        super(keyInfo);
-    }
-
-    private static final byte[] promise = "Moky loves May Lee forever!".getBytes();
+public interface PublicKey extends VerifyKey {
 
     /**
-     *  Check whether they are key pair
-     *
-     * @param privateKey - private key that can generate the same public key
-     * @return true on keys matched
+     *  Key Parser
+     *  ~~~~~~~~~~
      */
-    public boolean matches(PrivateKey privateKey) {
-        if (privateKey == null) {
-            return false;
-        }
-        // 1. if the SK has the same public key, return true
-        PublicKey publicKey = privateKey.getPublicKey();
-        if (publicKey != null && publicKey.equals(this)) {
-            return true;
-        }
-        // 2. try to verify the SK's signature
-        byte[] signature = privateKey.sign(promise);
-        return verify(promise, signature);
-    }
+    interface Parser {
 
-    //-------- Runtime --------
-
-    private static Map<String, Class> publicKeyClasses = new HashMap<>();
-
-    public static void register(String algorithm, Class clazz) {
-        // check whether clazz is subclass of PublicKey
-        assert PublicKey.class.isAssignableFrom(clazz) : "error: " + clazz;
-        publicKeyClasses.put(algorithm, clazz);
-    }
-
-    private static Class keyClass(Map<String, Object> dictionary) {
-        // get subclass by key algorithm
-        String algorithm = (String) dictionary.get("algorithm");
-        return publicKeyClasses.get(algorithm);
-    }
-
-    public static PublicKey getInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
-        if (dictionary == null) {
-            return null;
-        } else if (dictionary instanceof PublicKey) {
-            return (PublicKey) dictionary;
-        }
-        Class clazz = keyClass(dictionary);
-        if (clazz == null) {
-            throw new ClassNotFoundException("key error: " + dictionary);
-        }
-        // create instance by subclass (with algorithm)
-        return (PublicKey) createInstance(clazz, dictionary);
+        /**
+         *  Parse map object to key
+         *
+         * @param key - key info
+         * @return PublicKey
+         */
+        PublicKey parsePublicKey(Map<String, Object> key);
     }
 }

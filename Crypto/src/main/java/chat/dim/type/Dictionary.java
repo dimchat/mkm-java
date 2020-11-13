@@ -26,53 +26,32 @@
 package chat.dim.type;
 
 import java.lang.String;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class Dictionary<K, V> implements Map<K, V> {
+public abstract class Dictionary implements Map<String, Object> {
 
-    private final Map<K, V> dictionary;
+    private final Map<String, Object> dictionary;
 
     protected Dictionary() {
         super();
         dictionary = new HashMap<>();
     }
 
-    protected Dictionary(Map<K, V> map) {
+    protected Dictionary(Map<String, Object> map) {
         super();
         assert map != null : "cannot initialize with an empty map!";
         dictionary = map;
     }
 
-    public Map<K, V> getMap() {
+    public Map<String, Object> getMap() {
         return dictionary;
     }
 
-    @SuppressWarnings("unchecked")
-    protected static Object createInstance(Class clazz, Map dictionary) {
-        // try 'Clazz.getInstance(dict)'
-        try {
-            Method method = clazz.getMethod("getInstance", Map.class);
-            if (method.getDeclaringClass().equals(clazz)) {
-                // only invoke the method 'getInstance' declared in this class
-                return method.invoke(null, dictionary);
-            }
-        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
-            //e.printStackTrace();
-        }
-        // try 'new Clazz(dict)'
-        try {
-            Constructor constructor = clazz.getConstructor(Map.class);
-            return constructor.newInstance(dictionary);
-        } catch (NoSuchMethodException | IllegalAccessException | InstantiationException | InvocationTargetException e) {
-            e.printStackTrace();
-            return null;
-        }
+    public Map<String, Object> copyMap() {
+        return new HashMap<>(dictionary);
     }
 
     @Override
@@ -115,22 +94,22 @@ public abstract class Dictionary<K, V> implements Map<K, V> {
     }
 
     @Override
-    public V get(Object key) {
+    public Object get(Object key) {
         return dictionary.get(key);
     }
 
     @Override
-    public V put(K key, V value) {
+    public Object put(String key, Object value) {
         return dictionary.put(key, value);
     }
 
     @Override
-    public V remove(Object key) {
+    public Object remove(Object key) {
         return dictionary.remove(key);
     }
 
     @Override
-    public void putAll(Map<? extends K, ? extends V> m) {
+    public void putAll(Map<? extends String, ? extends Object> m) {
         dictionary.putAll(m);
     }
 
@@ -140,17 +119,17 @@ public abstract class Dictionary<K, V> implements Map<K, V> {
     }
 
     @Override
-    public Set<K> keySet() {
+    public Set<String> keySet() {
         return dictionary.keySet();
     }
 
     @Override
-    public Collection<V> values() {
+    public Collection<Object> values() {
         return dictionary.values();
     }
 
     @Override
-    public Set<Entry<K, V>> entrySet() {
+    public Set<Entry<String, Object>> entrySet() {
         return dictionary.entrySet();
     }
 }

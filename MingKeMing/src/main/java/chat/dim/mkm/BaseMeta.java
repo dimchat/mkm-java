@@ -32,7 +32,7 @@ package chat.dim.mkm;
 
 import java.util.Map;
 
-import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.KeyFactory;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
 import chat.dim.format.UTF8;
@@ -55,7 +55,7 @@ import chat.dim.type.Dictionary;
  *      algorithm:
  *          fingerprint = sign(seed, SK);
  */
-public abstract class BaseMeta extends Dictionary<String, Object> implements Meta {
+public abstract class BaseMeta extends Dictionary implements Meta {
 
     /**
      *  Meta algorithm version
@@ -128,13 +128,9 @@ public abstract class BaseMeta extends Dictionary<String, Object> implements Met
     @Override
     public VerifyKey getKey() {
         if (key == null) {
-            try {
-                Object info = get("key");
-                if (info instanceof Map) {
-                    key = PublicKey.getInstance((Map<String, Object>) info);
-                }
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+            Object info = get("key");
+            if (info instanceof Map) {
+                key = KeyFactory.getPublicKey((Map<String, Object>) info);
             }
         }
         return key;

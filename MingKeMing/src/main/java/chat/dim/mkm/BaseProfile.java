@@ -36,6 +36,7 @@ import java.util.Set;
 
 import chat.dim.Entity;
 import chat.dim.crypto.EncryptKey;
+import chat.dim.crypto.KeyFactory;
 import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
@@ -46,7 +47,7 @@ import chat.dim.protocol.ID;
 import chat.dim.protocol.Profile;
 import chat.dim.type.Dictionary;
 
-public class BaseProfile extends Dictionary<String, Object> implements Profile {
+public class BaseProfile extends Dictionary implements Profile {
 
     private byte[] data = null;       // JsON.encode(properties)
     private byte[] signature = null;  // LocalUser(identifier).sign(data)
@@ -269,19 +270,15 @@ public class BaseProfile extends Dictionary<String, Object> implements Profile {
      *
      *      RSA
      */
+    @SuppressWarnings("unchecked")
     @Override
     public EncryptKey getKey() {
         if (key == null) {
             Object info = getProperty("key");
             if (info instanceof Map) {
-                try {
-                    //noinspection unchecked
-                    PublicKey pKey = PublicKey.getInstance((Map<String, Object>) info);
-                    if (pKey instanceof EncryptKey) {
-                        key = (EncryptKey) pKey;
-                    }
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
+                PublicKey pKey = KeyFactory.getPublicKey((Map<String, Object>) info);
+                if (pKey instanceof EncryptKey) {
+                    key = (EncryptKey) pKey;
                 }
             }
         }

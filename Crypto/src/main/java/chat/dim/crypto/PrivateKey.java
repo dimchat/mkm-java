@@ -25,10 +25,7 @@
  */
 package chat.dim.crypto;
 
-import java.util.HashMap;
 import java.util.Map;
-
-import chat.dim.type.Dictionary;
 
 /**
  *  Asymmetric Cryptography Private Key
@@ -41,71 +38,27 @@ import chat.dim.type.Dictionary;
  *      ...
  *  }
  */
-public abstract class PrivateKey extends Dictionary<String, Object> implements AsymmetricKey, SignKey {
-
-    public PrivateKey(Map<String, Object> keyInfo) {
-        super(keyInfo);
-    }
+public interface PrivateKey extends SignKey {
 
     /**
      *  Get public key from private key
      *
      * @return public key paired to this private key
      */
-    public abstract PublicKey getPublicKey();
+    PublicKey getPublicKey();
 
-    @Override
-    public boolean equals(Object other) {
-        if (super.equals(other)) {
-            // same dictionary
-            return true;
-        } else if (other instanceof PrivateKey) {
-            // check by public key
-            PublicKey publicKey = getPublicKey();
-            if (publicKey == null) {
-                throw new NullPointerException("failed to get public key: " + this);
-            }
-            PrivateKey key = (PrivateKey) other;
-            return publicKey.matches(key);
-        } else {
-            // null or unknown object
-            return false;
-        }
-    }
+    /**
+     *  Key Parser
+     *  ~~~~~~~~~~
+     */
+    interface Parser {
 
-    //-------- Runtime --------
-
-    private static Map<String, Class> privateKeyClasses = new HashMap<>();
-
-    public static void register(String algorithm, Class clazz) {
-        // check whether clazz is subclass of PrivateKey
-        assert PrivateKey.class.isAssignableFrom(clazz) : "error: " + clazz;
-        privateKeyClasses.put(algorithm, clazz);
-    }
-
-    private static Class keyClass(Map<String, Object> dictionary) {
-        // get subclass by key algorithm
-        String algorithm = (String) dictionary.get("algorithm");
-        return privateKeyClasses.get(algorithm);
-    }
-
-    public static PrivateKey getInstance(Map<String, Object> dictionary) throws ClassNotFoundException {
-        if (dictionary == null) {
-            return null;
-        } else if (dictionary instanceof PrivateKey) {
-            return (PrivateKey) dictionary;
-        }
-        Class clazz = keyClass(dictionary);
-        if (clazz == null) {
-            throw new ClassNotFoundException("key error: " + dictionary);
-        }
-        // create instance by subclass (with algorithm)
-        return (PrivateKey) createInstance(clazz, dictionary);
-    }
-
-    public static PrivateKey generate(String algorithm) throws ClassNotFoundException {
-        Map<String, Object> dictionary = new HashMap<>();
-        dictionary.put("algorithm", algorithm);
-        return getInstance(dictionary);
+        /**
+         *  Parse map object to key
+         *
+         * @param key - key info
+         * @return PrivateKey
+         */
+        PrivateKey parsePrivateKey(Map<String, Object> key);
     }
 }
