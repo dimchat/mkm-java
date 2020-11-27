@@ -34,14 +34,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import chat.dim.mkm.BaseBulletin;
-import chat.dim.mkm.BaseProfile;
+import chat.dim.mkm.BaseDocument;
 import chat.dim.mkm.BaseVisa;
 import chat.dim.mkm.Identifier;
 import chat.dim.protocol.Address;
+import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
 import chat.dim.protocol.NetworkType;
-import chat.dim.protocol.Profile;
 
 public abstract class EntityParser implements Entity.Parser {
 
@@ -163,35 +163,35 @@ public abstract class EntityParser implements Entity.Parser {
     }
 
     /**
-     *  Create profile from map info
+     *  Create document from map info
      *
-     * @param profile - profile info
-     * @return Profile
+     * @param doc - document info
+     * @return Document
      */
-    protected Profile createProfile(Map<String, Object> profile) {
-        ID identifier = parseID(profile.get("ID"));
+    protected Document createDocument(Map<String, Object> doc) {
+        ID identifier = parseID(doc.get("ID"));
         if (identifier == null) {
             return null;
         }
         if (NetworkType.isUser(identifier.getType())) {
-            String type = (String) profile.get("type");
-            if (Profile.VISA.equals(type)) {
-                return new BaseVisa(profile);
+            String type = (String) doc.get("type");
+            if (Document.VISA.equals(type)) {
+                return new BaseVisa(doc);
             }
         } else if (NetworkType.isGroup(identifier.getType())) {
-            return new BaseBulletin(profile);
+            return new BaseBulletin(doc);
         }
-        return new BaseProfile(profile);
+        return new BaseDocument(doc);
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public Profile parseProfile(Map<String, Object> profile) {
-        if (profile == null) {
+    public Document parseDocument(Map<String, Object> doc) {
+        if (doc == null) {
             return null;
-        } else if (profile instanceof Profile) {
-            return (Profile) profile;
+        } else if (doc instanceof Document) {
+            return (Document) doc;
         }
-        return createProfile(profile);
+        return createDocument(doc);
     }
 }

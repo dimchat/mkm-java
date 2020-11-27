@@ -40,11 +40,11 @@ import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
 import chat.dim.format.JSONMap;
 import chat.dim.format.UTF8;
+import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
-import chat.dim.protocol.Profile;
 import chat.dim.type.Dictionary;
 
-public class BaseProfile extends Dictionary implements Profile {
+public class BaseDocument extends Dictionary implements Document {
 
     private byte[] data = null;       // JsON.encode(properties)
     private byte[] signature = null;  // LocalUser(identifier).sign(data)
@@ -55,22 +55,22 @@ public class BaseProfile extends Dictionary implements Profile {
     private ID identifier = null;
 
     /**
-     *  Create Profile
+     *  Create Entity Document
      *
-     *  @param dictionary - profile info
+     *  @param dictionary - info
      */
-    public BaseProfile(Map<String, Object> dictionary) {
+    public BaseDocument(Map<String, Object> dictionary) {
         super(dictionary);
     }
 
     /**
-     *  Create profile with data and signature
+     *  Create entity document with data and signature
      *
      * @param identifier - entity ID
-     * @param data - profile data in JsON format
-     * @param signature - signature of profile data
+     * @param data - document data in JsON format
+     * @param signature - signature of document data
      */
-    public BaseProfile(ID identifier, String data, byte[] signature) {
+    public BaseDocument(ID identifier, String data, byte[] signature) {
         super();
 
         // ID
@@ -91,11 +91,11 @@ public class BaseProfile extends Dictionary implements Profile {
     }
 
     /**
-     *  Create a new empty profile
+     *  Create a new empty document
      *
      * @param identifier - entity ID
      */
-    public BaseProfile(ID identifier) {
+    public BaseDocument(ID identifier) {
         this(identifier, null, null);
     }
 
@@ -164,7 +164,7 @@ public class BaseProfile extends Dictionary implements Profile {
                 properties = new HashMap<>();
             } else {
                 Map info = JSONMap.decode(UTF8.encode(data));
-                assert info != null : "profile data error: " + data;
+                assert info != null : "document data error: " + data;
                 properties = (Map<String, Object>) info;
             }
         }
@@ -219,7 +219,7 @@ public class BaseProfile extends Dictionary implements Profile {
         byte[] signature = getSignature();
         if (data == null) {
             // NOTICE: if data is empty, signature should be empty at the same time
-            //         this happen while profile not found
+            //         this happen while entity document not found
             if (signature == null) {
                 status = 0;
             } else {
@@ -233,7 +233,7 @@ public class BaseProfile extends Dictionary implements Profile {
             // signature matched
             status = 1;
         }
-        // NOTICE: if status is 0, it doesn't mean the profile is invalid,
+        // NOTICE: if status is 0, it doesn't mean the entity document is invalid,
         //         try another key
         return status == 1;
     }
@@ -242,7 +242,7 @@ public class BaseProfile extends Dictionary implements Profile {
     public byte[] sign(SignKey privateKey) {
         if (status > 0) {
             // already signed/verified
-            assert data != null && signature != null : "profile data/signature error";
+            assert data != null && signature != null : "document data/signature error";
             return signature;
         }
         status = 1;

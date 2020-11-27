@@ -53,7 +53,7 @@ import chat.dim.protocol.ID;
  *  4. public keys for verification
  *     [visa.key, meta.key]
  *
- *  (Visa as Profile)
+ *  (Visa Document)
  *  5. private key for signature
  *     the private key pared with meta.key
  *  6. public key for verification

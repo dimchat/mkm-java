@@ -34,10 +34,10 @@ import java.lang.ref.WeakReference;
 import java.util.Map;
 
 import chat.dim.protocol.Address;
+import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
 import chat.dim.protocol.NetworkType;
-import chat.dim.protocol.Profile;
 
 /**
  *  Entity (User/Group)
@@ -49,7 +49,7 @@ import chat.dim.protocol.Profile;
  *      type       - entity type
  *      number     - search number
  *      meta       - meta for generate ID
- *      profile    - entity profile
+ *      document   - entity document
  *      name       - nickname
  */
 public abstract class Entity {
@@ -108,8 +108,8 @@ public abstract class Entity {
         return getDataSource().getMeta(identifier);
     }
 
-    public Profile getProfile(String type) {
-        return getDataSource().getProfile(identifier, type);
+    public Document getDocument(String type) {
+        return getDataSource().getDocument(identifier, type);
     }
 
     /**
@@ -118,18 +118,18 @@ public abstract class Entity {
      * @return name string
      */
     public String getName() {
-        // get from profile
-        Profile profile = null;
+        // get from document
+        Document doc = null;
         if (NetworkType.isUser(identifier.getType())) {
-            profile = getProfile(Profile.BIO);
-            if (profile == null) {
-                profile = getProfile(Profile.VISA);
+            doc = getDocument(Document.PROFILE);
+            if (doc == null) {
+                doc = getDocument(Document.VISA);
             }
         } else if (NetworkType.isGroup(identifier.getType())) {
-            profile = getProfile(Profile.BULLETIN);
+            doc = getDocument(Document.BULLETIN);
         }
-        if (profile != null) {
-            String name = profile.getName();
+        if (doc != null) {
+            String name = doc.getName();
             if (name != null) {
                 return name;
             }
@@ -142,7 +142,7 @@ public abstract class Entity {
      *  Entity Parser
      *  ~~~~~~~~~~~~~
      */
-    public interface Parser extends ID.Parser, Address.Parser, Meta.Parser, Profile.Parser {
+    public interface Parser extends ID.Parser, Address.Parser, Meta.Parser, Document.Parser {
 
     }
 
@@ -175,12 +175,12 @@ public abstract class Entity {
     }
 
     /**
-     *  Parse map object to profile
+     *  Parse map object to entity document
      *
-     * @param profile - profile info
-     * @return Profile
+     * @param doc - document info
+     * @return Document
      */
-    public static Profile parseProfile(Map<String, Object> profile) {
-        return parser.parseProfile(profile);
+    public static Document parseDocument(Map<String, Object> doc) {
+        return parser.parseDocument(doc);
     }
 }

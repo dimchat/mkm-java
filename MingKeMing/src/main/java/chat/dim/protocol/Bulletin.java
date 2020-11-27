@@ -33,10 +33,10 @@ package chat.dim.protocol;
 import java.util.List;
 
 /**
- *  Group Profile
- *  ~~~~~~~~~~~~~
+ *  Group Document
+ *  ~~~~~~~~~~~~~~
  */
-public interface Bulletin extends Profile {
+public interface Bulletin extends Document {
 
     /**
      *  Get group assistants

@@ -75,12 +75,12 @@ public interface TAI {
     /**
      *  Get all names for properties
      *
-     * @return profile properties key set
+     * @return properties key set
      */
     Set<String> propertyNames();
 
     /**
-     *  Get profile property data with key
+     *  Get property data with key
      *
      * @param name - property name
      * @return property data
@@ -88,7 +88,7 @@ public interface TAI {
     Object getProperty(String name);
 
     /**
-     *  Update profile property with key and data
+     *  Update property with key and data
      *  (this will reset 'data' and 'signature')
      *
      * @param name - property name

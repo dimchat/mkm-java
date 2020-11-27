@@ -33,9 +33,9 @@ package chat.dim.protocol;
 import java.util.Map;
 
 /**
- *  User/Group Profile data
- *  ~~~~~~~~~~~~~~~~~~~~~~~
- *  This class is used to generate entity profile
+ *  User/Group Document
+ *  ~~~~~~~~~~~~~~~~~~~
+ *  This class is used to generate entity document
  *
  *      data format: {
  *          ID: "EntityID",   // entity ID
@@ -43,23 +43,23 @@ import java.util.Map;
  *          signature: "..."  // signature = sign(data, SK);
  *      }
  */
-public interface Profile extends TAI, Map<String, Object> {
+public interface Document extends TAI, Map<String, Object> {
 
     Map<String, Object> getMap();
     Map<String, Object> copyMap();
 
     //
-    //  Profile types
+    //  Document types
     //
     String ANY      = "";
-    String VISA     = "visa";       // profile for login/communication
-    String BIO      = "biography";  // profile for user info
-    String BULLETIN = "bulletin";   // profile for group info
+    String VISA     = "visa";      // for login/communication
+    String PROFILE  = "profile";   // for user info
+    String BULLETIN = "bulletin";  // for group info
 
     /**
-     *  Get profile type
+     *  Get document type
      *
-     * @return profile type
+     * @return document type
      */
     String getType();
 
@@ -82,17 +82,17 @@ public interface Profile extends TAI, Map<String, Object> {
     void setName(String value);
 
     /**
-     *  Profile Parser
-     *  ~~~~~~~~~~~~~~
+     *  Document Parser
+     *  ~~~~~~~~~~~~~~~
      */
     interface Parser {
 
         /**
-         *  Parse map object to profile
+         *  Parse map object to entity document
          *
-         * @param profile - profile info
-         * @return Profile
+         * @param doc - info
+         * @return Document
          */
-        Profile parseProfile(Map<String, Object> profile);
+        Document parseDocument(Map<String, Object> doc);
     }
 }

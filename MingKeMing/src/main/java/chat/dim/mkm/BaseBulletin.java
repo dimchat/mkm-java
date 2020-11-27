@@ -38,7 +38,7 @@ import chat.dim.Entity;
 import chat.dim.protocol.Bulletin;
 import chat.dim.protocol.ID;
 
-public class BaseBulletin extends BaseProfile implements Bulletin {
+public class BaseBulletin extends BaseDocument implements Bulletin {
 
     private List<ID> assistants = null;
 

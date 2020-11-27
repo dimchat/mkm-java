@@ -30,9 +30,9 @@
  */
 package chat.dim;
 
+import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
-import chat.dim.protocol.Profile;
 
 public interface EntityDataSource {
 
@@ -45,10 +45,11 @@ public interface EntityDataSource {
     Meta getMeta(ID identifier);
 
     /**
-     *  Get profile for entity ID
+     *  Get document for entity ID
      *
      * @param identifier - entity ID
-     * @return profile object
+     * @param type - document type
+     * @return Document
      */
-    Profile getProfile(ID identifier, String type);
+    Document getDocument(ID identifier, String type);
 }

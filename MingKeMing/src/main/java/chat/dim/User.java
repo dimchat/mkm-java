@@ -38,8 +38,8 @@ import chat.dim.crypto.DecryptKey;
 import chat.dim.crypto.EncryptKey;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
+import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
-import chat.dim.protocol.Profile;
 import chat.dim.protocol.Visa;
 
 /**
@@ -76,13 +76,13 @@ public class User extends Entity {
     }
 
     private EncryptKey getVisaKey() {
-        Profile profile = getProfile(Profile.VISA);
-        if (profile == null || !profile.isValid()) {
-            // profile not found or not valid
+        Document doc = getDocument(Document.VISA);
+        if (doc == null || !doc.isValid()) {
+            // document not found or not valid
             return null;
         }
-        if (profile instanceof Visa) {
-            return ((Visa) profile).getKey();
+        if (doc instanceof Visa) {
+            return ((Visa) doc).getKey();
         }
         return null;
     }
@@ -90,7 +90,7 @@ public class User extends Entity {
     // NOTICE: meta.key will never changed, so use visa.key to encrypt
     //         is a better way
     private EncryptKey getEncryptKey() {
-        // 1. get key from profile
+        // 1. get key from visa
         EncryptKey key = getVisaKey();
         if (key != null) {
             return key;
@@ -112,7 +112,7 @@ public class User extends Entity {
             return keys;
         }
         keys = new ArrayList<>();
-        // 1. get key from profile
+        // 1. get key from visa
         Object pKey = getVisaKey();
         if (pKey instanceof VerifyKey) {
             keys.add((VerifyKey) pKey);
@@ -179,7 +179,7 @@ public class User extends Entity {
      * @return plain text
      */
     public byte[] decrypt(byte[] ciphertext) {
-        // NOTICE: if you provide a public key in visa(profile) for encryption
+        // NOTICE: if you provide a public key in visa for encryption
         //         here you should return the private key paired with visa.key
         List<DecryptKey> keys = getDataSource().getPrivateKeysForDecryption(identifier);
         assert keys != null && keys.size() > 0 : "failed to get decrypt keys for user: " + identifier;
@@ -204,23 +204,23 @@ public class User extends Entity {
     //
     //  Interfaces for Visa
     //
-    public Visa sign(Visa profile) {
-        if (!identifier.equals(profile.getIdentifier())) {
-            // profile ID not match
+    public Visa sign(Visa doc) {
+        if (!identifier.equals(doc.getIdentifier())) {
+            // visa ID not match
             return null;
         }
         SignKey key = getDataSource().getPrivateKeyForVisaSignature(identifier);
         assert key != null : "failed to get sign key for user: " + identifier;
-        profile.sign(key);
-        return profile;
+        doc.sign(key);
+        return doc;
     }
 
-    public boolean verify(Visa profile) {
-        if (!identifier.equals(profile.getIdentifier())) {
+    public boolean verify(Visa doc) {
+        if (!identifier.equals(doc.getIdentifier())) {
             return false;
         }
         // if meta not exists, user won't be created
         VerifyKey key = getMeta().getKey();
-        return profile.verify(key);
+        return doc.verify(key);
     }
 }

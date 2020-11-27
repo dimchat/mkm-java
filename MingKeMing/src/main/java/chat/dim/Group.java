@@ -33,8 +33,8 @@ package chat.dim;
 import java.util.List;
 
 import chat.dim.protocol.Bulletin;
+import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
-import chat.dim.protocol.Profile;
 
 public class Group extends Entity {
 
@@ -65,9 +65,9 @@ public class Group extends Entity {
     }
 
     public List<ID> getAssistants() {
-        Profile profile = getProfile(Profile.BULLETIN);
-        if (profile instanceof Bulletin) {
-            return ((Bulletin) profile).getAssistants();
+        Document doc = getDocument(Document.BULLETIN);
+        if (doc instanceof Bulletin) {
+            return ((Bulletin) doc).getAssistants();
         }
         return null;
     }

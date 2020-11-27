@@ -38,7 +38,7 @@ import chat.dim.crypto.PublicKey;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Visa;
 
-public class BaseVisa extends BaseProfile implements Visa {
+public class BaseVisa extends BaseDocument implements Visa {
 
     private EncryptKey key = null;
 
