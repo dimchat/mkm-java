@@ -76,6 +76,9 @@ public abstract class EntityParser implements Entity.Parser {
             name = pair[0];
             address = parseAddress(pair[1]);
         }
+        if (address == null) {
+            return null;
+        }
         return new Identifier(name, address, terminal);
     }
 
@@ -92,7 +95,9 @@ public abstract class EntityParser implements Entity.Parser {
         ID id = idMap.get(string);
         if (id == null) {
             id = createID(string);
-            idMap.put(string, id);
+            if (id != null) {
+                idMap.put(string, id);
+            }
         }
         return id;
     }
