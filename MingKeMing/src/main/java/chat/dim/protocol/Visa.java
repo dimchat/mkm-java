@@ -2,12 +2,12 @@
  *
  *  Ming-Ke-Ming : Decentralized User Identity Authentication
  *
- *                                Written in 2019 by Moky <albert.moky@gmail.com>
+ *                                Written in 2020 by Moky <albert.moky@gmail.com>
  *
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2020 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,27 +28,29 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim;
+package chat.dim.protocol;
 
-import chat.dim.protocol.ID;
-import chat.dim.protocol.Meta;
-import chat.dim.protocol.Profile;
+import chat.dim.crypto.EncryptKey;
 
-public interface EntityDataSource {
-
-    /**
-     *  Get meta for entity ID
-     *
-     * @param identifier - entity ID
-     * @return meta object
-     */
-    Meta getMeta(ID identifier);
+/**
+ *  User Profile
+ *  ~~~~~~~~~~~~
+ *  This interface is defined for authorizing other apps to login,
+ *  which can generate a temporary asymmetric key pair for messaging.
+ */
+public interface Visa extends Profile {
 
     /**
-     *  Get profile for entity ID
+     *  Get public key to encrypt message for user
      *
-     * @param identifier - entity ID
-     * @return profile object
+     * @return public key
      */
-    Profile getProfile(ID identifier, String type);
+    EncryptKey getKey();
+
+    /**
+     *  Set public key for other user to encrypt message
+     *
+     * @param publicKey - public key as visa.key
+     */
+    void setKey(EncryptKey publicKey);
 }

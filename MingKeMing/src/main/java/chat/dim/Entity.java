@@ -36,6 +36,7 @@ import java.util.Map;
 import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
+import chat.dim.protocol.NetworkType;
 import chat.dim.protocol.Profile;
 
 /**
@@ -103,6 +104,14 @@ public abstract class Entity {
         dataSourceRef = new WeakReference<>(dataSource);
     }
 
+    public Meta getMeta() {
+        return getDataSource().getMeta(identifier);
+    }
+
+    public Profile getProfile(String type) {
+        return getDataSource().getProfile(identifier, type);
+    }
+
     /**
      *  Get entity name
      *
@@ -110,23 +119,23 @@ public abstract class Entity {
      */
     public String getName() {
         // get from profile
-        Profile profile = getProfile();
+        Profile profile = null;
+        if (NetworkType.isUser(identifier.getType())) {
+            profile = getProfile(Profile.BIO);
+            if (profile == null) {
+                profile = getProfile(Profile.VISA);
+            }
+        } else if (NetworkType.isGroup(identifier.getType())) {
+            profile = getProfile(Profile.BULLETIN);
+        }
         if (profile != null) {
             String name = profile.getName();
-            if (name != null && name.length() > 0) {
+            if (name != null) {
                 return name;
             }
         }
         // get ID.name
         return identifier.getName();
-    }
-
-    public Meta getMeta() {
-        return getDataSource().getMeta(identifier);
-    }
-
-    public Profile getProfile() {
-        return getDataSource().getProfile(identifier);
     }
 
     /**

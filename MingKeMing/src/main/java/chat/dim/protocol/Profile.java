@@ -32,8 +32,6 @@ package chat.dim.protocol;
 
 import java.util.Map;
 
-import chat.dim.crypto.EncryptKey;
-
 /**
  *  User/Group Profile data
  *  ~~~~~~~~~~~~~~~~~~~~~~~
@@ -49,6 +47,21 @@ public interface Profile extends TAI, Map<String, Object> {
 
     Map<String, Object> getMap();
     Map<String, Object> copyMap();
+
+    //
+    //  Profile types
+    //
+    String ANY      = "";
+    String VISA     = "visa";       // profile for login/communication
+    String BIO      = "biography";  // profile for user info
+    String BULLETIN = "bulletin";   // profile for group info
+
+    /**
+     *  Get profile type
+     *
+     * @return profile type
+     */
+    String getType();
 
     /**
      *  Get entity ID
@@ -67,20 +80,6 @@ public interface Profile extends TAI, Map<String, Object> {
     String getName();
 
     void setName(String value);
-
-    /**
-     *  Get public key to encrypt message for user
-     *
-     * @return public key
-     */
-    EncryptKey getKey();
-
-    /**
-     *  Set public key for other user to encrypt message
-     *
-     * @param publicKey - public key in profile.key
-     */
-    void setKey(EncryptKey publicKey);
 
     /**
      *  Profile Parser

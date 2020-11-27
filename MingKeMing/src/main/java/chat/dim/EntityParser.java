@@ -33,11 +33,14 @@ package chat.dim;
 import java.util.HashMap;
 import java.util.Map;
 
+import chat.dim.mkm.BaseBulletin;
 import chat.dim.mkm.BaseProfile;
+import chat.dim.mkm.BaseVisa;
 import chat.dim.mkm.Identifier;
-import chat.dim.protocol.ID;
 import chat.dim.protocol.Address;
+import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
+import chat.dim.protocol.NetworkType;
 import chat.dim.protocol.Profile;
 
 public abstract class EntityParser implements Entity.Parser {
@@ -166,6 +169,18 @@ public abstract class EntityParser implements Entity.Parser {
      * @return Profile
      */
     protected Profile createProfile(Map<String, Object> profile) {
+        ID identifier = parseID(profile.get("ID"));
+        if (identifier == null) {
+            return null;
+        }
+        if (NetworkType.isUser(identifier.getType())) {
+            String type = (String) profile.get("type");
+            if (Profile.VISA.equals(type)) {
+                return new BaseVisa(profile);
+            }
+        } else if (NetworkType.isGroup(identifier.getType())) {
+            return new BaseBulletin(profile);
+        }
         return new BaseProfile(profile);
     }
 

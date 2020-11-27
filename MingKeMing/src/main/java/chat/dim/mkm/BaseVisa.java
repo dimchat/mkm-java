@@ -2,12 +2,12 @@
  *
  *  Ming-Ke-Ming : Decentralized User Identity Authentication
  *
- *                                Written in 2019 by Moky <albert.moky@gmail.com>
+ *                                Written in 2020 by Moky <albert.moky@gmail.com>
  *
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2020 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,27 +28,55 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim;
+package chat.dim.mkm;
 
+import java.util.Map;
+
+import chat.dim.crypto.EncryptKey;
+import chat.dim.crypto.KeyFactory;
+import chat.dim.crypto.PublicKey;
 import chat.dim.protocol.ID;
-import chat.dim.protocol.Meta;
-import chat.dim.protocol.Profile;
+import chat.dim.protocol.Visa;
 
-public interface EntityDataSource {
+public class BaseVisa extends BaseProfile implements Visa {
+
+    private EncryptKey key = null;
+
+    public BaseVisa(Map<String, Object> dictionary) {
+        super(dictionary);
+    }
+
+    public BaseVisa(ID identifier, String data, byte[] signature) {
+        super(identifier, data, signature);
+    }
+
+    public BaseVisa(ID identifier) {
+        super(identifier);
+    }
 
     /**
-     *  Get meta for entity ID
+     *  Public key (used for encryption, can be same with meta.key)
      *
-     * @param identifier - entity ID
-     * @return meta object
+     *      RSA
      */
-    Meta getMeta(ID identifier);
+    @SuppressWarnings("unchecked")
+    @Override
+    public EncryptKey getKey() {
+        if (key == null) {
+            Object info = getProperty("key");
+            if (info instanceof Map) {
+                PublicKey pKey = KeyFactory.getPublicKey((Map<String, Object>) info);
+                if (pKey instanceof EncryptKey) {
+                    key = (EncryptKey) pKey;
+                }
+            }
+        }
+        return key;
+    }
 
-    /**
-     *  Get profile for entity ID
-     *
-     * @param identifier - entity ID
-     * @return profile object
-     */
-    Profile getProfile(ID identifier, String type);
+    @Override
+    public void setKey(EncryptKey publicKey) {
+        setProperty("key", publicKey.getMap());
+        key = publicKey;
+    }
 }

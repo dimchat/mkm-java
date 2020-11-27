@@ -2,12 +2,12 @@
  *
  *  Ming-Ke-Ming : Decentralized User Identity Authentication
  *
- *                                Written in 2019 by Moky <albert.moky@gmail.com>
+ *                                Written in 2020 by Moky <albert.moky@gmail.com>
  *
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2020 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,27 +28,27 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim;
+package chat.dim.protocol;
 
-import chat.dim.protocol.ID;
-import chat.dim.protocol.Meta;
-import chat.dim.protocol.Profile;
+import java.util.List;
 
-public interface EntityDataSource {
-
-    /**
-     *  Get meta for entity ID
-     *
-     * @param identifier - entity ID
-     * @return meta object
-     */
-    Meta getMeta(ID identifier);
+/**
+ *  Group Profile
+ *  ~~~~~~~~~~~~~
+ */
+public interface Bulletin extends Profile {
 
     /**
-     *  Get profile for entity ID
+     *  Get group assistants
      *
-     * @param identifier - entity ID
-     * @return profile object
+     * @return bot ID list
      */
-    Profile getProfile(ID identifier, String type);
+    List<ID> getAssistants();
+
+    /**
+     *  Set group assistants
+     *
+     * @param assistants - bot ID list
+     */
+    void setAssistants(List<ID> assistants);
 }

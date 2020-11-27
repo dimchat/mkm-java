@@ -64,7 +64,7 @@ public abstract class BaseMeta extends Dictionary implements Meta {
      *      0x02 - btc_address
      *      0x03 - username@btc_address
      */
-    private int version = 0;
+    private int type = 0;
 
     /**
      *  Public key (used for signature)
@@ -99,7 +99,7 @@ public abstract class BaseMeta extends Dictionary implements Meta {
 
         // meta type
         put("version", version);
-        this.version = version;
+        this.type = version;
 
         // public key
         put("key", key.getMap());
@@ -118,10 +118,14 @@ public abstract class BaseMeta extends Dictionary implements Meta {
 
     @Override
     public int getType() {
-        if (version == 0) {
-            version = (int) get("version");
+        if (type == 0) {
+            Object version = get("version");
+            if (version == null) {
+                version = get("type");
+            }
+            type = (int) version;
         }
-        return version;
+        return type;
     }
 
     @SuppressWarnings("unchecked")

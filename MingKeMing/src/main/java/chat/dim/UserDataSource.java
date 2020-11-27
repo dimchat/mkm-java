@@ -33,7 +33,6 @@ package chat.dim;
 import java.util.List;
 
 import chat.dim.crypto.DecryptKey;
-import chat.dim.crypto.EncryptKey;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.protocol.ID;
@@ -44,14 +43,20 @@ import chat.dim.protocol.ID;
  *
  *  (Encryption/decryption)
  *  1. public key for encryption
- *     if profile.key not exists, means it is the same key with meta.key
+ *     if visa.key not exists, means it is the same key with meta.key
  *  2. private keys for decryption
- *     the private keys paired with [profile.key, meta.key]
+ *     the private keys paired with [visa.key, meta.key]
  *
  *  (Signature/Verification)
  *  3. private key for signature
- *     the private key paired with meta.key
+ *     the private key paired with visa.key or meta.key
  *  4. public keys for verification
+ *     [visa.key, meta.key]
+ *
+ *  (Visa as Profile)
+ *  5. private key for signature
+ *     the private key pared with meta.key
+ *  6. public key for verification
  *     [meta.key]
  */
 public interface UserDataSource extends EntityDataSource {
@@ -65,17 +70,17 @@ public interface UserDataSource extends EntityDataSource {
     List<ID> getContacts(ID user);
 
     /**
-     *  Get user's public key for encryption
-     *  (profile.key or meta.key)
+     *  Get user's public keys for verification
+     *  [visa.key, meta.key]
      *
      * @param user - user ID
-     * @return public key
+     * @return public keys
      */
-    EncryptKey getPublicKeyForEncryption(ID user);
+    List<VerifyKey> getPublicKeysForVerification(ID user);
 
     /**
      *  Get user's private keys for decryption
-     *  (which paired with [profile.key, meta.key])
+     *  (which paired with [visa.key, meta.key])
      *
      * @param user - user ID
      * @return private keys
@@ -84,7 +89,7 @@ public interface UserDataSource extends EntityDataSource {
 
     /**
      *  Get user's private key for signature
-     *  (which paired with profile.key or meta.key)
+     *  (which paired with visa.key or meta.key)
      *
      * @param user - user ID
      * @return private key
@@ -92,11 +97,10 @@ public interface UserDataSource extends EntityDataSource {
     SignKey getPrivateKeyForSignature(ID user);
 
     /**
-     *  Get user's public keys for verification
-     *  [profile.key, meta.key]
+     *  Get user's private key for signing visa
      *
      * @param user - user ID
-     * @return public keys
+     * @return private key
      */
-    List<VerifyKey> getPublicKeysForVerification(ID user);
+    SignKey getPrivateKeyForVisaSignature(ID user);
 }

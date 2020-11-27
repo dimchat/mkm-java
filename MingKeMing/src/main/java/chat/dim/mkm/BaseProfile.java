@@ -35,9 +35,6 @@ import java.util.Map;
 import java.util.Set;
 
 import chat.dim.Entity;
-import chat.dim.crypto.EncryptKey;
-import chat.dim.crypto.KeyFactory;
-import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
@@ -56,7 +53,6 @@ public class BaseProfile extends Dictionary implements Profile {
     private int status = 0;           // 1 for valid, -1 for invalid
 
     private ID identifier = null;
-    private EncryptKey key = null;
 
     /**
      *  Create Profile
@@ -106,6 +102,15 @@ public class BaseProfile extends Dictionary implements Profile {
     @Override
     public boolean isValid() {
         return status >= 0;
+    }
+
+    @Override
+    public String getType() {
+        Object type = getProperty("type");
+        if (type == null) {
+            type = get("type");
+        }
+        return (String) type;
     }
 
     @Override
@@ -263,32 +268,6 @@ public class BaseProfile extends Dictionary implements Profile {
     @Override
     public void setName(String value) {
         setProperty("name", value);
-    }
-
-    /**
-     *  Public key (used for encryption, can be same with meta.key)
-     *
-     *      RSA
-     */
-    @SuppressWarnings("unchecked")
-    @Override
-    public EncryptKey getKey() {
-        if (key == null) {
-            Object info = getProperty("key");
-            if (info instanceof Map) {
-                PublicKey pKey = KeyFactory.getPublicKey((Map<String, Object>) info);
-                if (pKey instanceof EncryptKey) {
-                    key = (EncryptKey) pKey;
-                }
-            }
-        }
-        return key;
-    }
-
-    @Override
-    public void setKey(EncryptKey publicKey) {
-        setProperty("key", publicKey.getMap());
-        key = publicKey;
     }
 }
 
