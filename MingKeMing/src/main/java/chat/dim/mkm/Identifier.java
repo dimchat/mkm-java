@@ -60,19 +60,23 @@ public final class Identifier extends chat.dim.type.String implements ID {
         return string;
     }
 
-    public Identifier(String name, Address address, String terminal) {
-        super(concat(name, address, terminal));
+    Identifier(String identifier, String name, Address address, String terminal) {
+        super(identifier);
         this.name = name;
         this.address = address;
         this.terminal = terminal;
     }
 
+    public Identifier(String name, Address address, String terminal) {
+        this(concat(name, address, terminal), name, address, terminal);
+    }
+
     public Identifier(String name, Address address) {
-        this(name, address, null);
+        this(concat(name, address, null), name, address, null);
     }
 
     public Identifier(Address address) {
-        this(null, address, null);
+        this(address.toString(), null, address, null);
     }
 
     @Override

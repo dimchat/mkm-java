@@ -31,6 +31,7 @@
 package chat.dim.protocol;
 
 import chat.dim.mkm.BroadcastAddress;
+import chat.dim.mkm.Factories;
 
 /**
  *  Address for MKM ID
@@ -46,17 +47,42 @@ public interface Address {
      */
     byte getNetwork();
 
+    static boolean isUser(Address address) {
+        return NetworkType.isUser(address.getNetwork());
+    }
+    static boolean isGroup(Address address) {
+        return NetworkType.isGroup(address.getNetwork());
+    }
+
     /**
      *  Address for broadcast
      */
     BroadcastAddress ANYWHERE = new BroadcastAddress("anywhere", NetworkType.Main);
     BroadcastAddress EVERYWHERE = new BroadcastAddress("everywhere", NetworkType.Group);
 
+    //
+    //  Factory method
+    //
+    static Address parse(Object address) {
+        if (address == null) {
+            return null;
+        } else if (address instanceof Address) {
+            return (Address) address;
+        } else if (address instanceof String) {
+            return Factories.addressFactory.parseAddress((String) address);
+        } else if (address instanceof chat.dim.type.String) {
+            chat.dim.type.String string = (chat.dim.type.String) address;
+            return Factories.addressFactory.parseAddress(string.toString());
+        } else {
+            throw new IllegalArgumentException("Illegal address: " + address);
+        }
+    }
+
     /**
-     *  Address Parser
-     *  ~~~~~~~~~~~~~~
+     *  Address Factory
+     *  ~~~~~~~~~~~~~~~
      */
-    interface Parser {
+    interface Factory {
 
         /**
          *  Parse string object to address
@@ -64,6 +90,6 @@ public interface Address {
          * @param address - address string
          * @return Address
          */
-        Address parseAddress(Object address);
+        Address parseAddress(String address);
     }
 }

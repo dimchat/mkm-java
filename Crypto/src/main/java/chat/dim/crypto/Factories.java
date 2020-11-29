@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2020 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,30 +27,39 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
-/**
- *  Cryptography Key
- *  ~~~~~~~~~~~~~~~~
- *  Cryptography key with designated algorithm
- *
- *  key data format: {
- *      algorithm : "RSA", // ECC, AES, ...
- *      data      : "{BASE64_ENCODE}",
- *      ...
- *  }
- */
-public interface CryptographyKey extends Map<String, Object> {
+public class Factories {
 
-    Map<String, Object> getMap();
-    Map<String, Object> copyMap();
+    public static SymmetricKey.Factory symmetricKeyFactory = new SymmetricKey.Factory() {
 
-    /**
-     *  Get key data
-     *
-     * @return key data
-     */
-    byte[] getData();
+        @Override
+        public SymmetricKey generateSymmetricKey(String algorithm) {
+            throw new UnsupportedOperationException("implement me!");
+        }
 
-    // sample data for checking keys
-    byte[] promise = "Moky loves May Lee forever!".getBytes();
+        @Override
+        public SymmetricKey parseSymmetricKey(Map<String, Object> key) {
+            throw new UnsupportedOperationException("implement me!");
+        }
+    };
+
+    public static PublicKey.Factory publicKeyFactory = new PublicKey.Factory() {
+
+        @Override
+        public PublicKey parsePublicKey(Map<String, Object> key) {
+            throw new UnsupportedOperationException("implement me!");
+        }
+    };
+
+    public static PrivateKey.Factory privateKeyFactory = new PrivateKey.Factory() {
+
+        @Override
+        public PrivateKey generatePrivateKey(String algorithm) {
+            throw new UnsupportedOperationException("implement me!");
+        }
+
+        @Override
+        public PrivateKey parsePrivateKey(Map<String, Object> key) {
+            throw new UnsupportedOperationException("implement me!");
+        }
+    };
 }
-

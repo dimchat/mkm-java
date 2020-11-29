@@ -31,6 +31,7 @@
 package chat.dim.protocol;
 
 import chat.dim.mkm.BroadcastID;
+import chat.dim.mkm.Factories;
 
 /**
  *  ID for entity (User/Group)
@@ -55,17 +56,55 @@ public interface ID {
      */
     byte getType();
 
+    static boolean isUser(ID identifier) {
+        return NetworkType.isUser(identifier.getType());
+    }
+    static boolean isGroup(ID identifier) {
+        return NetworkType.isGroup(identifier.getType());
+    }
+
     /**
      *  ID for broadcast
      */
     BroadcastID ANYONE = new BroadcastID("anyone", Address.ANYWHERE);
     BroadcastID EVERYONE = new BroadcastID("everyone", Address.EVERYWHERE);
 
+    //
+    //  Factory methods
+    //
+    static ID create(String name, Address address, String terminal) {
+        return Factories.idFactory.createID(name, address, terminal);
+    }
+    static ID parse(Object identifier) {
+        if (identifier == null) {
+            return null;
+        } else if (identifier instanceof ID) {
+            return (ID) identifier;
+        } else if (identifier instanceof String) {
+            return Factories.idFactory.parseID((String) identifier);
+        } else if (identifier instanceof chat.dim.type.String) {
+            chat.dim.type.String string = (chat.dim.type.String) identifier;
+            return Factories.idFactory.parseID(string.toString());
+        } else {
+            throw new IllegalArgumentException("Illegal ID: " + identifier);
+        }
+    }
+
     /**
-     *  ID Parser
-     *  ~~~~~~~~~
+     *  ID Factory
+     *  ~~~~~~~~~~
      */
-    interface Parser {
+    interface Factory {
+
+        /**
+         *  Create ID
+         *
+         * @param name     - ID.name
+         * @param address  - ID.address
+         * @param terminal - ID.terminal
+         * @return ID
+         */
+        ID createID(String name, Address address, String terminal);
 
         /**
          *  Parse string object to ID
@@ -73,6 +112,6 @@ public interface ID {
          * @param identifier - ID string
          * @return ID
          */
-        ID parseID(Object identifier);
+        ID parseID(String identifier);
     }
 }

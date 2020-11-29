@@ -25,6 +25,7 @@
  */
 package chat.dim.crypto;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -43,11 +44,45 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
     String AES = "AES"; //-- "AES/CBC/PKCS7Padding"
     String DES = "DES";
 
+    static boolean isEqual(SymmetricKey key1, SymmetricKey key2) {
+        if (key1 == key2) {
+            // same object
+            return true;
+        }
+        // check by encryption
+        byte[] ciphertext = key1.encrypt(promise);
+        byte[] plaintext = key2.decrypt(ciphertext);
+        return Arrays.equals(plaintext, promise);
+    }
+
+    //
+    //  Factory methods
+    //
+    static SymmetricKey generate(String algorithm) {
+        return Factories.symmetricKeyFactory.generateSymmetricKey(algorithm);
+    }
+    static SymmetricKey parse(Map<String, Object> key) {
+        if (key == null) {
+            return null;
+        } else if (key instanceof SymmetricKey) {
+            return (SymmetricKey) key;
+        }
+        return Factories.symmetricKeyFactory.parseSymmetricKey(key);
+    }
+
     /**
-     *  Key Parser
-     *  ~~~~~~~~~~
+     *  Key Factory
+     *  ~~~~~~~~~~~
      */
-    interface Parser {
+    interface Factory {
+
+        /**
+         *  Generate key with algorithm
+         *
+         * @param algorithm - key algorithm
+         * @return SymmetricKey
+         */
+        SymmetricKey generateSymmetricKey(String algorithm);
 
         /**
          *  Parse map object to key

@@ -31,13 +31,10 @@
 package chat.dim;
 
 import java.lang.ref.WeakReference;
-import java.util.Map;
 
-import chat.dim.protocol.Address;
 import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
-import chat.dim.protocol.NetworkType;
 
 /**
  *  Entity (User/Group)
@@ -120,12 +117,12 @@ public abstract class Entity {
     public String getName() {
         // get from document
         Document doc = null;
-        if (NetworkType.isUser(identifier.getType())) {
+        if (ID.isUser(identifier)) {
             doc = getDocument(Document.PROFILE);
             if (doc == null) {
                 doc = getDocument(Document.VISA);
             }
-        } else if (NetworkType.isGroup(identifier.getType())) {
+        } else if (ID.isGroup(identifier)) {
             doc = getDocument(Document.BULLETIN);
         }
         if (doc != null) {
@@ -136,51 +133,5 @@ public abstract class Entity {
         }
         // get ID.name
         return identifier.getName();
-    }
-
-    /**
-     *  Entity Parser
-     *  ~~~~~~~~~~~~~
-     */
-    public interface Parser extends ID.Parser, Address.Parser, Meta.Parser, Document.Parser {
-
-    }
-
-    // default parser
-    public static Parser parser = new EntityParser() {
-        @Override
-        protected Meta createMeta(Map<String, Object> meta) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-    };
-
-    /**
-     *  Parse string object to ID
-     *
-     * @param identifier - ID string
-     * @return ID
-     */
-    public static ID parseID(Object identifier) {
-        return parser.parseID(identifier);
-    }
-
-    /**
-     *  Parse map object to meta
-     *
-     * @param meta - meta info
-     * @return Meta
-     */
-    public static Meta parseMeta(Map<String, Object> meta) {
-        return parser.parseMeta(meta);
-    }
-
-    /**
-     *  Parse map object to entity document
-     *
-     * @param doc - document info
-     * @return Document
-     */
-    public static Document parseDocument(Map<String, Object> doc) {
-        return parser.parseDocument(doc);
     }
 }

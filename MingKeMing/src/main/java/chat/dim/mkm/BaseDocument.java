@@ -34,7 +34,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import chat.dim.Entity;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
@@ -64,13 +63,13 @@ public class BaseDocument extends Dictionary implements Document {
     }
 
     /**
-     *  Create entity document with data and signature
+     *  Create entity document with data and signature loaded from local storage
      *
      * @param identifier - entity ID
      * @param data - document data in JsON format
      * @param signature - signature of document data
      */
-    public BaseDocument(ID identifier, String data, byte[] signature) {
+    public BaseDocument(ID identifier, String data, String signature) {
         super();
 
         // ID
@@ -78,30 +77,38 @@ public class BaseDocument extends Dictionary implements Document {
         this.identifier = identifier;
 
         // json data
-        if (data != null) {
-            put("data", data);
-            this.data = UTF8.encode(data);
-        }
+        put("data", data);
+        this.data = UTF8.encode(data);
 
         // signature
-        if (signature != null) {
-            put("signature", Base64.encode(signature));
-            this.signature = signature;
-        }
+        put("signature", signature);
+        this.signature = Base64.decode(signature);
+
+        // all documents must be verified before saving into local storage
+        this.status = 1;
     }
 
     /**
      *  Create a new empty document
      *
      * @param identifier - entity ID
+     * @param type       - document type
      */
-    public BaseDocument(ID identifier) {
-        this(identifier, null, null);
+    public BaseDocument(ID identifier, String type) {
+        super();
+
+        // ID
+        put("ID", identifier.toString());
+        this.identifier = identifier;
+
+        if (type != null && type.length() > 0) {
+            setProperty("type", type);
+        }
     }
 
     @Override
     public boolean isValid() {
-        return status >= 0;
+        return status > 0;
     }
 
     @Override
@@ -116,7 +123,7 @@ public class BaseDocument extends Dictionary implements Document {
     @Override
     public ID getIdentifier() {
         if (identifier == null) {
-            identifier = Entity.parseID(get("ID"));
+            identifier = ID.parse(get("ID"));
         }
         return identifier;
     }

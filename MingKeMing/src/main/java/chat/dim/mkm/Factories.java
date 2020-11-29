@@ -30,64 +30,44 @@
  */
 package chat.dim.mkm;
 
-import java.util.ArrayList;
-import java.util.List;
+import chat.dim.crypto.SignKey;
+import chat.dim.crypto.VerifyKey;
+import chat.dim.protocol.Address;
+import chat.dim.protocol.Document;
+import chat.dim.protocol.ID;
+import chat.dim.protocol.Meta;
+
 import java.util.Map;
 
-import chat.dim.protocol.Bulletin;
-import chat.dim.protocol.ID;
+public class Factories {
 
-public class BaseBulletin extends BaseDocument implements Bulletin {
+    public static Address.Factory addressFactory = new AddressFactory() {
 
-    private List<ID> assistants = null;
-
-    public BaseBulletin(Map<String, Object> dictionary) {
-        super(dictionary);
-    }
-
-    public BaseBulletin(ID identifier, String data, String signature) {
-        super(identifier, data, signature);
-    }
-
-    public BaseBulletin(ID identifier) {
-        super(identifier, BULLETIN);
-    }
-
-    /**
-     *  Group bots for split and distribute group messages
-     *
-     * @return bot ID list
-     */
-    @Override
-    public List<ID> getAssistants() {
-        if (assistants == null) {
-            Object value = getProperty("assistants");
-            if (value instanceof List) {
-                assistants = new ArrayList<>();
-                List array = (List) value;
-                ID id;
-                for (Object item : array) {
-                    id = ID.parse(item);
-                    if (id != null) {
-                        assistants.add(id);
-                    }
-                }
-            }
+        @Override
+        protected Address createAddress(String address) {
+            throw new UnsupportedOperationException("implement me!");
         }
-        return assistants;
-    }
+    };
 
-    @Override
-    public void setAssistants(List<ID> bots) {
-        if (bots == null) {
-            setProperty("assistants", null);
-        } else {
-            List<String> array = new ArrayList<>();
-            for (ID item : bots) {
-                array.add(item.toString());
-            }
-            setProperty("assistants", array);
+    public static ID.Factory idFactory = new IDFactory();
+
+    public static Meta.Factory metaFactory = new Meta.Factory() {
+
+        @Override
+        public Meta createMeta(int version, VerifyKey key, String seed, byte[] fingerprint) {
+            throw new UnsupportedOperationException("implement me!");
         }
-        assistants = bots;
-    }
+
+        @Override
+        public Meta generateMeta(int version, SignKey sKey, String seed) {
+            throw new UnsupportedOperationException("implement me!");
+        }
+
+        @Override
+        public Meta parseMeta(Map<String, Object> meta) {
+            throw new UnsupportedOperationException("implement me!");
+        }
+    };
+
+    public static Document.Factory documentFactory = new DocumentFactory();
 }

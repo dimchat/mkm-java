@@ -32,7 +32,7 @@ package chat.dim.mkm;
 
 import java.util.Map;
 
-import chat.dim.crypto.KeyFactory;
+import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
 import chat.dim.format.UTF8;
@@ -134,7 +134,7 @@ public abstract class BaseMeta extends Dictionary implements Meta {
         if (key == null) {
             Object info = get("key");
             if (info instanceof Map) {
-                key = KeyFactory.getPublicKey((Map<String, Object>) info);
+                key = PublicKey.parse((Map<String, Object>) info);
             }
         }
         return key;

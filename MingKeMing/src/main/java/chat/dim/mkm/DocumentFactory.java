@@ -30,64 +30,51 @@
  */
 package chat.dim.mkm;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
-import chat.dim.protocol.Bulletin;
+import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
 
-public class BaseBulletin extends BaseDocument implements Bulletin {
+public class DocumentFactory implements Document.Factory {
 
-    private List<ID> assistants = null;
-
-    public BaseBulletin(Map<String, Object> dictionary) {
-        super(dictionary);
-    }
-
-    public BaseBulletin(ID identifier, String data, String signature) {
-        super(identifier, data, signature);
-    }
-
-    public BaseBulletin(ID identifier) {
-        super(identifier, BULLETIN);
-    }
-
-    /**
-     *  Group bots for split and distribute group messages
-     *
-     * @return bot ID list
-     */
     @Override
-    public List<ID> getAssistants() {
-        if (assistants == null) {
-            Object value = getProperty("assistants");
-            if (value instanceof List) {
-                assistants = new ArrayList<>();
-                List array = (List) value;
-                ID id;
-                for (Object item : array) {
-                    id = ID.parse(item);
-                    if (id != null) {
-                        assistants.add(id);
-                    }
-                }
+    public Document createDocument(ID identifier, String type, String data, String signature) {
+        if (ID.isUser(identifier)) {
+            if (Document.VISA.equals(type)) {
+                return new BaseVisa(identifier, data, signature);
             }
+        } else if (ID.isGroup(identifier)) {
+            return new BaseBulletin(identifier, data, signature);
         }
-        return assistants;
+        return new BaseDocument(identifier, data, signature);
     }
 
     @Override
-    public void setAssistants(List<ID> bots) {
-        if (bots == null) {
-            setProperty("assistants", null);
-        } else {
-            List<String> array = new ArrayList<>();
-            for (ID item : bots) {
-                array.add(item.toString());
+    public Document generateDocument(ID identifier, String type) {
+        if (ID.isUser(identifier)) {
+            if (Document.VISA.equals(type)) {
+                return new BaseVisa(identifier);
             }
-            setProperty("assistants", array);
+        } else if (ID.isGroup(identifier)) {
+            return new BaseBulletin(identifier);
         }
-        assistants = bots;
+        return new BaseDocument(identifier, type);
+    }
+
+    @Override
+    public Document parseDocument(Map<String, Object> doc) {
+        ID identifier = ID.parse(doc.get("ID"));
+        if (identifier == null) {
+            return null;
+        }
+        if (ID.isUser(identifier)) {
+            String type = (String) doc.get("type");
+            if (Document.VISA.equals(type)) {
+                return new BaseVisa(doc);
+            }
+        } else if (ID.isGroup(identifier)) {
+            return new BaseBulletin(doc);
+        }
+        return new BaseDocument(doc);
     }
 }

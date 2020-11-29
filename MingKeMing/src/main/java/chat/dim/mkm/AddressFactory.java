@@ -30,64 +30,32 @@
  */
 package chat.dim.mkm;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
-import chat.dim.protocol.Bulletin;
-import chat.dim.protocol.ID;
+import chat.dim.protocol.Address;
 
-public class BaseBulletin extends BaseDocument implements Bulletin {
+public abstract class AddressFactory implements Address.Factory {
 
-    private List<ID> assistants = null;
+    private final Map<String, Address> addresses = new HashMap<>();
 
-    public BaseBulletin(Map<String, Object> dictionary) {
-        super(dictionary);
-    }
-
-    public BaseBulletin(ID identifier, String data, String signature) {
-        super(identifier, data, signature);
-    }
-
-    public BaseBulletin(ID identifier) {
-        super(identifier, BULLETIN);
-    }
-
-    /**
-     *  Group bots for split and distribute group messages
-     *
-     * @return bot ID list
-     */
-    @Override
-    public List<ID> getAssistants() {
-        if (assistants == null) {
-            Object value = getProperty("assistants");
-            if (value instanceof List) {
-                assistants = new ArrayList<>();
-                List array = (List) value;
-                ID id;
-                for (Object item : array) {
-                    id = ID.parse(item);
-                    if (id != null) {
-                        assistants.add(id);
-                    }
-                }
-            }
-        }
-        return assistants;
-    }
+    protected abstract Address createAddress(String address);
 
     @Override
-    public void setAssistants(List<ID> bots) {
-        if (bots == null) {
-            setProperty("assistants", null);
-        } else {
-            List<String> array = new ArrayList<>();
-            for (ID item : bots) {
-                array.add(item.toString());
-            }
-            setProperty("assistants", array);
+    public Address parseAddress(String address) {
+        if (Address.ANYWHERE.equalsIgnoreCase(address)) {
+            return Address.ANYWHERE;
         }
-        assistants = bots;
+        if (Address.EVERYWHERE.equalsIgnoreCase(address)) {
+            return Address.EVERYWHERE;
+        }
+        Address add = addresses.get(address);
+        if (add == null) {
+            add = createAddress(address);
+            if (add != null) {
+                addresses.put(address, add);
+            }
+        }
+        return add;
     }
 }

@@ -32,10 +32,12 @@ package chat.dim.protocol;
 
 import java.util.Map;
 
+import chat.dim.mkm.Factories;
+
 /**
- *  User/Group Document
- *  ~~~~~~~~~~~~~~~~~~~
- *  This class is used to generate entity document
+ *  User/Group Profile
+ *  ~~~~~~~~~~~~~~~~~~
+ *  This class is used to generate entity profile
  *
  *      data format: {
  *          ID: "EntityID",   // entity ID
@@ -81,11 +83,49 @@ public interface Document extends TAI, Map<String, Object> {
 
     void setName(String value);
 
+    //
+    //  Factory methods
+    //
+    static Document create(ID identifier, String type, String data, String signature) {
+        return Factories.documentFactory.createDocument(identifier, type, data, signature);
+    }
+    static Document generate(ID identifier, String type) {
+        return Factories.documentFactory.generateDocument(identifier, type);
+    }
+    static Document parse(Map<String, Object> doc) {
+        if (doc == null) {
+            return null;
+        } else if (doc instanceof Document) {
+            return (Document) doc;
+        }
+        return Factories.documentFactory.parseDocument(doc);
+    }
+
     /**
-     *  Document Parser
-     *  ~~~~~~~~~~~~~~~
+     *  Document Factory
+     *  ~~~~~~~~~~~~~~~~
      */
-    interface Parser {
+    interface Factory {
+
+        /**
+         *  Create document with data & signature loaded from local storage
+         *
+         * @param identifier - entity ID
+         * @param type       - document type
+         * @param data       - document data
+         * @param signature  - document signature
+         * @return Document
+         */
+        Document createDocument(ID identifier, String type, String data, String signature);
+
+        /**
+         *  Create empty document with entity ID & document type
+         *
+         * @param identifier - entity ID
+         * @param type       - document type
+         * @return Document
+         */
+        Document generateDocument(ID identifier, String type);
 
         /**
          *  Parse map object to entity document

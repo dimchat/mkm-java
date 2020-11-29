@@ -32,7 +32,9 @@ package chat.dim.protocol;
 
 import java.util.Map;
 
+import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
+import chat.dim.mkm.Factories;
 
 /**
  *  User/Group Meta data
@@ -102,13 +104,57 @@ public interface Meta extends Map<String, Object> {
      */
     boolean matches(ID identifier);
 
+    /**
+     *  Check whether meta match with private key
+     * @param pk - private key
+     * @return true on matched
+     */
     boolean matches(VerifyKey pk);
 
+    //
+    //  Factory methods
+    //
+    static Meta create(int version, VerifyKey key, String seed, byte[] fingerprint) {
+        return Factories.metaFactory.createMeta(version, key, seed, fingerprint);
+    }
+    static Meta generate(int version, SignKey sKey, String seed) {
+        return Factories.metaFactory.generateMeta(version, sKey, seed);
+    }
+    static Meta parse(Map<String, Object> meta) {
+        if (meta == null) {
+            return null;
+        } else if (meta instanceof Meta) {
+            return (Meta) meta;
+        }
+        return Factories.metaFactory.parseMeta(meta);
+    }
+
     /**
-     *  Meta Parser
-     *  ~~~~~~~~~~~
+     *  Meta Factory
+     *  ~~~~~~~~~~~~
      */
-    interface Parser {
+    interface Factory {
+
+        /**
+         *  Create meta
+         *
+         * @param version     - meta type
+         * @param key         - public key
+         * @param seed        - ID.name
+         * @param fingerprint - sKey.sign(seed)
+         * @return Meta
+         */
+        Meta createMeta(int version, VerifyKey key, String seed, byte[] fingerprint);
+
+        /**
+         *  Generate meta
+         *
+         * @param version - meta type
+         * @param sKey    - private key
+         * @param seed    - ID.name
+         * @return Meta
+         */
+        Meta generateMeta(int version, SignKey sKey, String seed);
 
         /**
          *  Parse map object to meta

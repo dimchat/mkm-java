@@ -39,11 +39,23 @@ import java.util.Map;
  */
 public interface PublicKey extends VerifyKey {
 
+    //
+    //  Factory method
+    //
+    static PublicKey parse(Map<String, Object> key) {
+        if (key == null) {
+            return null;
+        } else if (key instanceof PublicKey) {
+            return (PublicKey) key;
+        }
+        return Factories.publicKeyFactory.parsePublicKey(key);
+    }
+
     /**
-     *  Key Parser
-     *  ~~~~~~~~~~
+     *  Key Factory
+     *  ~~~~~~~~~~~
      */
-    interface Parser {
+    interface Factory {
 
         /**
          *  Parse map object to key

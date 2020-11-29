@@ -47,11 +47,58 @@ public interface PrivateKey extends SignKey {
      */
     PublicKey getPublicKey();
 
+    static boolean isEqual(PrivateKey key1, PrivateKey key2) {
+        if (key1 == key2) {
+            // same object
+            return true;
+        }
+        // check by public key
+        PublicKey publicKey = key1.getPublicKey();
+        if (publicKey == null) {
+            throw new NullPointerException("failed to get public key: " + key1);
+        }
+        return isMatch(publicKey, key2);
+    }
+
+    static boolean isMatch(PublicKey pKey, PrivateKey sKey) {
+        // 1. if the SK has the same public key, return true
+        PublicKey publicKey = sKey.getPublicKey();
+        if (publicKey == pKey) {
+            return true;
+        }
+        // 2. try to verify the SK's signature
+        byte[] signature = sKey.sign(promise);
+        return pKey.verify(promise, signature);
+    }
+
+    //
+    //  Factory methods
+    //
+    static PrivateKey generate(String algorithm) {
+        return Factories.privateKeyFactory.generatePrivateKey(algorithm);
+    }
+    static PrivateKey parse(Map<String, Object> key) {
+        if (key == null) {
+            return null;
+        } else if (key instanceof PrivateKey) {
+            return (PrivateKey) key;
+        }
+        return Factories.privateKeyFactory.parsePrivateKey(key);
+    }
+
     /**
-     *  Key Parser
-     *  ~~~~~~~~~~
+     *  Key Factory
+     *  ~~~~~~~~~~~
      */
-    interface Parser {
+    interface Factory {
+
+        /**
+         *  Generate key with algorithm
+         *
+         * @param algorithm - key algorithm
+         * @return PrivateKey
+         */
+        PrivateKey generatePrivateKey(String algorithm);
 
         /**
          *  Parse map object to key

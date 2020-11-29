@@ -33,7 +33,6 @@ package chat.dim.mkm;
 import java.util.Map;
 
 import chat.dim.crypto.EncryptKey;
-import chat.dim.crypto.KeyFactory;
 import chat.dim.crypto.PublicKey;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Visa;
@@ -46,12 +45,12 @@ public class BaseVisa extends BaseDocument implements Visa {
         super(dictionary);
     }
 
-    public BaseVisa(ID identifier, String data, byte[] signature) {
+    public BaseVisa(ID identifier, String data, String signature) {
         super(identifier, data, signature);
     }
 
     public BaseVisa(ID identifier) {
-        super(identifier);
+        super(identifier, VISA);
     }
 
     /**
@@ -65,7 +64,7 @@ public class BaseVisa extends BaseDocument implements Visa {
         if (key == null) {
             Object info = getProperty("key");
             if (info instanceof Map) {
-                PublicKey pKey = KeyFactory.getPublicKey((Map<String, Object>) info);
+                PublicKey pKey = PublicKey.parse((Map<String, Object>) info);
                 if (pKey instanceof EncryptKey) {
                     key = (EncryptKey) pKey;
                 }
