@@ -43,7 +43,7 @@ import chat.dim.protocol.ID;
  *          address  - a string to identify an entity
  *          terminal - entity login resource(device), OPTIONAL
  */
-public final class Identifier extends chat.dim.type.String implements ID {
+final class Identifier extends chat.dim.type.String implements ID {
 
     private final String name;
     private final Address address;

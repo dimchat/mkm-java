@@ -27,7 +27,7 @@ package chat.dim.format;
 
 import java.util.List;
 
-public class JSONList {
+public final class JSONList {
 
     public static byte[] encode(List array) {
         return parser.encode(array);

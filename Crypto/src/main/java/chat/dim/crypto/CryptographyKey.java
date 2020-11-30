@@ -43,6 +43,8 @@ public interface CryptographyKey extends Map<String, Object> {
     Map<String, Object> getMap();
     Map<String, Object> copyMap();
 
+    String getAlgorithm();
+
     /**
      *  Get key data
      *

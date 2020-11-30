@@ -25,7 +25,7 @@
  */
 package chat.dim.digest;
 
-public class RIPEMD160 {
+public final class RIPEMD160 {
 
     public static byte[] digest(byte[] data) {
         return hash.digest(data);

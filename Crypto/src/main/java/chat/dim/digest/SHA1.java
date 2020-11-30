@@ -28,7 +28,7 @@ package chat.dim.digest;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class SHA1 {
+public final class SHA1 {
 
     public static byte[] digest(byte[] data) {
         return hash.digest(data);

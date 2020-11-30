@@ -25,7 +25,7 @@
  */
 package chat.dim.format;
 
-public class JSON {
+public final class JSON {
 
     public static byte[] encode(Object container) {
         return parser.encode(container);

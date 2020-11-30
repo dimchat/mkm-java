@@ -109,7 +109,7 @@ public abstract class Dictionary implements Map<String, Object> {
     }
 
     @Override
-    public void putAll(Map<? extends String, ? extends Object> m) {
+    public void putAll(Map<? extends String, ?> m) {
         dictionary.putAll(m);
     }
 

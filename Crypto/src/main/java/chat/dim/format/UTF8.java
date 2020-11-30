@@ -27,7 +27,7 @@ package chat.dim.format;
 
 import java.nio.charset.Charset;
 
-public class UTF8 {
+public final class UTF8 {
 
     public static byte[] encode(String string) {
         return parser.encode(string);

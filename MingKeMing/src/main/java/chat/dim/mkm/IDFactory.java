@@ -36,7 +36,7 @@ import java.util.Map;
 import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
 
-public final class IDFactory implements ID.Factory {
+final class IDFactory implements ID.Factory {
 
     private final Map<String, ID> identifiers = new HashMap<>();
 

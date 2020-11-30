@@ -27,7 +27,7 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
-public class Factories {
+public final class Factories {
 
     public static SymmetricKey.Factory symmetricKeyFactory = new SymmetricKey.Factory() {
 

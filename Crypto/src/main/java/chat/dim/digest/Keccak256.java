@@ -25,7 +25,7 @@
  */
 package chat.dim.digest;
 
-public class Keccak256 {
+public final class Keccak256 {
 
     public static byte[] digest(byte[] data) {
         return hash.digest(data);

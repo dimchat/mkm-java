@@ -28,7 +28,7 @@ package chat.dim.digest;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class MD5 {
+public final class MD5 {
 
     public static byte[] digest(byte[] data) {
         return hash.digest(data);
