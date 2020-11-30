@@ -164,4 +164,19 @@ public interface Meta extends Map<String, Object> {
          */
         Meta parseMeta(Map<String, Object> meta);
     }
+
+    /**
+     *  Meta Parser
+     *  ~~~~~~~~~~~
+     */
+    interface Parser<M extends Meta> {
+
+        /**
+         *  Parse map object to meta
+         *
+         * @param meta - meta info
+         * @return Meta
+         */
+        M parse(Map<String, Object> meta);
+    }
 }

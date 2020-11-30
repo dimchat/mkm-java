@@ -135,4 +135,19 @@ public interface Document extends TAI, Map<String, Object> {
          */
         Document parseDocument(Map<String, Object> doc);
     }
+
+    /**
+     *  TAI Parser
+     *  ~~~~~~~~~~
+     */
+    interface Parser<T extends TAI> {
+
+        /**
+         *  Parse map object to The Additional Information
+         *
+         * @param tai - additional info
+         * @return TAI
+         */
+        T parse(Map<String, Object> tai);
+    }
 }

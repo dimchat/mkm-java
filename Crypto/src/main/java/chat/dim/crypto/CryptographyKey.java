@@ -54,5 +54,20 @@ public interface CryptographyKey extends Map<String, Object> {
 
     // sample data for checking keys
     byte[] promise = "Moky loves May Lee forever!".getBytes();
+
+    /**
+     *  Key Parser
+     *  ~~~~~~~~~~
+     */
+    interface Parser<K extends CryptographyKey> {
+
+        /**
+         *  Parse map object to key
+         *
+         * @param key - key info
+         * @return CryptographyKey
+         */
+        K parse(Map<String, Object> key);
+    }
 }
 
