@@ -28,14 +28,8 @@ package chat.dim.digest;
 public final class RIPEMD160 {
 
     public static byte[] digest(byte[] data) {
-        return hash.digest(data);
+        return digester.digest(data);
     }
 
-    public static Hash hash = new Hash() {
-
-        @Override
-        public byte[] digest(byte[] data) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-    };
+    public static DataDigester digester = null;
 }

@@ -67,7 +67,7 @@ public interface CryptographyKey extends Map<String, Object> {
          * @param key - key info
          * @return CryptographyKey
          */
-        K parse(Map<String, Object> key);
+        K parseKey(Map<String, Object> key);
     }
 }
 

@@ -53,4 +53,18 @@ public interface Visa extends Document {
      * @param publicKey - public key as visa.key
      */
     void setKey(EncryptKey publicKey);
+
+    /**
+     *  Get avatar URL
+     *
+     * @return URL string
+     */
+    String getAvatar();
+
+    /**
+     *  Set avatar URL
+     *
+     * @param url - URL string
+     */
+    void setAvatar(String url);
 }

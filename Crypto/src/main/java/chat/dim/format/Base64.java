@@ -36,7 +36,7 @@ public final class Base64 {
     }
 
     // default coder
-    public static BaseCoder coder = new BaseCoder() {
+    public static DataCoder coder = new DataCoder() {
 
         @Override
         public String encode(byte[] data) {

@@ -62,6 +62,8 @@ public interface Meta extends Map<String, Object> {
      *      0x01 - username@address
      *      0x02 - btc_address
      *      0x03 - username@btc_address
+     *      0x04 - eth_address
+     *      0x05 - username@eth_address
      */
     int getType();
 
@@ -105,8 +107,9 @@ public interface Meta extends Map<String, Object> {
     boolean matches(ID identifier);
 
     /**
-     *  Check whether meta match with private key
-     * @param pk - private key
+     *  Check whether meta match with public key
+     *
+     * @param pk - public key
      * @return true on matched
      */
     boolean matches(VerifyKey pk);
@@ -163,20 +166,5 @@ public interface Meta extends Map<String, Object> {
          * @return Meta
          */
         Meta parseMeta(Map<String, Object> meta);
-    }
-
-    /**
-     *  Meta Parser
-     *  ~~~~~~~~~~~
-     */
-    interface Parser<M extends Meta> {
-
-        /**
-         *  Parse map object to meta
-         *
-         * @param meta - meta info
-         * @return Meta
-         */
-        M parse(Map<String, Object> meta);
     }
 }

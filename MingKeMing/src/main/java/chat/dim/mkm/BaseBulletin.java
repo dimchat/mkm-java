@@ -45,7 +45,7 @@ public class BaseBulletin extends BaseDocument implements Bulletin {
         super(dictionary);
     }
 
-    public BaseBulletin(ID identifier, String data, String signature) {
+    public BaseBulletin(ID identifier, byte[] data, byte[] signature) {
         super(identifier, data, signature);
     }
 
@@ -58,20 +58,13 @@ public class BaseBulletin extends BaseDocument implements Bulletin {
      *
      * @return bot ID list
      */
+    @SuppressWarnings("unchecked")
     @Override
     public List<ID> getAssistants() {
         if (assistants == null) {
             Object value = getProperty("assistants");
             if (value instanceof List) {
-                assistants = new ArrayList<>();
-                List array = (List) value;
-                ID id;
-                for (Object item : array) {
-                    id = ID.parse(item);
-                    if (id != null) {
-                        assistants.add(id);
-                    }
-                }
+                assistants = ID.convert((List<String>) value);
             }
         }
         return assistants;
@@ -82,11 +75,7 @@ public class BaseBulletin extends BaseDocument implements Bulletin {
         if (bots == null) {
             setProperty("assistants", null);
         } else {
-            List<String> array = new ArrayList<>();
-            for (ID item : bots) {
-                array.add(item.toString());
-            }
-            setProperty("assistants", array);
+            setProperty("assistants", ID.revert(bots));
         }
         assistants = bots;
     }

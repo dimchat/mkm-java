@@ -1,13 +1,8 @@
 /* license: https://mit-license.org
- *
- *  Ming-Ke-Ming : Decentralized User Identity Authentication
- *
- *                                Written in 2020 by Moky <albert.moky@gmail.com>
- *
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2020 Albert Moky
+ * Copyright (c) 2019 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,51 +23,9 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm;
+package chat.dim.digest;
 
-import chat.dim.protocol.Address;
-import chat.dim.protocol.ID;
+public interface DataDigester {
 
-public final class BroadcastID extends chat.dim.type.String implements ID {
-
-    private final String name;
-    private final BroadcastAddress address;
-
-    /**
-     *  Create ID
-     *
-     * @param name - ID.name
-     * @param address - ID.address
-     */
-    public BroadcastID(String name, BroadcastAddress address) {
-        super(Identifier.concat(name, address, null));
-        this.name = name;
-        this.address = address;
-    }
-
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public Address getAddress() {
-        return address;
-    }
-
-    @Override
-    public String getTerminal() {
-        return null;
-    }
-
-    /**
-     *  Get Network ID
-     *
-     * @return address type as network ID
-     */
-    @Override
-    public byte getType() {
-        assert address != null : "ID.address should not be empty: " + toString();
-        return address.getNetwork();
-    }
+    byte[] digest(byte[] data);
 }

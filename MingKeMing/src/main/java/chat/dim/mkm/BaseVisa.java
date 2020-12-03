@@ -45,7 +45,7 @@ public class BaseVisa extends BaseDocument implements Visa {
         super(dictionary);
     }
 
-    public BaseVisa(ID identifier, String data, String signature) {
+    public BaseVisa(ID identifier, byte[] data, byte[] signature) {
         super(identifier, data, signature);
     }
 
@@ -77,5 +77,15 @@ public class BaseVisa extends BaseDocument implements Visa {
     public void setKey(EncryptKey publicKey) {
         setProperty("key", publicKey.getMap());
         key = publicKey;
+    }
+
+    @Override
+    public String getAvatar() {
+        return (String) getProperty("avatar");
+    }
+
+    @Override
+    public void setAvatar(String url) {
+        setProperty("avatar", url);
     }
 }

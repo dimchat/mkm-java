@@ -29,4 +29,10 @@ public interface AsymmetricKey extends CryptographyKey {
 
     String RSA = "RSA"; //-- "RSA/ECB/PKCS1Padding", "SHA256withRSA"
     String ECC = "ECC";
+
+    static boolean matches(SignKey sKey, VerifyKey pKey) {
+        // try to verify with signature
+        byte[] signature = sKey.sign(promise);
+        return pKey.verify(promise, signature);
+    }
 }

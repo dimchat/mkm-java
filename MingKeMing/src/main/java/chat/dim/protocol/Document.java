@@ -80,17 +80,16 @@ public interface Document extends TAI, Map<String, Object> {
      * @return name string
      */
     String getName();
-
     void setName(String value);
 
     //
     //  Factory methods
     //
-    static Document create(ID identifier, String type, String data, String signature) {
+    static Document create(ID identifier, String type, byte[] data, byte[] signature) {
         return Factories.documentFactory.createDocument(identifier, type, data, signature);
     }
-    static Document generate(ID identifier, String type) {
-        return Factories.documentFactory.generateDocument(identifier, type);
+    static Document create(ID identifier, String type) {
+        return Factories.documentFactory.createDocument(identifier, type);
     }
     static Document parse(Map<String, Object> doc) {
         if (doc == null) {
@@ -116,7 +115,7 @@ public interface Document extends TAI, Map<String, Object> {
          * @param signature  - document signature
          * @return Document
          */
-        Document createDocument(ID identifier, String type, String data, String signature);
+        Document createDocument(ID identifier, String type, byte[] data, byte[] signature);
 
         /**
          *  Create empty document with entity ID & document type
@@ -125,7 +124,7 @@ public interface Document extends TAI, Map<String, Object> {
          * @param type       - document type
          * @return Document
          */
-        Document generateDocument(ID identifier, String type);
+        Document createDocument(ID identifier, String type);
 
         /**
          *  Parse map object to entity document
@@ -134,20 +133,5 @@ public interface Document extends TAI, Map<String, Object> {
          * @return Document
          */
         Document parseDocument(Map<String, Object> doc);
-    }
-
-    /**
-     *  TAI Parser
-     *  ~~~~~~~~~~
-     */
-    interface Parser<T extends TAI> {
-
-        /**
-         *  Parse map object to The Additional Information
-         *
-         * @param tai - additional info
-         * @return TAI
-         */
-        T parse(Map<String, Object> tai);
     }
 }

@@ -36,16 +36,5 @@ public final class Base58 {
     }
 
     // default coder
-    public static BaseCoder coder = new BaseCoder() {
-
-        @Override
-        public String encode(byte[] data) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-
-        @Override
-        public byte[] decode(String string) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-    };
+    public static DataCoder coder = null;
 }

@@ -44,11 +44,7 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
     String AES = "AES"; //-- "AES/CBC/PKCS7Padding"
     String DES = "DES";
 
-    static boolean isEqual(SymmetricKey key1, SymmetricKey key2) {
-        if (key1 == key2) {
-            // same object
-            return true;
-        }
+    static boolean equals(SymmetricKey key1, SymmetricKey key2) {
         // check by encryption
         byte[] ciphertext = key1.encrypt(promise);
         byte[] plaintext = key2.decrypt(ciphertext);

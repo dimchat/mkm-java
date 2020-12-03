@@ -30,7 +30,9 @@
  */
 package chat.dim.protocol;
 
-import chat.dim.mkm.BroadcastID;
+import java.util.ArrayList;
+import java.util.List;
+
 import chat.dim.mkm.Factories;
 
 /**
@@ -56,18 +58,21 @@ public interface ID {
      */
     byte getType();
 
+    static boolean isBroadcast(ID identifier) {
+        return Address.isBroadcast(identifier.getAddress());
+    }
     static boolean isUser(ID identifier) {
-        return NetworkType.isUser(identifier.getType());
+        return Address.isUser(identifier.getAddress());
     }
     static boolean isGroup(ID identifier) {
-        return NetworkType.isGroup(identifier.getType());
+        return Address.isGroup(identifier.getAddress());
     }
 
     /**
      *  ID for broadcast
      */
-    BroadcastID ANYONE = new BroadcastID("anyone", Address.ANYWHERE);
-    BroadcastID EVERYONE = new BroadcastID("everyone", Address.EVERYWHERE);
+    ID ANYONE = create("anyone", Address.ANYWHERE, null);
+    ID EVERYONE = create("everyone", Address.EVERYWHERE, null);
 
     //
     //  Factory methods
@@ -88,6 +93,26 @@ public interface ID {
         } else {
             throw new IllegalArgumentException("Illegal ID: " + identifier);
         }
+    }
+
+    static List<ID> convert(List<String> members) {
+        List<ID> array = new ArrayList<>();
+        ID id;
+        for (String item : members) {
+            id = parse(item);
+            if (id == null) {
+                continue;
+            }
+            array.add(id);
+        }
+        return array;
+    }
+    static List<String> revert(List<ID> members) {
+        List<String> array = new ArrayList<>();
+        for (ID item : members) {
+            array.add(item.toString());
+        }
+        return array;
     }
 
     /**

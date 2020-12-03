@@ -47,28 +47,9 @@ public interface PrivateKey extends SignKey {
      */
     PublicKey getPublicKey();
 
-    static boolean isEqual(PrivateKey key1, PrivateKey key2) {
-        if (key1 == key2) {
-            // same object
-            return true;
-        }
+    static boolean equals(PrivateKey key1, PrivateKey key2) {
         // check by public key
-        PublicKey publicKey = key1.getPublicKey();
-        if (publicKey == null) {
-            throw new NullPointerException("failed to get public key: " + key1);
-        }
-        return isMatch(publicKey, key2);
-    }
-
-    static boolean isMatch(PublicKey pKey, PrivateKey sKey) {
-        // 1. if the SK has the same public key, return true
-        PublicKey publicKey = sKey.getPublicKey();
-        if (publicKey == pKey) {
-            return true;
-        }
-        // 2. try to verify the SK's signature
-        byte[] signature = sKey.sign(promise);
-        return pKey.verify(promise, signature);
+        return AsymmetricKey.matches(key1, key2.getPublicKey());
     }
 
     //

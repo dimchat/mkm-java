@@ -47,6 +47,9 @@ public interface Address {
      */
     byte getNetwork();
 
+    static boolean isBroadcast(Address address) {
+        return address instanceof BroadcastAddress;
+    }
     static boolean isUser(Address address) {
         return NetworkType.isUser(address.getNetwork());
     }

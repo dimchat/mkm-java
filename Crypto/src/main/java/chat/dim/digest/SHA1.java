@@ -31,10 +31,10 @@ import java.security.NoSuchAlgorithmException;
 public final class SHA1 {
 
     public static byte[] digest(byte[] data) {
-        return hash.digest(data);
+        return digester.digest(data);
     }
 
-    public static Hash hash = new Hash() {
+    public static DataDigester digester = new DataDigester() {
 
         @Override
         public byte[] digest(byte[] data) {

@@ -25,7 +25,7 @@
  */
 package chat.dim.format;
 
-public interface BaseCoder {
+public interface DataCoder {
 
     /**
      *  Encode binary data to text string

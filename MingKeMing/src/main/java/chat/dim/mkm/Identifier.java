@@ -49,34 +49,11 @@ final class Identifier extends chat.dim.type.String implements ID {
     private final Address address;
     private final String terminal;
 
-    static String concat(String name, Address address, String terminal) {
-        String string = address.toString();
-        if (name != null && name.length() > 0) {
-            string = name + "@" + string;
-        }
-        if (terminal != null && terminal.length() > 0) {
-            string = string + "/" + terminal;
-        }
-        return string;
-    }
-
     Identifier(String identifier, String name, Address address, String terminal) {
         super(identifier);
         this.name = name;
         this.address = address;
         this.terminal = terminal;
-    }
-
-    public Identifier(String name, Address address, String terminal) {
-        this(concat(name, address, terminal), name, address, terminal);
-    }
-
-    public Identifier(String name, Address address) {
-        this(concat(name, address, null), name, address, null);
-    }
-
-    public Identifier(Address address) {
-        this(address.toString(), null, address, null);
     }
 
     @Override

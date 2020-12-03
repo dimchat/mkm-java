@@ -40,7 +40,45 @@ final class IDFactory implements ID.Factory {
 
     private final Map<String, ID> identifiers = new HashMap<>();
 
-    private ID createID(final String string) {
+    private static String concat(String name, Address address, String terminal) {
+        String string = address.toString();
+        if (name != null && name.length() > 0) {
+            string = name + "@" + string;
+        }
+        if (terminal != null && terminal.length() > 0) {
+            string = string + "/" + terminal;
+        }
+        return string;
+    }
+
+    @Override
+    public ID createID(String name, Address address, String terminal) {
+        assert address != null : "ID.address empty";
+        String string = concat(name, address, terminal);
+        ID id = new Identifier(string, name, address, terminal);
+        identifiers.put(id.toString(), id);
+        return id;
+    }
+
+    @Override
+    public ID parseID(String identifier) {
+        if (ID.ANYONE.toString().equalsIgnoreCase(identifier)) {
+            return ID.ANYONE;
+        }
+        if (ID.EVERYONE.toString().equalsIgnoreCase(identifier)) {
+            return ID.EVERYONE;
+        }
+        ID id = identifiers.get(identifier);
+        if (id == null) {
+            id = createID(identifier);
+            if (id != null) {
+                identifiers.put(identifier, id);
+            }
+        }
+        return id;
+    }
+
+    private static ID createID(final String string) {
         String name;
         Address address;
         String terminal;
@@ -75,32 +113,5 @@ final class IDFactory implements ID.Factory {
             return null;
         }
         return new Identifier(string, name, address, terminal);
-    }
-
-    @Override
-    public ID createID(String name, Address address, String terminal) {
-        assert address != null : "ID.address empty";
-        String string = Identifier.concat(name, address, terminal);
-        ID id = new Identifier(string, name, address, terminal);
-        identifiers.put(id.toString(), id);
-        return id;
-    }
-
-    @Override
-    public ID parseID(String identifier) {
-        if (ID.ANYONE.equalsIgnoreCase(identifier)) {
-            return ID.ANYONE;
-        }
-        if (ID.EVERYONE.equalsIgnoreCase(identifier)) {
-            return ID.EVERYONE;
-        }
-        ID id = identifiers.get(identifier);
-        if (id == null) {
-            id = createID(identifier);
-            if (id != null) {
-                identifiers.put(identifier, id);
-            }
-        }
-        return id;
     }
 }

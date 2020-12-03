@@ -25,7 +25,7 @@
  */
 package chat.dim.type;
 
-public class String {
+public abstract class String {
 
     private final java.lang.String string;
 

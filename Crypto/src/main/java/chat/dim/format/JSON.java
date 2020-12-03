@@ -36,16 +36,5 @@ public final class JSON {
     }
 
     // default parser
-    public static DataParser<Object> parser = new DataParser<Object>() {
-
-        @Override
-        public byte[] encode(Object container) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-
-        @Override
-        public Object decode(byte[] json) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-    };
+    public static DataParser<Object> parser = null;
 }

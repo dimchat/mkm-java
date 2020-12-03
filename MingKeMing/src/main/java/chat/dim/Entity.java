@@ -55,7 +55,7 @@ public abstract class Entity {
 
     private WeakReference<EntityDataSource> dataSourceRef = null;
 
-    public Entity(ID identifier) {
+    protected Entity(ID identifier) {
         super();
         this.identifier = identifier;
     }
@@ -78,7 +78,7 @@ public abstract class Entity {
     @Override
     public String toString() {
         String clazzName = getClass().getSimpleName();
-        return "<" + clazzName + "|" + getType() + " " + identifier + " \"" + getName() + "\">";
+        return "<" + clazzName + "|" + getType() + " " + identifier + ">";
     }
 
     /**
@@ -107,31 +107,5 @@ public abstract class Entity {
 
     public Document getDocument(String type) {
         return getDataSource().getDocument(identifier, type);
-    }
-
-    /**
-     *  Get entity name
-     *
-     * @return name string
-     */
-    public String getName() {
-        // get from document
-        Document doc = null;
-        if (ID.isUser(identifier)) {
-            doc = getDocument(Document.PROFILE);
-            if (doc == null) {
-                doc = getDocument(Document.VISA);
-            }
-        } else if (ID.isGroup(identifier)) {
-            doc = getDocument(Document.BULLETIN);
-        }
-        if (doc != null) {
-            String name = doc.getName();
-            if (name != null) {
-                return name;
-            }
-        }
-        // get ID.name
-        return identifier.getName();
     }
 }

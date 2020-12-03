@@ -32,8 +32,6 @@ package chat.dim.mkm;
 
 import java.util.Map;
 
-import chat.dim.crypto.SignKey;
-import chat.dim.crypto.VerifyKey;
 import chat.dim.protocol.Address;
 import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
@@ -41,38 +39,16 @@ import chat.dim.protocol.Meta;
 
 public final class Factories {
 
-    public static Address.Factory addressFactory = new AddressFactory() {
-
-        @Override
-        protected Address createAddress(String address) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-    };
+    public static Address.Factory addressFactory = null;
 
     public static ID.Factory idFactory = new IDFactory();
 
-    public static Meta.Factory metaFactory = new Meta.Factory() {
-
-        @Override
-        public Meta createMeta(int version, VerifyKey key, String seed, byte[] fingerprint) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-
-        @Override
-        public Meta generateMeta(int version, SignKey sKey, String seed) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-
-        @Override
-        public Meta parseMeta(Map<String, Object> meta) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-    };
+    public static Meta.Factory metaFactory = null;
 
     public static Document.Factory documentFactory = new Document.Factory() {
 
         @Override
-        public Document createDocument(ID identifier, String type, String data, String signature) {
+        public Document createDocument(ID identifier, String type, byte[] data, byte[] signature) {
             if (ID.isUser(identifier)) {
                 if (type == null || Document.VISA.equals(type)) {
                     return new BaseVisa(identifier, data, signature);
@@ -84,7 +60,7 @@ public final class Factories {
         }
 
         @Override
-        public Document generateDocument(ID identifier, String type) {
+        public Document createDocument(ID identifier, String type) {
             if (ID.isUser(identifier)) {
                 if (type == null || Document.VISA.equals(type)) {
                     return new BaseVisa(identifier);

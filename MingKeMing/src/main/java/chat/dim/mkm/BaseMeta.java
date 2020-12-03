@@ -90,11 +90,11 @@ public abstract class BaseMeta extends Dictionary implements Meta {
 
     private int status = 0;  // 1 for valid, -1 for invalid
 
-    public BaseMeta(Map<String, Object> dictionary) {
+    protected BaseMeta(Map<String, Object> dictionary) {
         super(dictionary);
     }
 
-    public BaseMeta(int version, VerifyKey key, String seed, byte[] fingerprint) {
+    protected BaseMeta(int version, VerifyKey key, String seed, byte[] fingerprint) {
         super();
 
         // meta type

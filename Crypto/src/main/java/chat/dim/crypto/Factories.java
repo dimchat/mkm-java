@@ -25,41 +25,11 @@
  */
 package chat.dim.crypto;
 
-import java.util.Map;
-
 public final class Factories {
 
-    public static SymmetricKey.Factory symmetricKeyFactory = new SymmetricKey.Factory() {
+    public static SymmetricKey.Factory symmetricKeyFactory = null;
 
-        @Override
-        public SymmetricKey generateSymmetricKey(String algorithm) {
-            throw new UnsupportedOperationException("implement me!");
-        }
+    public static PublicKey.Factory publicKeyFactory = null;
 
-        @Override
-        public SymmetricKey parseSymmetricKey(Map<String, Object> key) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-    };
-
-    public static PublicKey.Factory publicKeyFactory = new PublicKey.Factory() {
-
-        @Override
-        public PublicKey parsePublicKey(Map<String, Object> key) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-    };
-
-    public static PrivateKey.Factory privateKeyFactory = new PrivateKey.Factory() {
-
-        @Override
-        public PrivateKey generatePrivateKey(String algorithm) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-
-        @Override
-        public PrivateKey parsePrivateKey(Map<String, Object> key) {
-            throw new UnsupportedOperationException("implement me!");
-        }
-    };
+    public static PrivateKey.Factory privateKeyFactory = null;
 }

@@ -69,7 +69,7 @@ public class BaseDocument extends Dictionary implements Document {
      * @param data - document data in JsON format
      * @param signature - signature of document data
      */
-    public BaseDocument(ID identifier, String data, String signature) {
+    public BaseDocument(ID identifier, byte[] data, byte[] signature) {
         super();
 
         // ID
@@ -77,12 +77,12 @@ public class BaseDocument extends Dictionary implements Document {
         this.identifier = identifier;
 
         // json data
-        put("data", data);
-        this.data = UTF8.encode(data);
+        put("data", UTF8.decode(data));
+        this.data = data;
 
         // signature
-        put("signature", signature);
-        this.signature = Base64.decode(signature);
+        put("signature", Base64.encode(signature));
+        this.signature = signature;
 
         // all documents must be verified before saving into local storage
         this.status = 1;
@@ -113,11 +113,7 @@ public class BaseDocument extends Dictionary implements Document {
 
     @Override
     public String getType() {
-        Object type = getProperty("type");
-        if (type == null) {
-            type = get("type");
-        }
-        return (String) type;
+        return (String) getProperty("type");
     }
 
     @Override
