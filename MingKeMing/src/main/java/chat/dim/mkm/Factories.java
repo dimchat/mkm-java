@@ -30,8 +30,6 @@
  */
 package chat.dim.mkm;
 
-import java.util.Map;
-
 import chat.dim.protocol.Address;
 import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
@@ -45,47 +43,5 @@ public final class Factories {
 
     public static Meta.Factory metaFactory = null;
 
-    public static Document.Factory documentFactory = new Document.Factory() {
-
-        @Override
-        public Document createDocument(ID identifier, String type, byte[] data, byte[] signature) {
-            if (ID.isUser(identifier)) {
-                if (type == null || Document.VISA.equals(type)) {
-                    return new BaseVisa(identifier, data, signature);
-                }
-            } else if (ID.isGroup(identifier)) {
-                return new BaseBulletin(identifier, data, signature);
-            }
-            return new BaseDocument(identifier, data, signature);
-        }
-
-        @Override
-        public Document createDocument(ID identifier, String type) {
-            if (ID.isUser(identifier)) {
-                if (type == null || Document.VISA.equals(type)) {
-                    return new BaseVisa(identifier);
-                }
-            } else if (ID.isGroup(identifier)) {
-                return new BaseBulletin(identifier);
-            }
-            return new BaseDocument(identifier, type);
-        }
-
-        @Override
-        public Document parseDocument(Map<String, Object> doc) {
-            ID identifier = ID.parse(doc.get("ID"));
-            if (identifier == null) {
-                return null;
-            }
-            if (ID.isUser(identifier)) {
-                String type = (String) doc.get("type");
-                if (type == null || Document.VISA.equals(type)) {
-                    return new BaseVisa(doc);
-                }
-            } else if (ID.isGroup(identifier)) {
-                return new BaseBulletin(doc);
-            }
-            return new BaseDocument(doc);
-        }
-    };
+    public static Document.Factory documentFactory = null;
 }

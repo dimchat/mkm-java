@@ -119,11 +119,11 @@ public abstract class BaseMeta extends Dictionary implements Meta {
     @Override
     public int getType() {
         if (type == 0) {
-            Object version = get("version");
+            Object version = get("type");
             if (version == null) {
-                version = get("type");
+                version = get("version");
             }
-            type = (int) version;
+            type = ((Number) version).intValue();
         }
         return type;
     }
