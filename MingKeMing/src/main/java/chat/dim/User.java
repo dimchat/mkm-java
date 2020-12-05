@@ -115,11 +115,14 @@ public class User extends Entity {
         // 1. get key from visa
         Object pKey = getVisaKey();
         if (pKey instanceof VerifyKey) {
+            // the sender may use communication key to sign message.data,
+            // so try to verify it with visa.key here
             keys.add((VerifyKey) pKey);
         }
         // 2. get key from meta
         VerifyKey mKey = getMeta().getKey();
-        assert mKey != null : "failed to get meta key for user: " + identifier;
+        // the sender may use identity key to sign message.data,
+        // try to verify it with meta.key
         keys.add(mKey);
         return keys;
     }
