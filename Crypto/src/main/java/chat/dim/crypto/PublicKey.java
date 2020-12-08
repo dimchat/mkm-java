@@ -27,6 +27,8 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
+import chat.dim.type.SOMap;
+
 /**
  *  Asymmetric Cryptography Public Key
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,6 +49,8 @@ public interface PublicKey extends VerifyKey {
             return null;
         } else if (key instanceof PublicKey) {
             return (PublicKey) key;
+        } else if (key instanceof SOMap) {
+            key = ((SOMap) key).getMap();
         }
         return Factories.publicKeyFactory.parsePublicKey(key);
     }

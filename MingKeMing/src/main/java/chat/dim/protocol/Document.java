@@ -33,6 +33,7 @@ package chat.dim.protocol;
 import java.util.Map;
 
 import chat.dim.mkm.Factories;
+import chat.dim.type.SOMap;
 
 /**
  *  User/Group Profile
@@ -45,10 +46,7 @@ import chat.dim.mkm.Factories;
  *          signature: "..."  // signature = sign(data, SK);
  *      }
  */
-public interface Document extends TAI, Map<String, Object> {
-
-    Map<String, Object> getMap();
-    Map<String, Object> copyMap();
+public interface Document extends TAI, SOMap {
 
     //
     //  Document types
@@ -96,6 +94,8 @@ public interface Document extends TAI, Map<String, Object> {
             return null;
         } else if (doc instanceof Document) {
             return (Document) doc;
+        } else if (doc instanceof SOMap) {
+            doc = ((SOMap) doc).getMap();
         }
         return Factories.documentFactory.parseDocument(doc);
     }

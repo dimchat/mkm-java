@@ -28,6 +28,8 @@ package chat.dim.crypto;
 import java.util.Arrays;
 import java.util.Map;
 
+import chat.dim.type.SOMap;
+
 /**
  *  Symmetric Cryptography Key
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -62,6 +64,8 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
             return null;
         } else if (key instanceof SymmetricKey) {
             return (SymmetricKey) key;
+        } else if (key instanceof SOMap) {
+            key = ((SOMap) key).getMap();
         }
         return Factories.symmetricKeyFactory.parseSymmetricKey(key);
     }

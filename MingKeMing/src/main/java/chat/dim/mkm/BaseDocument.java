@@ -45,13 +45,13 @@ import chat.dim.type.Dictionary;
 
 public class BaseDocument extends Dictionary implements Document {
 
-    private byte[] data = null;       // JsON.encode(properties)
-    private byte[] signature = null;  // LocalUser(identifier).sign(data)
+    private ID identifier;
 
-    private Map<String, Object> properties = null;
-    private int status = 0;           // 1 for valid, -1 for invalid
+    private byte[] data;       // JsON.encode(properties)
+    private byte[] signature;  // LocalUser(identifier).sign(data)
 
-    private ID identifier = null;
+    private Map<String, Object> properties;
+    private int status;        // 1 for valid, -1 for invalid
 
     /**
      *  Create Entity Document
@@ -60,6 +60,15 @@ public class BaseDocument extends Dictionary implements Document {
      */
     public BaseDocument(Map<String, Object> dictionary) {
         super(dictionary);
+        // lazy
+        identifier = null;
+
+        data = null;
+        signature = null;
+
+        properties = null;
+
+        status = 0;
     }
 
     /**
@@ -84,8 +93,10 @@ public class BaseDocument extends Dictionary implements Document {
         put("signature", Base64.encode(signature));
         this.signature = signature;
 
+        properties = null;
+
         // all documents must be verified before saving into local storage
-        this.status = 1;
+        status = 1;
     }
 
     /**
@@ -101,9 +112,17 @@ public class BaseDocument extends Dictionary implements Document {
         put("ID", identifier.toString());
         this.identifier = identifier;
 
+        data = null;
+        signature = null;
+
         if (type != null && type.length() > 0) {
-            setProperty("type", type);
+            properties = new HashMap<>();
+            properties.put("type", type);
+        } else {
+            properties = null;
         }
+
+        status = 0;
     }
 
     @Override

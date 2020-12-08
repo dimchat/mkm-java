@@ -27,6 +27,8 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
+import chat.dim.type.SOMap;
+
 /**
  *  Asymmetric Cryptography Private Key
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -63,6 +65,8 @@ public interface PrivateKey extends SignKey {
             return null;
         } else if (key instanceof PrivateKey) {
             return (PrivateKey) key;
+        } else if (key instanceof SOMap) {
+            key = ((SOMap) key).getMap();
         }
         return Factories.privateKeyFactory.parsePrivateKey(key);
     }

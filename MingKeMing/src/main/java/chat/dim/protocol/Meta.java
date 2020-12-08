@@ -35,6 +35,7 @@ import java.util.Map;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.mkm.Factories;
+import chat.dim.type.SOMap;
 
 /**
  *  User/Group Meta data
@@ -51,10 +52,7 @@ import chat.dim.mkm.Factories;
  *      algorithm:
  *          fingerprint = sign(seed, SK);
  */
-public interface Meta extends Map<String, Object> {
-
-    Map<String, Object> getMap();
-    Map<String, Object> copyMap();
+public interface Meta extends SOMap {
 
     /**
      *  Meta algorithm version
@@ -128,6 +126,8 @@ public interface Meta extends Map<String, Object> {
             return null;
         } else if (meta instanceof Meta) {
             return (Meta) meta;
+        } else if (meta instanceof SOMap) {
+            meta = ((SOMap) meta).getMap();
         }
         return Factories.metaFactory.parseMeta(meta);
     }

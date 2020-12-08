@@ -31,7 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class Dictionary implements Map<String, Object> {
+public abstract class Dictionary implements SOMap {
 
     private final Map<String, Object> dictionary;
 
@@ -46,11 +46,14 @@ public abstract class Dictionary implements Map<String, Object> {
         dictionary = map;
     }
 
+    @Override
     public Map<String, Object> getMap() {
         return dictionary;
     }
 
-    public Map<String, Object> copyMap() {
+    @Override
+    public Map<String, Object> copyMap(boolean deepCopy) {
+        // TODO: implements deep copy
         return new HashMap<>(dictionary);
     }
 

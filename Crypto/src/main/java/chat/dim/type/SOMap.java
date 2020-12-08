@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2020 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,50 +23,14 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.type;
 
+import java.lang.String;
 import java.util.Map;
 
-import chat.dim.type.SOMap;
+public interface SOMap extends Map<String, Object> {
 
-/**
- *  Cryptography Key
- *  ~~~~~~~~~~~~~~~~
- *  Cryptography key with designated algorithm
- *
- *  key data format: {
- *      algorithm : "RSA", // ECC, AES, ...
- *      data      : "{BASE64_ENCODE}",
- *      ...
- *  }
- */
-public interface CryptographyKey extends SOMap {
+    Map<String, Object> getMap();
 
-    String getAlgorithm();
-
-    /**
-     *  Get key data
-     *
-     * @return key data
-     */
-    byte[] getData();
-
-    // sample data for checking keys
-    byte[] promise = "Moky loves May Lee forever!".getBytes();
-
-    /**
-     *  Key Parser
-     *  ~~~~~~~~~~
-     */
-    interface Parser<K extends CryptographyKey> {
-
-        /**
-         *  Parse map object to key
-         *
-         * @param key - key info
-         * @return CryptographyKey
-         */
-        K parseKey(Map<String, Object> key);
-    }
+    Map<String, Object> copyMap(boolean deepCopy);
 }
-

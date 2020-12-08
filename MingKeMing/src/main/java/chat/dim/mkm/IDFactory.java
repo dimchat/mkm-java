@@ -55,9 +55,7 @@ final class IDFactory implements ID.Factory {
     public ID createID(String name, Address address, String terminal) {
         assert address != null : "ID.address empty";
         String string = concat(name, address, terminal);
-        ID id = new Identifier(string, name, address, terminal);
-        identifiers.put(id.toString(), id);
-        return id;
+        return new Identifier(string, name, address, terminal);
     }
 
     @Override
