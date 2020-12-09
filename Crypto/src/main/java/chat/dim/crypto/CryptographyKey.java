@@ -25,8 +25,6 @@
  */
 package chat.dim.crypto;
 
-import java.util.Map;
-
 import chat.dim.type.SOMap;
 
 /**
@@ -42,6 +40,11 @@ import chat.dim.type.SOMap;
  */
 public interface CryptographyKey extends SOMap {
 
+    /**
+     *  Get key algorithm name
+     *
+     * @return algorithm name
+     */
     String getAlgorithm();
 
     /**
@@ -53,20 +56,5 @@ public interface CryptographyKey extends SOMap {
 
     // sample data for checking keys
     byte[] promise = "Moky loves May Lee forever!".getBytes();
-
-    /**
-     *  Key Parser
-     *  ~~~~~~~~~~
-     */
-    interface Parser<K extends CryptographyKey> {
-
-        /**
-         *  Parse map object to key
-         *
-         * @param key - key info
-         * @return CryptographyKey
-         */
-        K parseKey(Map<String, Object> key);
-    }
 }
 
