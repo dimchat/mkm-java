@@ -62,8 +62,8 @@ public class User extends Entity {
     }
 
     @Override
-    public UserDataSource getDataSource() {
-        return (UserDataSource) super.getDataSource();
+    public DataSource getDataSource() {
+        return (DataSource) super.getDataSource();
     }
 
     /**
@@ -225,5 +225,73 @@ public class User extends Entity {
         // if meta not exists, user won't be created
         VerifyKey key = getMeta().getKey();
         return doc.verify(key);
+    }
+
+    /**
+     *  User Data Source
+     *  ~~~~~~~~~~~~~~~~
+     *
+     *  (Encryption/decryption)
+     *  1. public key for encryption
+     *     if visa.key not exists, means it is the same key with meta.key
+     *  2. private keys for decryption
+     *     the private keys paired with [visa.key, meta.key]
+     *
+     *  (Signature/Verification)
+     *  3. private key for signature
+     *     the private key paired with visa.key or meta.key
+     *  4. public keys for verification
+     *     [visa.key, meta.key]
+     *
+     *  (Visa Document)
+     *  5. private key for signature
+     *     the private key pared with meta.key
+     *  6. public key for verification
+     *     [meta.key]
+     */
+    public interface DataSource extends Entity.DataSource {
+
+        /**
+         *  Get contacts list
+         *
+         * @param user - user ID
+         * @return contacts list (ID)
+         */
+        List<ID> getContacts(ID user);
+
+        /**
+         *  Get user's public keys for verification
+         *  [visa.key, meta.key]
+         *
+         * @param user - user ID
+         * @return public keys
+         */
+        List<VerifyKey> getPublicKeysForVerification(ID user);
+
+        /**
+         *  Get user's private keys for decryption
+         *  (which paired with [visa.key, meta.key])
+         *
+         * @param user - user ID
+         * @return private keys
+         */
+        List<DecryptKey> getPrivateKeysForDecryption(ID user);
+
+        /**
+         *  Get user's private key for signature
+         *  (which paired with visa.key or meta.key)
+         *
+         * @param user - user ID
+         * @return private key
+         */
+        SignKey getPrivateKeyForSignature(ID user);
+
+        /**
+         *  Get user's private key for signing visa
+         *
+         * @param user - user ID
+         * @return private key
+         */
+        SignKey getPrivateKeyForVisaSignature(ID user);
     }
 }

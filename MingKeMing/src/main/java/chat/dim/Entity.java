@@ -49,13 +49,13 @@ import chat.dim.protocol.Meta;
  *      document   - entity document
  *      name       - nickname
  */
-public abstract class Entity {
+public class Entity {
 
     public final ID identifier;
 
-    private WeakReference<EntityDataSource> dataSourceRef = null;
+    private WeakReference<DataSource> dataSourceRef = null;
 
-    protected Entity(ID identifier) {
+    public Entity(ID identifier) {
         super();
         this.identifier = identifier;
     }
@@ -90,14 +90,14 @@ public abstract class Entity {
         return identifier.getType();
     }
 
-    public EntityDataSource getDataSource() {
+    public DataSource getDataSource() {
         if (dataSourceRef == null) {
             return null;
         }
         return dataSourceRef.get();
     }
 
-    public void setDataSource(EntityDataSource dataSource) {
+    public void setDataSource(DataSource dataSource) {
         dataSourceRef = new WeakReference<>(dataSource);
     }
 
@@ -107,5 +107,29 @@ public abstract class Entity {
 
     public Document getDocument(String type) {
         return getDataSource().getDocument(identifier, type);
+    }
+
+    /**
+     *  Entity Data Source
+     *  ~~~~~~~~~~~~~~~~~~
+     */
+    public interface DataSource {
+
+        /**
+         *  Get meta for entity ID
+         *
+         * @param identifier - entity ID
+         * @return meta object
+         */
+        Meta getMeta(ID identifier);
+
+        /**
+         *  Get document for entity ID
+         *
+         * @param identifier - entity ID
+         * @param type - document type
+         * @return Document
+         */
+        Document getDocument(ID identifier, String type);
     }
 }

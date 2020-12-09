@@ -46,8 +46,8 @@ public class Group extends Entity {
     }
 
     @Override
-    public GroupDataSource getDataSource() {
-        return (GroupDataSource) super.getDataSource();
+    public DataSource getDataSource() {
+        return (DataSource) super.getDataSource();
     }
 
     public ID getFounder() {
@@ -128,5 +128,36 @@ public class Group extends Entity {
             return ((Bulletin) doc).getAssistants();
         }
         return null;
+    }
+
+    /**
+     *  Group Data Source
+     *  ~~~~~~~~~~~~~~~~~
+     */
+    public interface DataSource extends Entity.DataSource {
+
+        /**
+         *  Get group founder
+         *
+         * @param group - group ID
+         * @return fonder ID
+         */
+        ID getFounder(ID group);
+
+        /**
+         *  Get group owner
+         *
+         * @param group - group ID
+         * @return owner ID
+         */
+        ID getOwner(ID group);
+
+        /**
+         *  Get group members list
+         *
+         * @param group - group ID
+         * @return members list (ID)
+         */
+        List<ID> getMembers(ID group);
     }
 }
