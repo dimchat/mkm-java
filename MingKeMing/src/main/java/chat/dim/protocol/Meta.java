@@ -96,6 +96,23 @@ public interface Meta extends SOMap {
     boolean isValid();
 
     /**
+     *  Generate address
+     *
+     * @param type - ID.type
+     * @return Address
+     */
+    Address generateAddress(byte type);
+
+    /**
+     *  Generate ID with terminal
+     *
+     * @param type - ID.type
+     * @param terminal - ID.terminal
+     * @return ID
+     */
+    ID generateID(byte type, String terminal);
+
+    /**
      *  Check whether meta match with entity ID
      *  (must call this when received a new meta from network)
      *

@@ -36,6 +36,8 @@ import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
 import chat.dim.format.UTF8;
+import chat.dim.protocol.Address;
+import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
 import chat.dim.protocol.MetaType;
 import chat.dim.type.Dictionary;
@@ -194,6 +196,32 @@ public abstract class BaseMeta extends Dictionary implements Meta {
             }
         }
         return status == 1;
+    }
+
+    @Override
+    public ID generateID(byte type, String terminal) {
+        Address address = generateAddress(type);
+        if (address == null) {
+            return null;
+        }
+        return ID.create(getSeed(), address, terminal);
+    }
+
+    @Override
+    public boolean matches(ID identifier) {
+        // check ID.name
+        String seed = getSeed();
+        String name = identifier.getName();
+        if (name == null || name.length() == 0) {
+            if (seed != null && seed.length() > 0) {
+                return false;
+            }
+        } else if (!name.equals(seed)) {
+            return false;
+        }
+        // check ID.address
+        Address address = generateAddress(identifier.getType());
+        return identifier.getAddress().equals(address);
     }
 
     @Override
