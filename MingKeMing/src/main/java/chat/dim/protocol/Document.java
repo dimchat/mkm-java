@@ -73,6 +73,10 @@ public interface Document extends TAI, SOMap {
      */
     ID getIdentifier();
 
+    static ID getIdentifier(Map<String, Object> doc) {
+        return ID.parse(doc.get("ID"));
+    }
+
     //---- properties getter/setter
 
     /**

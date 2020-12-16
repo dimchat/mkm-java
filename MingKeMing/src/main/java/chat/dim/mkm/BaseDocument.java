@@ -142,7 +142,7 @@ public class BaseDocument extends Dictionary implements Document {
     @Override
     public ID getIdentifier() {
         if (identifier == null) {
-            identifier = ID.parse(get("ID"));
+            identifier = Document.getIdentifier(getMap());
         }
         return identifier;
     }

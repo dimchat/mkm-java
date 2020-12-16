@@ -32,8 +32,10 @@ package chat.dim.protocol;
 
 import java.util.Map;
 
+import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
+import chat.dim.format.Base64;
 import chat.dim.mkm.Factories;
 import chat.dim.type.SOMap;
 
@@ -70,10 +72,9 @@ public interface Meta extends SOMap {
         if (version == null) {
             // compatible with v1.0
             version = meta.get("version");
-        }
-        if (version == null) {
-            //throw new NullPointerException("meta type not found");
-            return 0;
+            if (version == null) {
+                throw new NullPointerException("meta type not found: " + meta);
+            }
         }
         return ((Number) version).intValue();
     }
@@ -85,12 +86,26 @@ public interface Meta extends SOMap {
      */
     VerifyKey getKey();
 
+    @SuppressWarnings("unchecked")
+    static VerifyKey getKey(Map<String, Object> meta) {
+        Object key = meta.get("key");
+        if (key == null) {
+            throw new NullPointerException("meta key not found: " + meta);
+        }
+        assert key instanceof Map : "meta key error: " + key;
+        return PublicKey.parse((Map<String, Object>) key);
+    }
+
     /**
      *  Seed to generate fingerprint
      *
      *      Username / Group-X
      */
     String getSeed();
+
+    static String getSeed(Map<String, Object> meta) {
+        return (String) meta.get("seed");
+    }
 
     /**
      *  Fingerprint to verify ID and public key
@@ -99,6 +114,14 @@ public interface Meta extends SOMap {
      *      Check: verify(seed, fingerprint, publicKey)
      */
     byte[] getFingerprint();
+
+    static byte[] getFingerprint(Map<String, Object> meta) {
+        String base64 = (String) meta.get("fingerprint");
+        if (base64 == null) {
+            return null;
+        }
+        return Base64.decode(base64);
+    }
 
     /**
      *  Check meta valid

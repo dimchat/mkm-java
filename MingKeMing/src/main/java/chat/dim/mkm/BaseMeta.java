@@ -32,7 +32,6 @@ package chat.dim.mkm;
 
 import java.util.Map;
 
-import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
 import chat.dim.format.UTF8;
@@ -130,10 +129,7 @@ public abstract class BaseMeta extends Dictionary implements Meta {
     @Override
     public VerifyKey getKey() {
         if (key == null) {
-            Object info = get("key");
-            if (info instanceof Map) {
-                key = PublicKey.parse((Map<String, Object>) info);
-            }
+            key = Meta.getKey(getMap());
         }
         return key;
     }
@@ -142,7 +138,7 @@ public abstract class BaseMeta extends Dictionary implements Meta {
     public String getSeed() {
         if (seed == null) {
             if (MetaType.hasSeed(getType())) {
-                seed = (String) get("seed");
+                seed = Meta.getSeed(getMap());
                 assert seed != null && seed.length() > 0 : "meta.seed should not be empty: " + this;
             }
         }
@@ -153,9 +149,8 @@ public abstract class BaseMeta extends Dictionary implements Meta {
     public byte[] getFingerprint() {
         if (fingerprint == null) {
             if (MetaType.hasSeed(getType())) {
-                String base64 = (String) get("fingerprint");
-                assert base64 != null && base64.length() > 0 : "meta.fingerprint should not be empty: " + this;
-                fingerprint = Base64.decode(base64);
+                fingerprint = Meta.getFingerprint(getMap());
+                assert fingerprint != null : "meta.fingerprint should not be empty: " + this;
             }
         }
         return fingerprint;
