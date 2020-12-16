@@ -58,7 +58,11 @@ public interface PrivateKey extends SignKey {
     //  Factory methods
     //
     static PrivateKey generate(String algorithm) {
-        return Factories.privateKeyFactory.generatePrivateKey(algorithm);
+        Factory factory = getFactory(algorithm);
+        if (factory == null) {
+            throw new NullPointerException("key algorithm not found: " + algorithm);
+        }
+        return factory.generatePrivateKey();
     }
     static PrivateKey parse(Map<String, Object> key) {
         if (key == null) {
@@ -68,7 +72,23 @@ public interface PrivateKey extends SignKey {
         } else if (key instanceof SOMap) {
             key = ((SOMap) key).getMap();
         }
-        return Factories.privateKeyFactory.parsePrivateKey(key);
+        String algorithm = CryptographyKey.getAlgorithm(key);
+        assert algorithm != null : "failed to get algorithm name from key: " + key;
+        Factory factory = getFactory(algorithm);
+        if (factory == null) {
+            factory = getFactory("*");  // unknown
+            if (factory == null) {
+                throw new NullPointerException("cannot parse key: " + key);
+            }
+        }
+        return factory.parsePrivateKey(key);
+    }
+
+    static Factory getFactory(String algorithm) {
+        return Factories.privateKeyFactories.get(algorithm);
+    }
+    static void register(String algorithm, Factory factory) {
+        Factories.privateKeyFactories.put(algorithm, factory);
     }
 
     /**
@@ -78,12 +98,11 @@ public interface PrivateKey extends SignKey {
     interface Factory {
 
         /**
-         *  Generate key with algorithm
+         *  Generate key
          *
-         * @param algorithm - key algorithm
          * @return PrivateKey
          */
-        PrivateKey generatePrivateKey(String algorithm);
+        PrivateKey generatePrivateKey();
 
         /**
          *  Parse map object to key

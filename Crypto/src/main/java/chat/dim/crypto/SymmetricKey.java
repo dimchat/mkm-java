@@ -57,7 +57,11 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
     //  Factory methods
     //
     static SymmetricKey generate(String algorithm) {
-        return Factories.symmetricKeyFactory.generateSymmetricKey(algorithm);
+        Factory factory = getFactory(algorithm);
+        if (factory == null) {
+            throw new NullPointerException("key algorithm not found: " + algorithm);
+        }
+        return factory.generateSymmetricKey();
     }
     static SymmetricKey parse(Map<String, Object> key) {
         if (key == null) {
@@ -67,7 +71,23 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
         } else if (key instanceof SOMap) {
             key = ((SOMap) key).getMap();
         }
-        return Factories.symmetricKeyFactory.parseSymmetricKey(key);
+        String algorithm = CryptographyKey.getAlgorithm(key);
+        assert algorithm != null : "failed to get algorithm name from key: " + key;
+        Factory factory = getFactory(algorithm);
+        if (factory == null) {
+            factory = getFactory("*");  // unknown
+            if (factory == null) {
+                throw new NullPointerException("cannot parse key: " + key);
+            }
+        }
+        return factory.parseSymmetricKey(key);
+    }
+
+    static Factory getFactory(String algorithm) {
+        return Factories.symmetricKeyFactories.get(algorithm);
+    }
+    static void register(String algorithm, Factory factory) {
+        Factories.symmetricKeyFactories.put(algorithm, factory);
     }
 
     /**
@@ -77,12 +97,11 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
     interface Factory {
 
         /**
-         *  Generate key with algorithm
+         *  Generate key
          *
-         * @param algorithm - key algorithm
          * @return SymmetricKey
          */
-        SymmetricKey generateSymmetricKey(String algorithm);
+        SymmetricKey generateSymmetricKey();
 
         /**
          *  Parse map object to key

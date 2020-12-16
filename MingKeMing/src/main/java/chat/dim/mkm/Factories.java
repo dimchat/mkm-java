@@ -30,6 +30,9 @@
  */
 package chat.dim.mkm;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import chat.dim.protocol.Address;
 import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
@@ -41,7 +44,7 @@ public final class Factories {
 
     public static ID.Factory idFactory = new IDFactory();
 
-    public static Meta.Factory metaFactory = null;
+    public static final Map<Integer, Meta.Factory> metaFactories = new HashMap<>();
 
-    public static Document.Factory documentFactory = null;
+    public static final Map<String, Document.Factory> documentFactories = new HashMap<>();
 }

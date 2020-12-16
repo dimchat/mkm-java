@@ -74,27 +74,6 @@ public interface ID {
     ID ANYONE = create("anyone", Address.ANYWHERE, null);
     ID EVERYONE = create("everyone", Address.EVERYWHERE, null);
 
-    //
-    //  Factory methods
-    //
-    static ID create(String name, Address address, String terminal) {
-        return Factories.idFactory.createID(name, address, terminal);
-    }
-    static ID parse(Object identifier) {
-        if (identifier == null) {
-            return null;
-        } else if (identifier instanceof ID) {
-            return (ID) identifier;
-        } else if (identifier instanceof String) {
-            return Factories.idFactory.parseID((String) identifier);
-        } else if (identifier instanceof chat.dim.type.String) {
-            chat.dim.type.String string = (chat.dim.type.String) identifier;
-            return Factories.idFactory.parseID(string.toString());
-        } else {
-            throw new IllegalArgumentException("Illegal ID: " + identifier);
-        }
-    }
-
     static List<ID> convert(List<String> members) {
         List<ID> array = new ArrayList<>();
         ID id;
@@ -113,6 +92,40 @@ public interface ID {
             array.add(item.toString());
         }
         return array;
+    }
+
+    //
+    //  Factory methods
+    //
+    static ID create(String name, Address address, String terminal) {
+        return Factories.idFactory.createID(name, address, terminal);
+    }
+    static ID parse(Object identifier) {
+        if (identifier == null) {
+            return null;
+        } else if (identifier instanceof ID) {
+            return (ID) identifier;
+        }
+        String string;
+        if (identifier instanceof String) {
+            string = (String) identifier;
+        } else if (identifier instanceof chat.dim.type.String) {
+            string = identifier.toString();
+        } else {
+            throw new IllegalArgumentException("Illegal ID: " + identifier);
+        }
+        Factory factory = getFactory();
+        if (factory == null) {
+            throw new NullPointerException("ID factory not found");
+        }
+        return factory.parseID(string);
+    }
+
+    static Factory getFactory() {
+        return Factories.idFactory;
+    }
+    static void setFactory(Factory factory) {
+        Factories.idFactory = factory;
     }
 
     /**

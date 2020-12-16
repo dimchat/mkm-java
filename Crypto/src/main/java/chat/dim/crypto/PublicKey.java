@@ -52,7 +52,23 @@ public interface PublicKey extends VerifyKey {
         } else if (key instanceof SOMap) {
             key = ((SOMap) key).getMap();
         }
-        return Factories.publicKeyFactory.parsePublicKey(key);
+        String algorithm = CryptographyKey.getAlgorithm(key);
+        assert algorithm != null : "failed to get algorithm name from key: " + key;
+        Factory factory = getFactory(algorithm);
+        if (factory == null) {
+            factory = getFactory("*");  // unknown
+            if (factory == null) {
+                throw new NullPointerException("cannot parse key: " + key);
+            }
+        }
+        return factory.parsePublicKey(key);
+    }
+
+    static Factory getFactory(String algorithm) {
+        return Factories.publicKeyFactories.get(algorithm);
+    }
+    static void register(String algorithm, Factory factory) {
+        Factories.publicKeyFactories.put(algorithm, factory);
     }
 
     /**

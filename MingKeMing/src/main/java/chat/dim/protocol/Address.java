@@ -71,14 +71,27 @@ public interface Address {
             return null;
         } else if (address instanceof Address) {
             return (Address) address;
-        } else if (address instanceof String) {
-            return Factories.addressFactory.parseAddress((String) address);
+        }
+        String string;
+        if (address instanceof String) {
+            string = (String) address;
         } else if (address instanceof chat.dim.type.String) {
-            chat.dim.type.String string = (chat.dim.type.String) address;
-            return Factories.addressFactory.parseAddress(string.toString());
+            string = address.toString();
         } else {
             throw new IllegalArgumentException("Illegal address: " + address);
         }
+        Factory factory = getFactory();
+        if (factory == null) {
+            throw new NullPointerException("address factory not found");
+        }
+        return factory.parseAddress(string);
+    }
+
+    static Factory getFactory() {
+        return Factories.addressFactory;
+    }
+    static void setFactory(Factory factory) {
+        Factories.addressFactory = factory;
     }
 
     /**

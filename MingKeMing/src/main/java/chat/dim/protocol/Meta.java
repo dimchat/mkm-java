@@ -65,6 +65,19 @@ public interface Meta extends SOMap {
      */
     int getType();
 
+    static int getType(Map<String, Object> meta) {
+        Object version = meta.get("type");
+        if (version == null) {
+            // compatible with v1.0
+            version = meta.get("version");
+        }
+        if (version == null) {
+            //throw new NullPointerException("meta type not found");
+            return 0;
+        }
+        return ((Number) version).intValue();
+    }
+
     /**
      *  Public key (used for signature)
      *
@@ -132,11 +145,19 @@ public interface Meta extends SOMap {
     //
     //  Factory methods
     //
-    static Meta create(int version, VerifyKey key, String seed, byte[] fingerprint) {
-        return Factories.metaFactory.createMeta(version, key, seed, fingerprint);
+    static Meta create(int type, VerifyKey key, String seed, byte[] fingerprint) {
+        Factory factory = getFactory(type);
+        if (factory == null) {
+            throw new NullPointerException("meta type not found: " + type);
+        }
+        return factory.createMeta(key, seed, fingerprint);
     }
-    static Meta generate(int version, SignKey sKey, String seed) {
-        return Factories.metaFactory.generateMeta(version, sKey, seed);
+    static Meta generate(int type, SignKey sKey, String seed) {
+        Factory factory = getFactory(type);
+        if (factory == null) {
+            throw new NullPointerException("meta type not found: " + type);
+        }
+        return factory.generateMeta(sKey, seed);
     }
     static Meta parse(Map<String, Object> meta) {
         if (meta == null) {
@@ -146,7 +167,28 @@ public interface Meta extends SOMap {
         } else if (meta instanceof SOMap) {
             meta = ((SOMap) meta).getMap();
         }
-        return Factories.metaFactory.parseMeta(meta);
+        int type = getType(meta);
+        Factory factory = getFactory(type);
+        if (factory == null) {
+            factory = getFactory(0);  // unknown
+            if (factory == null) {
+                throw new NullPointerException("cannot parse meta: " + meta);
+            }
+        }
+        return factory.parseMeta(meta);
+    }
+
+    static Factory getFactory(int type) {
+        return Factories.metaFactories.get(type);
+    }
+    static Factory getFactory(MetaType type) {
+        return Factories.metaFactories.get(type.value);
+    }
+    static void register(int type, Factory factory) {
+        Factories.metaFactories.put(type, factory);
+    }
+    static void register(MetaType type, Factory factory) {
+        Factories.metaFactories.put(type.value, factory);
     }
 
     /**
@@ -158,23 +200,21 @@ public interface Meta extends SOMap {
         /**
          *  Create meta
          *
-         * @param version     - meta type
          * @param key         - public key
          * @param seed        - ID.name
          * @param fingerprint - sKey.sign(seed)
          * @return Meta
          */
-        Meta createMeta(int version, VerifyKey key, String seed, byte[] fingerprint);
+        Meta createMeta(VerifyKey key, String seed, byte[] fingerprint);
 
         /**
          *  Generate meta
          *
-         * @param version - meta type
          * @param sKey    - private key
          * @param seed    - ID.name
          * @return Meta
          */
-        Meta generateMeta(int version, SignKey sKey, String seed);
+        Meta generateMeta(SignKey sKey, String seed);
 
         /**
          *  Parse map object to meta

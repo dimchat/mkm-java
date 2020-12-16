@@ -132,7 +132,11 @@ public class BaseDocument extends Dictionary implements Document {
 
     @Override
     public String getType() {
-        return (String) getProperty("type");
+        String type = (String) getProperty("type");
+        if (type == null) {
+            type = Document.getType(getMap());
+        }
+        return type;
     }
 
     @Override

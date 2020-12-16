@@ -25,11 +25,18 @@
  */
 package chat.dim.crypto;
 
-public final class Factories {
+import java.util.HashMap;
+import java.util.Map;
 
-    public static SymmetricKey.Factory symmetricKeyFactory = null;
+final class Factories {
 
-    public static PublicKey.Factory publicKeyFactory = null;
+    //
+    //  Key factories with algorithm name as key
+    //
 
-    public static PrivateKey.Factory privateKeyFactory = null;
+    static Map<String, SymmetricKey.Factory> symmetricKeyFactories = new HashMap<>();
+
+    static Map<String, PublicKey.Factory> publicKeyFactories = new HashMap<>();
+
+    static Map<String, PrivateKey.Factory> privateKeyFactories = new HashMap<>();
 }

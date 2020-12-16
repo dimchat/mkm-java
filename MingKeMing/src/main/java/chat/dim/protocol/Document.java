@@ -51,7 +51,6 @@ public interface Document extends TAI, SOMap {
     //
     //  Document types
     //
-    String ANY      = "";
     String VISA     = "visa";      // for login/communication
     String PROFILE  = "profile";   // for user info
     String BULLETIN = "bulletin";  // for group info
@@ -62,6 +61,10 @@ public interface Document extends TAI, SOMap {
      * @return document type
      */
     String getType();
+
+    static String getType(Map<String, Object> doc) {
+        return (String) doc.get("type");
+    }
 
     /**
      *  Get entity ID
@@ -84,10 +87,18 @@ public interface Document extends TAI, SOMap {
     //  Factory methods
     //
     static Document create(ID identifier, String type, byte[] data, byte[] signature) {
-        return Factories.documentFactory.createDocument(identifier, type, data, signature);
+        Factory factory = getFactory(type);
+        if (factory == null) {
+            throw new NullPointerException("document type not found: " + type);
+        }
+        return factory.createDocument(identifier, data, signature);
     }
     static Document create(ID identifier, String type) {
-        return Factories.documentFactory.createDocument(identifier, type);
+        Factory factory = getFactory(type);
+        if (factory == null) {
+            throw new NullPointerException("document type not found: " + type);
+        }
+        return factory.createDocument(identifier);
     }
     static Document parse(Map<String, Object> doc) {
         if (doc == null) {
@@ -97,7 +108,22 @@ public interface Document extends TAI, SOMap {
         } else if (doc instanceof SOMap) {
             doc = ((SOMap) doc).getMap();
         }
-        return Factories.documentFactory.parseDocument(doc);
+        String type = getType(doc);
+        Factory factory = getFactory(type);
+        if (factory == null) {
+            factory = getFactory("*");  // unknown
+            if (factory == null) {
+                throw new NullPointerException("cannot parse document: " + doc);
+            }
+        }
+        return factory.parseDocument(doc);
+    }
+
+    static Factory getFactory(String type) {
+        return Factories.documentFactories.get(type);
+    }
+    static void register(String type, Factory factory) {
+        Factories.documentFactories.put(type, factory);
     }
 
     /**
@@ -110,21 +136,19 @@ public interface Document extends TAI, SOMap {
          *  Create document with data & signature loaded from local storage
          *
          * @param identifier - entity ID
-         * @param type       - document type
          * @param data       - document data
          * @param signature  - document signature
          * @return Document
          */
-        Document createDocument(ID identifier, String type, byte[] data, byte[] signature);
+        Document createDocument(ID identifier, byte[] data, byte[] signature);
 
         /**
          *  Create empty document with entity ID & document type
          *
          * @param identifier - entity ID
-         * @param type       - document type
          * @return Document
          */
-        Document createDocument(ID identifier, String type);
+        Document createDocument(ID identifier);
 
         /**
          *  Parse map object to entity document
