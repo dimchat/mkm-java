@@ -147,7 +147,7 @@ public interface Document extends TAI, SOMap {
         Document createDocument(ID identifier, byte[] data, byte[] signature);
 
         /**
-         *  Create empty document with entity ID & document type
+         *  Create a new empty document with entity ID
          *
          * @param identifier - entity ID
          * @return Document

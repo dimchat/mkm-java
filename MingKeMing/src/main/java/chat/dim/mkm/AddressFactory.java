@@ -39,6 +39,7 @@ public abstract class AddressFactory implements Address.Factory {
 
     private final Map<String, Address> addresses = new HashMap<>();
 
+    // override for creating address from string
     protected abstract Address createAddress(String address);
 
     @Override
