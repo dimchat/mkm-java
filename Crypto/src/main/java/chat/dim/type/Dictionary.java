@@ -72,6 +72,9 @@ public abstract class Dictionary implements SOMap {
         if (super.equals(other)) {
             // same object
             return true;
+        } else if (other instanceof Dictionary) {
+            Dictionary dict = (Dictionary) other;
+            return dictionary.equals(dict.dictionary);
         } else if (other instanceof Map) {
             // check with inner dictionary
             return dictionary.equals(other);

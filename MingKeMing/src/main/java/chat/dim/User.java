@@ -31,14 +31,12 @@
 package chat.dim;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
 import java.util.List;
 
 import chat.dim.crypto.DecryptKey;
 import chat.dim.crypto.EncryptKey;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
-import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Visa;
 
@@ -75,58 +73,6 @@ public class User extends Entity {
         return getDataSource().getContacts(identifier);
     }
 
-    private EncryptKey getVisaKey() {
-        Document doc = getDocument(Document.VISA);
-        if (doc == null || !doc.isValid()) {
-            // document not found or not valid
-            return null;
-        }
-        if (doc instanceof Visa) {
-            return ((Visa) doc).getKey();
-        }
-        return null;
-    }
-
-    // NOTICE: meta.key will never changed, so use visa.key to encrypt
-    //         is a better way
-    private EncryptKey getEncryptKey() {
-        // 1. get key from visa
-        EncryptKey key = getVisaKey();
-        if (key != null) {
-            return key;
-        }
-        // 2. get key from meta
-        Object mKey = getMeta().getKey();
-        if (mKey instanceof EncryptKey) {
-            return (EncryptKey) mKey;
-        }
-        throw new NullPointerException("failed to get encrypt key for user: " + identifier);
-    }
-
-    // NOTICE: I suggest using the private key paired with meta.key to sign message
-    //         so here should return the meta.key
-    private List<VerifyKey> getVerifyKeys() {
-        // 0. get keys from data source
-        List<VerifyKey> keys = getDataSource().getPublicKeysForVerification(identifier);
-        if (keys != null && keys.size() > 0) {
-            return keys;
-        }
-        keys = new ArrayList<>();
-        // 1. get key from visa
-        Object pKey = getVisaKey();
-        if (pKey instanceof VerifyKey) {
-            // the sender may use communication key to sign message.data,
-            // so try to verify it with visa.key here
-            keys.add((VerifyKey) pKey);
-        }
-        // 2. get key from meta
-        VerifyKey mKey = getMeta().getKey();
-        // the sender may use identity key to sign message.data,
-        // try to verify it with meta.key
-        keys.add(mKey);
-        return keys;
-    }
-
     /**
      *  Verify data and signature with user's public keys
      *
@@ -135,7 +81,9 @@ public class User extends Entity {
      * @return true on correct
      */
     public boolean verify(byte[] data, byte[] signature) {
-        List<VerifyKey> keys = getVerifyKeys();
+        // NOTICE: I suggest using the private key paired with meta.key to sign message
+        //         so here should return the meta.key
+        List<VerifyKey> keys = getDataSource().getPublicKeysForVerification(identifier);
         for (VerifyKey key : keys) {
             if (key.verify(data, signature)) {
                 // matched!
@@ -152,7 +100,9 @@ public class User extends Entity {
      * @return encrypted data
      */
     public byte[] encrypt(byte[] plaintext) {
-        EncryptKey key = getEncryptKey();
+        // NOTICE: meta.key will never changed, so use visa.key to encrypt message
+        //         is a better way
+        EncryptKey key = getDataSource().getPublicKeyForEncryption(identifier);
         assert key != null : "failed to get encrypt key for user: " + identifier;
         return key.encrypt(plaintext);
     }
@@ -182,7 +132,7 @@ public class User extends Entity {
      * @return plain text
      */
     public byte[] decrypt(byte[] ciphertext) {
-        // NOTICE: if you provide a public key in visa for encryption
+        // NOTICE: if you provide a public key in visa for encryption,
         //         here you should return the private key paired with visa.key
         List<DecryptKey> keys = getDataSource().getPrivateKeysForDecryption(identifier);
         assert keys != null && keys.size() > 0 : "failed to get decrypt keys for user: " + identifier;
@@ -208,22 +158,26 @@ public class User extends Entity {
     //  Interfaces for Visa
     //
     public Visa sign(Visa doc) {
+        // NOTICE: only sign visa with the private key paired with your meta.key
         if (!identifier.equals(doc.getIdentifier())) {
             // visa ID not match
             return null;
         }
         SignKey key = getDataSource().getPrivateKeyForVisaSignature(identifier);
-        assert key != null : "failed to get sign key for user: " + identifier;
+        assert key != null : "failed to get sign key for visa: " + identifier;
         doc.sign(key);
         return doc;
     }
 
     public boolean verify(Visa doc) {
+        // NOTICE: only verify visa with meta.key
         if (!identifier.equals(doc.getIdentifier())) {
+            // visa ID not match
             return false;
         }
         // if meta not exists, user won't be created
         VerifyKey key = getMeta().getKey();
+        assert key != null : "failed to get verify key for visa: " + identifier;
         return doc.verify(key);
     }
 
@@ -244,10 +198,10 @@ public class User extends Entity {
      *     [visa.key, meta.key]
      *
      *  (Visa Document)
-     *  5. private key for signature
+     *  5. private key for visa signature
      *     the private key pared with meta.key
-     *  6. public key for verification
-     *     [meta.key]
+     *  6. public key for visa verification
+     *     meta.key only
      */
     public interface DataSource extends Entity.DataSource {
 
@@ -258,6 +212,15 @@ public class User extends Entity {
          * @return contacts list (ID)
          */
         List<ID> getContacts(ID user);
+
+        /**
+         *  Get user's public key for encryption
+         *  (profile.key or meta.key)
+         *
+         * @param user - user ID
+         * @return visa.key or meta.key
+         */
+        EncryptKey getPublicKeyForEncryption(ID user);
 
         /**
          *  Get user's public keys for verification

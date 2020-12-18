@@ -58,6 +58,22 @@ public interface ID {
      */
     byte getType();
 
+    static boolean equals(ID id1, ID id2) {
+        // check ID.addresses
+        Address add1 = id1.getAddress();
+        Address add2 = id2.getAddress();
+        if (!add1.equals(add2)) {
+            return false;
+        }
+        // check ID.name
+        String name1 = id1.getName();
+        String name2 = id2.getName();
+        if (name1 == null || name1.length() == 0) {
+            return name2 == null || name2.length() == 0;
+        }
+        return name1.equals(name2);
+    }
+
     static boolean isBroadcast(ID identifier) {
         return Address.isBroadcast(identifier.getAddress());
     }

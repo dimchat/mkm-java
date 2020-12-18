@@ -30,11 +30,8 @@
  */
 package chat.dim;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import chat.dim.protocol.Bulletin;
-import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
 
 public class Group extends Entity {
@@ -53,81 +50,22 @@ public class Group extends Entity {
     public ID getFounder() {
         if (founder == null) {
             founder = getDataSource().getFounder(identifier);
-            if (founder == null && ID.isBroadcast(identifier)) {
-                // founder of broadcast group
-                String name = identifier.getName();
-                int len = name == null ? 0 : name.length();
-                if (len == 0 || (len == 8 && name.equalsIgnoreCase("everyone"))) {
-                    // Consensus: the founder of group 'everyone@everywhere'
-                    //            'Albert Moky'
-                    founder = ID.parse("moky@anywhere");
-                } else {
-                    // DISCUSS: who should be the founder of group 'xxx@everywhere'?
-                    //          'anyone@anywhere', or 'xxx.founder@anywhere'
-                    founder = ID.parse(name + ".founder@anywhere");
-                }
-            }
         }
         return founder;
     }
 
     public ID getOwner() {
-        ID owner = getDataSource().getOwner(identifier);
-        if (owner == null && ID.isBroadcast(identifier)) {
-            // owner of broadcast group
-            String name = identifier.getName();
-            int len = name == null ? 0 : name.length();
-            if (len == 0 || (len == 8 && name.equalsIgnoreCase("everyone"))) {
-                // Consensus: the owner of group 'everyone@everywhere'
-                //            'anyone@anywhere'
-                owner = ID.ANYONE;
-            } else {
-                // DISCUSS: who should be the owner of group 'xxx@everywhere'?
-                //          'anyone@anywhere', or 'xxx.owner@anywhere'
-                owner = ID.parse(name + ".owner@anywhere");
-            }
-        }
-        return owner;
+        return getDataSource().getOwner(identifier);
     }
 
+    // NOTICE: the owner must be a member
+    //         (usually the first one)
     public List<ID> getMembers() {
-        List<ID> members = getDataSource().getMembers(identifier);
-        if (members == null && ID.isBroadcast(identifier)) {
-            // members of broadcast group
-            ID member;
-            ID owner;
-            String name = identifier.getName();
-            int len = name == null ? 0 : name.length();
-            if (len == 0 || (len == 8 && name.equalsIgnoreCase("everyone"))) {
-                // Consensus: the member of group 'everyone@everywhere'
-                //            'anyone@anywhere'
-                member = ID.ANYONE;
-                owner = ID.ANYONE;
-            } else {
-                // DISCUSS: who should be the member of group 'xxx@everywhere'?
-                //          'anyone@anywhere', or 'xxx.member@anywhere'
-                member = ID.parse(name + ".member@anywhere");
-                owner = ID.parse(name + ".owner@anywhere");
-            }
-            // add owner first
-            members = new ArrayList<>();
-            if (owner != null) {
-                members.add(owner);
-            }
-            // check and add member
-            if (member != null && !member.equals(owner)) {
-                members.add(member);
-            }
-        }
-        return members;
+        return getDataSource().getMembers(identifier);
     }
 
     public List<ID> getAssistants() {
-        Document doc = getDocument(Document.BULLETIN);
-        if (doc instanceof Bulletin) {
-            return ((Bulletin) doc).getAssistants();
-        }
-        return null;
+        return getDataSource().getAssistants(identifier);
     }
 
     /**
@@ -159,5 +97,13 @@ public class Group extends Entity {
          * @return members list (ID)
          */
         List<ID> getMembers(ID group);
+
+        /**
+         *  Get assistants for this group
+         *
+         * @param group - group ID
+         * @return robot ID list
+         */
+        List<ID> getAssistants(ID group);
     }
 }
