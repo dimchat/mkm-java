@@ -30,7 +30,7 @@
  */
 package chat.dim.protocol;
 
-import java.util.Set;
+import java.util.Map;
 
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
@@ -73,11 +73,11 @@ public interface TAI {
     //-------- properties
 
     /**
-     *  Get all names for properties
+     *  Get all properties
      *
-     * @return properties key set
+     * @return properties
      */
-    Set<String> propertyNames();
+    Map<String, Object> getProperties();
 
     /**
      *  Get property data with key

@@ -54,8 +54,13 @@ final class IDFactory implements ID.Factory {
     @Override
     public ID createID(String name, Address address, String terminal) {
         assert address != null : "ID.address empty";
-        String string = concat(name, address, terminal);
-        return new Identifier(string, name, address, terminal);
+        String identifier = concat(name, address, terminal);
+        ID id = identifiers.get(identifier);
+        if (id == null) {
+            id = new Identifier(identifier, name, address, terminal);
+            identifiers.put(identifier, id);
+        }
+        return id;
     }
 
     @Override
@@ -68,7 +73,7 @@ final class IDFactory implements ID.Factory {
         }
         ID id = identifiers.get(identifier);
         if (id == null) {
-            id = createID(identifier);
+            id = create(identifier);
             if (id != null) {
                 identifiers.put(identifier, id);
             }
@@ -76,7 +81,7 @@ final class IDFactory implements ID.Factory {
         return id;
     }
 
-    private static ID createID(final String string) {
+    private static ID create(final String string) {
         String name;
         Address address;
         String terminal;

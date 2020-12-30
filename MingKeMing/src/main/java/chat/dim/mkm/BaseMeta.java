@@ -189,6 +189,14 @@ public abstract class BaseMeta extends Dictionary implements Meta {
         return status == 1;
     }
 
+    /**
+     *  Generate address
+     *
+     * @param type - ID.type
+     * @return Address
+     */
+    public abstract Address generateAddress(byte type);
+
     @Override
     public ID generateID(byte type, String terminal) {
         Address address = generateAddress(type);

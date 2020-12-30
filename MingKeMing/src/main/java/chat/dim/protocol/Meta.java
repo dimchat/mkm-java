@@ -132,14 +132,6 @@ public interface Meta extends SOMap {
     boolean isValid();
 
     /**
-     *  Generate address
-     *
-     * @param type - ID.type
-     * @return Address
-     */
-    Address generateAddress(byte type);
-
-    /**
      *  Generate ID with terminal
      *
      * @param type - ID.type

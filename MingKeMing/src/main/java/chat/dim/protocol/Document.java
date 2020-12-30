@@ -90,14 +90,14 @@ public interface Document extends TAI, SOMap {
     //
     //  Factory methods
     //
-    static Document create(ID identifier, String type, byte[] data, byte[] signature) {
+    static Document create(String type, ID identifier, byte[] data, byte[] signature) {
         Factory factory = getFactory(type);
         if (factory == null) {
             throw new NullPointerException("document type not found: " + type);
         }
         return factory.createDocument(identifier, data, signature);
     }
-    static Document create(ID identifier, String type) {
+    static Document create(String type, ID identifier) {
         Factory factory = getFactory(type);
         if (factory == null) {
             throw new NullPointerException("document type not found: " + type);

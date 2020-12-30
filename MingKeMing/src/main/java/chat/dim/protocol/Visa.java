@@ -43,7 +43,7 @@ public interface Visa extends Document {
     /**
      *  Get public key to encrypt message for user
      *
-     * @return public key
+     * @return public key as visa.key
      */
     EncryptKey getKey();
 

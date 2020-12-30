@@ -32,7 +32,6 @@ package chat.dim.mkm;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
@@ -177,33 +176,25 @@ public class BaseDocument extends Dictionary implements Document {
         return signature;
     }
 
+    @Override
     @SuppressWarnings("unchecked")
-    private Map<String, Object> getProperties() {
+    public Map<String, Object> getProperties() {
         if (status < 0) {
             // invalid
             return null;
         }
         if (properties == null) {
-            String data = (String) get("data");
+            byte[] data = getData();
             if (data == null) {
                 // create new properties
                 properties = new HashMap<>();
             } else {
-                Map info = JSONMap.decode(UTF8.encode(data));
-                assert info != null : "document data error: " + data;
+                Map info = JSONMap.decode(data);
+                assert info != null : "document data error: " + getMap();
                 properties = (Map<String, Object>) info;
             }
         }
         return properties;
-    }
-
-    @Override
-    public Set<String> propertyNames() {
-        Map<String, Object> dict = getProperties();
-        if (dict == null) {
-            return null;
-        }
-        return dict.keySet();
     }
 
     @Override
