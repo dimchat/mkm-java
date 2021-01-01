@@ -74,7 +74,7 @@ package chat.dim.protocol;
  *      0000 0001 - this entity's branch is independent (clear division).
  *      0000 0010 - this entity can contains other group (big organization).
  *      0000 0100 - this entity is top organization.
- *      0000 1000 - (Main) this entity acts like a human.
+ *      0000 1000 - (MAIN) this entity acts like a human.
  *
  *      0001 0000 - this entity contains members (Group)
  *      0010 0000 - this entity needs other administrators (big organization)
@@ -85,45 +85,45 @@ package chat.dim.protocol;
  */
 public enum NetworkType {
 
-    BTCMain        (0x00), // 0000 0000
-    //BTCTest      (0x6f), // 0110 1111
+    BTC_MAIN       (0x00), // 0000 0000
+    //BTC_TEST     (0x6f), // 0110 1111
 
     /*
      *  Person Account
      */
-    Main           (0x08), // 0000 1000 (Person)
+    MAIN           (0x08), // 0000 1000 (Person)
 
     /*
      *  Virtual Groups
      */
-    Group          (0x10), // 0001 0000 (Multi-Persons)
+    GROUP          (0x10), // 0001 0000 (Multi-Persons)
 
-    //Moments      (0x18), // 0001 1000 (Twitter)
-    Polylogue      (0x10), // 0001 0000 (Multi-Persons Chat, N < 100)
-    Chatroom       (0x30), // 0011 0000 (Multi-Persons Chat, N >= 100)
+    //MOMENTS      (0x18), // 0001 1000 (Twitter)
+    POLYLOGUE      (0x10), // 0001 0000 (Multi-Persons Chat, N < 100)
+    CHATROOM       (0x30), // 0011 0000 (Multi-Persons Chat, N >= 100)
 
     /*
      *  Social Entities in Reality
      */
-    //SocialEntity (0x50), // 0101 0000
+    //SOCIAL_ENTITY (0x50), // 0101 0000
 
-    //Organization (0x74), // 0111 0100
-    //Company      (0x76), // 0111 0110
-    //School       (0x77), // 0111 0111
-    //Government   (0x73), // 0111 0011
-    //Department   (0x52), // 0101 0010
+    //ORGANIZATION  (0x74), // 0111 0100
+    //COMPANY       (0x76), // 0111 0110
+    //SCHOOL        (0x77), // 0111 0111
+    //GOVERNMENT    (0x73), // 0111 0011
+    //DEPARTMENT    (0x52), // 0101 0010
 
     /*
      *  Network
      */
-    Provider       (0x76), // 0111 0110 (Service Provider)
-    Station        (0x88), // 1000 1000 (Server Node)
+    PROVIDER       (0x76), // 0111 0110 (Service Provider)
+    STATION        (0x88), // 1000 1000 (Server Node)
 
     /*
      *  Internet of Things
      */
-    Thing          (0x80), // 1000 0000 (IoT)
-    Robot          (0xC8); // 1100 1000
+    THING          (0x80), // 1000 0000 (IoT)
+    ROBOT          (0xC8); // 1100 1000
 
     // Network ID
     public final byte value;
@@ -140,10 +140,10 @@ public enum NetworkType {
     }
 
     public static boolean isUser(byte type) {
-        return (type & Main.value) == Main.value || type == BTCMain.value;
+        return (type & MAIN.value) == MAIN.value || type == BTC_MAIN.value;
     }
 
     public static boolean isGroup(byte type) {
-        return (type & Group.value) == Group.value;
+        return (type & GROUP.value) == GROUP.value;
     }
 }

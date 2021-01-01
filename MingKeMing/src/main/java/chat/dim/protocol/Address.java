@@ -60,8 +60,8 @@ public interface Address {
     /**
      *  Address for broadcast
      */
-    BroadcastAddress ANYWHERE = new BroadcastAddress("anywhere", NetworkType.Main);
-    BroadcastAddress EVERYWHERE = new BroadcastAddress("everywhere", NetworkType.Group);
+    BroadcastAddress ANYWHERE = new BroadcastAddress("anywhere", NetworkType.MAIN);
+    BroadcastAddress EVERYWHERE = new BroadcastAddress("everywhere", NetworkType.MAIN);
 
     //
     //  Factory method

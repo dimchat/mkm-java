@@ -56,7 +56,7 @@ package chat.dim.protocol;
  */
 public enum MetaType {
 
-    Default (0x01),
+    DEFAULT (0x01),
     MKM     (0x01),  // 0000 0001
 
     BTC     (0x02),  // 0000 0010
