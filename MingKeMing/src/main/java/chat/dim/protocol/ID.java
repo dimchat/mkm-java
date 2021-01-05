@@ -59,7 +59,7 @@ public interface ID {
     byte getType();
 
     static boolean equals(ID id1, ID id2) {
-        // check ID.addresses
+        // check ID.address
         Address add1 = id1.getAddress();
         Address add2 = id2.getAddress();
         if (!add1.equals(add2)) {
@@ -74,6 +74,7 @@ public interface ID {
         return name1.equals(name2);
     }
 
+    /*
     static boolean isBroadcast(ID identifier) {
         return Address.isBroadcast(identifier.getAddress());
     }
@@ -83,6 +84,10 @@ public interface ID {
     static boolean isGroup(ID identifier) {
         return Address.isGroup(identifier.getAddress());
     }
+     */
+    boolean isBroadcast();
+    boolean isUser();
+    boolean isGroup();
 
     /**
      *  ID for broadcast
@@ -121,20 +126,13 @@ public interface ID {
             return null;
         } else if (identifier instanceof ID) {
             return (ID) identifier;
-        }
-        String string;
-        if (identifier instanceof String) {
-            string = (String) identifier;
         } else if (identifier instanceof chat.dim.type.String) {
-            string = identifier.toString();
-        } else {
-            throw new IllegalArgumentException("Illegal ID: " + identifier);
+            identifier = identifier.toString();
         }
         Factory factory = getFactory();
-        if (factory == null) {
-            throw new NullPointerException("ID factory not found");
-        }
-        return factory.parseID(string);
+        assert factory != null : "ID factory not ready";
+        assert identifier instanceof String : "ID error: " + identifier;
+        return factory.parseID((String) identifier);
     }
 
     static Factory getFactory() {

@@ -115,4 +115,22 @@ final class Identifier extends chat.dim.type.String implements ID {
         assert address != null : "ID.address should not be empty: " + toString();
         return address.getNetwork();
     }
+
+    @Override
+    public boolean isBroadcast() {
+        assert address != null : "ID.address should not be empty: " + toString();
+        return address.isBroadcast();
+    }
+
+    @Override
+    public boolean isUser() {
+        assert address != null : "ID.address should not be empty: " + toString();
+        return address.isUser();
+    }
+
+    @Override
+    public boolean isGroup() {
+        assert address != null : "ID.address should not be empty: " + toString();
+        return address.isGroup();
+    }
 }

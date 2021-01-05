@@ -115,9 +115,7 @@ public interface Document extends TAI, chat.dim.type.Map {
         Factory factory = getFactory(type);
         if (factory == null) {
             factory = getFactory("*");  // unknown
-            if (factory == null) {
-                throw new NullPointerException("cannot parse document: " + doc);
-            }
+            assert factory != null : "cannot parse entity document: " + doc;
         }
         return factory.parseDocument(doc);
     }

@@ -49,7 +49,7 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
     static SymmetricKey generate(String algorithm) {
         Factory factory = getFactory(algorithm);
         if (factory == null) {
-            throw new NullPointerException("key algorithm not found: " + algorithm);
+            throw new NullPointerException("key algorithm not support: " + algorithm);
         }
         return factory.generateSymmetricKey();
     }
@@ -66,9 +66,7 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
         Factory factory = getFactory(algorithm);
         if (factory == null) {
             factory = getFactory("*");  // unknown
-            if (factory == null) {
-                throw new NullPointerException("cannot parse key: " + key);
-            }
+            assert factory != null : "cannot parse key: " + key;
         }
         return factory.parseSymmetricKey(key);
     }

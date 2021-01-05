@@ -53,7 +53,7 @@ public interface PrivateKey extends SignKey {
     static PrivateKey generate(String algorithm) {
         Factory factory = getFactory(algorithm);
         if (factory == null) {
-            throw new NullPointerException("key algorithm not found: " + algorithm);
+            throw new NullPointerException("key algorithm not support: " + algorithm);
         }
         return factory.generatePrivateKey();
     }
@@ -70,9 +70,7 @@ public interface PrivateKey extends SignKey {
         Factory factory = getFactory(algorithm);
         if (factory == null) {
             factory = getFactory("*");  // unknown
-            if (factory == null) {
-                throw new NullPointerException("cannot parse key: " + key);
-            }
+            assert factory != null : "cannot parse key: " + key;
         }
         return factory.parsePrivateKey(key);
     }

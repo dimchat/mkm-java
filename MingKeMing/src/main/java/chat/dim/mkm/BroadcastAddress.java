@@ -35,7 +35,7 @@ import chat.dim.protocol.NetworkType;
 
 public final class BroadcastAddress extends chat.dim.type.String implements Address {
 
-    private final NetworkType network;
+    private final byte network;
 
     /**
      *  Create address
@@ -45,7 +45,7 @@ public final class BroadcastAddress extends chat.dim.type.String implements Addr
      */
     public BroadcastAddress(String string, NetworkType network) {
         super(string);
-        this.network = network;
+        this.network = network.value;
     }
 
     /**
@@ -53,7 +53,23 @@ public final class BroadcastAddress extends chat.dim.type.String implements Addr
      *
      * @return Network ID
      */
+    @Override
     public byte getNetwork() {
-        return network.value;
+        return network;
+    }
+
+    @Override
+    public boolean isBroadcast() {
+        return true;
+    }
+
+    @Override
+    public boolean isUser() {
+        return NetworkType.isUser(network);
+    }
+
+    @Override
+    public boolean isGroup() {
+        return NetworkType.isGroup(network);
     }
 }

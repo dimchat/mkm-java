@@ -39,17 +39,15 @@ public abstract class AddressFactory implements Address.Factory {
 
     private final Map<String, Address> addresses = new HashMap<>();
 
-    // override for creating address from string
-    protected abstract Address createAddress(String address);
+    protected AddressFactory() {
+        super();
+        // cache broadcast addresses
+        addresses.put(Address.ANYWHERE.toString(), Address.ANYWHERE);
+        addresses.put(Address.EVERYWHERE.toString(), Address.EVERYWHERE);
+    }
 
     @Override
     public Address parseAddress(String address) {
-        if (Address.ANYWHERE.equalsIgnoreCase(address)) {
-            return Address.ANYWHERE;
-        }
-        if (Address.EVERYWHERE.equalsIgnoreCase(address)) {
-            return Address.EVERYWHERE;
-        }
         Address add = addresses.get(address);
         if (add == null) {
             add = createAddress(address);
@@ -59,4 +57,7 @@ public abstract class AddressFactory implements Address.Factory {
         }
         return add;
     }
+
+    // override for creating address from string
+    protected abstract Address createAddress(String address);
 }

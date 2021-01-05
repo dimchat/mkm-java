@@ -47,6 +47,7 @@ public interface Address {
      */
     byte getNetwork();
 
+    /*
     static boolean isBroadcast(Address address) {
         return address instanceof BroadcastAddress;
     }
@@ -56,6 +57,10 @@ public interface Address {
     static boolean isGroup(Address address) {
         return NetworkType.isGroup(address.getNetwork());
     }
+     */
+    boolean isBroadcast();
+    boolean isUser();
+    boolean isGroup();
 
     /**
      *  Address for broadcast
@@ -71,20 +76,13 @@ public interface Address {
             return null;
         } else if (address instanceof Address) {
             return (Address) address;
-        }
-        String string;
-        if (address instanceof String) {
-            string = (String) address;
         } else if (address instanceof chat.dim.type.String) {
-            string = address.toString();
-        } else {
-            throw new IllegalArgumentException("Illegal address: " + address);
+            address = address.toString();
         }
         Factory factory = getFactory();
-        if (factory == null) {
-            throw new NullPointerException("address factory not found");
-        }
-        return factory.parseAddress(string);
+        assert factory != null : "address factory not ready";
+        assert address instanceof String : "address error: " + address;
+        return factory.parseAddress((String) address);
     }
 
     static Factory getFactory() {

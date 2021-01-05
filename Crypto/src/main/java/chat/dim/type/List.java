@@ -25,9 +25,9 @@
  */
 package chat.dim.type;
 
-import chat.dim.format.JSONList;
-
 import java.util.ArrayList;
+
+import chat.dim.format.JSONList;
 
 public interface List extends java.util.List {
 

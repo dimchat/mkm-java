@@ -88,11 +88,10 @@ public interface Meta extends chat.dim.type.Map {
     @SuppressWarnings("unchecked")
     static VerifyKey getKey(Map<String, Object> meta) {
         Object key = meta.get("key");
-        if (key == null) {
-            throw new NullPointerException("meta key not found: " + meta);
+        if (key instanceof Map) {
+            return PublicKey.parse((Map<String, Object>) key);
         }
-        assert key instanceof Map : "meta key error: " + key;
-        return PublicKey.parse((Map<String, Object>) key);
+        throw new NullPointerException("meta key not found: " + meta);
     }
 
     /**
@@ -185,9 +184,7 @@ public interface Meta extends chat.dim.type.Map {
         Factory factory = getFactory(type);
         if (factory == null) {
             factory = getFactory(0);  // unknown
-            if (factory == null) {
-                throw new NullPointerException("cannot parse meta: " + meta);
-            }
+            assert factory != null : "cannot parse entity meta: " + meta;
         }
         return factory.parseMeta(meta);
     }

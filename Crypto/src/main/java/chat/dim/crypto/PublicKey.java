@@ -55,9 +55,7 @@ public interface PublicKey extends VerifyKey {
         Factory factory = getFactory(algorithm);
         if (factory == null) {
             factory = getFactory("*");  // unknown
-            if (factory == null) {
-                throw new NullPointerException("cannot parse key: " + key);
-            }
+            assert factory != null : "cannot parse key: " + key;
         }
         return factory.parsePublicKey(key);
     }
