@@ -47,11 +47,6 @@ public interface PrivateKey extends SignKey {
      */
     PublicKey getPublicKey();
 
-    static boolean equals(PrivateKey key1, PrivateKey key2) {
-        // check by public key
-        return AsymmetricKey.matches(key1, key2.getPublicKey());
-    }
-
     //
     //  Factory methods
     //

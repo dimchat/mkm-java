@@ -25,6 +25,7 @@
  */
 package chat.dim.crypto;
 
+import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -60,5 +61,12 @@ public interface CryptographyKey extends chat.dim.type.Map {
 
     // sample data for checking keys
     byte[] promise = "Moky loves May Lee forever!".getBytes();
+
+    static boolean matches(EncryptKey pKey, DecryptKey sKey) {
+        // check by encryption
+        byte[] ciphertext = pKey.encrypt(promise);
+        byte[] plaintext = sKey.decrypt(ciphertext);
+        return Arrays.equals(plaintext, promise);
+    }
 }
 

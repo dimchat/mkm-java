@@ -25,7 +25,6 @@
  */
 package chat.dim.crypto;
 
-import java.util.Arrays;
 import java.util.Map;
 
 /**
@@ -43,13 +42,6 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
 
     String AES = "AES"; //-- "AES/CBC/PKCS7Padding"
     String DES = "DES";
-
-    static boolean equals(SymmetricKey key1, SymmetricKey key2) {
-        // check by encryption
-        byte[] ciphertext = key1.encrypt(promise);
-        byte[] plaintext = key2.decrypt(ciphertext);
-        return Arrays.equals(plaintext, promise);
-    }
 
     //
     //  Factory methods

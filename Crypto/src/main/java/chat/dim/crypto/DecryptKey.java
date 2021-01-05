@@ -35,4 +35,12 @@ public interface DecryptKey extends CryptographyKey {
      * @return plaintext
      */
     byte[] decrypt(byte[] ciphertext);
+
+    /**
+     *  OK = decrypt(encrypt(data, SK), PK) == data
+     *
+     * @param pKey - encrypt key
+     * @return true on signature matched
+     */
+    boolean matches(EncryptKey pKey);
 }

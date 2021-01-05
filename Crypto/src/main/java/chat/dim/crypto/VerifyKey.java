@@ -35,4 +35,12 @@ public interface VerifyKey extends AsymmetricKey {
      * @return true on signature matched
      */
     boolean verify(byte[] data, byte[] signature);
+
+    /**
+     *  OK = verify(data, sign(data, SK), PK)
+     *
+     * @param sKey - private key
+     * @return true on signature matched
+     */
+    boolean matches(SignKey sKey);
 }
