@@ -28,8 +28,6 @@ package chat.dim.crypto;
 import java.util.Arrays;
 import java.util.Map;
 
-import chat.dim.type.SOMap;
-
 /**
  *  Symmetric Cryptography Key
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -68,8 +66,8 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
             return null;
         } else if (key instanceof SymmetricKey) {
             return (SymmetricKey) key;
-        } else if (key instanceof SOMap) {
-            key = ((SOMap) key).getMap();
+        } else if (key instanceof chat.dim.type.Map) {
+            key = ((chat.dim.type.Map) key).getMap();
         }
         String algorithm = CryptographyKey.getAlgorithm(key);
         assert algorithm != null : "failed to get algorithm name from key: " + key;

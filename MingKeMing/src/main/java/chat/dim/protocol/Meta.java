@@ -37,7 +37,6 @@ import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
 import chat.dim.mkm.Factories;
-import chat.dim.type.SOMap;
 
 /**
  *  User/Group Meta data
@@ -54,7 +53,7 @@ import chat.dim.type.SOMap;
  *      algorithm:
  *          fingerprint = sign(seed, SK);
  */
-public interface Meta extends SOMap {
+public interface Meta extends chat.dim.type.Map {
 
     /**
      *  Meta algorithm version
@@ -179,8 +178,8 @@ public interface Meta extends SOMap {
             return null;
         } else if (meta instanceof Meta) {
             return (Meta) meta;
-        } else if (meta instanceof SOMap) {
-            meta = ((SOMap) meta).getMap();
+        } else if (meta instanceof chat.dim.type.Map) {
+            meta = ((chat.dim.type.Map) meta).getMap();
         }
         int type = getType(meta);
         Factory factory = getFactory(type);

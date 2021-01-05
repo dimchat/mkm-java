@@ -31,9 +31,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import chat.dim.format.JSONMap;
-
-public abstract class Dictionary implements SOMap {
+public abstract class Dictionary implements chat.dim.type.Map {
 
     private final Map<String, Object> dictionary;
 
@@ -48,13 +46,8 @@ public abstract class Dictionary implements SOMap {
         dictionary = map;
     }
 
-    @SuppressWarnings("unchecked")
-    public static Map<String, Object> copyMap(Map<String, Object> map, boolean deepCopy) {
-        if (deepCopy) {
-            return JSONMap.decode(JSONMap.encode(map));
-        } else {
-            return new HashMap<>(map);
-        }
+    protected Dictionary(chat.dim.type.Map map) {
+        this(map.getMap());
     }
 
     @Override
@@ -64,7 +57,7 @@ public abstract class Dictionary implements SOMap {
 
     @Override
     public Map<String, Object> copyMap(boolean deepCopy) {
-        return copyMap(dictionary, deepCopy);
+        return chat.dim.type.Map.copyMap(dictionary, deepCopy);
     }
 
     @Override
@@ -72,9 +65,9 @@ public abstract class Dictionary implements SOMap {
         if (super.equals(other)) {
             // same object
             return true;
-        } else if (other instanceof Dictionary) {
-            Dictionary dict = (Dictionary) other;
-            return dictionary.equals(dict.dictionary);
+        } else if (other instanceof chat.dim.type.Map) {
+            Map dict = ((chat.dim.type.Map) other).getMap();
+            return dictionary.equals(dict);
         } else if (other instanceof Map) {
             // check with inner dictionary
             return dictionary.equals(other);

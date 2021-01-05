@@ -25,12 +25,42 @@
  */
 package chat.dim.type;
 
-import java.lang.String;
-import java.util.Map;
+import chat.dim.format.JSONList;
 
-public interface SOMap extends Map<String, Object> {
+import java.util.ArrayList;
 
-    Map<String, Object> getMap();
+public interface List extends java.util.List {
 
-    Map<String, Object> copyMap(boolean deepCopy);
+    static java.util.List unwrap(java.util.List array, boolean circularly) {
+        // unwrap list container
+        if (array instanceof List) {
+            array = ((List) array).getList();
+        }
+        if (!circularly) {
+            return array;
+        }
+        // unwrap items circularly
+        java.util.List<Object> result = new ArrayList<>();
+        for (Object item : array) {
+            result.add(Wrapper.unwrap(item, true));
+        }
+        return result;
+    }
+
+    @SuppressWarnings("unchecked")
+    static java.util.List copyList(java.util.List array, boolean deepCopy) {
+        if (deepCopy) {
+            return JSONList.decode(JSONList.encode(array));
+        } else {
+            return new ArrayList(array);
+        }
+    }
+
+    static java.util.List copyList(List array, boolean deepCopy) {
+        return copyList(array.getList(), deepCopy);
+    }
+
+    java.util.List copyList(boolean deepCopy);
+
+    java.util.List getList();
 }

@@ -27,8 +27,6 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
-import chat.dim.type.SOMap;
-
 /**
  *  Cryptography Key
  *  ~~~~~~~~~~~~~~~~
@@ -40,7 +38,7 @@ import chat.dim.type.SOMap;
  *      ...
  *  }
  */
-public interface CryptographyKey extends SOMap {
+public interface CryptographyKey extends chat.dim.type.Map {
 
     /**
      *  Get key algorithm name

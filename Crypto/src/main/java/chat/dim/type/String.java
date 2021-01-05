@@ -35,6 +35,18 @@ public abstract class String {
         string = str;
     }
 
+    protected String(String string) {
+        this(string.string);
+    }
+
+    public static java.lang.String unwrap(Object string) {
+        if (string instanceof String) {
+            return ((String) string).string;
+        }
+        assert string instanceof java.lang.String : "string error: " + string;
+        return (java.lang.String) string;
+    }
+
     public int length() {
         return string.length();
     }
@@ -56,8 +68,8 @@ public abstract class String {
             return true;
         } else if (other instanceof String) {
             // check with inner string
-            String str = (String) other;
-            return string.equals(str.string);
+            java.lang.String str = ((String) other).string;
+            return string.equals(str);
         } else if (other instanceof java.lang.String) {
             // check string
             return string.equals(other);
