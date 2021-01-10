@@ -208,6 +208,9 @@ public abstract class BaseMeta extends Dictionary implements Meta {
 
     @Override
     public boolean matches(ID identifier) {
+        if (!isValid()) {
+            return false;
+        }
         // check ID.name
         String seed = getSeed();
         String name = identifier.getName();

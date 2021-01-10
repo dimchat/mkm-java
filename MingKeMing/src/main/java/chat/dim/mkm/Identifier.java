@@ -63,31 +63,24 @@ final class Identifier extends chat.dim.type.String implements ID {
 
     @Override
     public boolean equals(Object other) {
-        if (other == this) {
+        if (other == null) {
+            return false;
+        }
+        if (!(other instanceof ID)) {
+            if (other instanceof chat.dim.type.String) {
+                other = other.toString();
+            }
+            assert other instanceof String : "ID error: " + other;
+            other = ID.parse(other);
+            if (other == null) {
+                return false;
+            }
+        }
+        if (this == other) {
             // same object
             return true;
         }
-        if (other instanceof ID) {
-            // compare with name & address
-            return ID.equals(this, (ID) other);
-        }
-        String str;
-        if (other instanceof chat.dim.type.String) {
-            str = other.toString();
-        } else if (other instanceof String) {
-            str = (String) other;
-        } else {
-            // null or unknown object
-            return false;
-        }
-        // comparing without terminal
-        String[] pair = str.split("/");
-        assert pair[0].length() > 0 : "ID error: " + other;
-        if (terminal == null || terminal.length() == 0) {
-            return pair[0].equals(toString());
-        } else {
-            return pair[0].equals(toString().split("/")[0]);
-        }
+        return ID.equals(this, (ID) other);
     }
 
     @Override
