@@ -90,10 +90,15 @@ public interface ID {
     boolean isGroup();
 
     /**
-     *  ID for broadcast
+     *  ID for Broadcast
      */
     ID ANYONE = create("anyone", Address.ANYWHERE, null);
     ID EVERYONE = create("everyone", Address.EVERYWHERE, null);
+
+    /**
+     *  DIM Founder
+     */
+    ID FOUNDER = create("moky", Address.ANYWHERE, null);
 
     static List<ID> convert(List<String> members) {
         List<ID> array = new ArrayList<>();
