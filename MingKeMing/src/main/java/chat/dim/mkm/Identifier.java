@@ -57,11 +57,6 @@ final class Identifier extends chat.dim.type.String implements ID {
     }
 
     @Override
-    public int hashCode() {
-        return address.hashCode();
-    }
-
-    @Override
     public boolean equals(Object other) {
         if (other == null) {
             return false;
