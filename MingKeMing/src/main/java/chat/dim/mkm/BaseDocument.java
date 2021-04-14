@@ -30,6 +30,7 @@
  */
 package chat.dim.mkm;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -262,7 +263,12 @@ public class BaseDocument extends Dictionary implements Document {
             assert data != null && signature != null : "document data/signature error";
             return signature;
         }
+        // update sign time
+        Date now = new Date();
+        setProperty("time", now.getTime() / 1000);
+        // update status
         status = 1;
+        // sign
         data = JSONMap.encode(getProperties());
         signature = privateKey.sign(data);
         put("data", UTF8.decode(data));
@@ -272,11 +278,15 @@ public class BaseDocument extends Dictionary implements Document {
 
     //---- properties getter/setter
 
-    /**
-     *  Get entity name
-     *
-     * @return name string
-     */
+    @Override
+    public Date getTime() {
+        Object timestamp = getProperty("time");
+        if (timestamp == null) {
+            return null;
+        }
+        return new Date(((Number) timestamp).longValue() * 1000);
+    }
+
     @Override
     public String getName() {
         return (String) getProperty("name");

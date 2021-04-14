@@ -30,6 +30,7 @@
  */
 package chat.dim.protocol;
 
+import java.util.Date;
 import java.util.Map;
 
 import chat.dim.mkm.Factories;
@@ -77,6 +78,13 @@ public interface Document extends TAI, chat.dim.type.Map {
     }
 
     //---- properties getter/setter
+
+    /**
+     *  Get sign time
+     *
+     * @return date object or null
+     */
+    Date getTime();
 
     /**
      *  Get entity name

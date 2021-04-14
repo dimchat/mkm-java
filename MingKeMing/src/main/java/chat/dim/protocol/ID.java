@@ -58,7 +58,12 @@ public interface ID {
      */
     byte getType();
 
+    /*
     static boolean equals(ID id1, ID id2) {
+        if (id1 == id2) {
+            // same object
+            return true;
+        }
         // check ID.address
         Address add1 = id1.getAddress();
         Address add2 = id2.getAddress();
@@ -73,6 +78,7 @@ public interface ID {
         }
         return name1.equals(name2);
     }
+     */
 
     /*
     static boolean isBroadcast(ID identifier) {

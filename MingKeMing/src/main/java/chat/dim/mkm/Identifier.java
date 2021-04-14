@@ -56,6 +56,7 @@ final class Identifier extends chat.dim.type.String implements ID {
         this.terminal = terminal;
     }
 
+    /*
     @Override
     public boolean equals(Object other) {
         if (other == null) {
@@ -71,12 +72,9 @@ final class Identifier extends chat.dim.type.String implements ID {
                 return false;
             }
         }
-        if (this == other) {
-            // same object
-            return true;
-        }
         return ID.equals(this, (ID) other);
     }
+     */
 
     @Override
     public String getName() {
