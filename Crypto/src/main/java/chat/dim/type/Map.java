@@ -32,26 +32,6 @@ import chat.dim.format.JSONMap;
 
 public interface Map extends java.util.Map<String, Object> {
 
-    static java.util.Map<String, Object> unwrap(java.util.Map<String, Object> dictionary, boolean circularly) {
-        // unwrap map container
-        if (dictionary instanceof Map) {
-            dictionary = ((Map) dictionary).getMap();
-        }
-        if (!circularly) {
-            return dictionary;
-        }
-        // unwrap keys, values circularly
-        java.util.Map<String, Object> result = new HashMap<>();
-        String key;
-        Object value;
-        for (Entry<String, Object> entry : dictionary.entrySet()) {
-            key = chat.dim.type.String.unwrap(entry.getKey());
-            value = Wrapper.unwrap(entry.getValue(), true);
-            result.put(key, value);
-        }
-        return result;
-    }
-
     @SuppressWarnings("unchecked")
     static java.util.Map<String, Object> copyMap(java.util.Map<String, Object> dictionary, boolean deepCopy) {
         if (deepCopy) {

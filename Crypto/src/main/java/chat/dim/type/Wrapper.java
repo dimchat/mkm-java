@@ -26,42 +26,56 @@
 package chat.dim.type;
 
 import java.lang.String;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public interface Wrapper {
 
+    // Unwrap keys, values circularly
+    static Map<String, Object> unwrap(Map<String, Object> dictionary) {
+        Map<String, Object> result = new HashMap<>();
+        for (Map.Entry<String, Object> entry : dictionary.entrySet()) {
+            result.put(entry.getKey(), unwrap(entry.getValue(), true));
+        }
+        return result;
+    }
+
+    // Unwrap items circularly
+    static List<Object> unwrap(List<Object> array) {
+        List<Object> result = new ArrayList<>();
+        for (Object item : array) {
+            result.add(unwrap(item, true));
+        }
+        return result;
+    }
+
+    // Remove Wrapper if exists
     static Object unwrap(Object object, boolean circularly) {
-        // unwrap string
+        if (object == null) {
+            return null;
+        }
+        // check for string
         if (object instanceof chat.dim.type.String) {
             return object.toString();
-        } else if (object instanceof String) {
-            return object;
         }
         // unwrap container
         if (circularly) {
-            // unwrap map circularly
-            if (object instanceof Map) {
-                return Map.unwrap(((Map) object).getMap(), true);
-            } else if (object instanceof java.util.Map) {
+            if (object instanceof List) {
                 //noinspection unchecked
-                return Map.unwrap((java.util.Map<String, Object>) object, true);
+                return unwrap((List<Object>) object);
             }
-            // unwrap list circularly
-            if (object instanceof List) {
-                return List.unwrap(((List) object).getList(), true);
-            } else if (object instanceof java.util.List) {
-                return List.unwrap((java.util.List) object, true);
+            if (object instanceof chat.dim.type.Map) {
+                return unwrap(((chat.dim.type.Map) object).getMap());
+            } else if (object instanceof Map) {
+                //noinspection unchecked
+                return unwrap((Map<String, Object>) object);
             }
-        } else {
-            // unwrap map
-            if (object instanceof Map) {
-                return ((Map) object).getMap();
-            }
-            // unwrap list
-            if (object instanceof List) {
-                return ((List) object).getList();
-            }
+        } else if (object instanceof chat.dim.type.Map) {
+            object = ((chat.dim.type.Map) object).getMap();
         }
-        // others
+        // OK
         return object;
     }
 }

@@ -39,14 +39,6 @@ public abstract class String {
         this(string.string);
     }
 
-    public static java.lang.String unwrap(Object string) {
-        if (string instanceof String) {
-            return ((String) string).string;
-        }
-        assert string instanceof java.lang.String : "string error: " + string;
-        return (java.lang.String) string;
-    }
-
     public int length() {
         return string.length();
     }
