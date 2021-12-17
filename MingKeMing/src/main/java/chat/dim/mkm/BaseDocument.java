@@ -190,9 +190,9 @@ public class BaseDocument extends Dictionary implements Document {
                 // create new properties
                 properties = new HashMap<>();
             } else {
-                Map info = JSONMap.decode(data);
+                Map<String, Object> info = (Map<String, Object>) JSONMap.decode(data);
                 assert info != null : "document data error: " + getMap();
-                properties = (Map<String, Object>) info;
+                properties = info;
             }
         }
         return properties;

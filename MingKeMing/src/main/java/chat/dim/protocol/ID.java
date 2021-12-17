@@ -58,39 +58,7 @@ public interface ID {
      */
     byte getType();
 
-    /*
-    static boolean equals(ID id1, ID id2) {
-        if (id1 == id2) {
-            // same object
-            return true;
-        }
-        // check ID.address
-        Address add1 = id1.getAddress();
-        Address add2 = id2.getAddress();
-        if (!add1.equals(add2)) {
-            return false;
-        }
-        // check ID.name
-        String name1 = id1.getName();
-        String name2 = id2.getName();
-        if (name1 == null || name1.length() == 0) {
-            return name2 == null || name2.length() == 0;
-        }
-        return name1.equals(name2);
-    }
-     */
-
-    /*
-    static boolean isBroadcast(ID identifier) {
-        return Address.isBroadcast(identifier.getAddress());
-    }
-    static boolean isUser(ID identifier) {
-        return Address.isUser(identifier.getAddress());
-    }
-    static boolean isGroup(ID identifier) {
-        return Address.isGroup(identifier.getAddress());
-    }
-     */
+    // ID types
     boolean isBroadcast();
     boolean isUser();
     boolean isGroup();
@@ -129,6 +97,9 @@ public interface ID {
     //
     //  Factory methods
     //
+    static ID generate(Meta meta, byte type, String terminal) {
+        return Factories.idFactory.generateID(meta, type, terminal);
+    }
     static ID create(String name, Address address, String terminal) {
         return Factories.idFactory.createID(name, address, terminal);
     }
@@ -158,6 +129,16 @@ public interface ID {
      *  ~~~~~~~~~~
      */
     interface Factory {
+
+        /**
+         *  Generate ID
+         *
+         * @param meta     - meta info
+         * @param type     - ID.type
+         * @param terminal - ID.terminal
+         * @return ID
+         */
+        ID generateID(Meta meta, byte type, String terminal);
 
         /**
          *  Create ID

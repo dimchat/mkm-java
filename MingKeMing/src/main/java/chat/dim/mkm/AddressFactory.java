@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import chat.dim.protocol.Address;
+import chat.dim.protocol.Meta;
 
 public abstract class AddressFactory implements Address.Factory {
 
@@ -47,17 +48,23 @@ public abstract class AddressFactory implements Address.Factory {
     }
 
     @Override
+    public Address generateAddress(Meta meta, byte type) {
+        Address address = meta.generateAddress(type);
+        if (address != null) {
+            addresses.put(address.toString(), address);
+        }
+        return address;
+    }
+
+    @Override
     public Address parseAddress(String address) {
         Address add = addresses.get(address);
         if (add == null) {
-            add = createAddress(address);
+            add = Address.create(address);
             if (add != null) {
                 addresses.put(address, add);
             }
         }
         return add;
     }
-
-    // override for creating address from string
-    protected abstract Address createAddress(String address);
 }

@@ -35,10 +35,20 @@ import java.util.Map;
 
 import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
+import chat.dim.protocol.Meta;
 
 final class IDFactory implements ID.Factory {
 
     private final Map<String, ID> identifiers = new HashMap<>();
+
+    @Override
+    public ID generateID(Meta meta, byte type, String terminal) {
+        Address address = Address.generate(meta, type);
+        if (address == null) {
+            return null;
+        }
+        return createID(meta.getSeed(), address, terminal);
+    }
 
     @Override
     public ID createID(String name, Address address, String terminal) {

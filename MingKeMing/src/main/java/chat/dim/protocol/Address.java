@@ -47,17 +47,7 @@ public interface Address {
      */
     byte getNetwork();
 
-    /*
-    static boolean isBroadcast(Address address) {
-        return address instanceof BroadcastAddress;
-    }
-    static boolean isUser(Address address) {
-        return NetworkType.isUser(address.getNetwork());
-    }
-    static boolean isGroup(Address address) {
-        return NetworkType.isGroup(address.getNetwork());
-    }
-     */
+    // address types
     boolean isBroadcast();
     boolean isUser();
     boolean isGroup();
@@ -69,7 +59,7 @@ public interface Address {
     BroadcastAddress EVERYWHERE = new BroadcastAddress("everywhere", NetworkType.MAIN);
 
     //
-    //  Factory method
+    //  Factory methods
     //
     static Address parse(Object address) {
         if (address == null) {
@@ -85,6 +75,18 @@ public interface Address {
         return factory.parseAddress((String) address);
     }
 
+    static Address create(String address) {
+        Factory factory = getFactory();
+        assert factory != null : "address factory not ready";
+        return factory.createAddress(address);
+    }
+
+    static Address generate(Meta meta, byte type) {
+        Factory factory = getFactory();
+        assert factory != null : "address factory not ready";
+        return factory.generateAddress(meta, type);
+    }
+
     static Factory getFactory() {
         return Factories.addressFactory;
     }
@@ -97,6 +99,23 @@ public interface Address {
      *  ~~~~~~~~~~~~~~~
      */
     interface Factory {
+
+        /**
+         *  Generate address with meta & type
+         *
+         * @param meta - meta info
+         * @param type - address type
+         * @return Address
+         */
+        Address generateAddress(Meta meta, byte type);
+
+        /**
+         *  Create address from string
+         *
+         * @param address - address string
+         * @return Address
+         */
+        Address createAddress(String address);
 
         /**
          *  Parse string object to address

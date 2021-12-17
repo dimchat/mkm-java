@@ -35,8 +35,6 @@ import java.util.Map;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
 import chat.dim.format.UTF8;
-import chat.dim.protocol.Address;
-import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
 import chat.dim.protocol.MetaType;
 import chat.dim.type.Dictionary;
@@ -125,7 +123,6 @@ public abstract class BaseMeta extends Dictionary implements Meta {
         return type;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public VerifyKey getKey() {
         if (key == null) {
@@ -187,64 +184,5 @@ public abstract class BaseMeta extends Dictionary implements Meta {
             }
         }
         return status == 1;
-    }
-
-    /**
-     *  Generate address
-     *
-     * @param type - ID.type
-     * @return Address
-     */
-    public abstract Address generateAddress(byte type);
-
-    @Override
-    public ID generateID(byte type, String terminal) {
-        Address address = generateAddress(type);
-        if (address == null) {
-            return null;
-        }
-        return ID.create(getSeed(), address, terminal);
-    }
-
-    @Override
-    public boolean matches(ID identifier) {
-        if (!isValid()) {
-            return false;
-        }
-        // check ID.name
-        String seed = getSeed();
-        String name = identifier.getName();
-        if (name == null || name.length() == 0) {
-            if (seed != null && seed.length() > 0) {
-                return false;
-            }
-        } else if (!name.equals(seed)) {
-            return false;
-        }
-        // check ID.address
-        Address address = generateAddress(identifier.getType());
-        return identifier.getAddress().equals(address);
-    }
-
-    @Override
-    public boolean matches(VerifyKey pk) {
-        if (!isValid()) {
-            return false;
-        }
-        // check whether the public key equals to meta.key
-        if (pk.equals(getKey())) {
-            return true;
-        }
-        // check with seed & fingerprint
-        if (MetaType.hasSeed(getType())) {
-            // check whether keys equal by verifying signature
-            String seed = getSeed();
-            byte[] fingerprint = getFingerprint();
-            return pk.verify(UTF8.encode(seed), fingerprint);
-        } else {
-            // ID with BTC/ETH address has no username
-            // so we can just compare the key.data to check matching
-            return false;
-        }
     }
 }

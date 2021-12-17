@@ -36,6 +36,7 @@ import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
+import chat.dim.format.UTF8;
 import chat.dim.mkm.Factories;
 
 /**
@@ -130,30 +131,68 @@ public interface Meta extends chat.dim.type.Map {
     boolean isValid();
 
     /**
-     *  Generate ID with terminal
+     *  Generate address
      *
      * @param type - ID.type
-     * @param terminal - ID.terminal
-     * @return ID
+     * @return Address
      */
-    ID generateID(byte type, String terminal);
+    Address generateAddress(byte type);
 
     /**
      *  Check whether meta match with entity ID
      *  (must call this when received a new meta from network)
      *
      * @param identifier - entity ID
+     * @param meta       - entity meta
      * @return true on matched
      */
-    boolean matches(ID identifier);
+    static boolean matches(ID identifier, Meta meta) {
+        if (!meta.isValid()) {
+            return false;
+        }
+        // check ID.name
+        String seed = meta.getSeed();
+        String name = identifier.getName();
+        if (name == null || name.length() == 0) {
+            if (seed != null && seed.length() > 0) {
+                return false;
+            }
+        } else if (!name.equals(seed)) {
+            return false;
+        }
+        // check ID.address
+        Address address = Address.generate(meta, identifier.getType());
+        return identifier.getAddress().equals(address);
+    }
 
     /**
      *  Check whether meta match with public key
      *
-     * @param pk - public key
+     * @param pk   - public key
+     * @param meta - meta info
      * @return true on matched
      */
-    boolean matches(VerifyKey pk);
+    static boolean matches(VerifyKey pk, Meta meta) {
+        if (meta.isValid()) {
+            // check whether the public key equals to meta.key
+            if (pk.equals(meta.getKey())) {
+                return true;
+            }
+        } else {
+            return false;
+        }
+        // check with seed & fingerprint
+        if (MetaType.hasSeed(meta.getType())) {
+            // check whether keys equal by verifying signature
+            String seed = meta.getSeed();
+            byte[] fingerprint = meta.getFingerprint();
+            return pk.verify(UTF8.encode(seed), fingerprint);
+        } else {
+            // ID with BTC/ETH address has no username
+            // so we can just compare the key.data to check matching
+            return false;
+        }
+    }
 
     //
     //  Factory methods
