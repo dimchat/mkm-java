@@ -25,27 +25,38 @@
  */
 package chat.dim.type;
 
-import java.lang.String;
 import java.util.HashMap;
+import java.util.Map;
 
 import chat.dim.format.JSONMap;
 
-public interface Map extends java.util.Map<String, Object> {
+public interface MapWrapper extends Map<String, Object> {
+
+    /**
+     *  Get inner map
+     *
+     * @return Map
+     */
+    Map<String, Object> getMap();
+
+    /**
+     *  Copy inner map
+     *
+     * @param deepCopy - deep copy
+     * @return Map
+     */
+    Map<String, Object> copyMap(boolean deepCopy);
+
+    static Map<String, Object> copyMap(MapWrapper map, boolean deepCopy) {
+        return copyMap(map.getMap(), deepCopy);
+    }
 
     @SuppressWarnings("unchecked")
-    static java.util.Map<String, Object> copyMap(java.util.Map<String, Object> dictionary, boolean deepCopy) {
+    static Map<String, Object> copyMap(Map<String, Object> dictionary, boolean deepCopy) {
         if (deepCopy) {
             return JSONMap.decode(JSONMap.encode(dictionary));
         } else {
             return new HashMap<>(dictionary);
         }
     }
-
-    static java.util.Map<String, Object> copyMap(Map map, boolean deepCopy) {
-        return Map.copyMap(map.getMap(), deepCopy);
-    }
-
-    java.util.Map<String, Object> copyMap(boolean deepCopy);
-
-    java.util.Map<String, Object> getMap();
 }

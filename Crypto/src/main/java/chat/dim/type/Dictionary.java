@@ -25,13 +25,12 @@
  */
 package chat.dim.type;
 
-import java.lang.String;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class Dictionary implements chat.dim.type.Map {
+public abstract class Dictionary implements MapWrapper {
 
     private final Map<String, Object> dictionary;
 
@@ -46,7 +45,7 @@ public abstract class Dictionary implements chat.dim.type.Map {
         dictionary = map;
     }
 
-    protected Dictionary(chat.dim.type.Map map) {
+    protected Dictionary(MapWrapper map) {
         this(map.getMap());
     }
 
@@ -57,7 +56,7 @@ public abstract class Dictionary implements chat.dim.type.Map {
 
     @Override
     public Map<String, Object> copyMap(boolean deepCopy) {
-        return chat.dim.type.Map.copyMap(dictionary, deepCopy);
+        return MapWrapper.copyMap(dictionary, deepCopy);
     }
 
     @Override
@@ -65,8 +64,8 @@ public abstract class Dictionary implements chat.dim.type.Map {
         if (super.equals(other)) {
             // same object
             return true;
-        } else if (other instanceof chat.dim.type.Map) {
-            Map dict = ((chat.dim.type.Map) other).getMap();
+        } else if (other instanceof MapWrapper) {
+            Map<String, Object> dict = ((MapWrapper) other).getMap();
             return dictionary.equals(dict);
         } else if (other instanceof Map) {
             // check with inner dictionary

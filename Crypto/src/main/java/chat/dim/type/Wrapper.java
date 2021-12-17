@@ -25,7 +25,6 @@
  */
 package chat.dim.type;
 
-import java.lang.String;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -52,28 +51,27 @@ public interface Wrapper {
     }
 
     // Remove Wrapper if exists
+    @SuppressWarnings("unchecked")
     static Object unwrap(Object object, boolean circularly) {
         if (object == null) {
             return null;
         }
         // check for string
-        if (object instanceof chat.dim.type.String) {
+        if (object instanceof StringWrapper) {
             return object.toString();
         }
         // unwrap container
         if (circularly) {
             if (object instanceof List) {
-                //noinspection unchecked
                 return unwrap((List<Object>) object);
             }
-            if (object instanceof chat.dim.type.Map) {
-                return unwrap(((chat.dim.type.Map) object).getMap());
+            if (object instanceof MapWrapper) {
+                return unwrap(((MapWrapper) object).getMap());
             } else if (object instanceof Map) {
-                //noinspection unchecked
                 return unwrap((Map<String, Object>) object);
             }
-        } else if (object instanceof chat.dim.type.Map) {
-            object = ((chat.dim.type.Map) object).getMap();
+        } else if (object instanceof MapWrapper) {
+            object = ((MapWrapper) object).getMap();
         }
         // OK
         return object;

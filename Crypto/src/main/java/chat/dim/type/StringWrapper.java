@@ -25,17 +25,17 @@
  */
 package chat.dim.type;
 
-public abstract class String {
+public class StringWrapper {
 
-    private final java.lang.String string;
+    private final String string;
 
-    protected String(java.lang.String str) {
+    protected StringWrapper(String str) {
         super();
         assert str != null : "cannot initialize with an empty string";
         string = str;
     }
 
-    protected String(String string) {
+    protected StringWrapper(StringWrapper string) {
         this(string.string);
     }
 
@@ -44,7 +44,7 @@ public abstract class String {
     }
 
     @Override
-    public java.lang.String toString() {
+    public String toString() {
         return string;
     }
 
@@ -58,11 +58,11 @@ public abstract class String {
         if (super.equals(other)) {
             // same object
             return true;
-        } else if (other instanceof String) {
+        } else if (other instanceof StringWrapper) {
             // check with inner string
-            java.lang.String str = ((String) other).string;
+            String str = ((StringWrapper) other).string;
             return string.equals(str);
-        } else if (other instanceof java.lang.String) {
+        } else if (other instanceof String) {
             // check string
             return string.equals(other);
         } else {
@@ -75,13 +75,13 @@ public abstract class String {
         if (super.equals(other)) {
             // same object
             return true;
-        } else if (other instanceof String) {
+        } else if (other instanceof StringWrapper) {
             // check with inner string
-            String str = (String) other;
+            StringWrapper str = (StringWrapper) other;
             return string.equalsIgnoreCase(str.string);
-        } else if (other instanceof java.lang.String) {
+        } else if (other instanceof String) {
             // check string
-            java.lang.String str = (java.lang.String) other;
+            String str = (String) other;
             return string.equalsIgnoreCase(str);
         } else {
             // null or unknown object

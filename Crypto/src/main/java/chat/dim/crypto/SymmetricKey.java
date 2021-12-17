@@ -25,7 +25,10 @@
  */
 package chat.dim.crypto;
 
+import java.util.Arrays;
 import java.util.Map;
+
+import chat.dim.type.MapWrapper;
 
 /**
  *  Symmetric Cryptography Key
@@ -43,6 +46,13 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
     String AES = "AES"; //-- "AES/CBC/PKCS7Padding"
     String DES = "DES";
 
+    static boolean matches(EncryptKey pKey, DecryptKey sKey) {
+        // check by encryption
+        byte[] ciphertext = pKey.encrypt(promise);
+        byte[] plaintext = sKey.decrypt(ciphertext);
+        return Arrays.equals(plaintext, promise);
+    }
+
     //
     //  Factory methods
     //
@@ -58,8 +68,8 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
             return null;
         } else if (key instanceof SymmetricKey) {
             return (SymmetricKey) key;
-        } else if (key instanceof chat.dim.type.Map) {
-            key = ((chat.dim.type.Map) key).getMap();
+        } else if (key instanceof MapWrapper) {
+            key = ((MapWrapper) key).getMap();
         }
         String algorithm = CryptographyKey.getAlgorithm(key);
         assert algorithm != null : "failed to get algorithm name from key: " + key;
