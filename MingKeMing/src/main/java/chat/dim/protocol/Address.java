@@ -32,6 +32,7 @@ package chat.dim.protocol;
 
 import chat.dim.mkm.BroadcastAddress;
 import chat.dim.mkm.Factories;
+import chat.dim.type.StringWrapper;
 
 /**
  *  Address for MKM ID
@@ -66,7 +67,7 @@ public interface Address {
             return null;
         } else if (address instanceof Address) {
             return (Address) address;
-        } else if (address instanceof chat.dim.type.String) {
+        } else if (address instanceof StringWrapper) {
             address = address.toString();
         }
         Factory factory = getFactory();

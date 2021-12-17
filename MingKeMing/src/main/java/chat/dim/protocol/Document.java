@@ -34,6 +34,7 @@ import java.util.Date;
 import java.util.Map;
 
 import chat.dim.mkm.Factories;
+import chat.dim.type.MapWrapper;
 
 /**
  *  User/Group Profile
@@ -46,7 +47,7 @@ import chat.dim.mkm.Factories;
  *          signature: "..."  // signature = sign(data, SK);
  *      }
  */
-public interface Document extends TAI, chat.dim.type.Map {
+public interface Document extends TAI, MapWrapper {
 
     //
     //  Document types
@@ -116,8 +117,8 @@ public interface Document extends TAI, chat.dim.type.Map {
             return null;
         } else if (doc instanceof Document) {
             return (Document) doc;
-        } else if (doc instanceof chat.dim.type.Map) {
-            doc = ((chat.dim.type.Map) doc).getMap();
+        } else if (doc instanceof MapWrapper) {
+            doc = ((MapWrapper) doc).getMap();
         }
         String type = getType(doc);
         Factory factory = getFactory(type);

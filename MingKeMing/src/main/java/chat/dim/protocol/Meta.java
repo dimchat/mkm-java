@@ -38,6 +38,7 @@ import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
 import chat.dim.format.UTF8;
 import chat.dim.mkm.Factories;
+import chat.dim.type.MapWrapper;
 
 /**
  *  User/Group Meta data
@@ -54,7 +55,7 @@ import chat.dim.mkm.Factories;
  *      algorithm:
  *          fingerprint = sign(seed, SK);
  */
-public interface Meta extends chat.dim.type.Map {
+public interface Meta extends MapWrapper {
 
     /**
      *  Meta algorithm version
@@ -216,8 +217,8 @@ public interface Meta extends chat.dim.type.Map {
             return null;
         } else if (meta instanceof Meta) {
             return (Meta) meta;
-        } else if (meta instanceof chat.dim.type.Map) {
-            meta = ((chat.dim.type.Map) meta).getMap();
+        } else if (meta instanceof MapWrapper) {
+            meta = ((MapWrapper) meta).getMap();
         }
         int type = getType(meta);
         Factory factory = getFactory(type);
