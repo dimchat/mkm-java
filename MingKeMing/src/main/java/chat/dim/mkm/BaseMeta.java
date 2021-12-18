@@ -32,9 +32,9 @@ package chat.dim.mkm;
 
 import java.util.Map;
 
+import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.Base64;
-import chat.dim.format.UTF8;
 import chat.dim.protocol.Meta;
 import chat.dim.protocol.MetaType;
 import chat.dim.type.Dictionary;
@@ -87,8 +87,6 @@ public abstract class BaseMeta extends Dictionary implements Meta {
      */
     private byte[] fingerprint = null;
 
-    private int status = 0;  // 1 for valid, -1 for invalid
-
     protected BaseMeta(Map<String, Object> dictionary) {
         super(dictionary);
     }
@@ -97,7 +95,7 @@ public abstract class BaseMeta extends Dictionary implements Meta {
         super();
 
         // meta type
-        put("version", version);
+        put("type", version);
         this.type = version;
 
         // public key
@@ -123,66 +121,34 @@ public abstract class BaseMeta extends Dictionary implements Meta {
         return type;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public VerifyKey getKey() {
         if (key == null) {
-            key = Meta.getKey(getMap());
+            Object info = get("key");
+            assert info instanceof Map : "meta key not found: " + getMap();
+            key = PublicKey.parse((Map<String, Object>) info);
         }
         return key;
     }
 
     @Override
     public String getSeed() {
-        if (seed == null) {
-            if (MetaType.hasSeed(getType())) {
-                seed = Meta.getSeed(getMap());
-                assert seed != null && seed.length() > 0 : "meta.seed should not be empty: " + this;
-            }
+        if (seed == null && MetaType.hasSeed(getType())) {
+            seed = (String) get("seed");
+            assert seed != null && seed.length() > 0 : "meta.seed should not be empty: " + getMap();
         }
         return seed;
     }
 
     @Override
     public byte[] getFingerprint() {
-        if (fingerprint == null) {
-            if (MetaType.hasSeed(getType())) {
-                fingerprint = Meta.getFingerprint(getMap());
-                assert fingerprint != null : "meta.fingerprint should not be empty: " + this;
-            }
+        if (fingerprint == null && MetaType.hasSeed(getType())) {
+            String base64 = (String) get("fingerprint");
+            assert base64 != null : "meta.fingerprint should not be empty: " + getMap();
+            fingerprint = Base64.decode(base64);
+            assert fingerprint != null : "meta.fingerprint error: " + getMap();
         }
         return fingerprint;
-    }
-
-    /**
-     *  Check meta valid
-     *  (must call this when received a new meta from network)
-     *
-     * @return true on valid
-     */
-    @Override
-    public boolean isValid() {
-        if (status == 0) {
-            VerifyKey key = getKey();
-            if (key == null) {
-                // meta.key should not be empty
-                status = -1;
-            } else if (MetaType.hasSeed(getType())) {
-                String seed = getSeed();
-                byte[] fingerprint = getFingerprint();
-                if (seed == null || fingerprint == null) {
-                    // seed and fingerprint should not be empty
-                    status = -1;
-                } else if (key.verify(UTF8.encode(seed), fingerprint)) {
-                    // fingerprint matched
-                    status = 1;
-                } else {
-                    // fingerprint not matched
-                    status = -1;
-                }
-            } else {
-                status = 1;
-            }
-        }
-        return status == 1;
     }
 }

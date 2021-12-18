@@ -32,10 +32,8 @@ package chat.dim.protocol;
 
 import java.util.Map;
 
-import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
-import chat.dim.format.Base64;
 import chat.dim.format.UTF8;
 import chat.dim.mkm.Factories;
 import chat.dim.type.MapWrapper;
@@ -87,25 +85,12 @@ public interface Meta extends MapWrapper {
      */
     VerifyKey getKey();
 
-    @SuppressWarnings("unchecked")
-    static VerifyKey getKey(Map<String, Object> meta) {
-        Object key = meta.get("key");
-        if (key instanceof Map) {
-            return PublicKey.parse((Map<String, Object>) key);
-        }
-        throw new NullPointerException("meta key not found: " + meta);
-    }
-
     /**
      *  Seed to generate fingerprint
      *
      *      Username / Group-X
      */
     String getSeed();
-
-    static String getSeed(Map<String, Object> meta) {
-        return (String) meta.get("seed");
-    }
 
     /**
      *  Fingerprint to verify ID and public key
@@ -114,22 +99,6 @@ public interface Meta extends MapWrapper {
      *      Check: verify(seed, fingerprint, publicKey)
      */
     byte[] getFingerprint();
-
-    static byte[] getFingerprint(Map<String, Object> meta) {
-        String base64 = (String) meta.get("fingerprint");
-        if (base64 == null) {
-            return null;
-        }
-        return Base64.decode(base64);
-    }
-
-    /**
-     *  Check meta valid
-     *  (must call this when received a new meta from network)
-     *
-     * @return true on valid
-     */
-    boolean isValid();
 
     /**
      *  Generate address
@@ -140,6 +109,33 @@ public interface Meta extends MapWrapper {
     Address generateAddress(byte type);
 
     /**
+     *  Check meta valid
+     *  (must call this when received a new meta from network)
+     *
+     * @return true on valid
+     */
+    static boolean check(Meta meta) {
+        VerifyKey key = meta.getKey();
+        if (key == null) {
+            // meta.key should not be empty
+            return false;
+        }
+        if (!MetaType.hasSeed(meta.getType())) {
+            // this meta has no seed, so no signature too
+            return true;
+        }
+        // check seed with signature
+        String seed = meta.getSeed();
+        byte[] fingerprint = meta.getFingerprint();
+        if (seed == null || fingerprint == null) {
+            // seed and fingerprint should not be empty
+            return false;
+        }
+        // verify fingerprint
+        return key.verify(UTF8.encode(seed), fingerprint);
+    }
+
+    /**
      *  Check whether meta match with entity ID
      *  (must call this when received a new meta from network)
      *
@@ -148,9 +144,6 @@ public interface Meta extends MapWrapper {
      * @return true on matched
      */
     static boolean matches(ID identifier, Meta meta) {
-        if (!meta.isValid()) {
-            return false;
-        }
         // check ID.name
         String seed = meta.getSeed();
         String name = identifier.getName();
@@ -174,13 +167,9 @@ public interface Meta extends MapWrapper {
      * @return true on matched
      */
     static boolean matches(VerifyKey pk, Meta meta) {
-        if (meta.isValid()) {
-            // check whether the public key equals to meta.key
-            if (pk.equals(meta.getKey())) {
-                return true;
-            }
-        } else {
-            return false;
+        // check whether the public key equals to meta.key
+        if (pk.equals(meta.getKey())) {
+            return true;
         }
         // check with seed & fingerprint
         if (MetaType.hasSeed(meta.getType())) {
