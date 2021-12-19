@@ -98,12 +98,6 @@ public interface ID {
     //
     //  Factory methods
     //
-    static ID generate(Meta meta, byte type, String terminal) {
-        return Factories.idFactory.generateID(meta, type, terminal);
-    }
-    static ID create(String name, Address address, String terminal) {
-        return Factories.idFactory.createID(name, address, terminal);
-    }
     static ID parse(Object identifier) {
         if (identifier == null) {
             return null;
@@ -116,6 +110,18 @@ public interface ID {
         assert factory != null : "ID factory not ready";
         assert identifier instanceof String : "ID error: " + identifier;
         return factory.parseID((String) identifier);
+    }
+
+    static ID create(String name, Address address, String terminal) {
+        Factory factory = getFactory();
+        assert factory != null : "ID factory not ready";
+        return factory.createID(name, address, terminal);
+    }
+
+    static ID generate(Meta meta, byte type, String terminal) {
+        Factory factory = getFactory();
+        assert factory != null : "ID factory not ready";
+        return factory.generateID(meta, type, terminal);
     }
 
     static Factory getFactory() {

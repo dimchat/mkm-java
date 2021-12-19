@@ -44,7 +44,7 @@ import chat.dim.type.MapWrapper;
  *  This class is used to generate entity meta
  *
  *      data format: {
- *          version: 1,          // algorithm version
+ *          type: 1,             // algorithm version
  *          seed: "moKy",        // user/group name
  *          key: "{public key}", // PK = secp256k1(SK);
  *          fingerprint: "..."   // CT = sign(seed, SK);
@@ -103,7 +103,7 @@ public interface Meta extends MapWrapper {
     /**
      *  Generate address
      *
-     * @param type - ID.type
+     * @param type - Address.network
      * @return Address
      */
     Address generateAddress(byte type);

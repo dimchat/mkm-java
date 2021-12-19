@@ -44,10 +44,8 @@ final class IDFactory implements ID.Factory {
     @Override
     public ID generateID(Meta meta, byte type, String terminal) {
         Address address = Address.generate(meta, type);
-        if (address == null) {
-            return null;
-        }
-        return createID(meta.getSeed(), address, terminal);
+        assert address != null : "failed to generate ID with meta: " + meta.getMap();
+        return ID.create(meta.getSeed(), address, terminal);
     }
 
     @Override
