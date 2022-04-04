@@ -132,7 +132,7 @@ public interface Document extends TAI, MapWrapper {
     static Factory getFactory(String type) {
         return Factories.documentFactories.get(type);
     }
-    static void register(String type, Factory factory) {
+    static void setFactory(String type, Factory factory) {
         Factories.documentFactories.put(type, factory);
     }
 

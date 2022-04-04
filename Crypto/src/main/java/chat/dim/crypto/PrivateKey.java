@@ -80,7 +80,7 @@ public interface PrivateKey extends SignKey {
     static Factory getFactory(String algorithm) {
         return Factories.privateKeyFactories.get(algorithm);
     }
-    static void register(String algorithm, Factory factory) {
+    static void setFactory(String algorithm, Factory factory) {
         Factories.privateKeyFactories.put(algorithm, factory);
     }
 

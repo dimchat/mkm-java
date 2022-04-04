@@ -224,10 +224,10 @@ public interface Meta extends MapWrapper {
     static Factory getFactory(MetaType type) {
         return Factories.metaFactories.get(type.value);
     }
-    static void register(int type, Factory factory) {
+    static void setFactory(int type, Factory factory) {
         Factories.metaFactories.put(type, factory);
     }
-    static void register(MetaType type, Factory factory) {
+    static void setFactory(MetaType type, Factory factory) {
         Factories.metaFactories.put(type.value, factory);
     }
 

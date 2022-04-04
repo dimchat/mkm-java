@@ -84,7 +84,7 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
     static Factory getFactory(String algorithm) {
         return Factories.symmetricKeyFactories.get(algorithm);
     }
-    static void register(String algorithm, Factory factory) {
+    static void setFactory(String algorithm, Factory factory) {
         Factories.symmetricKeyFactories.put(algorithm, factory);
     }
 

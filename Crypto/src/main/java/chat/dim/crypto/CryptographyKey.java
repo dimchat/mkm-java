@@ -63,4 +63,3 @@ public interface CryptographyKey extends MapWrapper {
     // sample data for checking keys
     byte[] promise = "Moky loves May Lee forever!".getBytes();
 }
-
