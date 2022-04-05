@@ -58,16 +58,13 @@ public class BaseVisa extends BaseDocument implements Visa {
      *
      *      RSA
      */
-    @SuppressWarnings("unchecked")
     @Override
     public EncryptKey getKey() {
         if (key == null) {
             Object info = getProperty("key");
-            if (info instanceof Map) {
-                PublicKey pKey = PublicKey.parse((Map<String, Object>) info);
-                if (pKey instanceof EncryptKey) {
-                    key = (EncryptKey) pKey;
-                }
+            PublicKey pKey = PublicKey.parse(info);
+            if (pKey instanceof EncryptKey) {
+                key = (EncryptKey) pKey;
             }
         }
         return key;

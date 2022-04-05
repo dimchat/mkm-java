@@ -121,13 +121,12 @@ public abstract class BaseMeta extends Dictionary implements Meta {
         return type;
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public VerifyKey getKey() {
         if (key == null) {
             Object info = get("key");
             assert info instanceof Map : "meta key not found: " + getMap();
-            key = PublicKey.parse((Map<String, Object>) info);
+            key = PublicKey.parse(info);
         }
         return key;
     }

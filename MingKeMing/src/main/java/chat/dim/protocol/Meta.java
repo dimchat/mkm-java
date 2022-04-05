@@ -201,21 +201,21 @@ public interface Meta extends MapWrapper {
         }
         return factory.generateMeta(sKey, seed);
     }
-    static Meta parse(Map<String, Object> meta) {
+    static Meta parse(Object meta) {
         if (meta == null) {
             return null;
         } else if (meta instanceof Meta) {
             return (Meta) meta;
-        } else if (meta instanceof MapWrapper) {
-            meta = ((MapWrapper) meta).getMap();
         }
-        int type = getType(meta);
+        Map<String, Object> info = MapWrapper.getMap(meta);
+        assert info != null : "meta error: " + meta;
+        int type = getType(info);
         Factory factory = getFactory(type);
         if (factory == null) {
             factory = getFactory(0);  // unknown
             assert factory != null : "cannot parse entity meta: " + meta;
         }
-        return factory.parseMeta(meta);
+        return factory.parseMeta(info);
     }
 
     static Factory getFactory(int type) {

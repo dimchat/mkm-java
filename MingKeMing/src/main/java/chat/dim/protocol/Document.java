@@ -112,21 +112,21 @@ public interface Document extends TAI, MapWrapper {
         }
         return factory.createDocument(identifier);
     }
-    static Document parse(Map<String, Object> doc) {
+    static Document parse(Object doc) {
         if (doc == null) {
             return null;
         } else if (doc instanceof Document) {
             return (Document) doc;
-        } else if (doc instanceof MapWrapper) {
-            doc = ((MapWrapper) doc).getMap();
         }
-        String type = getType(doc);
+        Map<String, Object> info = MapWrapper.getMap(doc);
+        assert info != null : "document error: " + doc;
+        String type = getType(info);
         Factory factory = getFactory(type);
         if (factory == null) {
             factory = getFactory("*");  // unknown
             assert factory != null : "cannot parse entity document: " + doc;
         }
-        return factory.parseDocument(doc);
+        return factory.parseDocument(info);
     }
 
     static Factory getFactory(String type) {

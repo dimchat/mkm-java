@@ -59,22 +59,22 @@ public interface PrivateKey extends SignKey {
         }
         return factory.generatePrivateKey();
     }
-    static PrivateKey parse(Map<String, Object> key) {
+    static PrivateKey parse(Object key) {
         if (key == null) {
             return null;
         } else if (key instanceof PrivateKey) {
             return (PrivateKey) key;
-        } else if (key instanceof MapWrapper) {
-            key = ((MapWrapper) key).getMap();
         }
-        String algorithm = CryptographyKey.getAlgorithm(key);
+        Map<String, Object> info = MapWrapper.getMap(key);
+        assert info != null : "key error: " + key;
+        String algorithm = CryptographyKey.getAlgorithm(info);
         assert algorithm != null : "failed to get algorithm name from key: " + key;
         Factory factory = getFactory(algorithm);
         if (factory == null) {
             factory = getFactory("*");  // unknown
             assert factory != null : "cannot parse key: " + key;
         }
-        return factory.parsePrivateKey(key);
+        return factory.parsePrivateKey(info);
     }
 
     static Factory getFactory(String algorithm) {

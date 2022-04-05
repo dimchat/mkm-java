@@ -59,4 +59,15 @@ public interface MapWrapper extends Map<String, Object> {
             return new HashMap<>(dictionary);
         }
     }
+
+    @SuppressWarnings("unchecked")
+    static Map<String, Object> getMap(Object dict) {
+        if (dict instanceof MapWrapper) {
+            return ((MapWrapper) dict).getMap();
+        } else if (dict instanceof Map) {
+            return (Map<String, Object>) dict;
+        } else {
+            return null;
+        }
+    }
 }
