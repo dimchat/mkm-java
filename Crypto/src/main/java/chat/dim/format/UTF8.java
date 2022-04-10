@@ -40,11 +40,13 @@ public final class UTF8 {
     // default parser
     public static DataParser<String> parser = new DataParser<String>() {
 
+        @SuppressWarnings("CharsetObjectCanBeUsed")
         @Override
         public byte[] encode(String string) {
             return string.getBytes(Charset.forName("UTF-8"));
         }
 
+        @SuppressWarnings("CharsetObjectCanBeUsed")
         @Override
         public String decode(byte[] utf8) {
             return new String(utf8, Charset.forName("UTF-8"));

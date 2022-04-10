@@ -27,6 +27,7 @@ package chat.dim.format;
 
 import java.util.Map;
 
+@SuppressWarnings("rawtypes")
 public final class JSONMap {
 
     public static byte[] encode(Map dictionary) {
