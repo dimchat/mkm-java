@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2020 Albert Moky
+ * Copyright (c) 2022 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,30 +25,29 @@
  */
 package chat.dim.format;
 
-import java.util.Map;
+/**
+ *  Object Coder
+ *  ~~~~~~~~~~~~
+ *  JsON, XML, ...
+ *
+ *  1. encode object to string;
+ *  2. decode string to object.
+ */
+public interface ObjectCoder<T> {
 
-@SuppressWarnings("rawtypes")
-public final class JSONMap {
+    /**
+     *  Encode Map/List object to bytes
+     *
+     * @param object - Map or List
+     * @return serialized string
+     */
+    String encode(T object);
 
-    public static String encode(Map dictionary) {
-        return parser.encode(dictionary);
-    }
-
-    public static Map decode(String json) {
-        return parser.decode(json);
-    }
-
-    // default parser
-    public static ObjectCoder<Map> parser = new ObjectCoder<Map>() {
-
-        @Override
-        public String encode(Map dictionary) {
-            return JSON.encode(dictionary);
-        }
-
-        @Override
-        public Map decode(String json) {
-            return (Map) JSON.decode(json);
-        }
-    };
+    /**
+     *  Decode bytes to Map/List object
+     *
+     * @param string - serialized string
+     * @return Map or List
+     */
+    T decode(String string);
 }

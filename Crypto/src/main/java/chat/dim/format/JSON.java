@@ -27,14 +27,14 @@ package chat.dim.format;
 
 public final class JSON {
 
-    public static byte[] encode(Object container) {
+    public static String encode(Object container) {
         return parser.encode(container);
     }
 
-    public static Object decode(byte[] json) {
+    public static Object decode(String json) {
         return parser.decode(json);
     }
 
     // default parser
-    public static DataParser<Object> parser = null;
+    public static ObjectCoder<Object> parser = null;
 }

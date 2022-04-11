@@ -30,25 +30,25 @@ import java.util.List;
 @SuppressWarnings("rawtypes")
 public final class JSONList {
 
-    public static byte[] encode(List array) {
+    public static String encode(List array) {
         return parser.encode(array);
     }
 
-    public static List decode(byte[] json) {
+    public static List decode(String json) {
         return parser.decode(json);
     }
 
     // default parser
-    public static DataParser<List> parser = new DataParser<List>() {
+    public static ObjectCoder<List> parser = new ObjectCoder<List>() {
 
         @Override
-        public byte[] encode(List array) {
-            return JSON.parser.encode(array);
+        public String encode(List array) {
+            return JSON.encode(array);
         }
 
         @Override
-        public List decode(byte[] json) {
-            return (List) JSON.parser.decode(json);
+        public List decode(String json) {
+            return (List) JSON.decode(json);
         }
     };
 }

@@ -38,7 +38,7 @@ public final class UTF8 {
     }
 
     // default parser
-    public static DataParser<String> parser = new DataParser<String>() {
+    public static StringCoder parser = new StringCoder() {
 
         @SuppressWarnings("CharsetObjectCanBeUsed")
         @Override

@@ -25,20 +25,28 @@
  */
 package chat.dim.format;
 
+/**
+ *  Data Coder
+ *  ~~~~~~~~~~
+ *  Hex, Base58, Base64, ...
+ *
+ *  1. encode binary data to string;
+ *  2. decode string to binary data.
+ */
 public interface DataCoder {
 
     /**
-     *  Encode binary data to text string
+     *  Encode binary data to local string
      *
      * @param data - binary data
-     * @return Base58/64 string
+     * @return local string
      */
     String encode(byte[] data);
 
     /**
-     *  Decode text string to binary data
+     *  Decode local string to binary data
      *
-     * @param string - base58/64 string
+     * @param string - local string
      * @return binary data
      */
     byte[] decode(String string);

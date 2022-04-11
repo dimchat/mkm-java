@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2022 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,21 +25,29 @@
  */
 package chat.dim.format;
 
-public interface DataParser<T> {
+/**
+ *  String Coder
+ *  ~~~~~~~~~~~~
+ *  UTF-8, UTF-16, BGK, BG2312, ...
+ *
+ *  1. encode string to binary data;
+ *  2. decode binary data to string.
+ */
+public interface StringCoder {
 
     /**
-     *  Encode container/string object to bytes
+     *  Encode local string to binary data
      *
-     * @param object - Map, List, or String
-     * @return JsON data (UTF-8 string bytes)
+     * @param string - local string
+     * @return binary data
      */
-    byte[] encode(T object);
+    byte[] encode(String string);
 
     /**
-     *  Decode bytes to container/string object
+     *  Decode binary data to local string
      *
-     * @param data - JsON data (UTF-8 string bytes)
-     * @return Map, List, or String
+     * @param data - binary data
+     * @return local string
      */
-    T decode(byte[] data);
+    String decode(byte[] data);
 }
