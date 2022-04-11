@@ -44,7 +44,7 @@ public class BaseBulletin extends BaseDocument implements Bulletin {
         super(dictionary);
     }
 
-    public BaseBulletin(ID identifier, byte[] data, byte[] signature) {
+    public BaseBulletin(ID identifier, String data, byte[] signature) {
         super(identifier, data, signature);
     }
 

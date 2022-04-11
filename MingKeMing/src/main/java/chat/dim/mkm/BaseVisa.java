@@ -45,7 +45,7 @@ public class BaseVisa extends BaseDocument implements Visa {
         super(dictionary);
     }
 
-    public BaseVisa(ID identifier, byte[] data, byte[] signature) {
+    public BaseVisa(ID identifier, String data, byte[] signature) {
         super(identifier, data, signature);
     }
 

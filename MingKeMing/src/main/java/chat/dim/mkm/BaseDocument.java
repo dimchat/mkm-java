@@ -47,7 +47,7 @@ public class BaseDocument extends Dictionary implements Document {
 
     private ID identifier;
 
-    private byte[] data;       // JsON.encode(properties)
+    private String data;       // JsON.encode(properties)
     private byte[] signature;  // LocalUser(identifier).sign(data)
 
     private Map<String, Object> properties;
@@ -78,7 +78,7 @@ public class BaseDocument extends Dictionary implements Document {
      * @param data - document data in JsON format
      * @param signature - signature of document data
      */
-    public BaseDocument(ID identifier, byte[] data, byte[] signature) {
+    public BaseDocument(ID identifier, String data, byte[] signature) {
         super();
 
         // ID
@@ -86,7 +86,7 @@ public class BaseDocument extends Dictionary implements Document {
         this.identifier = identifier;
 
         // json data
-        put("data", UTF8.decode(data));
+        put("data", data);
         this.data = data;
 
         // signature
@@ -152,12 +152,9 @@ public class BaseDocument extends Dictionary implements Document {
      *
      * @return JsON string
      */
-    private byte[] getData() {
+    private String getData() {
         if (data == null) {
-            String json = (String) get("data");
-            if (json != null) {
-                data = UTF8.encode(json);
-            }
+            data = (String) get("data");
         }
         return data;
     }
@@ -185,7 +182,7 @@ public class BaseDocument extends Dictionary implements Document {
             return null;
         }
         if (properties == null) {
-            byte[] data = getData();
+            String data = getData();
             if (data == null) {
                 // create new properties
                 properties = new HashMap<>();
@@ -233,7 +230,7 @@ public class BaseDocument extends Dictionary implements Document {
             // already verify OK
             return true;
         }
-        byte[] data = getData();
+        String data = getData();
         byte[] signature = getSignature();
         if (data == null) {
             // NOTICE: if data is empty, signature should be empty at the same time
@@ -247,7 +244,7 @@ public class BaseDocument extends Dictionary implements Document {
         } else if (signature == null) {
             // signature error
             status = -1;
-        } else if (publicKey.verify(data, signature)) {
+        } else if (publicKey.verify(UTF8.encode(data), signature)) {
             // signature matched
             status = 1;
         }
@@ -270,8 +267,8 @@ public class BaseDocument extends Dictionary implements Document {
         status = 1;
         // sign
         data = JSONMap.encode(getProperties());
-        signature = privateKey.sign(data);
-        put("data", UTF8.decode(data));
+        signature = privateKey.sign(UTF8.encode(data));
+        put("data", data);
         put("signature", Base64.encode(signature));
         return signature;
     }
