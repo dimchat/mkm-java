@@ -98,7 +98,7 @@ public interface Document extends TAI, MapWrapper {
     //
     //  Factory methods
     //
-    static Document create(String type, ID identifier, byte[] data, byte[] signature) {
+    static Document create(String type, ID identifier, String data, byte[] signature) {
         Factory factory = getFactory(type);
         if (factory == null) {
             throw new NullPointerException("document type not found: " + type);
@@ -146,11 +146,11 @@ public interface Document extends TAI, MapWrapper {
          *  Create document with data & signature loaded from local storage
          *
          * @param identifier - entity ID
-         * @param data       - document data
+         * @param data       - document data (JsON)
          * @param signature  - document signature
          * @return Document
          */
-        Document createDocument(ID identifier, byte[] data, byte[] signature);
+        Document createDocument(ID identifier, String data, byte[] signature);
 
         /**
          *  Create a new empty document with entity ID

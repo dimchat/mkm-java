@@ -47,8 +47,8 @@ public class BaseDocument extends Dictionary implements Document {
 
     private ID identifier;
 
-    private String data;       // JsON.encode(properties)
-    private byte[] signature;  // LocalUser(identifier).sign(data)
+    private String json;  // JsON.encode(properties)
+    private byte[] sig;   // LocalUser(identifier).sign(data)
 
     private Map<String, Object> properties;
     private int status;        // 1 for valid, -1 for invalid
@@ -63,8 +63,8 @@ public class BaseDocument extends Dictionary implements Document {
         // lazy
         identifier = null;
 
-        data = null;
-        signature = null;
+        json = null;
+        sig = null;
 
         properties = null;
 
@@ -87,11 +87,11 @@ public class BaseDocument extends Dictionary implements Document {
 
         // json data
         put("data", data);
-        this.data = data;
+        this.json = data;
 
         // signature
         put("signature", Base64.encode(signature));
-        this.signature = signature;
+        this.sig = signature;
 
         properties = null;
 
@@ -112,8 +112,8 @@ public class BaseDocument extends Dictionary implements Document {
         put("ID", identifier.toString());
         this.identifier = identifier;
 
-        data = null;
-        signature = null;
+        json = null;
+        sig = null;
 
         if (type != null && type.length() > 0) {
             properties = new HashMap<>();
@@ -153,10 +153,10 @@ public class BaseDocument extends Dictionary implements Document {
      * @return JsON string
      */
     private String getData() {
-        if (data == null) {
-            data = (String) get("data");
+        if (json == null) {
+            json = (String) get("data");
         }
-        return data;
+        return json;
     }
 
     /**
@@ -165,13 +165,13 @@ public class BaseDocument extends Dictionary implements Document {
      * @return signature data
      */
     private byte[] getSignature() {
-        if (signature == null) {
+        if (sig == null) {
             String base64 = (String) get("signature");
             if (base64 != null) {
-                signature = Base64.decode(base64);
+                sig = Base64.decode(base64);
             }
         }
-        return signature;
+        return sig;
     }
 
     @Override
@@ -220,8 +220,8 @@ public class BaseDocument extends Dictionary implements Document {
         // 3. clear data signature after properties changed
         remove("data");
         remove("signature");
-        data = null;
-        signature = null;
+        json = null;
+        sig = null;
     }
 
     @Override
@@ -257,8 +257,8 @@ public class BaseDocument extends Dictionary implements Document {
     public byte[] sign(SignKey privateKey) {
         if (status > 0) {
             // already signed/verified
-            assert data != null && signature != null : "document data/signature error";
-            return signature;
+            assert json != null && sig != null : "document data/signature error";
+            return sig;
         }
         // update sign time
         Date now = new Date();
@@ -266,11 +266,11 @@ public class BaseDocument extends Dictionary implements Document {
         // update status
         status = 1;
         // sign
-        data = JSONMap.encode(getProperties());
-        signature = privateKey.sign(UTF8.encode(data));
-        put("data", data);
-        put("signature", Base64.encode(signature));
-        return signature;
+        json = JSONMap.encode(getProperties());
+        sig = privateKey.sign(UTF8.encode(json));
+        put("data", json);
+        put("signature", Base64.encode(sig));
+        return sig;
     }
 
     //---- properties getter/setter
