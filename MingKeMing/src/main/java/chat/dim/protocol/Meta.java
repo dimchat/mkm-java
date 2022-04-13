@@ -36,7 +36,7 @@ import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.UTF8;
 import chat.dim.mkm.Factories;
-import chat.dim.type.MapWrapper;
+import chat.dim.type.Mapper;
 
 /**
  *  User/Group Meta data
@@ -53,7 +53,7 @@ import chat.dim.type.MapWrapper;
  *      algorithm:
  *          fingerprint = sign(seed, SK);
  */
-public interface Meta extends MapWrapper {
+public interface Meta extends Mapper {
 
     /**
      *  Meta algorithm version
@@ -207,7 +207,7 @@ public interface Meta extends MapWrapper {
         } else if (meta instanceof Meta) {
             return (Meta) meta;
         }
-        Map<String, Object> info = MapWrapper.getMap(meta);
+        Map<String, Object> info = Mapper.getMap(meta);
         assert info != null : "meta error: " + meta;
         int type = getType(info);
         Factory factory = getFactory(type);

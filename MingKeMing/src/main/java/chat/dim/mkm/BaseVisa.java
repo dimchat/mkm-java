@@ -72,7 +72,7 @@ public class BaseVisa extends BaseDocument implements Visa {
 
     @Override
     public void setKey(EncryptKey publicKey) {
-        setProperty("key", publicKey.getMap());
+        setProperty("key", publicKey.toMap());
         key = publicKey;
     }
 

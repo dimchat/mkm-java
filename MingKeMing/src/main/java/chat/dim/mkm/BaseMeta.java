@@ -99,7 +99,7 @@ public abstract class BaseMeta extends Dictionary implements Meta {
         this.type = version;
 
         // public key
-        put("key", key.getMap());
+        put("key", key.toMap());
         this.key = key;
 
         if (seed != null) {
@@ -116,7 +116,7 @@ public abstract class BaseMeta extends Dictionary implements Meta {
     @Override
     public int getType() {
         if (type == 0) {
-            type = Meta.getType(getMap());
+            type = Meta.getType(toMap());
         }
         return type;
     }
@@ -125,7 +125,7 @@ public abstract class BaseMeta extends Dictionary implements Meta {
     public VerifyKey getKey() {
         if (key == null) {
             Object info = get("key");
-            assert info instanceof Map : "meta key not found: " + getMap();
+            assert info instanceof Map : "meta key not found: " + toMap();
             key = PublicKey.parse(info);
         }
         return key;
@@ -135,7 +135,7 @@ public abstract class BaseMeta extends Dictionary implements Meta {
     public String getSeed() {
         if (seed == null && MetaType.hasSeed(getType())) {
             seed = (String) get("seed");
-            assert seed != null && seed.length() > 0 : "meta.seed should not be empty: " + getMap();
+            assert seed != null && seed.length() > 0 : "meta.seed should not be empty: " + toMap();
         }
         return seed;
     }
@@ -144,9 +144,9 @@ public abstract class BaseMeta extends Dictionary implements Meta {
     public byte[] getFingerprint() {
         if (fingerprint == null && MetaType.hasSeed(getType())) {
             String base64 = (String) get("fingerprint");
-            assert base64 != null : "meta.fingerprint should not be empty: " + getMap();
+            assert base64 != null : "meta.fingerprint should not be empty: " + toMap();
             fingerprint = Base64.decode(base64);
-            assert fingerprint != null : "meta.fingerprint error: " + getMap();
+            assert fingerprint != null : "meta.fingerprint error: " + toMap();
         }
         return fingerprint;
     }

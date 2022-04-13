@@ -34,7 +34,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import chat.dim.mkm.Factories;
-import chat.dim.type.StringWrapper;
+import chat.dim.type.Stringer;
 
 /**
  *  ID for entity (User/Group)
@@ -104,7 +104,7 @@ public interface ID {
         } else if (identifier instanceof ID) {
             return (ID) identifier;
         }
-        String str = StringWrapper.getString(identifier);
+        String str = Stringer.getString(identifier);
         assert str != null : "ID error: " + identifier;
         Factory factory = getFactory();
         assert factory != null : "ID factory not ready";

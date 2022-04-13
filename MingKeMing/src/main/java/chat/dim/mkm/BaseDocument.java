@@ -134,7 +134,7 @@ public class BaseDocument extends Dictionary implements Document {
     public String getType() {
         String type = (String) getProperty("type");
         if (type == null) {
-            type = Document.getType(getMap());
+            type = Document.getType(toMap());
         }
         return type;
     }
@@ -142,7 +142,7 @@ public class BaseDocument extends Dictionary implements Document {
     @Override
     public ID getIdentifier() {
         if (identifier == null) {
-            identifier = Document.getIdentifier(getMap());
+            identifier = Document.getIdentifier(toMap());
         }
         return identifier;
     }
@@ -188,7 +188,7 @@ public class BaseDocument extends Dictionary implements Document {
                 properties = new HashMap<>();
             } else {
                 Map<String, Object> info = (Map<String, Object>) JSONMap.decode(data);
-                assert info != null : "document data error: " + getMap();
+                assert info != null : "document data error: " + toMap();
                 properties = info;
             }
         }
