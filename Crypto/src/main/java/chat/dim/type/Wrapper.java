@@ -57,7 +57,7 @@ public interface Wrapper {
             return null;
         }
         // check for string
-        if (object instanceof StringWrapper) {
+        if (object instanceof Stringer) {
             return object.toString();
         }
         // unwrap container
@@ -65,13 +65,13 @@ public interface Wrapper {
             if (object instanceof List) {
                 return unwrap((List<Object>) object);
             }
-            if (object instanceof MapWrapper) {
-                return unwrap(((MapWrapper) object).getMap());
+            if (object instanceof Mapper) {
+                return unwrap(((Mapper) object).toMap());
             } else if (object instanceof Map) {
                 return unwrap((Map<String, Object>) object);
             }
-        } else if (object instanceof MapWrapper) {
-            object = ((MapWrapper) object).getMap();
+        } else if (object instanceof Mapper) {
+            object = ((Mapper) object).toMap();
         }
         // OK
         return object;

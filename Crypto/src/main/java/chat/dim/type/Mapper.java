@@ -30,14 +30,14 @@ import java.util.Map;
 
 import chat.dim.format.JSONMap;
 
-public interface MapWrapper extends Map<String, Object> {
+public interface Mapper extends Map<String, Object> {
 
     /**
      *  Get inner map
      *
      * @return Map
      */
-    Map<String, Object> getMap();
+    Map<String, Object> toMap();
 
     /**
      *  Copy inner map
@@ -47,8 +47,8 @@ public interface MapWrapper extends Map<String, Object> {
      */
     Map<String, Object> copyMap(boolean deepCopy);
 
-    static Map<String, Object> copyMap(MapWrapper map, boolean deepCopy) {
-        return copyMap(map.getMap(), deepCopy);
+    static Map<String, Object> copyMap(Mapper map, boolean deepCopy) {
+        return copyMap(map.toMap(), deepCopy);
     }
 
     @SuppressWarnings("unchecked")
@@ -62,8 +62,8 @@ public interface MapWrapper extends Map<String, Object> {
 
     @SuppressWarnings("unchecked")
     static Map<String, Object> getMap(Object dict) {
-        if (dict instanceof MapWrapper) {
-            return ((MapWrapper) dict).getMap();
+        if (dict instanceof Mapper) {
+            return ((Mapper) dict).toMap();
         } else if (dict instanceof Map) {
             return (Map<String, Object>) dict;
         } else {

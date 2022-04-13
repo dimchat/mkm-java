@@ -27,7 +27,7 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
-import chat.dim.type.MapWrapper;
+import chat.dim.type.Mapper;
 
 /**
  *  Cryptography Key
@@ -40,7 +40,7 @@ import chat.dim.type.MapWrapper;
  *      ...
  *  }
  */
-public interface CryptographyKey extends MapWrapper {
+public interface CryptographyKey extends Mapper {
 
     /**
      *  Get key algorithm name

@@ -25,7 +25,7 @@
  */
 package chat.dim.type;
 
-public interface StringWrapper {
+public interface Stringer {
 
     /*/
     int hashCode();
@@ -37,13 +37,13 @@ public interface StringWrapper {
 
     int length();
 
-    boolean equalsIgnoreCase(String other);
+    boolean equalsIgnoreCase(Object other);
 
     /**
      *  Fetch String
      */
     static String getString(Object str) {
-        if (str instanceof StringWrapper) {
+        if (str instanceof Stringer) {
             return str.toString();
         } else if (str instanceof String) {
             return (String) str;

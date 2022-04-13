@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class Dictionary implements MapWrapper {
+public abstract class Dictionary implements Mapper {
 
     private final Map<String, Object> dictionary;
 
@@ -45,18 +45,18 @@ public abstract class Dictionary implements MapWrapper {
         dictionary = map;
     }
 
-    protected Dictionary(MapWrapper map) {
-        this(map.getMap());
+    protected Dictionary(Mapper map) {
+        this(map.toMap());
     }
 
     @Override
-    public Map<String, Object> getMap() {
+    public Map<String, Object> toMap() {
         return dictionary;
     }
 
     @Override
     public Map<String, Object> copyMap(boolean deepCopy) {
-        return MapWrapper.copyMap(dictionary, deepCopy);
+        return Mapper.copyMap(dictionary, deepCopy);
     }
 
     @Override
@@ -64,8 +64,8 @@ public abstract class Dictionary implements MapWrapper {
         if (super.equals(other)) {
             // same object
             return true;
-        } else if (other instanceof MapWrapper) {
-            Map<String, Object> dict = ((MapWrapper) other).getMap();
+        } else if (other instanceof Mapper) {
+            Map<String, Object> dict = ((Mapper) other).toMap();
             return dictionary.equals(dict);
         } else if (other instanceof Map) {
             // check with inner dictionary

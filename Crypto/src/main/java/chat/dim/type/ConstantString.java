@@ -25,7 +25,7 @@
  */
 package chat.dim.type;
 
-public class ConstantString implements StringWrapper {
+public class ConstantString implements Stringer {
 
     private final String string;
 
@@ -35,7 +35,7 @@ public class ConstantString implements StringWrapper {
         string = str;
     }
 
-    protected ConstantString(StringWrapper string) {
+    protected ConstantString(Stringer string) {
         this(string.toString());
     }
 
@@ -57,23 +57,18 @@ public class ConstantString implements StringWrapper {
     @Override
     public boolean equals(Object other) {
         if (super.equals(other)) {
-            // same object
             return true;
-        } else if (other instanceof StringWrapper) {
-            // check with inner string
-            String str = other.toString();
-            return string.equals(str);
-        } else if (other instanceof String) {
-            // check string
-            return string.equals(other);
-        } else {
-            // null or unknown object
-            return false;
         }
+        String otherString = Stringer.getString(other);
+        return string.equals(otherString);
     }
 
     @Override
-    public boolean equalsIgnoreCase(String other) {
-        return string.equalsIgnoreCase(other);
+    public boolean equalsIgnoreCase(Object other) {
+        if (super.equals(other)) {
+            return true;
+        }
+        String otherString = Stringer.getString(other);
+        return string.equalsIgnoreCase(otherString);
     }
 }
