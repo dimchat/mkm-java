@@ -32,9 +32,9 @@ package chat.dim.mkm;
 
 import chat.dim.protocol.Address;
 import chat.dim.protocol.NetworkType;
-import chat.dim.type.StringWrapper;
+import chat.dim.type.ConstantString;
 
-public final class BroadcastAddress extends StringWrapper implements Address {
+public final class BroadcastAddress extends ConstantString implements Address {
 
     private final byte network;
 

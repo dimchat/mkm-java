@@ -36,7 +36,7 @@ package chat.dim.format;
 public interface ObjectCoder<T> {
 
     /**
-     *  Encode Map/List object to bytes
+     *  Encode Map/List object to String
      *
      * @param object - Map or List
      * @return serialized string
@@ -44,7 +44,7 @@ public interface ObjectCoder<T> {
     String encode(T object);
 
     /**
-     *  Decode bytes to Map/List object
+     *  Decode String to Map/List object
      *
      * @param string - serialized string
      * @return Map or List

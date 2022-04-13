@@ -32,7 +32,7 @@ package chat.dim.mkm;
 
 import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
-import chat.dim.type.StringWrapper;
+import chat.dim.type.ConstantString;
 
 /**
  *  ID for entity (User/Group)
@@ -44,7 +44,7 @@ import chat.dim.type.StringWrapper;
  *          address  - a string to identify an entity
  *          terminal - entity login resource(device), OPTIONAL
  */
-final class Identifier extends StringWrapper implements ID {
+final class Identifier extends ConstantString implements ID {
 
     private final String name;
     private final Address address;

@@ -262,7 +262,7 @@ public class BaseDocument extends Dictionary implements Document {
         }
         // update sign time
         Date now = new Date();
-        setProperty("time", now.getTime() / 1000);
+        setProperty("time", now.getTime() / 1000.0);
         // update status
         status = 1;
         // sign

@@ -23,31 +23,57 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.format;
+package chat.dim.type;
 
-/**
- *  String Coder
- *  ~~~~~~~~~~~~
- *  UTF-8, UTF-16, GBK, GB2312, ...
- *
- *  1. encode string to binary data;
- *  2. decode binary data to string.
- */
-public interface StringCoder {
+public class ConstantString implements StringWrapper {
 
-    /**
-     *  Encode local string to binary data
-     *
-     * @param string - local string
-     * @return binary data
-     */
-    byte[] encode(String string);
+    private final String string;
 
-    /**
-     *  Decode binary data to local string
-     *
-     * @param data - binary data
-     * @return local string
-     */
-    String decode(byte[] data);
+    protected ConstantString(String str) {
+        super();
+        assert str != null : "cannot initialize with an empty string";
+        string = str;
+    }
+
+    protected ConstantString(StringWrapper string) {
+        this(string.toString());
+    }
+
+    @Override
+    public int length() {
+        return string.length();
+    }
+
+    @Override
+    public String toString() {
+        return string;
+    }
+
+    @Override
+    public int hashCode() {
+        return string.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object other) {
+        if (super.equals(other)) {
+            // same object
+            return true;
+        } else if (other instanceof StringWrapper) {
+            // check with inner string
+            String str = other.toString();
+            return string.equals(str);
+        } else if (other instanceof String) {
+            // check string
+            return string.equals(other);
+        } else {
+            // null or unknown object
+            return false;
+        }
+    }
+
+    @Override
+    public boolean equalsIgnoreCase(String other) {
+        return string.equalsIgnoreCase(other);
+    }
 }

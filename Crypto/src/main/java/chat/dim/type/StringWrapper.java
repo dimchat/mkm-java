@@ -25,67 +25,30 @@
  */
 package chat.dim.type;
 
-public class StringWrapper {
+public interface StringWrapper {
 
-    private final String string;
+    /*/
+    int hashCode();
 
-    protected StringWrapper(String str) {
-        super();
-        assert str != null : "cannot initialize with an empty string";
-        string = str;
-    }
+    boolean equals(Object other);
 
-    protected StringWrapper(StringWrapper string) {
-        this(string.string);
-    }
+    String toString();
+    /*/
 
-    public int length() {
-        return string.length();
-    }
+    int length();
 
-    @Override
-    public String toString() {
-        return string;
-    }
+    boolean equalsIgnoreCase(String other);
 
-    @Override
-    public int hashCode() {
-        return string.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object other) {
-        if (super.equals(other)) {
-            // same object
-            return true;
-        } else if (other instanceof StringWrapper) {
-            // check with inner string
-            String str = ((StringWrapper) other).string;
-            return string.equals(str);
-        } else if (other instanceof String) {
-            // check string
-            return string.equals(other);
+    /**
+     *  Fetch String
+     */
+    static String getString(Object str) {
+        if (str instanceof StringWrapper) {
+            return str.toString();
+        } else if (str instanceof String) {
+            return (String) str;
         } else {
-            // null or unknown object
-            return false;
-        }
-    }
-
-    public boolean equalsIgnoreCase(Object other) {
-        if (super.equals(other)) {
-            // same object
-            return true;
-        } else if (other instanceof StringWrapper) {
-            // check with inner string
-            StringWrapper str = (StringWrapper) other;
-            return string.equalsIgnoreCase(str.string);
-        } else if (other instanceof String) {
-            // check string
-            String str = (String) other;
-            return string.equalsIgnoreCase(str);
-        } else {
-            // null or unknown object
-            return false;
+            return null;
         }
     }
 }

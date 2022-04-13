@@ -103,13 +103,12 @@ public interface ID {
             return null;
         } else if (identifier instanceof ID) {
             return (ID) identifier;
-        } else if (identifier instanceof StringWrapper) {
-            identifier = identifier.toString();
         }
+        String str = StringWrapper.getString(identifier);
+        assert str != null : "ID error: " + identifier;
         Factory factory = getFactory();
         assert factory != null : "ID factory not ready";
-        assert identifier instanceof String : "ID error: " + identifier;
-        return factory.parseID((String) identifier);
+        return factory.parseID(str);
     }
 
     static ID create(String name, Address address, String terminal) {

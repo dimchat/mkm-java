@@ -67,13 +67,12 @@ public interface Address {
             return null;
         } else if (address instanceof Address) {
             return (Address) address;
-        } else if (address instanceof StringWrapper) {
-            address = address.toString();
         }
+        String str = StringWrapper.getString(address);
+        assert str != null : "address error: " + address;
         Factory factory = getFactory();
         assert factory != null : "address factory not ready";
-        assert address instanceof String : "address error: " + address;
-        return factory.parseAddress((String) address);
+        return factory.parseAddress(str);
     }
 
     static Address create(String address) {
