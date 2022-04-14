@@ -76,9 +76,9 @@ public class BaseDocument extends Dictionary implements Document {
      *
      * @param identifier - entity ID
      * @param data - document data in JsON format
-     * @param signature - signature of document data
+     * @param signature - signature of document data in Base64 format
      */
-    public BaseDocument(ID identifier, String data, byte[] signature) {
+    public BaseDocument(ID identifier, String data, String signature) {
         super();
 
         // ID
@@ -90,8 +90,8 @@ public class BaseDocument extends Dictionary implements Document {
         this.json = data;
 
         // signature
-        put("signature", Base64.encode(signature));
-        this.sig = signature;
+        put("signature", signature);
+        this.sig = null;  // lazy
 
         properties = null;
 
@@ -166,9 +166,9 @@ public class BaseDocument extends Dictionary implements Document {
      */
     private byte[] getSignature() {
         if (sig == null) {
-            String base64 = (String) get("signature");
+            Object base64 = get("signature");
             if (base64 != null) {
-                sig = Base64.decode(base64);
+                sig = Base64.decode((String) base64);
             }
         }
         return sig;
@@ -257,7 +257,7 @@ public class BaseDocument extends Dictionary implements Document {
     public byte[] sign(SignKey privateKey) {
         if (status > 0) {
             // already signed/verified
-            assert json != null && sig != null : "document data/signature error";
+            assert json != null/* && sig != null*/ : "document data error";
             return sig;
         }
         // update sign time

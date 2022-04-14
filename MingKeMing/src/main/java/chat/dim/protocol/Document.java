@@ -98,7 +98,7 @@ public interface Document extends TAI, Mapper {
     //
     //  Factory methods
     //
-    static Document create(String type, ID identifier, String data, byte[] signature) {
+    static Document create(String type, ID identifier, String data, String signature) {
         Factory factory = getFactory(type);
         if (factory == null) {
             throw new NullPointerException("document type not found: " + type);
@@ -147,10 +147,10 @@ public interface Document extends TAI, Mapper {
          *
          * @param identifier - entity ID
          * @param data       - document data (JsON)
-         * @param signature  - document signature
+         * @param signature  - document signature (Base64)
          * @return Document
          */
-        Document createDocument(ID identifier, String data, byte[] signature);
+        Document createDocument(ID identifier, String data, String signature);
 
         /**
          *  Create a new empty document with entity ID
