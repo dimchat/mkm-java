@@ -34,6 +34,8 @@ public interface Wrapper {
 
     /**
      *  Fetch String
+     *  ~~~~~~~~~~~~
+     *  Remove first wrapper
      */
     static String getString(Object str) {
         if (str instanceof Stringer) {
@@ -47,6 +49,8 @@ public interface Wrapper {
 
     /**
      *  Fetch Map
+     *  ~~~~~~~~~
+     *  Remove first wrapper
      */
     @SuppressWarnings("unchecked")
     static Map<String, Object> getMap(Object dict) {
@@ -62,6 +66,7 @@ public interface Wrapper {
     /**
      *  Deep Copy
      *  ~~~~~~~~~
+     *  Remove all wrappers
      */
     @SuppressWarnings("unchecked")
     static Object unwrap(Object object) {

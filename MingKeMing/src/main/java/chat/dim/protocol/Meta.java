@@ -37,6 +37,7 @@ import chat.dim.crypto.VerifyKey;
 import chat.dim.format.UTF8;
 import chat.dim.mkm.Factories;
 import chat.dim.type.Mapper;
+import chat.dim.type.Wrapper;
 
 /**
  *  User/Group Meta data
@@ -207,7 +208,7 @@ public interface Meta extends Mapper {
         } else if (meta instanceof Meta) {
             return (Meta) meta;
         }
-        Map<String, Object> info = Mapper.getMap(meta);
+        Map<String, Object> info = Wrapper.getMap(meta);
         assert info != null : "meta error: " + meta;
         int type = getType(info);
         Factory factory = getFactory(type);

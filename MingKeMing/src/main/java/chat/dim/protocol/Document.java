@@ -35,6 +35,7 @@ import java.util.Map;
 
 import chat.dim.mkm.Factories;
 import chat.dim.type.Mapper;
+import chat.dim.type.Wrapper;
 
 /**
  *  User/Group Profile
@@ -118,7 +119,7 @@ public interface Document extends TAI, Mapper {
         } else if (doc instanceof Document) {
             return (Document) doc;
         }
-        Map<String, Object> info = Mapper.getMap(doc);
+        Map<String, Object> info = Wrapper.getMap(doc);
         assert info != null : "document error: " + doc;
         String type = getType(info);
         Factory factory = getFactory(type);
