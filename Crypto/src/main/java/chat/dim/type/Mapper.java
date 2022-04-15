@@ -25,10 +25,7 @@
  */
 package chat.dim.type;
 
-import java.util.HashMap;
 import java.util.Map;
-
-import chat.dim.format.JSONMap;
 
 public interface Mapper extends Map<String, Object> {
 
@@ -47,19 +44,9 @@ public interface Mapper extends Map<String, Object> {
      */
     Map<String, Object> copyMap(boolean deepCopy);
 
-    static Map<String, Object> copyMap(Mapper map, boolean deepCopy) {
-        return copyMap(map.toMap(), deepCopy);
-    }
-
-    @SuppressWarnings("unchecked")
-    static Map<String, Object> copyMap(Map<String, Object> dictionary, boolean deepCopy) {
-        if (deepCopy) {
-            return JSONMap.decode(JSONMap.encode(dictionary));
-        } else {
-            return new HashMap<>(dictionary);
-        }
-    }
-
+    /**
+     *  Fetch Map
+     */
     @SuppressWarnings("unchecked")
     static Map<String, Object> getMap(Object dict) {
         if (dict instanceof Mapper) {

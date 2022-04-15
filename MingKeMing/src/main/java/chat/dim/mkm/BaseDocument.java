@@ -257,8 +257,8 @@ public class BaseDocument extends Dictionary implements Document {
     public byte[] sign(SignKey privateKey) {
         if (status > 0) {
             // already signed/verified
-            assert json != null/* && sig != null*/ : "document data error";
-            return sig;
+            assert json != null : "document data error";
+            return getSignature();
         }
         // update sign time
         Date now = new Date();

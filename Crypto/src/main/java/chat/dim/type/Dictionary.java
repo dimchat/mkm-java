@@ -56,7 +56,11 @@ public abstract class Dictionary implements Mapper {
 
     @Override
     public Map<String, Object> copyMap(boolean deepCopy) {
-        return Mapper.copyMap(dictionary, deepCopy);
+        if (deepCopy) {
+            return Copier.deepCopyMap(dictionary);
+        } else {
+            return Copier.copyMap(dictionary);
+        }
     }
 
     @Override

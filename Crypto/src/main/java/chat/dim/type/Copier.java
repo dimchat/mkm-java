@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2020 Albert Moky
+ * Copyright (c) 2022 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -30,36 +30,62 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public interface Wrapper {
+public interface Copier {
+
+    /**
+     *  Shallow Copy
+     *  ~~~~~~~~~~~~
+     */
+    @SuppressWarnings("unchecked")
+    static Object copy(Object object) {
+        if (object instanceof Map) {
+            return copyMap((Map<String, Object>) object);
+        } else if (object instanceof List) {
+            return copyList((List<Object>) object);
+        //} else if (object instanceof Cloneable) {
+        } else {
+            return object;
+        }
+    }
+
+    static Map<String, Object> copyMap(Map<String, Object> dict) {
+        Map<String, Object> clone = new HashMap<>();
+        for (Map.Entry<String, Object> entry : dict.entrySet()) {
+            clone.put(entry.getKey(), entry.getValue());
+        }
+        return clone;
+    }
+    static List<Object> copyList(List<Object> array) {
+        return new ArrayList<>(array);
+    }
 
     /**
      *  Deep Copy
      *  ~~~~~~~~~
      */
     @SuppressWarnings("unchecked")
-    static Object unwrap(Object object) {
-        if (object instanceof Stringer) {
-            return object.toString();
-        } else if (object instanceof Map) {  // Mapper
-            return unwrapMap((Map<String, Object>) object);
+    static Object deepCopy(Object object) {
+        if (object instanceof Map) {
+            return deepCopyMap((Map<String, Object>) object);
         } else if (object instanceof List) {
-            return unwrapList((List<Object>) object);
+            return deepCopyList((List<Object>) object);
+        //} else if (object instanceof Cloneable) {
         } else {
             return object;
         }
     }
 
-    static Object unwrapMap(Map<String, Object> dict) {
+    static Map<String, Object> deepCopyMap(Map<String, Object> dict) {
         Map<String, Object> clone = new HashMap<>();
         for (Map.Entry<String, Object> entry : dict.entrySet()) {
-            clone.put(entry.getKey(), unwrap(entry.getValue()));
+            clone.put(entry.getKey(), deepCopy(entry.getValue()));
         }
         return clone;
     }
-    static List<Object> unwrapList(List<Object> array) {
+    static List<Object> deepCopyList(List<Object> array) {
         List<Object> clone = new ArrayList<>();
         for (Object item : array) {
-            clone.add(unwrap(item));
+            clone.add(deepCopy(item));
         }
         return clone;
     }
