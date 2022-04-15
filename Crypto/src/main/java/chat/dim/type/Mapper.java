@@ -43,18 +43,4 @@ public interface Mapper extends Map<String, Object> {
      * @return Map
      */
     Map<String, Object> copyMap(boolean deepCopy);
-
-    /**
-     *  Fetch Map
-     */
-    @SuppressWarnings("unchecked")
-    static Map<String, Object> getMap(Object dict) {
-        if (dict instanceof Mapper) {
-            return ((Mapper) dict).toMap();
-        } else if (dict instanceof Map) {
-            return (Map<String, Object>) dict;
-        } else {
-            return null;
-        }
-    }
 }

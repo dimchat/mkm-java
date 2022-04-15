@@ -28,7 +28,7 @@ package chat.dim.crypto;
 import java.util.Arrays;
 import java.util.Map;
 
-import chat.dim.type.Mapper;
+import chat.dim.type.Wrapper;
 
 /**
  *  Symmetric Cryptography Key
@@ -69,7 +69,7 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
         } else if (key instanceof SymmetricKey) {
             return (SymmetricKey) key;
         }
-        Map<String, Object> info = Mapper.getMap(key);
+        Map<String, Object> info = Wrapper.getMap(key);
         assert info != null : "key error: " + key;
         String algorithm = CryptographyKey.getAlgorithm(info);
         assert algorithm != null : "failed to get algorithm name from key: " + key;

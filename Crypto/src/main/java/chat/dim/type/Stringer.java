@@ -38,17 +38,4 @@ public interface Stringer {
     int length();
 
     boolean equalsIgnoreCase(Object other);
-
-    /**
-     *  Fetch String
-     */
-    static String getString(Object str) {
-        if (str instanceof Stringer) {
-            return str.toString();
-        } else if (str instanceof String) {
-            return (String) str;
-        } else {
-            return null;
-        }
-    }
 }

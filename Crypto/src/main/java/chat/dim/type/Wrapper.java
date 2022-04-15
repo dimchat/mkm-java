@@ -33,6 +33,33 @@ import java.util.Map;
 public interface Wrapper {
 
     /**
+     *  Fetch String
+     */
+    static String getString(Object str) {
+        if (str instanceof Stringer) {
+            return str.toString();
+        } else if (str instanceof String) {
+            return (String) str;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     *  Fetch Map
+     */
+    @SuppressWarnings("unchecked")
+    static Map<String, Object> getMap(Object dict) {
+        if (dict instanceof Mapper) {
+            return ((Mapper) dict).toMap();
+        } else if (dict instanceof Map) {
+            return (Map<String, Object>) dict;
+        } else {
+            return null;
+        }
+    }
+
+    /**
      *  Deep Copy
      *  ~~~~~~~~~
      */

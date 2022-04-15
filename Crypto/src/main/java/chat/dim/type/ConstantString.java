@@ -59,7 +59,7 @@ public class ConstantString implements Stringer {
         if (super.equals(other)) {
             return true;
         }
-        String otherString = Stringer.getString(other);
+        String otherString = Wrapper.getString(other);
         return string.equals(otherString);
     }
 
@@ -68,7 +68,7 @@ public class ConstantString implements Stringer {
         if (super.equals(other)) {
             return true;
         }
-        String otherString = Stringer.getString(other);
+        String otherString = Wrapper.getString(other);
         return string.equalsIgnoreCase(otherString);
     }
 }

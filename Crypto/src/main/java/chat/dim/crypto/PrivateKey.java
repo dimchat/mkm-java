@@ -27,7 +27,7 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
-import chat.dim.type.Mapper;
+import chat.dim.type.Wrapper;
 
 /**
  *  Asymmetric Cryptography Private Key
@@ -65,7 +65,7 @@ public interface PrivateKey extends SignKey {
         } else if (key instanceof PrivateKey) {
             return (PrivateKey) key;
         }
-        Map<String, Object> info = Mapper.getMap(key);
+        Map<String, Object> info = Wrapper.getMap(key);
         assert info != null : "key error: " + key;
         String algorithm = CryptographyKey.getAlgorithm(info);
         assert algorithm != null : "failed to get algorithm name from key: " + key;
