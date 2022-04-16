@@ -25,16 +25,15 @@
  */
 package chat.dim.type;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public interface Wrapper {
 
     /**
-     *  Fetch String
-     *  ~~~~~~~~~~~~
+     *  Get inner String
+     *  ~~~~~~~~~~~~~~~~
      *  Remove first wrapper
      */
     static String getString(Object str) {
@@ -48,8 +47,8 @@ public interface Wrapper {
     }
 
     /**
-     *  Fetch Map
-     *  ~~~~~~~~~
+     *  Get inner Map
+     *  ~~~~~~~~~~~~~
      *  Remove first wrapper
      */
     @SuppressWarnings("unchecked")
@@ -64,15 +63,17 @@ public interface Wrapper {
     }
 
     /**
-     *  Deep Copy
-     *  ~~~~~~~~~
+     *  Unwrap recursively
+     *  ~~~~~~~~~~~~~~~~~~
      *  Remove all wrappers
      */
     @SuppressWarnings("unchecked")
     static Object unwrap(Object object) {
         if (object instanceof Stringer) {
             return object.toString();
-        } else if (object instanceof Map) {  // Mapper
+        } else if (object instanceof Mapper) {
+            return unwrapMap(((Mapper) object).toMap());
+        } else if (object instanceof Map) {
             return unwrapMap((Map<String, Object>) object);
         } else if (object instanceof List) {
             return unwrapList((List<Object>) object);
@@ -82,17 +83,26 @@ public interface Wrapper {
     }
 
     static Object unwrapMap(Map<String, Object> dict) {
-        Map<String, Object> clone = new HashMap<>();
-        for (Map.Entry<String, Object> entry : dict.entrySet()) {
-            clone.put(entry.getKey(), unwrap(entry.getValue()));
+        Set<String> allKeys = dict.keySet();
+        Object naked, value;
+        for (String key : allKeys) {
+            value = dict.get(key);
+            naked = unwrap(value);
+            if (naked != value) {
+                dict.put(key, naked);
+            }
         }
-        return clone;
+        return dict;
     }
     static List<Object> unwrapList(List<Object> array) {
-        List<Object> clone = new ArrayList<>();
-        for (Object item : array) {
-            clone.add(unwrap(item));
+        Object naked, value;
+        for (int index = array.size() - 1; index >= 0; --index) {
+            value = array.get(index);
+            naked = unwrap(value);
+            if (naked != value) {
+                array.set(index, naked);
+            }
         }
-        return clone;
+        return array;
     }
 }
