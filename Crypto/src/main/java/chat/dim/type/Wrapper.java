@@ -71,8 +71,6 @@ public interface Wrapper {
     static Object unwrap(Object object) {
         if (object instanceof Stringer) {
             return object.toString();
-        } else if (object instanceof Mapper) {
-            return unwrapMap(((Mapper) object).toMap());
         } else if (object instanceof Map) {
             return unwrapMap((Map<String, Object>) object);
         } else if (object instanceof List) {
@@ -82,7 +80,10 @@ public interface Wrapper {
         }
     }
 
-    static Object unwrapMap(Map<String, Object> dict) {
+    static Map<String, Object> unwrapMap(Map<String, Object> dict) {
+        if (dict instanceof Mapper) {
+            dict = ((Mapper) dict).toMap();
+        }
         Set<String> allKeys = dict.keySet();
         Object naked, value;
         for (String key : allKeys) {
