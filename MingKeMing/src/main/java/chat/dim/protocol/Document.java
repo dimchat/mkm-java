@@ -33,7 +33,7 @@ package chat.dim.protocol;
 import java.util.Date;
 import java.util.Map;
 
-import chat.dim.mkm.Factories;
+import chat.dim.core.AccountFactories;
 import chat.dim.type.Mapper;
 import chat.dim.type.Wrapper;
 
@@ -131,10 +131,10 @@ public interface Document extends TAI, Mapper {
     }
 
     static Factory getFactory(String type) {
-        return Factories.documentFactories.get(type);
+        return AccountFactories.documentFactories.get(type);
     }
     static void setFactory(String type, Factory factory) {
-        Factories.documentFactories.put(type, factory);
+        AccountFactories.documentFactories.put(type, factory);
     }
 
     /**

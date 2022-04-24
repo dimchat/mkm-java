@@ -33,7 +33,7 @@ package chat.dim.protocol;
 import java.util.ArrayList;
 import java.util.List;
 
-import chat.dim.mkm.Factories;
+import chat.dim.core.AccountFactories;
 import chat.dim.type.Wrapper;
 
 /**
@@ -124,10 +124,10 @@ public interface ID {
     }
 
     static Factory getFactory() {
-        return Factories.idFactory;
+        return AccountFactories.idFactory;
     }
     static void setFactory(Factory factory) {
-        Factories.idFactory = factory;
+        AccountFactories.idFactory = factory;
     }
 
     /**

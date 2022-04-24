@@ -30,8 +30,8 @@
  */
 package chat.dim.protocol;
 
+import chat.dim.core.AccountFactories;
 import chat.dim.mkm.BroadcastAddress;
-import chat.dim.mkm.Factories;
 import chat.dim.type.Wrapper;
 
 /**
@@ -88,10 +88,10 @@ public interface Address {
     }
 
     static Factory getFactory() {
-        return Factories.addressFactory;
+        return AccountFactories.addressFactory;
     }
     static void setFactory(Factory factory) {
-        Factories.addressFactory = factory;
+        AccountFactories.addressFactory = factory;
     }
 
     /**

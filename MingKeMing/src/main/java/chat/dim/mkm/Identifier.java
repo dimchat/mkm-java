@@ -44,13 +44,13 @@ import chat.dim.type.ConstantString;
  *          address  - a string to identify an entity
  *          terminal - entity login resource(device), OPTIONAL
  */
-final class Identifier extends ConstantString implements ID {
+public final class Identifier extends ConstantString implements ID {
 
     private final String name;
     private final Address address;
     private final String terminal;
 
-    Identifier(String identifier, String name, Address address, String terminal) {
+    public Identifier(String identifier, String name, Address address, String terminal) {
         super(identifier);
         this.name = name;
         this.address = address;

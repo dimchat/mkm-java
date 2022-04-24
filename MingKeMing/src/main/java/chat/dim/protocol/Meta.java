@@ -32,10 +32,10 @@ package chat.dim.protocol;
 
 import java.util.Map;
 
+import chat.dim.core.AccountFactories;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.UTF8;
-import chat.dim.mkm.Factories;
 import chat.dim.type.Mapper;
 import chat.dim.type.Wrapper;
 
@@ -220,16 +220,16 @@ public interface Meta extends Mapper {
     }
 
     static Factory getFactory(int type) {
-        return Factories.metaFactories.get(type);
+        return AccountFactories.metaFactories.get(type);
     }
     static Factory getFactory(MetaType type) {
-        return Factories.metaFactories.get(type.value);
+        return AccountFactories.metaFactories.get(type.value);
     }
     static void setFactory(int type, Factory factory) {
-        Factories.metaFactories.put(type, factory);
+        AccountFactories.metaFactories.put(type, factory);
     }
     static void setFactory(MetaType type, Factory factory) {
-        Factories.metaFactories.put(type.value, factory);
+        AccountFactories.metaFactories.put(type.value, factory);
     }
 
     /**

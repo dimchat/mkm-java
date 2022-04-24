@@ -28,43 +28,23 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm;
+package chat.dim.core;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import chat.dim.protocol.Address;
+import chat.dim.protocol.Document;
+import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
 
-public abstract class AddressFactory implements Address.Factory {
+public final class AccountFactories {
 
-    private final Map<String, Address> addresses = new HashMap<>();
+    public static Address.Factory addressFactory = null;
 
-    protected AddressFactory() {
-        super();
-        // cache broadcast addresses
-        addresses.put(Address.ANYWHERE.toString(), Address.ANYWHERE);
-        addresses.put(Address.EVERYWHERE.toString(), Address.EVERYWHERE);
-    }
+    public static ID.Factory idFactory = new IDFactory();
 
-    @Override
-    public Address generateAddress(Meta meta, byte type) {
-        Address address = meta.generateAddress(type);
-        if (address != null) {
-            addresses.put(address.toString(), address);
-        }
-        return address;
-    }
+    public static final Map<Integer, Meta.Factory> metaFactories = new HashMap<>();
 
-    @Override
-    public Address parseAddress(String address) {
-        Address add = addresses.get(address);
-        if (add == null) {
-            add = Address.create(address);
-            if (add != null) {
-                addresses.put(address, add);
-            }
-        }
-        return add;
-    }
+    public static final Map<String, Document.Factory> documentFactories = new HashMap<>();
 }
