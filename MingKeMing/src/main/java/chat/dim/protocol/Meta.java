@@ -32,7 +32,6 @@ package chat.dim.protocol;
 
 import java.util.Map;
 
-import chat.dim.core.AccountFactories;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.UTF8;

@@ -30,7 +30,6 @@
  */
 package chat.dim.protocol;
 
-import chat.dim.core.AccountFactories;
 import chat.dim.mkm.BroadcastAddress;
 import chat.dim.type.Wrapper;
 

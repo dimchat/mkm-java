@@ -1,9 +1,4 @@
 /* license: https://mit-license.org
- *
- *  Ming-Ke-Ming : Decentralized User Identity Authentication
- *
- *                                Written in 2020 by Moky <albert.moky@gmail.com>
- *
  * ==============================================================================
  * The MIT License (MIT)
  *
@@ -28,23 +23,20 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.core;
+package chat.dim.crypto;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import chat.dim.protocol.Address;
-import chat.dim.protocol.Document;
-import chat.dim.protocol.ID;
-import chat.dim.protocol.Meta;
+final class KeyFactories {
 
-public final class AccountFactories {
+    //
+    //  Key factories with algorithm name as key
+    //
 
-    public static Address.Factory addressFactory = null;
+    static Map<String, SymmetricKey.Factory> symmetricKeyFactories = new HashMap<>();
 
-    public static ID.Factory idFactory = new IDFactory();
+    static Map<String, PublicKey.Factory> publicKeyFactories = new HashMap<>();
 
-    public static final Map<Integer, Meta.Factory> metaFactories = new HashMap<>();
-
-    public static final Map<String, Document.Factory> documentFactories = new HashMap<>();
+    static Map<String, PrivateKey.Factory> privateKeyFactories = new HashMap<>();
 }

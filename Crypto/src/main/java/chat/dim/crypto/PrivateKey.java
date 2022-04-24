@@ -78,10 +78,10 @@ public interface PrivateKey extends SignKey {
     }
 
     static Factory getFactory(String algorithm) {
-        return Factories.privateKeyFactories.get(algorithm);
+        return KeyFactories.privateKeyFactories.get(algorithm);
     }
     static void setFactory(String algorithm, Factory factory) {
-        Factories.privateKeyFactories.put(algorithm, factory);
+        KeyFactories.privateKeyFactories.put(algorithm, factory);
     }
 
     /**

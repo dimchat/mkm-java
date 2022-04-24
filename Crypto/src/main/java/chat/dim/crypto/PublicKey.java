@@ -63,10 +63,10 @@ public interface PublicKey extends VerifyKey {
     }
 
     static Factory getFactory(String algorithm) {
-        return Factories.publicKeyFactories.get(algorithm);
+        return KeyFactories.publicKeyFactories.get(algorithm);
     }
     static void setFactory(String algorithm, Factory factory) {
-        Factories.publicKeyFactories.put(algorithm, factory);
+        KeyFactories.publicKeyFactories.put(algorithm, factory);
     }
 
     /**

@@ -33,7 +33,6 @@ package chat.dim.protocol;
 import java.util.ArrayList;
 import java.util.List;
 
-import chat.dim.core.AccountFactories;
 import chat.dim.type.Wrapper;
 
 /**
