@@ -263,13 +263,18 @@ public class BaseDocument extends Dictionary implements Document {
         // update sign time
         Date now = new Date();
         setProperty("time", now.getTime() / 1000.0);
-        // update status
-        status = 1;
         // sign
         json = JSONMap.encode(getProperties());
         sig = privateKey.sign(UTF8.encode(json));
+        assert json != null : "document data error";
+        assert sig != null : "document signature error";
+        // update 'data' & 'signature' fields
         put("data", json);
         put("signature", Base64.encode(sig));
+        // update status
+        if (sig != null && sig.length > 0) {
+            status = 1;
+        }
         return sig;
     }
 
