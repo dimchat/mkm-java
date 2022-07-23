@@ -33,6 +33,7 @@ package chat.dim.protocol;
 import java.util.ArrayList;
 import java.util.List;
 
+import chat.dim.type.Stringer;
 import chat.dim.type.Wrapper;
 
 /**
@@ -45,7 +46,7 @@ import chat.dim.type.Wrapper;
  *          address  - a string to identify an entity
  *          terminal - entity login resource(device), OPTIONAL
  */
-public interface ID {
+public interface ID extends Stringer {
 
     String getName();
     Address getAddress();

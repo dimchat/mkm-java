@@ -31,6 +31,7 @@
 package chat.dim.protocol;
 
 import chat.dim.mkm.BroadcastAddress;
+import chat.dim.type.Stringer;
 import chat.dim.type.Wrapper;
 
 /**
@@ -38,7 +39,7 @@ import chat.dim.type.Wrapper;
  *  ~~~~~~~~~~~~~~~~~~
  *  This class is used to build address for ID
  */
-public interface Address {
+public interface Address extends Stringer {
 
     /**
      *  Get address type

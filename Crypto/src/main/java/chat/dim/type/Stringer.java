@@ -36,6 +36,4 @@ public interface Stringer {
     /*/
 
     int length();
-
-    boolean equalsIgnoreCase(Object other);
 }

@@ -62,13 +62,4 @@ public class ConstantString implements Stringer {
         String otherString = Wrapper.getString(other);
         return string.equals(otherString);
     }
-
-    @Override
-    public boolean equalsIgnoreCase(Object other) {
-        if (super.equals(other)) {
-            return true;
-        }
-        String otherString = Wrapper.getString(other);
-        return string.equalsIgnoreCase(otherString);
-    }
 }
