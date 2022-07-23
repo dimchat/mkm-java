@@ -66,7 +66,7 @@ public interface TAI {
      *  Encode properties to 'data' and sign it to 'signature'
      *
      * @param privateKey - private key match meta.key
-     * @return signature
+     * @return signature, null on error
      */
     byte[] sign(SignKey privateKey);
 
