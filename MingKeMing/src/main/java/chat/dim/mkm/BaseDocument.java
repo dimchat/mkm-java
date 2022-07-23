@@ -260,7 +260,10 @@ public class BaseDocument extends Dictionary implements Document {
             assert json != null : "document data error";
             return getSignature();
         }
-        // 1. encode & sign
+        // 1. update sign time
+        Date now = new Date();
+        setProperty("time", now.getTime() / 1000.0);
+        // 2. encode & sign
         String data = JSONMap.encode(getProperties());
         if (data == null || data.length() == 0) {
             // properties error
@@ -271,9 +274,6 @@ public class BaseDocument extends Dictionary implements Document {
             // signature error
             return null;
         }
-        // 2. update sign time
-        Date now = new Date();
-        setProperty("time", now.getTime() / 1000.0);
         // 3. update 'data' & 'signature' fields
         put("data", data);
         put("signature", Base64.encode(signature));
