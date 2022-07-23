@@ -25,6 +25,8 @@
  */
 package chat.dim.type;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -84,26 +86,23 @@ public interface Wrapper {
         if (dict instanceof Mapper) {
             dict = ((Mapper) dict).toMap();
         }
+        Map<String, Object> result = new HashMap<>();
         Set<String> allKeys = dict.keySet();
         Object naked, value;
         for (String key : allKeys) {
             value = dict.get(key);
             naked = unwrap(value);
-            if (naked != value) {
-                dict.put(key, naked);
-            }
+            result.put(key, naked);
         }
-        return dict;
+        return result;
     }
     static List<Object> unwrapList(List<Object> array) {
-        Object naked, value;
-        for (int index = array.size() - 1; index >= 0; --index) {
-            value = array.get(index);
-            naked = unwrap(value);
-            if (naked != value) {
-                array.set(index, naked);
-            }
+        List<Object> result = new ArrayList<>();
+        Object naked;
+        for (Object item : array) {
+            naked = unwrap(item);
+            result.add(naked);
         }
-        return array;
+        return result;
     }
 }
