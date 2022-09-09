@@ -86,7 +86,7 @@ package chat.dim.protocol;
 public enum NetworkType {
 
     BTC_MAIN       (0x00), // 0000 0000
-    //BTC_TEST     (0x6f), // 0110 1111
+    //BTC_TEST       (0x6f), // 0110 1111
 
     /*
      *  Person Account
@@ -98,20 +98,20 @@ public enum NetworkType {
      */
     GROUP          (0x10), // 0001 0000 (Multi-Persons)
 
-    //MOMENTS      (0x18), // 0001 1000 (Twitter)
+    //MOMENTS        (0x18), // 0001 1000 (Twitter)
     POLYLOGUE      (0x10), // 0001 0000 (Multi-Persons Chat, N < 100)
     CHATROOM       (0x30), // 0011 0000 (Multi-Persons Chat, N >= 100)
 
     /*
      *  Social Entities in Reality
      */
-    //SOCIAL_ENTITY (0x50), // 0101 0000
+    //SOCIAL_ENTITY  (0x50), // 0101 0000
 
-    //ORGANIZATION  (0x74), // 0111 0100
-    //COMPANY       (0x76), // 0111 0110
-    //SCHOOL        (0x77), // 0111 0111
-    //GOVERNMENT    (0x73), // 0111 0011
-    //DEPARTMENT    (0x52), // 0101 0010
+    //ORGANIZATION   (0x74), // 0111 0100
+    //COMPANY        (0x76), // 0111 0110
+    //SCHOOL         (0x77), // 0111 0111
+    //GOVERNMENT     (0x73), // 0111 0011
+    //DEPARTMENT     (0x52), // 0101 0010
 
     /*
      *  Network
@@ -119,24 +119,22 @@ public enum NetworkType {
     PROVIDER       (0x76), // 0111 0110 (Service Provider)
     STATION        (0x88), // 1000 1000 (Server Node)
 
-    /*
-     *  Internet of Things
-     */
-    THING          (0x80), // 1000 0000 (IoT)
-    ROBOT          (0xC8); // 1100 1000
+    //BOT_GROUP      (0x74), // 0111 0100 (Content Provider)
+    BOT            (0xC8), // 1100 1000
+    THING          (0x80); // 1000 0000 (IoT)
 
     // Network ID
     public final byte value;
 
-    NetworkType(byte value) {
-        this.value = value;
+    NetworkType(byte network) {
+        value = network;
     }
-    NetworkType(int value) {
-        this.value = (byte)value;
+    NetworkType(int network) {
+        value = (byte)network;
     }
 
     public boolean equals(byte other) {
-        return this.value == other;
+        return value == other;
     }
 
     public static boolean isUser(byte type) {

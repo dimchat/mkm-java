@@ -65,14 +65,15 @@ public enum MetaType {
     ETH     (0x04),  // 0000 0100
     ExETH   (0x05);  // 0000 0101
 
+    // Meta Version
     public final int value;
 
-    MetaType(int value) {
-        this.value = value;
+    MetaType(int version) {
+        value = version;
     }
 
     public boolean equals(int other) {
-        return this.value == other;
+        return value == other;
     }
 
     public static boolean hasSeed(int type) {
