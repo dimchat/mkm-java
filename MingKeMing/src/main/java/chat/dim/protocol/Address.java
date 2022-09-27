@@ -46,7 +46,7 @@ public interface Address extends Stringer {
      *
      * @return network type
      */
-    byte getNetwork();
+    byte getType();
 
     // address types
     boolean isBroadcast();
@@ -56,8 +56,8 @@ public interface Address extends Stringer {
     /**
      *  Address for broadcast
      */
-    BroadcastAddress ANYWHERE = new BroadcastAddress("anywhere", NetworkType.MAIN);
-    BroadcastAddress EVERYWHERE = new BroadcastAddress("everywhere", NetworkType.MAIN);
+    BroadcastAddress ANYWHERE = new BroadcastAddress("anywhere", EntityType.ANY);
+    BroadcastAddress EVERYWHERE = new BroadcastAddress("everywhere", EntityType.EVERY);
 
     //
     //  Factory methods

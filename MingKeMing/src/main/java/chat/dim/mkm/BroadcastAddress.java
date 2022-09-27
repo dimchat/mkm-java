@@ -31,7 +31,7 @@
 package chat.dim.mkm;
 
 import chat.dim.protocol.Address;
-import chat.dim.protocol.NetworkType;
+import chat.dim.protocol.EntityType;
 import chat.dim.type.ConstantString;
 
 public final class BroadcastAddress extends ConstantString implements Address {
@@ -44,7 +44,7 @@ public final class BroadcastAddress extends ConstantString implements Address {
      * @param string - Encoded address string
      * @param network - address type
      */
-    public BroadcastAddress(String string, NetworkType network) {
+    public BroadcastAddress(String string, EntityType network) {
         super(string);
         this.network = network.value;
     }
@@ -55,7 +55,7 @@ public final class BroadcastAddress extends ConstantString implements Address {
      * @return Network ID
      */
     @Override
-    public byte getNetwork() {
+    public byte getType() {
         return network;
     }
 
@@ -66,11 +66,11 @@ public final class BroadcastAddress extends ConstantString implements Address {
 
     @Override
     public boolean isUser() {
-        return NetworkType.isUser(network);
+        return network == EntityType.ANY.value;
     }
 
     @Override
     public boolean isGroup() {
-        return NetworkType.isGroup(network);
+        return network == EntityType.EVERY.value;
     }
 }
