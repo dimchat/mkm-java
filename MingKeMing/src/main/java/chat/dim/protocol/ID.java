@@ -57,7 +57,7 @@ public interface ID extends Stringer {
      *
      * @return network type
      */
-    byte getType();
+    int getType();
 
     // ID types
     boolean isBroadcast();
@@ -117,7 +117,7 @@ public interface ID extends Stringer {
         return factory.createID(name, address, terminal);
     }
 
-    static ID generate(Meta meta, byte type, String terminal) {
+    static ID generate(Meta meta, int type, String terminal) {
         Factory factory = getFactory();
         assert factory != null : "ID factory not ready";
         return factory.generateID(meta, type, terminal);
@@ -144,7 +144,7 @@ public interface ID extends Stringer {
          * @param terminal - ID.terminal
          * @return ID
          */
-        ID generateID(Meta meta, byte type, String terminal);
+        ID generateID(Meta meta, int type, String terminal);
 
         /**
          *  Create ID

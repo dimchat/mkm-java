@@ -46,7 +46,7 @@ public interface Address extends Stringer {
      *
      * @return network type
      */
-    byte getType();
+    int getType();
 
     // address types
     boolean isBroadcast();
@@ -81,7 +81,7 @@ public interface Address extends Stringer {
         return factory.createAddress(address);
     }
 
-    static Address generate(Meta meta, byte type) {
+    static Address generate(Meta meta, int type) {
         Factory factory = getFactory();
         assert factory != null : "address factory not ready";
         return factory.generateAddress(meta, type);
@@ -107,7 +107,7 @@ public interface Address extends Stringer {
          * @param type - address type
          * @return Address
          */
-        Address generateAddress(Meta meta, byte type);
+        Address generateAddress(Meta meta, int type);
 
         /**
          *  Create address from string

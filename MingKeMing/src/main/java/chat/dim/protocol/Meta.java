@@ -106,7 +106,7 @@ public interface Meta extends Mapper {
      * @param type - Address.network
      * @return Address
      */
-    Address generateAddress(byte type);
+    Address generateAddress(int type);
 
     /**
      *  Check meta valid

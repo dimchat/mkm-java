@@ -78,7 +78,7 @@ public final class Identifier extends ConstantString implements ID {
      * @return address type as network ID
      */
     @Override
-    public byte getType() {
+    public int getType() {
         assert address != null : "ID.address should not be empty: " + toString();
         return address.getType();
     }

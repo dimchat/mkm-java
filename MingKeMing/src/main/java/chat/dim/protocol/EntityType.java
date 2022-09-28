@@ -57,7 +57,8 @@ package chat.dim.protocol;
  *      0000 0010 - node flag
  *      0000 0100 - bot flag
  *      0000 1000 - CA flag
- *      ....
+ *      ...         (reserved)
+ *      0100 0000 - customized flag
  *      1000 0000 - broadcast flag
  *
  *      (All above are just some advices to help choosing numbers :P)
@@ -98,28 +99,25 @@ public enum EntityType {
     EVERY           (0x81); // 1000 0001 (everyone@everywhere)
 
     // Network ID
-    public final byte value;
+    public final int value;
 
-    EntityType(byte network) {
+    EntityType(int network) {
         value = network;
     }
-    EntityType(int network) {
-        value = (byte)network;
-    }
 
-    public boolean equals(byte other) {
+    public boolean equals(int other) {
         return value == other;
     }
 
-    public static boolean isUser(byte type) {
+    public static boolean isUser(int type) {
         return (type & GROUP.value) == USER.value;
     }
 
-    public static boolean isGroup(byte type) {
+    public static boolean isGroup(int type) {
         return (type & GROUP.value) == GROUP.value;
     }
 
-    public static boolean isBroadcast(byte type) {
+    public static boolean isBroadcast(int type) {
         return (type & ANY.value) == ANY.value;
     }
 }

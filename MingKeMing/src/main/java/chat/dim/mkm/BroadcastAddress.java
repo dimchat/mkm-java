@@ -36,7 +36,7 @@ import chat.dim.type.ConstantString;
 
 public final class BroadcastAddress extends ConstantString implements Address {
 
-    private final byte network;
+    private final int network;
 
     /**
      *  Create address
@@ -55,7 +55,7 @@ public final class BroadcastAddress extends ConstantString implements Address {
      * @return Network ID
      */
     @Override
-    public byte getType() {
+    public int getType() {
         return network;
     }
 
