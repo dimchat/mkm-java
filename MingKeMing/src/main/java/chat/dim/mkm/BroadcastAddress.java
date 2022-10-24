@@ -36,7 +36,7 @@ import chat.dim.type.ConstantString;
 
 public final class BroadcastAddress extends ConstantString implements Address {
 
-    private final int network;
+    private final int type;
 
     /**
      *  Create address
@@ -46,7 +46,7 @@ public final class BroadcastAddress extends ConstantString implements Address {
      */
     public BroadcastAddress(String string, EntityType network) {
         super(string);
-        this.network = network.value;
+        type = network.value;
     }
 
     /**
@@ -56,7 +56,7 @@ public final class BroadcastAddress extends ConstantString implements Address {
      */
     @Override
     public int getType() {
-        return network;
+        return type;
     }
 
     @Override
@@ -66,11 +66,11 @@ public final class BroadcastAddress extends ConstantString implements Address {
 
     @Override
     public boolean isUser() {
-        return network == EntityType.ANY.value;
+        return type == EntityType.ANY.value;
     }
 
     @Override
     public boolean isGroup() {
-        return network == EntityType.EVERY.value;
+        return type == EntityType.EVERY.value;
     }
 }

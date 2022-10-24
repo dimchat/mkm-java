@@ -43,8 +43,8 @@ public final class IDFactory implements ID.Factory {
     private final Map<String, ID> identifiers = new HashMap<>();
 
     @Override
-    public ID generateID(Meta meta, int type, String terminal) {
-        Address address = Address.generate(meta, type);
+    public ID generateID(Meta meta, int network, String terminal) {
+        Address address = Address.generate(meta, network);
         assert address != null : "failed to generate ID with meta: " + meta.toMap();
         return ID.create(meta.getSeed(), address, terminal);
     }

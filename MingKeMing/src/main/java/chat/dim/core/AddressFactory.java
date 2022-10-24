@@ -48,8 +48,8 @@ public abstract class AddressFactory implements Address.Factory {
     }
 
     @Override
-    public Address generateAddress(Meta meta, int type) {
-        Address address = meta.generateAddress(type);
+    public Address generateAddress(Meta meta, int network) {
+        Address address = meta.generateAddress(network);
         if (address != null) {
             addresses.put(address.toString(), address);
         }

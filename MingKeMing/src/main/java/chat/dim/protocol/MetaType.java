@@ -76,7 +76,7 @@ public enum MetaType {
         return value == other;
     }
 
-    public static boolean hasSeed(int type) {
-        return (type & MKM.value) == MKM.value;
+    public static boolean hasSeed(int version) {
+        return (version & MKM.value) == MKM.value;
     }
 }

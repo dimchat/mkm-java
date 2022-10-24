@@ -81,10 +81,10 @@ public interface Address extends Stringer {
         return factory.createAddress(address);
     }
 
-    static Address generate(Meta meta, int type) {
+    static Address generate(Meta meta, int network) {
         Factory factory = getFactory();
         assert factory != null : "address factory not ready";
-        return factory.generateAddress(meta, type);
+        return factory.generateAddress(meta, network);
     }
 
     static Factory getFactory() {
@@ -104,10 +104,10 @@ public interface Address extends Stringer {
          *  Generate address with meta & type
          *
          * @param meta - meta info
-         * @param type - address type
+         * @param network - address type
          * @return Address
          */
-        Address generateAddress(Meta meta, int type);
+        Address generateAddress(Meta meta, int network);
 
         /**
          *  Create address from string

@@ -103,10 +103,10 @@ public interface Meta extends Mapper {
     /**
      *  Generate address
      *
-     * @param type - Address.network
+     * @param network - address type
      * @return Address
      */
-    Address generateAddress(int type);
+    Address generateAddress(int network);
 
     /**
      *  Check meta valid
@@ -155,8 +155,10 @@ public interface Meta extends Mapper {
             return false;
         }
         // check ID.address
-        Address address = Address.generate(meta, identifier.getType());
-        return identifier.getAddress().equals(address);
+        Address old = identifier.getAddress();
+        //assert old != null : "ID error: " + identifier;
+        Address gen = Address.generate(meta, old.getType());
+        return old.equals(gen);
     }
 
     /**
@@ -187,17 +189,17 @@ public interface Meta extends Mapper {
     //
     //  Factory methods
     //
-    static Meta create(int type, VerifyKey key, String seed, byte[] fingerprint) {
-        Factory factory = getFactory(type);
+    static Meta create(int version, VerifyKey key, String seed, byte[] fingerprint) {
+        Factory factory = getFactory(version);
         if (factory == null) {
-            throw new NullPointerException("meta type not found: " + type);
+            throw new NullPointerException("meta type not found: " + version);
         }
         return factory.createMeta(key, seed, fingerprint);
     }
-    static Meta generate(int type, SignKey sKey, String seed) {
-        Factory factory = getFactory(type);
+    static Meta generate(int version, SignKey sKey, String seed) {
+        Factory factory = getFactory(version);
         if (factory == null) {
-            throw new NullPointerException("meta type not found: " + type);
+            throw new NullPointerException("meta type not found: " + version);
         }
         return factory.generateMeta(sKey, seed);
     }
@@ -209,8 +211,8 @@ public interface Meta extends Mapper {
         }
         Map<String, Object> info = Wrapper.getMap(meta);
         assert info != null : "meta error: " + meta;
-        int type = getType(info);
-        Factory factory = getFactory(type);
+        int version = getType(info);
+        Factory factory = getFactory(version);
         if (factory == null) {
             factory = getFactory(0);  // unknown
             assert factory != null : "cannot parse entity meta: " + meta;
@@ -218,17 +220,17 @@ public interface Meta extends Mapper {
         return factory.parseMeta(info);
     }
 
-    static Factory getFactory(int type) {
-        return AccountFactories.metaFactories.get(type);
+    static Factory getFactory(int version) {
+        return AccountFactories.metaFactories.get(version);
     }
-    static Factory getFactory(MetaType type) {
-        return AccountFactories.metaFactories.get(type.value);
+    static Factory getFactory(MetaType version) {
+        return AccountFactories.metaFactories.get(version.value);
     }
-    static void setFactory(int type, Factory factory) {
-        AccountFactories.metaFactories.put(type, factory);
+    static void setFactory(int version, Factory factory) {
+        AccountFactories.metaFactories.put(version, factory);
     }
-    static void setFactory(MetaType type, Factory factory) {
-        AccountFactories.metaFactories.put(type.value, factory);
+    static void setFactory(MetaType version, Factory factory) {
+        AccountFactories.metaFactories.put(version.value, factory);
     }
 
     /**

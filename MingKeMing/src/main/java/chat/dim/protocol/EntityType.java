@@ -46,7 +46,7 @@ package chat.dim.protocol;
  *
  *      MKMEntityType_Station indicates this entity is a DIM network station.
  *
- *      MKMEntityType_Network indicates this entity is a group for stations.
+ *      MKMEntityType_ISP indicates this entity is a group for stations.
  *
  *      MKMEntityType_Bot indicates this entity is a bot user.
  *
@@ -92,6 +92,12 @@ public enum EntityType {
     COMPANY         (0x07), // 0000 0111 (Super Group for ISP/ICP)
     //CA            (0x08), // 0000 1000 (Certification Authority)
 
+    /*
+     *  Customized: 64, 65
+     */
+    //APP_USER      (0x40), // 0100 0000 (Application Customized User)
+    //APP_GROUP     (0x41), // 0100 0001 (Application Customized Group)
+
     /**
      *  Broadcast: 128, 129
      */
@@ -109,15 +115,15 @@ public enum EntityType {
         return value == other;
     }
 
-    public static boolean isUser(int type) {
-        return (type & GROUP.value) == USER.value;
+    public static boolean isUser(int network) {
+        return (network & GROUP.value) == USER.value;
     }
 
-    public static boolean isGroup(int type) {
-        return (type & GROUP.value) == GROUP.value;
+    public static boolean isGroup(int network) {
+        return (network & GROUP.value) == GROUP.value;
     }
 
-    public static boolean isBroadcast(int type) {
-        return (type & ANY.value) == ANY.value;
+    public static boolean isBroadcast(int network) {
+        return (network & ANY.value) == ANY.value;
     }
 }
