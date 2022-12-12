@@ -42,5 +42,5 @@ public interface DecryptKey extends CryptographyKey {
      * @param pKey - encrypt key
      * @return true on signature matched
      */
-    boolean matches(EncryptKey pKey);
+    boolean match(EncryptKey pKey);
 }

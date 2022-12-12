@@ -57,6 +57,7 @@ public class ConstantString implements Stringer {
     @Override
     public boolean equals(Object other) {
         if (super.equals(other)) {
+            // same object
             return true;
         }
         String otherString = Wrapper.getString(other);

@@ -48,6 +48,7 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
 
     static boolean matches(EncryptKey pKey, DecryptKey sKey) {
         // check by encryption
+        byte[] promise = KeyFactories.promise;
         byte[] ciphertext = pKey.encrypt(promise);
         byte[] plaintext = sKey.decrypt(ciphertext);
         return Arrays.equals(plaintext, promise);
@@ -58,9 +59,7 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
     //
     static SymmetricKey generate(String algorithm) {
         Factory factory = getFactory(algorithm);
-        if (factory == null) {
-            throw new NullPointerException("key algorithm not support: " + algorithm);
-        }
+        assert factory != null : "key algorithm not support: " + algorithm;
         return factory.generateSymmetricKey();
     }
     static SymmetricKey parse(Object key) {

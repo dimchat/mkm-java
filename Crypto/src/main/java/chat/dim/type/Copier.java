@@ -27,6 +27,7 @@ package chat.dim.type;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -37,9 +38,9 @@ public interface Copier {
      *  ~~~~~~~~~~~~
      */
     @SuppressWarnings("unchecked")
-    static Object copy(Object object) {
+    static <K> Object copy(Object object) {
         if (object instanceof Map) {
-            return copyMap((Map<String, Object>) object);
+            return copyMap((Map<K, Object>) object);
         } else if (object instanceof List) {
             return copyList((List<Object>) object);
         //} else if (object instanceof Cloneable) {
@@ -48,9 +49,12 @@ public interface Copier {
         }
     }
 
-    static Map<String, Object> copyMap(Map<String, Object> dict) {
-        Map<String, Object> clone = new HashMap<>();
-        for (Map.Entry<String, Object> entry : dict.entrySet()) {
+    static <K> Map<K, Object> copyMap(Map<K, Object> dict) {
+        Map<K, Object> clone = new HashMap<>();
+        Iterator<Map.Entry<K, Object>> iterator = dict.entrySet().iterator();
+        Map.Entry<K, Object> entry;
+        while (iterator.hasNext()) {
+            entry = iterator.next();
             clone.put(entry.getKey(), entry.getValue());
         }
         return clone;
@@ -64,9 +68,9 @@ public interface Copier {
      *  ~~~~~~~~~
      */
     @SuppressWarnings("unchecked")
-    static Object deepCopy(Object object) {
+    static <K> Object deepCopy(Object object) {
         if (object instanceof Map) {
-            return deepCopyMap((Map<String, Object>) object);
+            return deepCopyMap((Map<K, Object>) object);
         } else if (object instanceof List) {
             return deepCopyList((List<Object>) object);
         //} else if (object instanceof Cloneable) {
@@ -75,9 +79,12 @@ public interface Copier {
         }
     }
 
-    static Map<String, Object> deepCopyMap(Map<String, Object> dict) {
-        Map<String, Object> clone = new HashMap<>();
-        for (Map.Entry<String, Object> entry : dict.entrySet()) {
+    static <K> Map<K, Object> deepCopyMap(Map<K, Object> dict) {
+        Map<K, Object> clone = new HashMap<>();
+        Iterator<Map.Entry<K, Object>> iterator = dict.entrySet().iterator();
+        Map.Entry<K, Object> entry;
+        while (iterator.hasNext()) {
+            entry = iterator.next();
             clone.put(entry.getKey(), deepCopy(entry.getValue()));
         }
         return clone;

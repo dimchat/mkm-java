@@ -30,6 +30,9 @@ import java.util.Map;
 
 final class KeyFactories {
 
+    // sample data for checking keys
+    static byte[] promise = "Moky loves May Lee forever!".getBytes();
+
     //
     //  Key factories with algorithm name as key
     //

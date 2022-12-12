@@ -59,7 +59,4 @@ public interface CryptographyKey extends Mapper {
      * @return key data
      */
     byte[] getData();
-
-    // sample data for checking keys
-    byte[] promise = "Moky loves May Lee forever!".getBytes();
 }

@@ -32,6 +32,7 @@ public interface AsymmetricKey extends CryptographyKey {
 
     static boolean matches(SignKey sKey, VerifyKey pKey) {
         // try to verify with signature
+        byte[] promise = KeyFactories.promise;
         byte[] signature = sKey.sign(promise);
         return pKey.verify(promise, signature);
     }
