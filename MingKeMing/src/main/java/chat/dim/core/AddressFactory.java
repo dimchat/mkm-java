@@ -31,11 +31,16 @@
 package chat.dim.core;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 import chat.dim.protocol.Address;
 import chat.dim.protocol.Meta;
 
+/**
+ *  Base Address Factory
+ *  ~~~~~~~~~~~~~~~~~~~~
+ */
 public abstract class AddressFactory implements Address.Factory {
 
     private final Map<String, Address> addresses = new HashMap<>();
@@ -45,6 +50,31 @@ public abstract class AddressFactory implements Address.Factory {
         // cache broadcast addresses
         addresses.put(Address.ANYWHERE.toString(), Address.ANYWHERE);
         addresses.put(Address.EVERYWHERE.toString(), Address.EVERYWHERE);
+    }
+
+    /**
+     * Call it when received 'UIApplicationDidReceiveMemoryWarningNotification',
+     * this will remove 50% of cached objects
+     *
+     * @return number of survivors
+     */
+    public int reduceMemory() {
+        int finger = 0;
+        finger = thanos(addresses, finger);
+        return finger >> 1;
+    }
+
+    public static <K, V> int thanos(Map<K, V> planet, int finger) {
+        Iterator<Map.Entry<K, V>> people = planet.entrySet().iterator();
+        while (people.hasNext()) {
+            people.next();
+            if ((++finger & 1) == 1) {
+                // kill it
+                people.remove();
+            }
+            // let it go
+        }
+        return finger;
     }
 
     @Override

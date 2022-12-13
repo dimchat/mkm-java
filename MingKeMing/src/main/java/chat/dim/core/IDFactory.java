@@ -38,9 +38,21 @@ import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
 
-public final class IDFactory implements ID.Factory {
+public class IDFactory implements ID.Factory {
 
     private final Map<String, ID> identifiers = new HashMap<>();
+
+    /**
+     * Call it when received 'UIApplicationDidReceiveMemoryWarningNotification',
+     * this will remove 50% of cached objects
+     *
+     * @return number of survivors
+     */
+    public int reduceMemory() {
+        int finger = 0;
+        finger = AddressFactory.thanos(identifiers, finger);
+        return finger >> 1;
+    }
 
     @Override
     public ID generateID(Meta meta, int network, String terminal) {
@@ -54,7 +66,7 @@ public final class IDFactory implements ID.Factory {
         String identifier = concat(name, address, terminal);
         ID id = identifiers.get(identifier);
         if (id == null) {
-            id = new Identifier(identifier, name, address, terminal);
+            id = newID(identifier, name, address, terminal);
             identifiers.put(identifier, id);
         }
         return id;
@@ -72,7 +84,12 @@ public final class IDFactory implements ID.Factory {
         return id;
     }
 
-    private static String concat(String name, Address address, String terminal) {
+    // override for customized ID
+    protected ID newID(String identifier, String name, Address address, String terminal) {
+        return new Identifier(identifier, name, address, terminal);
+    }
+
+    private String concat(String name, Address address, String terminal) {
         String string = address.toString();
         if (name != null && name.length() > 0) {
             string = name + "@" + string;
@@ -83,7 +100,7 @@ public final class IDFactory implements ID.Factory {
         return string;
     }
 
-    private static ID parse(final String string) {
+    private ID parse(final String string) {
         String name;
         Address address;
         String terminal;
@@ -117,6 +134,6 @@ public final class IDFactory implements ID.Factory {
         if (address == null) {
             return null;
         }
-        return new Identifier(string, name, address, terminal);
+        return newID(string, name, address, terminal);
     }
 }

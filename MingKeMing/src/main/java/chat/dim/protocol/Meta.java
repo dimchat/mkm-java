@@ -68,13 +68,6 @@ public interface Meta extends Mapper {
 
     static int getType(Map<String, Object> meta) {
         Object version = meta.get("type");
-        if (version == null) {
-            // compatible with v1.0
-            version = meta.get("version");
-            if (version == null) {
-                throw new NullPointerException("meta type not found: " + meta);
-            }
-        }
         return ((Number) version).intValue();
     }
 
@@ -180,8 +173,8 @@ public interface Meta extends Mapper {
             byte[] fingerprint = meta.getFingerprint();
             return pk.verify(UTF8.encode(seed), fingerprint);
         } else {
-            // ID with BTC/ETH address has no username
-            // so we can just compare the key.data to check matching
+            // NOTICE: ID with BTC/ETH address has no username, so
+            //         just compare the key.data to check matching
             return false;
         }
     }
@@ -191,16 +184,12 @@ public interface Meta extends Mapper {
     //
     static Meta create(int version, VerifyKey key, String seed, byte[] fingerprint) {
         Factory factory = getFactory(version);
-        if (factory == null) {
-            throw new NullPointerException("meta type not found: " + version);
-        }
+        assert factory != null : "meta type not found: " + version;
         return factory.createMeta(key, seed, fingerprint);
     }
     static Meta generate(int version, SignKey sKey, String seed) {
         Factory factory = getFactory(version);
-        if (factory == null) {
-            throw new NullPointerException("meta type not found: " + version);
-        }
+        assert factory != null : "meta type not found: " + version;
         return factory.generateMeta(sKey, seed);
     }
     static Meta parse(Object meta) {

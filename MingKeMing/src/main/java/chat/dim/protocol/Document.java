@@ -100,16 +100,12 @@ public interface Document extends TAI, Mapper {
     //
     static Document create(String type, ID identifier, String data, String signature) {
         Factory factory = getFactory(type);
-        if (factory == null) {
-            throw new NullPointerException("document type not found: " + type);
-        }
+        assert factory != null : "document type not found: " + type;
         return factory.createDocument(identifier, data, signature);
     }
     static Document create(String type, ID identifier) {
         Factory factory = getFactory(type);
-        if (factory == null) {
-            throw new NullPointerException("document type not found: " + type);
-        }
+        assert factory != null : "document type not found: " + type;
         return factory.createDocument(identifier);
     }
     static Document parse(Object doc) {
