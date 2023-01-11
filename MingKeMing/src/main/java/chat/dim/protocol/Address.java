@@ -31,8 +31,8 @@
 package chat.dim.protocol;
 
 import chat.dim.mkm.BroadcastAddress;
+import chat.dim.mkm.FactoryManager;
 import chat.dim.type.Stringer;
-import chat.dim.type.Wrapper;
 
 /**
  *  Address for MKM ID
@@ -63,35 +63,20 @@ public interface Address extends Stringer {
     //  Factory methods
     //
     static Address parse(Object address) {
-        if (address == null) {
-            return null;
-        } else if (address instanceof Address) {
-            return (Address) address;
-        }
-        String str = Wrapper.getString(address);
-        assert str != null : "address error: " + address;
-        Factory factory = getFactory();
-        assert factory != null : "address factory not ready";
-        return factory.parseAddress(str);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.parseAddress(address);
     }
-
     static Address create(String address) {
-        Factory factory = getFactory();
-        assert factory != null : "address factory not ready";
-        return factory.createAddress(address);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.createAddress(address);
     }
-
     static Address generate(Meta meta, int network) {
-        Factory factory = getFactory();
-        assert factory != null : "address factory not ready";
-        return factory.generateAddress(meta, network);
-    }
-
-    static Factory getFactory() {
-        return AccountFactories.addressFactory;
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.generateAddress(meta, network);
     }
     static void setFactory(Factory factory) {
-        AccountFactories.addressFactory = factory;
+        FactoryManager man = FactoryManager.getInstance();
+        man.generalFactory.addressFactory = factory;
     }
 
     /**

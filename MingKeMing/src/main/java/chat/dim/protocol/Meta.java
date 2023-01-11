@@ -34,9 +34,8 @@ import java.util.Map;
 
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
-import chat.dim.format.UTF8;
+import chat.dim.mkm.FactoryManager;
 import chat.dim.type.Mapper;
-import chat.dim.type.Wrapper;
 
 /**
  *  User/Group Meta data
@@ -65,11 +64,6 @@ public interface Meta extends Mapper {
      *      0x05 - username@eth_address
      */
     int getType();
-
-    static int getType(Map<String, Object> meta) {
-        Object version = meta.get("type");
-        return ((Number) version).intValue();
-    }
 
     /**
      *  Public key (used for signature)
@@ -108,24 +102,8 @@ public interface Meta extends Mapper {
      * @return true on valid
      */
     static boolean check(Meta meta) {
-        VerifyKey key = meta.getKey();
-        if (key == null) {
-            // meta.key should not be empty
-            return false;
-        }
-        if (!MetaType.hasSeed(meta.getType())) {
-            // this meta has no seed, so no signature too
-            return true;
-        }
-        // check seed with signature
-        String seed = meta.getSeed();
-        byte[] fingerprint = meta.getFingerprint();
-        if (seed == null || fingerprint == null) {
-            // seed and fingerprint should not be empty
-            return false;
-        }
-        // verify fingerprint
-        return key.verify(UTF8.encode(seed), fingerprint);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.checkMeta(meta);
     }
 
     /**
@@ -137,21 +115,8 @@ public interface Meta extends Mapper {
      * @return true on matched
      */
     static boolean matches(ID identifier, Meta meta) {
-        // check ID.name
-        String seed = meta.getSeed();
-        String name = identifier.getName();
-        if (name == null || name.length() == 0) {
-            if (seed != null && seed.length() > 0) {
-                return false;
-            }
-        } else if (!name.equals(seed)) {
-            return false;
-        }
-        // check ID.address
-        Address old = identifier.getAddress();
-        //assert old != null : "ID error: " + identifier;
-        Address gen = Address.generate(meta, old.getType());
-        return old.equals(gen);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.matches(identifier, meta);
     }
 
     /**
@@ -162,64 +127,32 @@ public interface Meta extends Mapper {
      * @return true on matched
      */
     static boolean matches(VerifyKey pk, Meta meta) {
-        // check whether the public key equals to meta.key
-        if (pk.equals(meta.getKey())) {
-            return true;
-        }
-        // check with seed & fingerprint
-        if (MetaType.hasSeed(meta.getType())) {
-            // check whether keys equal by verifying signature
-            String seed = meta.getSeed();
-            byte[] fingerprint = meta.getFingerprint();
-            return pk.verify(UTF8.encode(seed), fingerprint);
-        } else {
-            // NOTICE: ID with BTC/ETH address has no username, so
-            //         just compare the key.data to check matching
-            return false;
-        }
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.matches(pk, meta);
     }
 
     //
     //  Factory methods
     //
     static Meta create(int version, VerifyKey key, String seed, byte[] fingerprint) {
-        Factory factory = getFactory(version);
-        assert factory != null : "meta type not found: " + version;
-        return factory.createMeta(key, seed, fingerprint);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.createMeta(version, key, seed, fingerprint);
     }
     static Meta generate(int version, SignKey sKey, String seed) {
-        Factory factory = getFactory(version);
-        assert factory != null : "meta type not found: " + version;
-        return factory.generateMeta(sKey, seed);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.generateMeta(version, sKey, seed);
     }
     static Meta parse(Object meta) {
-        if (meta == null) {
-            return null;
-        } else if (meta instanceof Meta) {
-            return (Meta) meta;
-        }
-        Map<String, Object> info = Wrapper.getMap(meta);
-        assert info != null : "meta error: " + meta;
-        int version = getType(info);
-        Factory factory = getFactory(version);
-        if (factory == null) {
-            factory = getFactory(0);  // unknown
-            assert factory != null : "cannot parse entity meta: " + meta;
-        }
-        return factory.parseMeta(info);
-    }
-
-    static Factory getFactory(int version) {
-        return AccountFactories.metaFactories.get(version);
-    }
-    static Factory getFactory(MetaType version) {
-        return AccountFactories.metaFactories.get(version.value);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.parseMeta(meta);
     }
     static void setFactory(int version, Factory factory) {
-        AccountFactories.metaFactories.put(version, factory);
+        FactoryManager man = FactoryManager.getInstance();
+        man.generalFactory.metaFactories.put(version, factory);
     }
     static void setFactory(MetaType version, Factory factory) {
-        AccountFactories.metaFactories.put(version.value, factory);
+        FactoryManager man = FactoryManager.getInstance();
+        man.generalFactory.metaFactories.put(version.value, factory);
     }
 
     /**

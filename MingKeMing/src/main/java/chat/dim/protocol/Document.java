@@ -33,8 +33,8 @@ package chat.dim.protocol;
 import java.util.Date;
 import java.util.Map;
 
+import chat.dim.mkm.FactoryManager;
 import chat.dim.type.Mapper;
-import chat.dim.type.Wrapper;
 
 /**
  *  User/Group Profile
@@ -63,20 +63,12 @@ public interface Document extends TAI, Mapper {
      */
     String getType();
 
-    static String getType(Map<String, Object> doc) {
-        return (String) doc.get("type");
-    }
-
     /**
      *  Get entity ID
      *
      * @return entity ID
      */
     ID getIdentifier();
-
-    static ID getIdentifier(Map<String, Object> doc) {
-        return ID.parse(doc.get("ID"));
-    }
 
     //---- properties getter/setter
 
@@ -99,37 +91,20 @@ public interface Document extends TAI, Mapper {
     //  Factory methods
     //
     static Document create(String type, ID identifier, String data, String signature) {
-        Factory factory = getFactory(type);
-        assert factory != null : "document type not found: " + type;
-        return factory.createDocument(identifier, data, signature);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.createDocument(type, identifier, data, signature);
     }
     static Document create(String type, ID identifier) {
-        Factory factory = getFactory(type);
-        assert factory != null : "document type not found: " + type;
-        return factory.createDocument(identifier);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.createDocument(type, identifier);
     }
     static Document parse(Object doc) {
-        if (doc == null) {
-            return null;
-        } else if (doc instanceof Document) {
-            return (Document) doc;
-        }
-        Map<String, Object> info = Wrapper.getMap(doc);
-        assert info != null : "document error: " + doc;
-        String type = getType(info);
-        Factory factory = getFactory(type);
-        if (factory == null) {
-            factory = getFactory("*");  // unknown
-            assert factory != null : "cannot parse entity document: " + doc;
-        }
-        return factory.parseDocument(info);
-    }
-
-    static Factory getFactory(String type) {
-        return AccountFactories.documentFactories.get(type);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.parseDocument(doc);
     }
     static void setFactory(String type, Factory factory) {
-        AccountFactories.documentFactories.put(type, factory);
+        FactoryManager man = FactoryManager.getInstance();
+        man.generalFactory.documentFactories.put(type, factory);
     }
 
     /**

@@ -30,11 +30,11 @@
  */
 package chat.dim.protocol;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import chat.dim.mkm.FactoryManager;
+import chat.dim.mkm.Identifier;
 import chat.dim.type.Stringer;
-import chat.dim.type.Wrapper;
 
 /**
  *  ID for entity (User/Group)
@@ -67,67 +67,41 @@ public interface ID extends Stringer {
     /**
      *  ID for Broadcast
      */
-    ID ANYONE = create("anyone", Address.ANYWHERE, null);
-    ID EVERYONE = create("everyone", Address.EVERYWHERE, null);
+    ID ANYONE = new Identifier("anyone@anywhere", "anyone", Address.ANYWHERE, null);
+    ID EVERYONE = new Identifier("everyone@everywhere", "everyone", Address.EVERYWHERE, null);
 
     /**
      *  DIM Founder
      */
-    ID FOUNDER = create("moky", Address.ANYWHERE, null);
+    ID FOUNDER = new Identifier("moky@anywhere", "moky", Address.ANYWHERE, null);
 
-    static List<ID> convert(List<String> members) {
-        List<ID> array = new ArrayList<>();
-        ID id;
-        for (String item : members) {
-            id = parse(item);
-            if (id == null) {
-                continue;
-            }
-            array.add(id);
-        }
-        return array;
+    static List<ID> convert(List<?> members) {
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.convertIdentifiers(members);
     }
     static List<String> revert(List<ID> members) {
-        List<String> array = new ArrayList<>();
-        for (ID item : members) {
-            array.add(item.toString());
-        }
-        return array;
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.revertIdentifiers(members);
     }
 
     //
     //  Factory methods
     //
     static ID parse(Object identifier) {
-        if (identifier == null) {
-            return null;
-        } else if (identifier instanceof ID) {
-            return (ID) identifier;
-        }
-        String str = Wrapper.getString(identifier);
-        assert str != null : "ID error: " + identifier;
-        Factory factory = getFactory();
-        assert factory != null : "ID factory not ready";
-        return factory.parseID(str);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.parseID(identifier);
     }
-
     static ID create(String name, Address address, String terminal) {
-        Factory factory = getFactory();
-        assert factory != null : "ID factory not ready";
-        return factory.createID(name, address, terminal);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.createID(name, address, terminal);
     }
-
     static ID generate(Meta meta, int network, String terminal) {
-        Factory factory = getFactory();
-        assert factory != null : "ID factory not ready";
-        return factory.generateID(meta, network, terminal);
-    }
-
-    static Factory getFactory() {
-        return AccountFactories.idFactory;
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.generateID(meta, network, terminal);
     }
     static void setFactory(Factory factory) {
-        AccountFactories.idFactory = factory;
+        FactoryManager man = FactoryManager.getInstance();
+        man.generalFactory.idFactory = factory;
     }
 
     /**

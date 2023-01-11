@@ -44,7 +44,7 @@ import chat.dim.type.ConstantString;
  *          address  - a string to identify an entity
  *          terminal - entity login resource(device), OPTIONAL
  */
-public class Identifier extends ConstantString implements ID {
+public final class Identifier extends ConstantString implements ID {
 
     private final String name;
     private final Address address;
@@ -79,25 +79,25 @@ public class Identifier extends ConstantString implements ID {
      */
     @Override
     public int getType() {
-        assert address != null : "ID.address should not be empty: " + toString();
+        assert address != null : "ID.address should not be empty: " + this;
         return address.getType();
     }
 
     @Override
     public boolean isBroadcast() {
-        assert address != null : "ID.address should not be empty: " + toString();
+        assert address != null : "ID.address should not be empty: " + this;
         return address.isBroadcast();
     }
 
     @Override
     public boolean isUser() {
-        assert address != null : "ID.address should not be empty: " + toString();
+        assert address != null : "ID.address should not be empty: " + this;
         return address.isUser();
     }
 
     @Override
     public boolean isGroup() {
-        assert address != null : "ID.address should not be empty: " + toString();
+        assert address != null : "ID.address should not be empty: " + this;
         return address.isGroup();
     }
 }
