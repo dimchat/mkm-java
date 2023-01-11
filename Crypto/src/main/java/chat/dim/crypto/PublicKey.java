@@ -27,8 +27,6 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
-import chat.dim.type.Wrapper;
-
 /**
  *  Asymmetric Cryptography Public Key
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -45,28 +43,12 @@ public interface PublicKey extends VerifyKey {
     //  Factory method
     //
     static PublicKey parse(Object key) {
-        if (key == null) {
-            return null;
-        } else if (key instanceof PublicKey) {
-            return (PublicKey) key;
-        }
-        Map<String, Object> info = Wrapper.getMap(key);
-        assert info != null : "key error: " + key;
-        String algorithm = CryptographyKey.getAlgorithm(info);
-        assert algorithm != null : "failed to get algorithm name from key: " + key;
-        Factory factory = getFactory(algorithm);
-        if (factory == null) {
-            factory = getFactory("*");  // unknown
-            assert factory != null : "cannot parse key: " + key;
-        }
-        return factory.parsePublicKey(info);
-    }
-
-    static Factory getFactory(String algorithm) {
-        return KeyFactories.publicKeyFactories.get(algorithm);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.parsePublicKey(key);
     }
     static void setFactory(String algorithm, Factory factory) {
-        KeyFactories.publicKeyFactories.put(algorithm, factory);
+        FactoryManager man = FactoryManager.getInstance();
+        man.generalFactory.publicKeyFactories.put(algorithm, factory);
     }
 
     /**

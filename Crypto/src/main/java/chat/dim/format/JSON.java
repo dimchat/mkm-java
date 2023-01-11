@@ -28,13 +28,13 @@ package chat.dim.format;
 public final class JSON {
 
     public static String encode(Object container) {
-        return parser.encode(container);
+        return coder.encode(container);
     }
 
     public static Object decode(String json) {
-        return parser.decode(json);
+        return coder.decode(json);
     }
 
-    // default parser
-    public static ObjectCoder<Object> parser = null;
+    // default coder
+    public static ObjectCoder<Object> coder = null;
 }

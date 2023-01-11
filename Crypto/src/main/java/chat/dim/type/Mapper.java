@@ -29,6 +29,15 @@ import java.util.Map;
 
 public interface Mapper extends Map<String, Object> {
 
+    String getString(String key);
+    boolean getBoolean(String key);
+    int getInt(String key);
+    long getLong(String key);
+    byte getByte(String key);
+    short getShort(String key);
+    float getFloat(String key);
+    double getDouble(String key);
+
     /**
      *  Get inner map
      *

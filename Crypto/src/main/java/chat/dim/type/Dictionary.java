@@ -30,7 +30,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class Dictionary implements Mapper {
+public class Dictionary implements Mapper {
 
     private final Map<String, Object> dictionary;
 
@@ -46,7 +46,56 @@ public abstract class Dictionary implements Mapper {
     }
 
     protected Dictionary(Mapper map) {
-        this(map.toMap());
+        super();
+        assert map != null : "cannot initialize with an empty map!";
+        dictionary = map.toMap();
+    }
+
+    @Override
+    public String getString(String key) {
+        return (String) dictionary.get(key);
+    }
+
+    @Override
+    public boolean getBoolean(String key) {
+        Object value = dictionary.get(key);
+        return value != null && (Boolean) value;
+    }
+
+    @Override
+    public int getInt(String key) {
+        Object value = dictionary.get(key);
+        return value == null ? 0 : ((Number) value).intValue();
+    }
+
+    @Override
+    public long getLong(String key) {
+        Object value = dictionary.get(key);
+        return value == null ? 0 : ((Number) value).longValue();
+    }
+
+    @Override
+    public byte getByte(String key) {
+        Object value = dictionary.get(key);
+        return value == null ? 0 : ((Number) value).byteValue();
+    }
+
+    @Override
+    public short getShort(String key) {
+        Object value = dictionary.get(key);
+        return value == null ? 0 : ((Number) value).shortValue();
+    }
+
+    @Override
+    public float getFloat(String key) {
+        Object value = dictionary.get(key);
+        return value == null ? 0.0f : ((Number) value).floatValue();
+    }
+
+    @Override
+    public double getDouble(String key) {
+        Object value = dictionary.get(key);
+        return value == null ? 0.0d : ((Number) value).doubleValue();
     }
 
     @Override
@@ -65,19 +114,17 @@ public abstract class Dictionary implements Mapper {
 
     @Override
     public boolean equals(Object other) {
-        if (super.equals(other)) {
-            // same object
-            return true;
+        if (other == null) {
+            return dictionary.isEmpty();
         } else if (other instanceof Mapper) {
-            Map<String, Object> dict = ((Mapper) other).toMap();
-            return dictionary.equals(dict);
-        } else if (other instanceof Map) {
-            // check with inner dictionary
-            return dictionary.equals(other);
-        } else {
-            // null or unknown object
-            return false;
+            if (this == other) {
+                // same object
+                return true;
+            }
+            // compare inner map
+            other = ((Mapper) other).toMap();
         }
+        return dictionary.equals(other);
     }
 
     @Override

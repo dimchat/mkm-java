@@ -34,14 +34,10 @@ public class ConstantString implements Stringer {
         assert str != null : "cannot initialize with an empty string";
         string = str;
     }
-
-    protected ConstantString(Stringer string) {
-        this(string.toString());
-    }
-
-    @Override
-    public int length() {
-        return string.length();
+    protected ConstantString(Stringer str) {
+        super();
+        assert str != null : "cannot initialize with an empty string";
+        string = str.toString();
     }
 
     @Override
@@ -50,17 +46,79 @@ public class ConstantString implements Stringer {
     }
 
     @Override
+    public boolean equals(Object other) {
+        if (other == null) {
+            return string.isEmpty();
+        } else if (other instanceof Stringer) {
+            if (this == other) {
+                // same object
+                return true;
+            }
+            // compare inner string
+            other = other.toString();
+        }
+        return string.equals(other);
+    }
+
+    @Override
     public int hashCode() {
         return string.hashCode();
     }
 
     @Override
-    public boolean equals(Object other) {
-        if (super.equals(other)) {
-            // same object
-            return true;
+    public int length() {
+        return string.length();
+    }
+
+    @Override
+    public boolean isEmpty() {
+        return string.isEmpty();
+    }
+
+    @Override
+    public char charAt(int index) {
+        return string.charAt(index);
+    }
+
+    @Override
+    public CharSequence subSequence(int start, int end) {
+        return string.subSequence(start, end);
+    }
+
+    @Override
+    public int compareTo(String other) {
+        if (other == null) {
+            return string.compareTo("");
         }
-        String otherString = Wrapper.getString(other);
-        return string.equals(otherString);
+        return string.compareTo(other);
+    }
+
+    @Override
+    public int compareToIgnoreCase(String other) {
+        if (other == null) {
+            return string.compareToIgnoreCase("");
+        }
+        return string.compareToIgnoreCase(other);
+    }
+
+    @Override
+    public int compareToIgnoreCase(Stringer other) {
+        if (other == null) {
+            return string.compareToIgnoreCase("");
+        }
+        return string.compareToIgnoreCase(other.toString());
+    }
+
+    @Override
+    public boolean equalsIgnoreCase(String other) {
+        return string.equalsIgnoreCase(other);
+    }
+
+    @Override
+    public boolean equalsIgnoreCase(Stringer other) {
+        if (other == null) {
+            return string.isEmpty();
+        }
+        return string.equalsIgnoreCase(other.toString());
     }
 }

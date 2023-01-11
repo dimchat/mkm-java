@@ -25,8 +25,6 @@
  */
 package chat.dim.crypto;
 
-import java.util.Map;
-
 import chat.dim.type.Mapper;
 
 /**
@@ -48,10 +46,6 @@ public interface CryptographyKey extends Mapper {
      * @return algorithm name
      */
     String getAlgorithm();
-
-    static String getAlgorithm(Map<String, Object> key) {
-        return (String) key.get("algorithm");
-    }
 
     /**
      *  Get key data

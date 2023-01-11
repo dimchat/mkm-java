@@ -31,15 +31,15 @@ import java.util.List;
 public final class JSONList {
 
     public static String encode(List array) {
-        return parser.encode(array);
+        return coder.encode(array);
     }
 
     public static List decode(String json) {
-        return parser.decode(json);
+        return coder.decode(json);
     }
 
-    // default parser
-    public static ObjectCoder<List> parser = new ObjectCoder<List>() {
+    // default coder
+    public static ObjectCoder<List> coder = new ObjectCoder<List>() {
 
         @Override
         public String encode(List array) {

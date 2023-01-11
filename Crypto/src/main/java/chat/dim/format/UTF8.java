@@ -25,31 +25,16 @@
  */
 package chat.dim.format;
 
-import java.nio.charset.Charset;
-
 public final class UTF8 {
 
     public static byte[] encode(String string) {
-        return parser.encode(string);
+        return coder.encode(string);
     }
 
     public static String decode(byte[] utf8) {
-        return parser.decode(utf8);
+        return coder.decode(utf8);
     }
 
-    // default parser
-    public static StringCoder parser = new StringCoder() {
-
-        @SuppressWarnings("CharsetObjectCanBeUsed")
-        @Override
-        public byte[] encode(String string) {
-            return string.getBytes(Charset.forName("UTF-8"));
-        }
-
-        @SuppressWarnings("CharsetObjectCanBeUsed")
-        @Override
-        public String decode(byte[] utf8) {
-            return new String(utf8, Charset.forName("UTF-8"));
-        }
-    };
+    // default coder
+    public static StringCoder coder = null;
 }

@@ -25,29 +25,11 @@
  */
 package chat.dim.digest;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
-
 public final class SHA256 {
 
     public static byte[] digest(byte[] data) {
         return digester.digest(data);
     }
 
-    public static DataDigester digester = new DataDigester() {
-
-        @Override
-        public byte[] digest(byte[] data) {
-            MessageDigest md;
-            try {
-                md = MessageDigest.getInstance("SHA-256");
-            } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
-                return null;
-            }
-            md.reset();
-            md.update(data);
-            return md.digest();
-        }
-    };
+    public static DataDigester digester = null;
 }

@@ -36,16 +36,5 @@ public final class Base64 {
     }
 
     // default coder
-    public static DataCoder coder = new DataCoder() {
-
-        @Override
-        public String encode(byte[] data) {
-            return java.util.Base64.getEncoder().encodeToString(data);
-        }
-
-        @Override
-        public byte[] decode(String string) {
-            return java.util.Base64.getDecoder().decode(string);
-        }
-    };
+    public static DataCoder coder = null;
 }

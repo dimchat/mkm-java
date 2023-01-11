@@ -25,10 +25,7 @@
  */
 package chat.dim.crypto;
 
-import java.util.Arrays;
 import java.util.Map;
-
-import chat.dim.type.Wrapper;
 
 /**
  *  Symmetric Cryptography Key
@@ -46,45 +43,20 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
     String AES = "AES"; //-- "AES/CBC/PKCS7Padding"
     String DES = "DES";
 
-    static boolean matches(EncryptKey pKey, DecryptKey sKey) {
-        // check by encryption
-        byte[] promise = KeyFactories.promise;
-        byte[] ciphertext = pKey.encrypt(promise);
-        byte[] plaintext = sKey.decrypt(ciphertext);
-        return Arrays.equals(plaintext, promise);
-    }
-
     //
     //  Factory methods
     //
     static SymmetricKey generate(String algorithm) {
-        Factory factory = getFactory(algorithm);
-        assert factory != null : "key algorithm not support: " + algorithm;
-        return factory.generateSymmetricKey();
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.generateSymmetricKey(algorithm);
     }
     static SymmetricKey parse(Object key) {
-        if (key == null) {
-            return null;
-        } else if (key instanceof SymmetricKey) {
-            return (SymmetricKey) key;
-        }
-        Map<String, Object> info = Wrapper.getMap(key);
-        assert info != null : "key error: " + key;
-        String algorithm = CryptographyKey.getAlgorithm(info);
-        assert algorithm != null : "failed to get algorithm name from key: " + key;
-        Factory factory = getFactory(algorithm);
-        if (factory == null) {
-            factory = getFactory("*");  // unknown
-            assert factory != null : "cannot parse key: " + key;
-        }
-        return factory.parseSymmetricKey(info);
-    }
-
-    static Factory getFactory(String algorithm) {
-        return KeyFactories.symmetricKeyFactories.get(algorithm);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.parseSymmetricKey(key);
     }
     static void setFactory(String algorithm, Factory factory) {
-        KeyFactories.symmetricKeyFactories.put(algorithm, factory);
+        FactoryManager man = FactoryManager.getInstance();
+        man.generalFactory.symmetricKeyFactories.put(algorithm, factory);
     }
 
     /**

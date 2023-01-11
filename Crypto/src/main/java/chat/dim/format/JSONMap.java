@@ -31,15 +31,15 @@ import java.util.Map;
 public final class JSONMap {
 
     public static String encode(Map dictionary) {
-        return parser.encode(dictionary);
+        return coder.encode(dictionary);
     }
 
     public static Map decode(String json) {
-        return parser.decode(json);
+        return coder.decode(json);
     }
 
-    // default parser
-    public static ObjectCoder<Map> parser = new ObjectCoder<Map>() {
+    // default coder
+    public static ObjectCoder<Map> coder = new ObjectCoder<Map>() {
 
         @Override
         public String encode(Map dictionary) {

@@ -27,8 +27,6 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
-import chat.dim.type.Wrapper;
-
 /**
  *  Asymmetric Cryptography Private Key
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -53,35 +51,16 @@ public interface PrivateKey extends SignKey {
     //  Factory methods
     //
     static PrivateKey generate(String algorithm) {
-        Factory factory = getFactory(algorithm);
-        if (factory == null) {
-            throw new NullPointerException("key algorithm not support: " + algorithm);
-        }
-        return factory.generatePrivateKey();
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.generatePrivateKey(algorithm);
     }
     static PrivateKey parse(Object key) {
-        if (key == null) {
-            return null;
-        } else if (key instanceof PrivateKey) {
-            return (PrivateKey) key;
-        }
-        Map<String, Object> info = Wrapper.getMap(key);
-        assert info != null : "key error: " + key;
-        String algorithm = CryptographyKey.getAlgorithm(info);
-        assert algorithm != null : "failed to get algorithm name from key: " + key;
-        Factory factory = getFactory(algorithm);
-        if (factory == null) {
-            factory = getFactory("*");  // unknown
-            assert factory != null : "cannot parse key: " + key;
-        }
-        return factory.parsePrivateKey(info);
-    }
-
-    static Factory getFactory(String algorithm) {
-        return KeyFactories.privateKeyFactories.get(algorithm);
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.parsePrivateKey(key);
     }
     static void setFactory(String algorithm, Factory factory) {
-        KeyFactories.privateKeyFactories.put(algorithm, factory);
+        FactoryManager man = FactoryManager.getInstance();
+        man.generalFactory.privateKeyFactories.put(algorithm, factory);
     }
 
     /**

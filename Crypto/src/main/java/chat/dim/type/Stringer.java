@@ -25,7 +25,7 @@
  */
 package chat.dim.type;
 
-public interface Stringer {
+public interface Stringer extends Comparable<String>, CharSequence {
 
     /*/
     int hashCode();
@@ -36,4 +36,12 @@ public interface Stringer {
     /*/
 
     int length();
+
+    boolean isEmpty();
+
+    int compareToIgnoreCase(String str);
+    int compareToIgnoreCase(Stringer str);
+
+    boolean equalsIgnoreCase(String other);
+    boolean equalsIgnoreCase(Stringer other);
 }
