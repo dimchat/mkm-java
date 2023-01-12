@@ -26,6 +26,7 @@
 package chat.dim.type;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -96,6 +97,43 @@ public class Dictionary implements Mapper {
     public double getDouble(String key) {
         Object value = dictionary.get(key);
         return value == null ? 0.0d : ((Number) value).doubleValue();
+    }
+
+    @Override
+    public Date getTime(String key) {
+        double seconds = getDouble(key);
+        if (seconds <= 0) {
+            return null;
+        }
+        long millis = (long) (seconds * 1000);
+        return new Date(millis);
+    }
+
+    @Override
+    public void setTime(String key, Date time) {
+        if (time == null) {
+            remove(key);
+        } else {
+            put(key, time.getTime() / 1000.0d);
+        }
+    }
+
+    @Override
+    public void setString(String key, Stringer stringer) {
+        if (stringer == null) {
+            remove(key);
+        } else {
+            put(key, stringer.toString());
+        }
+    }
+
+    @Override
+    public void setMap(String key, Mapper mapper) {
+        if (mapper == null) {
+            remove(key);
+        } else {
+            put(key, mapper.toMap());
+        }
     }
 
     @Override

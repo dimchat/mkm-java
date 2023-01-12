@@ -25,6 +25,7 @@
  */
 package chat.dim.type;
 
+import java.util.Date;
 import java.util.Map;
 
 public interface Mapper extends Map<String, Object> {
@@ -37,6 +38,12 @@ public interface Mapper extends Map<String, Object> {
     short getShort(String key);
     float getFloat(String key);
     double getDouble(String key);
+
+    Date getTime(String key);
+    void setTime(String key, Date time);
+
+    void setString(String key, Stringer stringer);
+    void setMap(String key, Mapper mapper);
 
     /**
      *  Get inner map

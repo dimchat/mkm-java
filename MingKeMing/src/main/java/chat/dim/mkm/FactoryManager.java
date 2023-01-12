@@ -149,7 +149,7 @@ public enum FactoryManager {
 
         int getMetaType(Map<String, Object> meta) {
             Object version = meta.get("type");
-            return ((Number) version).intValue();
+            return version == null ? 0 : ((Number) version).intValue();
         }
 
         public Meta createMeta(int version, VerifyKey key, String seed, byte[] fingerprint) {
