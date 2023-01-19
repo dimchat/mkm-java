@@ -58,9 +58,14 @@ public interface PrivateKey extends SignKey {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.parsePrivateKey(key);
     }
+
     static void setFactory(String algorithm, Factory factory) {
         FactoryManager man = FactoryManager.getInstance();
-        man.generalFactory.privateKeyFactories.put(algorithm, factory);
+        man.generalFactory.setPrivateKeyFactory(algorithm, factory);
+    }
+    static Factory getFactory(String algorithm) {
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.getPrivateKeyFactory(algorithm);
     }
 
     /**

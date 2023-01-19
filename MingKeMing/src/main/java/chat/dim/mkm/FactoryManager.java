@@ -57,17 +57,25 @@ public enum FactoryManager {
 
     public static class GeneralFactory {
 
-        public Address.Factory addressFactory = null;
+        private Address.Factory addressFactory = null;
 
-        public ID.Factory idFactory = null;
+        private ID.Factory idFactory = null;
 
-        public final Map<Integer, Meta.Factory> metaFactories = new HashMap<>();
+        private final Map<Integer, Meta.Factory> metaFactories = new HashMap<>();
 
-        public final Map<String, Document.Factory> documentFactories = new HashMap<>();
+        private final Map<String, Document.Factory> documentFactories = new HashMap<>();
 
         //
         //  Address
         //
+
+        public void setAddressFactory(Address.Factory factory) {
+            addressFactory = factory;
+        }
+
+        public Address.Factory getAddressFactory() {
+            return addressFactory;
+        }
 
         public Address parseAddress(Object address) {
             if (address == null) {
@@ -77,19 +85,19 @@ public enum FactoryManager {
             }
             String str = Wrapper.getString(address);
             assert str != null : "address error: " + address;
-            Address.Factory factory = addressFactory;
+            Address.Factory factory = getAddressFactory();
             assert factory != null : "address factory not ready";
             return factory.parseAddress(str);
         }
 
         public Address createAddress(String address) {
-            Address.Factory factory = addressFactory;
+            Address.Factory factory = getAddressFactory();
             assert factory != null : "address factory not ready";
             return factory.createAddress(address);
         }
 
         public Address generateAddress(Meta meta, int network) {
-            Address.Factory factory = addressFactory;
+            Address.Factory factory = getAddressFactory();
             assert factory != null : "address factory not ready";
             return factory.generateAddress(meta, network);
         }
@@ -97,6 +105,14 @@ public enum FactoryManager {
         //
         //  ID
         //
+
+        public void setIDFactory(ID.Factory factory) {
+            idFactory = factory;
+        }
+
+        public ID.Factory getIDFactory() {
+            return idFactory;
+        }
 
         public ID parseID(Object identifier) {
             if (identifier == null) {
@@ -106,19 +122,19 @@ public enum FactoryManager {
             }
             String str = Wrapper.getString(identifier);
             assert str != null : "ID error: " + identifier;
-            ID.Factory factory = idFactory;
+            ID.Factory factory = getIDFactory();
             assert factory != null : "ID factory not ready";
             return factory.parseID(str);
         }
 
         public ID createID(String name, Address address, String terminal) {
-            ID.Factory factory = idFactory;
+            ID.Factory factory = getIDFactory();
             assert factory != null : "ID factory not ready";
             return factory.createID(name, address, terminal);
         }
 
         public ID generateID(Meta meta, int network, String terminal) {
-            ID.Factory factory = idFactory;
+            ID.Factory factory = getIDFactory();
             assert factory != null : "ID factory not ready";
             return factory.generateID(meta, network, terminal);
         }
@@ -147,19 +163,27 @@ public enum FactoryManager {
         //  Meta
         //
 
-        int getMetaType(Map<String, Object> meta) {
+        public void setMetaFactory(int version, Meta.Factory factory) {
+            metaFactories.put(version, factory);
+        }
+
+        public Meta.Factory getMetaFactory(int version) {
+            return metaFactories.get(version);
+        }
+
+        public int getMetaType(Map<String, Object> meta) {
             Object version = meta.get("type");
             return version == null ? 0 : ((Number) version).intValue();
         }
 
         public Meta createMeta(int version, VerifyKey key, String seed, byte[] fingerprint) {
-            Meta.Factory factory = metaFactories.get(version);
+            Meta.Factory factory = getMetaFactory(version);
             assert factory != null : "meta type not found: " + version;
             return factory.createMeta(key, seed, fingerprint);
         }
 
         public Meta generateMeta(int version, SignKey sKey, String seed) {
-            Meta.Factory factory = metaFactories.get(version);
+            Meta.Factory factory = getMetaFactory(version);
             assert factory != null : "meta type not found: " + version;
             return factory.generateMeta(sKey, seed);
         }
@@ -172,9 +196,9 @@ public enum FactoryManager {
             Map<String, Object> info = Wrapper.getMap(meta);
             assert info != null : "meta error: " + meta;
             int version = getMetaType(info);
-            Meta.Factory factory = metaFactories.get(version);
+            Meta.Factory factory = getMetaFactory(version);
             if (factory == null) {
-                factory = metaFactories.get(0);  // unknown
+                factory = getMetaFactory(0);  // unknown
                 assert factory != null : "cannot parse entity meta: " + meta;
             }
             return factory.parseMeta(info);
@@ -239,17 +263,25 @@ public enum FactoryManager {
         //  Document
         //
 
-        String getDocumentType(Map<String, Object> doc) {
+        public void setDocumentFactory(String type, Document.Factory factory) {
+            documentFactories.put(type, factory);
+        }
+
+        public Document.Factory getDocumentFactory(String type) {
+            return documentFactories.get(type);
+        }
+
+        public String getDocumentType(Map<String, Object> doc) {
             return (String) doc.get("type");
         }
 
         public Document createDocument(String type, ID identifier, String data, String signature) {
-            Document.Factory factory = documentFactories.get(type);
+            Document.Factory factory = getDocumentFactory(type);
             assert factory != null : "document type not found: " + type;
             return factory.createDocument(identifier, data, signature);
         }
         public Document createDocument(String type, ID identifier) {
-            Document.Factory factory = documentFactories.get(type);
+            Document.Factory factory = getDocumentFactory(type);
             assert factory != null : "document type not found: " + type;
             return factory.createDocument(identifier);
         }
@@ -262,9 +294,9 @@ public enum FactoryManager {
             Map<String, Object> info = Wrapper.getMap(doc);
             assert info != null : "document error: " + doc;
             String type = getDocumentType(info);
-            Document.Factory factory = documentFactories.get(type);
+            Document.Factory factory = getDocumentFactory(type);
             if (factory == null) {
-                factory = documentFactories.get("*");  // unknown
+                factory = getDocumentFactory("*");  // unknown
                 assert factory != null : "cannot parse entity document: " + doc;
             }
             return factory.parseDocument(info);

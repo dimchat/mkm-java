@@ -46,9 +46,14 @@ public interface PublicKey extends VerifyKey {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.parsePublicKey(key);
     }
+
+    static Factory getFactory(String algorithm) {
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.getPublicKeyFactory(algorithm);
+    }
     static void setFactory(String algorithm, Factory factory) {
         FactoryManager man = FactoryManager.getInstance();
-        man.generalFactory.publicKeyFactories.put(algorithm, factory);
+        man.generalFactory.setPublicKeyFactory(algorithm, factory);
     }
 
     /**

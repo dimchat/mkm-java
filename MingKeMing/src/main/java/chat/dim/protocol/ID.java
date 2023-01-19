@@ -99,9 +99,14 @@ public interface ID extends Stringer {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.generateID(meta, network, terminal);
     }
+
+    static Factory getFactory() {
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.getIDFactory();
+    }
     static void setFactory(Factory factory) {
         FactoryManager man = FactoryManager.getInstance();
-        man.generalFactory.idFactory = factory;
+        man.generalFactory.setIDFactory(factory);
     }
 
     /**

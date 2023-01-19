@@ -74,9 +74,14 @@ public interface Address extends Stringer {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.generateAddress(meta, network);
     }
+
+    static Factory getFactory() {
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.getAddressFactory();
+    }
     static void setFactory(Factory factory) {
         FactoryManager man = FactoryManager.getInstance();
-        man.generalFactory.addressFactory = factory;
+        man.generalFactory.setAddressFactory(factory);
     }
 
     /**

@@ -31,40 +31,40 @@ import java.util.Map;
 
 import chat.dim.type.Wrapper;
 
-enum FactoryManager {
+public enum FactoryManager {
 
     INSTANCE;
 
-    static FactoryManager getInstance() {
+    public static FactoryManager getInstance() {
         return INSTANCE;
     }
 
-    GeneralFactory generalFactory = new GeneralFactory();
+    public GeneralFactory generalFactory = new GeneralFactory();
 
-    static class GeneralFactory {
+    public static class GeneralFactory {
 
-        final Map<String, SymmetricKey.Factory> symmetricKeyFactories = new HashMap<>();
+        private final Map<String, SymmetricKey.Factory> symmetricKeyFactories = new HashMap<>();
 
-        final Map<String, PublicKey.Factory> publicKeyFactories = new HashMap<>();
+        private final Map<String, PublicKey.Factory> publicKeyFactories = new HashMap<>();
 
-        final Map<String, PrivateKey.Factory> privateKeyFactories = new HashMap<>();
+        private final Map<String, PrivateKey.Factory> privateKeyFactories = new HashMap<>();
 
         // sample data for checking keys
         private static final byte[] promise = "Moky loves May Lee forever!".getBytes();
 
-        boolean matches(SignKey sKey, VerifyKey pKey) {
-            // try to verify with signature
+        public boolean matches(SignKey sKey, VerifyKey pKey) {
+            // verify with signature
             byte[] signature = sKey.sign(promise);
             return pKey.verify(promise, signature);
         }
-        boolean matches(EncryptKey pKey, DecryptKey sKey) {
+        public boolean matches(EncryptKey pKey, DecryptKey sKey) {
             // check by encryption
             byte[] ciphertext = pKey.encrypt(promise);
             byte[] plaintext = sKey.decrypt(ciphertext);
             return Arrays.equals(plaintext, promise);
         }
 
-        String getAlgorithm(Map<String, Object> key) {
+        public String getAlgorithm(Map<String, Object> key) {
             return (String) key.get("algorithm");
         }
 
@@ -72,13 +72,21 @@ enum FactoryManager {
         //  SymmetricKey
         //
 
-        SymmetricKey generateSymmetricKey(String algorithm) {
-            SymmetricKey.Factory factory = symmetricKeyFactories.get(algorithm);
+        public void setSymmetricKeyFactory(String algorithm, SymmetricKey.Factory factory) {
+            symmetricKeyFactories.put(algorithm, factory);
+        }
+
+        public SymmetricKey.Factory getSymmetricKeyFactory(String algorithm) {
+            return symmetricKeyFactories.get(algorithm);
+        }
+
+        public SymmetricKey generateSymmetricKey(String algorithm) {
+            SymmetricKey.Factory factory = getSymmetricKeyFactory(algorithm);
             assert factory != null : "key algorithm not support: " + algorithm;
             return factory.generateSymmetricKey();
         }
 
-        SymmetricKey parseSymmetricKey(Object key) {
+        public SymmetricKey parseSymmetricKey(Object key) {
             if (key == null) {
                 return null;
             } else if (key instanceof SymmetricKey) {
@@ -88,9 +96,9 @@ enum FactoryManager {
             assert info != null : "key error: " + key;
             String algorithm = getAlgorithm(info);
             assert algorithm != null : "failed to get algorithm name from key: " + key;
-            SymmetricKey.Factory factory = symmetricKeyFactories.get(algorithm);
+            SymmetricKey.Factory factory = getSymmetricKeyFactory(algorithm);
             if (factory == null) {
-                factory = symmetricKeyFactories.get("*");  // unknown
+                factory = getSymmetricKeyFactory("*");  // unknown
                 assert factory != null : "cannot parse key: " + key;
             }
             return factory.parseSymmetricKey(info);
@@ -100,13 +108,21 @@ enum FactoryManager {
         //  PrivateKey
         //
 
-        PrivateKey generatePrivateKey(String algorithm) {
-            PrivateKey.Factory factory = privateKeyFactories.get(algorithm);
+        public void setPrivateKeyFactory(String algorithm, PrivateKey.Factory factory) {
+            privateKeyFactories.put(algorithm, factory);
+        }
+
+        public PrivateKey.Factory getPrivateKeyFactory(String algorithm) {
+            return privateKeyFactories.get(algorithm);
+        }
+
+        public PrivateKey generatePrivateKey(String algorithm) {
+            PrivateKey.Factory factory = getPrivateKeyFactory(algorithm);
             assert factory != null : "key algorithm not support: " + algorithm;
             return factory.generatePrivateKey();
         }
 
-        PrivateKey parsePrivateKey(Object key) {
+        public PrivateKey parsePrivateKey(Object key) {
             if (key == null) {
                 return null;
             } else if (key instanceof PrivateKey) {
@@ -116,9 +132,9 @@ enum FactoryManager {
             assert info != null : "key error: " + key;
             String algorithm = getAlgorithm(info);
             assert algorithm != null : "failed to get algorithm name from key: " + key;
-            PrivateKey.Factory factory = privateKeyFactories.get(algorithm);
+            PrivateKey.Factory factory = getPrivateKeyFactory(algorithm);
             if (factory == null) {
-                factory = privateKeyFactories.get("*");  // unknown
+                factory = getPrivateKeyFactory("*");  // unknown
                 assert factory != null : "cannot parse key: " + key;
             }
             return factory.parsePrivateKey(info);
@@ -128,7 +144,15 @@ enum FactoryManager {
         //  PublicKey
         //
 
-        PublicKey parsePublicKey(Object key) {
+        public void setPublicKeyFactory(String algorithm, PublicKey.Factory factory) {
+            publicKeyFactories.put(algorithm, factory);
+        }
+
+        public PublicKey.Factory getPublicKeyFactory(String algorithm) {
+            return publicKeyFactories.get(algorithm);
+        }
+
+        public PublicKey parsePublicKey(Object key) {
             if (key == null) {
                 return null;
             } else if (key instanceof PublicKey) {
@@ -138,9 +162,9 @@ enum FactoryManager {
             assert info != null : "key error: " + key;
             String algorithm = getAlgorithm(info);
             assert algorithm != null : "failed to get algorithm name from key: " + key;
-            PublicKey.Factory factory = publicKeyFactories.get(algorithm);
+            PublicKey.Factory factory = getPublicKeyFactory(algorithm);
             if (factory == null) {
-                factory = publicKeyFactories.get("*");  // unknown
+                factory = getPublicKeyFactory("*");  // unknown
                 assert factory != null : "cannot parse key: " + key;
             }
             return factory.parsePublicKey(info);

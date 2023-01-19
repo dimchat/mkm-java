@@ -146,13 +146,22 @@ public interface Meta extends Mapper {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.parseMeta(meta);
     }
+
+    static Factory getFactory(int version) {
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.getMetaFactory(version);
+    }
+    static Factory getFactory(MetaType version) {
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.getMetaFactory(version.value);
+    }
     static void setFactory(int version, Factory factory) {
         FactoryManager man = FactoryManager.getInstance();
-        man.generalFactory.metaFactories.put(version, factory);
+        man.generalFactory.setMetaFactory(version, factory);
     }
     static void setFactory(MetaType version, Factory factory) {
         FactoryManager man = FactoryManager.getInstance();
-        man.generalFactory.metaFactories.put(version.value, factory);
+        man.generalFactory.setMetaFactory(version.value, factory);
     }
 
     /**

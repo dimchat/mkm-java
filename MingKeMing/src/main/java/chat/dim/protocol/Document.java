@@ -102,9 +102,14 @@ public interface Document extends TAI, Mapper {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.parseDocument(doc);
     }
+
+    static Factory getFactory(String type) {
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.getDocumentFactory(type);
+    }
     static void setFactory(String type, Factory factory) {
         FactoryManager man = FactoryManager.getInstance();
-        man.generalFactory.documentFactories.put(type, factory);
+        man.generalFactory.setDocumentFactory(type, factory);
     }
 
     /**
