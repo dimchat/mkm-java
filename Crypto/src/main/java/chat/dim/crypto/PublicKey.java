@@ -68,6 +68,6 @@ public interface PublicKey extends VerifyKey {
          * @param key - key info
          * @return PublicKey
          */
-        PublicKey parsePublicKey(Map<String, Object> key);
+        PublicKey parsePublicKey(Map<?, ?> key);
     }
 }

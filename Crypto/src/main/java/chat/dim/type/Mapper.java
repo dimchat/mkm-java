@@ -39,8 +39,8 @@ public interface Mapper extends Map<String, Object> {
     float getFloat(String key);
     double getDouble(String key);
 
-    Date getTime(String key);
-    void setTime(String key, Date time);
+    Date getDateTime(String key);
+    void setDateTime(String key, Date time);
 
     void setString(String key, Stringer stringer);
     void setMap(String key, Mapper mapper);

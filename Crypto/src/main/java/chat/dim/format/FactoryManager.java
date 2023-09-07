@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2023 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,27 +23,15 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.format;
 
-import java.util.Map;
+public enum FactoryManager {
 
-public interface DecryptKey extends CryptographyKey {
+    INSTANCE;
 
-    /**
-     *  plaintext = decrypt(ciphertext, PW);
-     *  plaintext = decrypt(ciphertext, SK);
-     *
-     * @param ciphertext - encrypted data
-     * @param params     - extra params ('IV' for 'AES')
-     * @return plaintext
-     */
-    byte[] decrypt(byte[] ciphertext, Map<?, ?> params);
+    public static FactoryManager getInstance() {
+        return INSTANCE;
+    }
 
-    /**
-     *  OK = decrypt(encrypt(data, SK), PK) == data
-     *
-     * @param pKey - encrypt key
-     * @return true on signature matched
-     */
-    boolean match(EncryptKey pKey);
+    public GeneralFactory generalFactory = new GeneralFactory();
 }

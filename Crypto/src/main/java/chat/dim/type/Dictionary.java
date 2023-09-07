@@ -54,63 +54,51 @@ public class Dictionary implements Mapper {
 
     @Override
     public String getString(String key) {
-        return (String) dictionary.get(key);
+        return Converter.getString(dictionary.get(key));
     }
 
     @Override
     public boolean getBoolean(String key) {
-        Object value = dictionary.get(key);
-        return value != null && (Boolean) value;
+        return Converter.getBoolean(dictionary.get(key));
     }
 
     @Override
     public int getInt(String key) {
-        Object value = dictionary.get(key);
-        return value == null ? 0 : ((Number) value).intValue();
+        return Converter.getInt(dictionary.get(key));
     }
 
     @Override
     public long getLong(String key) {
-        Object value = dictionary.get(key);
-        return value == null ? 0 : ((Number) value).longValue();
+        return Converter.getLong(dictionary.get(key));
     }
 
     @Override
     public byte getByte(String key) {
-        Object value = dictionary.get(key);
-        return value == null ? 0 : ((Number) value).byteValue();
+        return Converter.getByte(dictionary.get(key));
     }
 
     @Override
     public short getShort(String key) {
-        Object value = dictionary.get(key);
-        return value == null ? 0 : ((Number) value).shortValue();
+        return Converter.getShort(dictionary.get(key));
     }
 
     @Override
     public float getFloat(String key) {
-        Object value = dictionary.get(key);
-        return value == null ? 0.0f : ((Number) value).floatValue();
+        return Converter.getFloat(dictionary.get(key));
     }
 
     @Override
     public double getDouble(String key) {
-        Object value = dictionary.get(key);
-        return value == null ? 0.0d : ((Number) value).doubleValue();
+        return Converter.getDouble(dictionary.get(key));
     }
 
     @Override
-    public Date getTime(String key) {
-        double seconds = getDouble(key);
-        if (seconds <= 0) {
-            return null;
-        }
-        long millis = (long) (seconds * 1000);
-        return new Date(millis);
+    public Date getDateTime(String key) {
+        return Converter.getDateTime(dictionary.get(key));
     }
 
     @Override
-    public void setTime(String key, Date time) {
+    public void setDateTime(String key, Date time) {
         if (time == null) {
             remove(key);
         } else {
@@ -162,7 +150,7 @@ public class Dictionary implements Mapper {
             // compare inner map
             other = ((Mapper) other).toMap();
         }
-        return dictionary.equals(other);
+        return other instanceof Map && Comparator.mapEquals(dictionary, (Map<?, ?>) other);
     }
 
     @Override

@@ -37,29 +37,32 @@ public interface Copier {
      *  Shallow Copy
      *  ~~~~~~~~~~~~
      */
-    @SuppressWarnings("unchecked")
-    static <K> Object copy(Object object) {
-        if (object instanceof Map) {
-            return copyMap((Map<K, Object>) object);
+    static Object copy(Object object) {
+        if (object == null) {
+            return null;
+        } else if (object instanceof Mapper) {
+            return copyMap(((Mapper) object).toMap());
+        } else if (object instanceof Map) {
+            return copyMap((Map<?, ?>) object);
         } else if (object instanceof List) {
-            return copyList((List<Object>) object);
+            return copyList((List<?>) object);
         //} else if (object instanceof Cloneable) {
         } else {
             return object;
         }
     }
 
-    static <K> Map<K, Object> copyMap(Map<K, Object> dict) {
-        Map<K, Object> clone = new HashMap<>();
-        Iterator<Map.Entry<K, Object>> iterator = dict.entrySet().iterator();
-        Map.Entry<K, Object> entry;
+    static Map<String, Object> copyMap(Map<?, ?> dict) {
+        Map<String, Object> clone = new HashMap<>();
+        Iterator<? extends Map.Entry<?, ?>> iterator = dict.entrySet().iterator();
+        Map.Entry<?, ?> entry;
         while (iterator.hasNext()) {
             entry = iterator.next();
-            clone.put(entry.getKey(), entry.getValue());
+            clone.put(Wrapper.getString(entry.getKey()), entry.getValue());
         }
         return clone;
     }
-    static List<Object> copyList(List<Object> array) {
+    static List<Object> copyList(List<?> array) {
         return new ArrayList<>(array);
     }
 
@@ -67,29 +70,32 @@ public interface Copier {
      *  Deep Copy
      *  ~~~~~~~~~
      */
-    @SuppressWarnings("unchecked")
-    static <K> Object deepCopy(Object object) {
-        if (object instanceof Map) {
-            return deepCopyMap((Map<K, Object>) object);
+    static Object deepCopy(Object object) {
+        if (object == null) {
+            return null;
+        } else if (object instanceof Mapper) {
+            return deepCopyMap(((Mapper) object).toMap());
+        } else if (object instanceof Map) {
+            return deepCopyMap((Map<?, ?>) object);
         } else if (object instanceof List) {
-            return deepCopyList((List<Object>) object);
+            return deepCopyList((List<?>) object);
         //} else if (object instanceof Cloneable) {
         } else {
             return object;
         }
     }
 
-    static <K> Map<K, Object> deepCopyMap(Map<K, Object> dict) {
-        Map<K, Object> clone = new HashMap<>();
-        Iterator<Map.Entry<K, Object>> iterator = dict.entrySet().iterator();
-        Map.Entry<K, Object> entry;
+    static Map<String, Object> deepCopyMap(Map<?, ?> dict) {
+        Map<String, Object> clone = new HashMap<>();
+        Iterator<? extends Map.Entry<?, ?>> iterator = dict.entrySet().iterator();
+        Map.Entry<?, ?> entry;
         while (iterator.hasNext()) {
             entry = iterator.next();
-            clone.put(entry.getKey(), deepCopy(entry.getValue()));
+            clone.put(Wrapper.getString(entry.getKey()), deepCopy(entry.getValue()));
         }
         return clone;
     }
-    static List<Object> deepCopyList(List<Object> array) {
+    static List<Object> deepCopyList(List<?> array) {
         List<Object> clone = new ArrayList<>();
         for (Object item : array) {
             clone.add(deepCopy(item));

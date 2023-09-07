@@ -25,6 +25,8 @@
  */
 package chat.dim.crypto;
 
+import java.util.Map;
+
 public interface EncryptKey extends CryptographyKey {
 
     /**
@@ -32,7 +34,8 @@ public interface EncryptKey extends CryptographyKey {
      *  ciphertext = encrypt(plaintext, PK)
      *
      * @param plaintext - plain data
+     * @param extra     - store extra variables ('IV' for 'AES')
      * @return ciphertext
      */
-    byte[] encrypt(byte[] plaintext);
+    byte[] encrypt(byte[] plaintext, Map<?, ?> extra);
 }

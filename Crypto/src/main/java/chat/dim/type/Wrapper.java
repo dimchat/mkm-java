@@ -39,12 +39,15 @@ public interface Wrapper {
      *  Remove first wrapper
      */
     static String getString(Object str) {
-        if (str instanceof Stringer) {
+        if (str == null) {
+            return null;
+        } else if (str instanceof Stringer) {
             return str.toString();
         } else if (str instanceof String) {
             return (String) str;
         } else {
-            return null;
+            assert false : "string error: " + str;
+            return str.toString();
         }
     }
 
@@ -55,11 +58,14 @@ public interface Wrapper {
      */
     @SuppressWarnings("unchecked")
     static Map<String, Object> getMap(Object dict) {
-        if (dict instanceof Mapper) {
+        if (dict == null) {
+            return null;
+        } else if (dict instanceof Mapper) {
             return ((Mapper) dict).toMap();
         } else if (dict instanceof Map) {
             return (Map<String, Object>) dict;
         } else {
+            assert false : "map error: " + dict;
             return null;
         }
     }
@@ -69,40 +75,45 @@ public interface Wrapper {
      *  ~~~~~~~~~~~~~~~~~~
      *  Remove all wrappers
      */
-    @SuppressWarnings("unchecked")
     static Object unwrap(Object object) {
-        if (object instanceof Stringer) {
-            return object.toString();
+        if (object == null) {
+            return null;
+        } else if (object instanceof Mapper) {
+            return unwrapMap((((Mapper) object).toMap()));
         } else if (object instanceof Map) {
-            return unwrapMap((Map<String, Object>) object);
+            return unwrapMap((Map<?, ?>) object);
         } else if (object instanceof List) {
-            return unwrapList((List<Object>) object);
+            return unwrapList((List<?>) object);
+        } else if (object instanceof Stringer) {
+            return object.toString();
         } else {
             return object;
         }
     }
 
     // Unwrap values for keys in map
-    static Map<String, Object> unwrapMap(Map<String, Object> dict) {
+    static Map<String, Object> unwrapMap(Map<?, ?> dict) {
+        assert dict != null : "empty map";
         if (dict instanceof Mapper) {
             dict = ((Mapper) dict).toMap();
         }
         Map<String, Object> result = new HashMap<>();
-        Iterator<Map.Entry<String, Object>> iterator = dict.entrySet().iterator();
-        Map.Entry<String, Object> entry;
-        String key;
+        Iterator<? extends Map.Entry<?, ?>> iterator = dict.entrySet().iterator();
+        Map.Entry<?, ?> entry;
+        Object key;
         Object value, naked;
         while (iterator.hasNext()) {
             entry = iterator.next();
             key = entry.getKey();
             value = entry.getValue();
             naked = unwrap(value);
-            result.put(key, naked);
+            result.put(getString(key), naked);
         }
         return result;
     }
     // Unwrap values in the array
-    static List<Object> unwrapList(List<Object> array) {
+    static List<?> unwrapList(List<?> array) {
+        assert array != null : "empty list";
         List<Object> result = new ArrayList<>();
         Object naked;
         for (Object item : array) {
