@@ -57,18 +57,18 @@ public interface TAI {
     /**
      *  Verify 'data' and 'signature' with public key
      *
-     * @param publicKey - public key in meta.key
+     * @param metaKey - public key in meta.key
      * @return true on signature matched
      */
-    boolean verify(VerifyKey publicKey);
+    boolean verify(VerifyKey metaKey);
 
     /**
      *  Encode properties to 'data' and sign it to 'signature'
      *
-     * @param privateKey - private key match meta.key
+     * @param sKey - private key match meta.key
      * @return signature, null on error
      */
-    byte[] sign(SignKey privateKey);
+    byte[] sign(SignKey sKey);
 
     //-------- properties
 

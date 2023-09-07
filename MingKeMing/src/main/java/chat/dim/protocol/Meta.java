@@ -70,7 +70,7 @@ public interface Meta extends Mapper {
      *
      *      RSA / ECC
      */
-    VerifyKey getKey();
+    VerifyKey getPublicKey();
 
     /**
      *  Seed to generate fingerprint
@@ -122,21 +122,21 @@ public interface Meta extends Mapper {
     /**
      *  Check whether meta match with public key
      *
-     * @param pk   - public key
+     * @param pKey - public key
      * @param meta - meta info
      * @return true on matched
      */
-    static boolean matches(VerifyKey pk, Meta meta) {
+    static boolean matches(VerifyKey pKey, Meta meta) {
         FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.matches(pk, meta);
+        return man.generalFactory.matches(pKey, meta);
     }
 
     //
     //  Factory methods
     //
-    static Meta create(int version, VerifyKey key, String seed, byte[] fingerprint) {
+    static Meta create(int version, VerifyKey pKey, String seed, byte[] fingerprint) {
         FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.createMeta(version, key, seed, fingerprint);
+        return man.generalFactory.createMeta(version, pKey, seed, fingerprint);
     }
     static Meta generate(int version, SignKey sKey, String seed) {
         FactoryManager man = FactoryManager.getInstance();
@@ -173,12 +173,12 @@ public interface Meta extends Mapper {
         /**
          *  Create meta
          *
-         * @param key         - public key
+         * @param pKey        - public key
          * @param seed        - ID.name
          * @param fingerprint - sKey.sign(seed)
          * @return Meta
          */
-        Meta createMeta(VerifyKey key, String seed, byte[] fingerprint);
+        Meta createMeta(VerifyKey pKey, String seed, byte[] fingerprint);
 
         /**
          *  Generate meta

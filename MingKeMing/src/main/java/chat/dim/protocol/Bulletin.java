@@ -39,6 +39,13 @@ import java.util.List;
 public interface Bulletin extends Document {
 
     /**
+     *  Get group founder
+     *
+     * @return founder ID
+     */
+    ID getFounder();
+
+    /**
      *  Get group assistants
      *
      * @return bot ID list

@@ -31,6 +31,7 @@
 package chat.dim.protocol;
 
 import chat.dim.crypto.EncryptKey;
+import chat.dim.format.PortableNetworkFile;
 
 /**
  *  User Document
@@ -45,26 +46,26 @@ public interface Visa extends Document {
      *
      * @return public key as visa.key
      */
-    EncryptKey getKey();
+    EncryptKey getPublicKey();
 
     /**
      *  Set public key for other user to encrypt message
      *
-     * @param publicKey - public key as visa.key
+     * @param pKey - public key as visa.key
      */
-    void setKey(EncryptKey publicKey);
+    void setPublicKey(EncryptKey pKey);
 
     /**
      *  Get avatar URL
      *
-     * @return URL string
+     * @return PNF(URL)
      */
-    String getAvatar();
+    PortableNetworkFile getAvatar();
 
     /**
      *  Set avatar URL
      *
-     * @param url - URL string
+     * @param url - PNF(URL)
      */
-    void setAvatar(String url);
+    void setAvatar(PortableNetworkFile url);
 }

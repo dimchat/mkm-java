@@ -77,7 +77,7 @@ public interface Document extends TAI, Mapper {
      *
      * @return date object or null
      */
-    Date getTime();
+    Date getDateTime();
 
     /**
      *  Get entity name
