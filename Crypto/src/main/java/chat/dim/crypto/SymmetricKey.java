@@ -83,6 +83,6 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
          * @param key - key info
          * @return SymmetricKey
          */
-        SymmetricKey parseSymmetricKey(Map<?, ?> key);
+        SymmetricKey parseSymmetricKey(Map<String, Object> key);
     }
 }

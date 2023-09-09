@@ -30,6 +30,10 @@
  */
 package chat.dim.mkm;
 
+/**
+ *  Account FactoryManager
+ *  ~~~~~~~~~~~~~~~~~~~~~~
+ */
 public enum FactoryManager {
 
     INSTANCE;

@@ -27,28 +27,33 @@ package chat.dim.format;
 
 import java.util.Map;
 
-@SuppressWarnings("rawtypes")
 public final class JSONMap {
 
-    public static String encode(Map dictionary) {
+    public static String encode(Map<String, Object> dictionary) {
         return coder.encode(dictionary);
     }
 
-    public static Map decode(String json) {
+    public static Map<String, Object> decode(String json) {
         return coder.decode(json);
     }
 
     // default coder
-    public static ObjectCoder<Map> coder = new ObjectCoder<Map>() {
+    public static ObjectCoder<Map<String, Object>> coder = new ObjectCoder<Map<String, Object>>() {
 
         @Override
-        public String encode(Map dictionary) {
-            return JSON.encode(dictionary);
+        public String encode(Map<String, Object> dict) {
+            return JSON.encode(dict);
         }
 
+        @SuppressWarnings("unchecked")
         @Override
-        public Map decode(String json) {
-            return (Map) JSON.decode(json);
+        public Map<String, Object> decode(String json) {
+            Object dict = JSON.decode(json);
+            if (dict instanceof Map) {
+                return (Map<String, Object>) dict;
+            } else {
+                return null;
+            }
         }
     };
 }

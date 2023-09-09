@@ -29,8 +29,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import chat.dim.type.Converter;
 import chat.dim.type.Wrapper;
 
+/**
+ *  CryptographyKey GeneralFactory
+ *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
 public class GeneralFactory {
 
     private final Map<String, SymmetricKey.Factory> symmetricKeyFactories = new HashMap<>();
@@ -49,14 +54,14 @@ public class GeneralFactory {
     }
     public boolean matches(EncryptKey pKey, DecryptKey sKey) {
         // check by encryption
-        Map<String, String> extra = new HashMap<>();
+        Map<String, Object> extra = new HashMap<>();
         byte[] ciphertext = pKey.encrypt(promise, extra);
         byte[] plaintext = sKey.decrypt(ciphertext, extra);
         return Arrays.equals(plaintext, promise);
     }
 
-    public String getAlgorithm(Map<?, ?> key) {
-        return (String) key.get("algorithm");
+    public String getAlgorithm(Map<?, ?> key, String defaultValue) {
+        return Converter.getString(key.get("algorithm"), defaultValue);
     }
 
     //
@@ -85,16 +90,15 @@ public class GeneralFactory {
         }
         Map<String, Object> info = Wrapper.getMap(key);
         if (info == null) {
-            assert false : "key error: " + key;
+            assert false : "symmetric key error: " + key;
             return null;
         }
-        String algorithm = getAlgorithm(info);
-        assert algorithm != null : "failed to get algorithm name from key: " + key;
+        String algorithm = getAlgorithm(info, "*");
         SymmetricKey.Factory factory = getSymmetricKeyFactory(algorithm);
-        if (factory == null) {
+        if (factory == null && !algorithm.equals("*")) {
             factory = getSymmetricKeyFactory("*");  // unknown
-            assert factory != null : "cannot parse key: " + key;
         }
+        assert factory != null : "cannot parse symmetric key: " + key;
         return factory.parseSymmetricKey(info);
     }
 
@@ -124,16 +128,15 @@ public class GeneralFactory {
         }
         Map<String, Object> info = Wrapper.getMap(key);
         if (info == null) {
-            assert false : "key error: " + key;
+            assert false : "private key error: " + key;
             return null;
         }
-        String algorithm = getAlgorithm(info);
-        assert algorithm != null : "failed to get algorithm name from key: " + key;
+        String algorithm = getAlgorithm(info, "*");
         PrivateKey.Factory factory = getPrivateKeyFactory(algorithm);
-        if (factory == null) {
+        if (factory == null && !algorithm.equals("*")) {
             factory = getPrivateKeyFactory("*");  // unknown
-            assert factory != null : "cannot parse key: " + key;
         }
+        assert factory != null : "cannot parse private key: " + key;
         return factory.parsePrivateKey(info);
     }
 
@@ -157,16 +160,15 @@ public class GeneralFactory {
         }
         Map<String, Object> info = Wrapper.getMap(key);
         if (info == null) {
-            assert false : "key error: " + key;
+            assert false : "pubic key error: " + key;
             return null;
         }
-        String algorithm = getAlgorithm(info);
-        assert algorithm != null : "failed to get algorithm name from key: " + key;
+        String algorithm = getAlgorithm(info, "*");
         PublicKey.Factory factory = getPublicKeyFactory(algorithm);
-        if (factory == null) {
+        if (factory == null && !algorithm.equals("*")) {
             factory = getPublicKeyFactory("*");  // unknown
-            assert factory != null : "cannot parse key: " + key;
         }
+        assert factory != null : "cannot parse public key: " + key;
         return factory.parsePublicKey(info);
     }
 }

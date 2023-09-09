@@ -46,7 +46,10 @@ import chat.dim.protocol.MetaType;
 import chat.dim.type.Converter;
 import chat.dim.type.Wrapper;
 
-
+/**
+ *  Account GeneralFactory
+ *  ~~~~~~~~~~~~~~~~~~~~~~
+ */
 public class GeneralFactory {
 
     private Address.Factory addressFactory = null;
@@ -169,8 +172,8 @@ public class GeneralFactory {
         return metaFactories.get(version);
     }
 
-    public int getMetaType(Map<String, Object> meta) {
-        return Converter.getInt(meta.get("type"));
+    public int getMetaType(Map<?, ?> meta) {
+        return Converter.getInt(meta.get("type"), 0);
     }
 
     public Meta createMeta(int version, VerifyKey key, String seed, byte[] fingerprint) {
@@ -269,8 +272,8 @@ public class GeneralFactory {
         return documentFactories.get(type);
     }
 
-    public String getDocumentType(Map<String, Object> doc) {
-        return Converter.getString(doc.get("type"));
+    public String getDocumentType(Map<?, ?> doc, String defaultValue) {
+        return Converter.getString(doc.get("type"), defaultValue);
     }
 
     public Document createDocument(String type, ID identifier, String data, String signature) {
@@ -294,10 +297,7 @@ public class GeneralFactory {
             assert false : "document error: " + doc;
             return null;
         }
-        String type = getDocumentType(info);
-        if (type == null) {
-            type = "*";
-        }
+        String type = getDocumentType(info, "*");
         Document.Factory factory = getDocumentFactory(type);
         if (factory == null && !type.equals("*")) {
             factory = getDocumentFactory("*");  // unknown

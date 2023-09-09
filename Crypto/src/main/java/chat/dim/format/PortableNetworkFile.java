@@ -26,6 +26,7 @@
 package chat.dim.format;
 
 import java.net.URI;
+import java.util.Map;
 
 import chat.dim.crypto.DecryptKey;
 import chat.dim.type.Mapper;
@@ -124,16 +125,16 @@ public interface PortableNetworkFile extends Mapper {
          * @param data     - file content (not encrypted)
          * @param filename - file name
          * @param key      - decrypt key
-         * @return PNF
+         * @return PNF object
          */
         PortableNetworkFile createPortableNetworkFile(URI url, byte[] data, String filename, DecryptKey key);
 
         /**
          *  Parse string/map object to PNF
          *
-         * @param pnf - String, or Map
-         * @return PNF
+         * @param pnf - PNF info
+         * @return PNF object
          */
-        PortableNetworkFile parsePortableNetworkFile(Object pnf);
+        PortableNetworkFile parsePortableNetworkFile(Map<String, Object> pnf);
     }
 }

@@ -25,6 +25,8 @@
  */
 package chat.dim.format;
 
+import java.util.Map;
+
 import chat.dim.type.Mapper;
 
 /**
@@ -46,10 +48,10 @@ public interface TransportableData extends Mapper {
     //
     //  encode algorithm
     //
-    String DEFAULT = "default";
-    String HEX     = "hex";
-    String BASE_58 = "base58";
+    String DEFAULT = "base64";
     String BASE_64 = "base64";
+    String BASE_58 = "base58";
+    String HEX     = "hex";
 
     /**
      *  Get data encode algorithm
@@ -88,7 +90,7 @@ public interface TransportableData extends Mapper {
     //
 
     static Object encode(byte[] data) {
-        TransportableData ted = create(DEFAULT, data);
+        TransportableData ted = create(data);
         return ted.toObject();
     }
 
@@ -101,6 +103,9 @@ public interface TransportableData extends Mapper {
     //  Factory methods
     //
 
+    static TransportableData create(byte[] data) {
+        return create(DEFAULT, data);
+    }
     static TransportableData create(String algorithm, byte[] data) {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.createTransportableData(algorithm, data);
@@ -130,16 +135,16 @@ public interface TransportableData extends Mapper {
          *  Create TED
          *
          * @param data - original data
-         * @return TED
+         * @return TED object
          */
         TransportableData createTransportableData(byte[] data);
 
         /**
          *  Parse string/map object to TED
          *
-         * @param ted - String, or Map
-         * @return TED
+         * @param ted - TED info
+         * @return TED object
          */
-        TransportableData parseTransportableData(Object ted);
+        TransportableData parseTransportableData(Map<String, Object> ted);
     }
 }

@@ -87,6 +87,6 @@ public interface PrivateKey extends SignKey {
          * @param key - key info
          * @return PrivateKey
          */
-        PrivateKey parsePrivateKey(Map<?, ?> key);
+        PrivateKey parsePrivateKey(Map<String, Object> key);
     }
 }

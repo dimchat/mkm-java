@@ -25,6 +25,10 @@
  */
 package chat.dim.crypto;
 
+/**
+ *  CryptographyKey FactoryManager
+ *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ */
 public enum FactoryManager {
 
     INSTANCE;

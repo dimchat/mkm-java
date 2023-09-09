@@ -37,5 +37,5 @@ public interface EncryptKey extends CryptographyKey {
      * @param extra     - store extra variables ('IV' for 'AES')
      * @return ciphertext
      */
-    byte[] encrypt(byte[] plaintext, Map<?, ?> extra);
+    byte[] encrypt(byte[] plaintext, Map<String, Object> extra);
 }

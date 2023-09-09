@@ -27,28 +27,27 @@ package chat.dim.format;
 
 import java.util.List;
 
-@SuppressWarnings("rawtypes")
 public final class JSONList {
 
-    public static String encode(List array) {
+    public static String encode(List<?> array) {
         return coder.encode(array);
     }
 
-    public static List decode(String json) {
+    public static List<?> decode(String json) {
         return coder.decode(json);
     }
 
     // default coder
-    public static ObjectCoder<List> coder = new ObjectCoder<List>() {
+    public static ObjectCoder<List<?>> coder = new ObjectCoder<List<?>>() {
 
         @Override
-        public String encode(List array) {
+        public String encode(List<?> array) {
             return JSON.encode(array);
         }
 
         @Override
-        public List decode(String json) {
-            return (List) JSON.decode(json);
+        public List<?> decode(String json) {
+            return (List<?>) JSON.decode(json);
         }
     };
 }

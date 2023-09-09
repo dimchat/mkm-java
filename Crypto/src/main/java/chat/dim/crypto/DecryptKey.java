@@ -37,7 +37,7 @@ public interface DecryptKey extends CryptographyKey {
      * @param params     - extra params ('IV' for 'AES')
      * @return plaintext
      */
-    byte[] decrypt(byte[] ciphertext, Map<?, ?> params);
+    byte[] decrypt(byte[] ciphertext, Map<String, Object> params);
 
     /**
      *  OK = decrypt(encrypt(data, SK), PK) == data

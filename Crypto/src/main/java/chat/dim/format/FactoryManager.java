@@ -25,6 +25,10 @@
  */
 package chat.dim.format;
 
+/**
+ *  Format FactoryManager
+ *  ~~~~~~~~~~~~~~~~~~~~~
+ */
 public enum FactoryManager {
 
     INSTANCE;

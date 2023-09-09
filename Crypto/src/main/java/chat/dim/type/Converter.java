@@ -29,9 +29,9 @@ import java.util.Date;
 
 public interface Converter {
 
-    static String getString(Object value) {
+    static String getString(Object value, String defaultValue) {
         if (value == null) {
-            return null;
+            return defaultValue;
         } else if (value instanceof String) {
             // exactly
             return (String) value;
@@ -45,9 +45,9 @@ public interface Converter {
      *  assume value can be a config string:
      *      'true', 'false', 'yes', 'no', 'on', 'off', '1', '0', ...
      */
-    static boolean getBoolean(Object value) {
+    static boolean getBoolean(Object value, boolean defaultValue) {
         if (value == null) {
-            return false;
+            return defaultValue;
         } else if (value instanceof Boolean) {
             // exactly
             return (Boolean) value;
@@ -78,9 +78,9 @@ public interface Converter {
         return true;
     }
 
-    static byte getByte(Object value) {
+    static byte getByte(Object value, byte defaultValue) {
         if (value == null) {
-            return 0;
+            return defaultValue;
         } else if (value instanceof Byte) {
             return (byte) value;
         } else if (value instanceof Number) {  // Short, Integer, Long, Float, Double
@@ -91,9 +91,9 @@ public interface Converter {
         String str = value instanceof String ? (String) value : value.toString();
         return Byte.parseByte(str);
     }
-    static short getShort(Object value) {
+    static short getShort(Object value, short defaultValue) {
         if (value == null) {
-            return 0;
+            return defaultValue;
         } else if (value instanceof Short) {
             // exactly
             return (Short) value;
@@ -106,9 +106,9 @@ public interface Converter {
         return Short.parseShort(str);
     }
 
-    static int getInt(Object value) {
+    static int getInt(Object value, int defaultValue) {
         if (value == null) {
-            return 0;
+            return defaultValue;
         } else if (value instanceof Integer) {
             // exactly
             return (Integer) value;
@@ -120,9 +120,9 @@ public interface Converter {
         String str = value instanceof String ? (String) value : value.toString();
         return Integer.parseInt(str);
     }
-    static long getLong(Object value) {
+    static long getLong(Object value, long defaultValue) {
         if (value == null) {
-            return 0L;
+            return defaultValue;
         } else if (value instanceof Long) {
             // exactly
             return (Long) value;
@@ -135,9 +135,9 @@ public interface Converter {
         return Long.parseLong(str);
     }
 
-    static float getFloat(Object value) {
+    static float getFloat(Object value, float defaultValue) {
         if (value == null) {
-            return 0.0F;
+            return defaultValue;
         } else if (value instanceof Float) {
             // exactly
             return (Float) value;
@@ -149,9 +149,9 @@ public interface Converter {
         String str = value instanceof String ? (String) value : value.toString();
         return Float.parseFloat(str);
     }
-    static double getDouble(Object value) {
+    static double getDouble(Object value, double defaultValue) {
         if (value == null) {
-            return 0.0;
+            return defaultValue;
         } else if (value instanceof Double) {
             // exactly
             return (Double) value;
@@ -167,14 +167,14 @@ public interface Converter {
     /**
      *  assume value can be a timestamp (seconds from 1970-01-01 00:00:00)
      */
-    static Date getDateTime(Object value) {
+    static Date getDateTime(Object value, Date defaultValue) {
         if (value == null) {
-            return null;
+            return defaultValue;
         } else if (value instanceof Date) {
             // exactly
             return (Date) value;
         }
-        double seconds = getDouble(value);
+        double seconds = getDouble(value, 0);
         double millis = seconds * 1000;
         return new Date((long) millis);
     }

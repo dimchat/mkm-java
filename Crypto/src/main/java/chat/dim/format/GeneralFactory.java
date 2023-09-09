@@ -32,15 +32,20 @@ import java.util.List;
 import java.util.Map;
 
 import chat.dim.crypto.DecryptKey;
+import chat.dim.type.Converter;
 import chat.dim.type.Mapper;
 
+/**
+ *  Format GeneralFactory
+ *  ~~~~~~~~~~~~~~~~~~~~~
+ */
 public class GeneralFactory {
 
     private final Map<String, TransportableData.Factory> tedFactories = new HashMap<>();
 
     private PortableNetworkFile.Factory pnfFactory = null;
 
-    List<String> split(String text) {
+    protected List<String> split(String text) {
         List<String> array = new ArrayList<>();
         // "{TEXT}", or
         // "base64,{BASE64_ENCODE}", or
@@ -67,21 +72,23 @@ public class GeneralFactory {
         }
         return array;
     }
-    Map<?, ?> decode(Object data, String defaultKey) {
+    @SuppressWarnings("unchecked")
+    protected Map<String, Object> decode(Object data, String defaultKey) {
         if (data instanceof Mapper) {
             return ((Mapper) data).toMap();
         } else if (data instanceof Map) {
-            return (Map<?, ?>) data;
+            return (Map<String, Object>) data;
         }
         String text = data instanceof String ? (String) data : data.toString();
         if (text.startsWith("{") && text.endsWith("}")) {
             return JSONMap.decode(text);
         }
-        Map<String, String> info = new HashMap<>();
+        Map<String, Object> info = new HashMap<>();
         List<String> array = split(text);
         if (array.size() == 1) {
             info.put(defaultKey, array.get(0));
         } else {
+            assert array.size() == 2 : "split error: " + text + " => " + array;
             info.put("algorithm", array.get(1));
             info.put("data", array.get(0));
         }
@@ -92,8 +99,8 @@ public class GeneralFactory {
     ///   TED - Transportable Encoded Data
     ///
 
-    public String getDataAlgorithm(Map<?, ?> ted) {
-        return (String) ted.get("algorithm");
+    public String getDataAlgorithm(Map<?, ?> ted, String defaultValue) {
+        return Converter.getString(ted.get("algorithm"), defaultValue);
     }
 
     public void setTransportableDataFactory(String algorithm, TransportableData.Factory factory) {
@@ -116,15 +123,12 @@ public class GeneralFactory {
             return (TransportableData) ted;
         }
         // unwrap
-        Map<?, ?> info = decode(ted, "data");
+        Map<String, Object> info = decode(ted, "data");
         if (info == null) {
             assert false : "TED error: " + ted;
             return null;
         }
-        String algorithm = getDataAlgorithm(info);
-        if (algorithm == null) {
-            algorithm = "*";
-        }
+        String algorithm = getDataAlgorithm(info, "*");
         TransportableData.Factory factory = getTransportableDataFactory(algorithm);
         if (factory == null && !algorithm.equals("*")) {
             factory = getTransportableDataFactory("*");  // unknown
@@ -157,14 +161,14 @@ public class GeneralFactory {
             return (PortableNetworkFile) pnf;
         }
         // unwrap
-        Map<?, ?> info = decode(pnf, "URL");
+        Map<String, Object> info = decode(pnf, "URL");
         if (info == null) {
             assert false : "PNF error: " + pnf;
             return null;
         }
         PortableNetworkFile.Factory factory = getPortableNetworkFileFactory();
         assert factory != null : "PNF factory not ready";
-        return factory.parsePortableNetworkFile(pnf);
+        return factory.parsePortableNetworkFile(info);
     }
 
 }
