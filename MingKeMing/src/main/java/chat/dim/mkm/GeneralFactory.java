@@ -37,12 +37,10 @@ import java.util.Map;
 
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
-import chat.dim.format.UTF8;
 import chat.dim.protocol.Address;
 import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
-import chat.dim.protocol.MetaType;
 import chat.dim.type.Converter;
 import chat.dim.type.Wrapper;
 
@@ -205,59 +203,6 @@ public class GeneralFactory {
         }
         assert factory != null : "cannot parse entity meta: " + meta;
         return factory.parseMeta(info);
-    }
-
-    public boolean checkMeta(Meta meta) {
-        VerifyKey key = meta.getPublicKey();
-        if (key == null) {
-            assert false : "meta.key should not be empty";
-            return false;
-        }
-        String seed = meta.getSeed();
-        byte[] fingerprint = meta.getFingerprint();
-        if (!MetaType.hasSeed(meta.getType())) {
-            // this meta has no seed, so no signature too
-            return seed == null && fingerprint == null;
-        } else if (seed == null || fingerprint == null) {
-            // seed and fingerprint should not be empty
-            return false;
-        }
-        // verify fingerprint
-        return key.verify(UTF8.encode(seed), fingerprint);
-    }
-    public boolean matches(ID identifier, Meta meta) {
-        // check ID.name
-        String seed = meta.getSeed();
-        String name = identifier.getName();
-        if (name == null || name.isEmpty()) {
-            if (seed != null && seed.length() > 0) {
-                return false;
-            }
-        } else if (!name.equals(seed)) {
-            return false;
-        }
-        // check ID.address
-        Address old = identifier.getAddress();
-        //assert old != null : "ID error: " + identifier;
-        Address gen = Address.generate(meta, old.getType());
-        return old.equals(gen);
-    }
-    public boolean matches(VerifyKey pKey, Meta meta) {
-        // check whether the public key equals to meta.key
-        if (pKey.equals(meta.getPublicKey())) {
-            return true;
-        }
-        // check with seed & fingerprint
-        if (MetaType.hasSeed(meta.getType())) {
-            // check whether keys equal by verifying signature
-            String seed = meta.getSeed();
-            byte[] fingerprint = meta.getFingerprint();
-            return pKey.verify(UTF8.encode(seed), fingerprint);
-        } else {
-            // NOTICE: ID with BTC/ETH address has no username, so
-            //         just compare the key.data to check matching
-            return false;
-        }
     }
 
     //

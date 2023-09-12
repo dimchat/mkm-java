@@ -95,41 +95,34 @@ public interface Meta extends Mapper {
      */
     Address generateAddress(int network);
 
+    //
+    //  Validation
+    //
+
     /**
      *  Check meta valid
      *  (must call this when received a new meta from network)
      *
      * @return true on valid
      */
-    static boolean check(Meta meta) {
-        FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.checkMeta(meta);
-    }
+    boolean isValid();
 
     /**
      *  Check whether meta match with entity ID
      *  (must call this when received a new meta from network)
      *
      * @param identifier - entity ID
-     * @param meta       - entity meta
      * @return true on matched
      */
-    static boolean matches(ID identifier, Meta meta) {
-        FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.matches(identifier, meta);
-    }
+    boolean matchID(ID identifier);
 
     /**
      *  Check whether meta match with public key
      *
      * @param pKey - public key
-     * @param meta - meta info
      * @return true on matched
      */
-    static boolean matches(VerifyKey pKey, Meta meta) {
-        FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.matches(pKey, meta);
-    }
+    boolean matchKey(VerifyKey pKey);
 
     //
     //  Factory methods

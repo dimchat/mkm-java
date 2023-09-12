@@ -30,14 +30,14 @@ import java.util.Map;
 
 public interface Mapper extends Map<String, Object> {
 
-    String getString(String key, String defaultValue);
+    String   getString(String key, String  defaultValue);
     boolean getBoolean(String key, boolean defaultValue);
-    int getInt(String key, int defaultValue);
-    long getLong(String key, long defaultValue);
-    byte getByte(String key, byte defaultValue);
-    short getShort(String key, short defaultValue);
-    float getFloat(String key, float defaultValue);
-    double getDouble(String key, double defaultValue);
+    int         getInt(String key, int     defaultValue);
+    long       getLong(String key, long    defaultValue);
+    byte       getByte(String key, byte    defaultValue);
+    short     getShort(String key, short   defaultValue);
+    float     getFloat(String key, float   defaultValue);
+    double   getDouble(String key, double  defaultValue);
 
     Date getDateTime(String key, Date defaultValue);
     void setDateTime(String key, Date time);
