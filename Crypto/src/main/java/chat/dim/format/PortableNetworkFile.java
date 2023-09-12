@@ -93,9 +93,13 @@ public interface PortableNetworkFile extends Mapper {
     //  Factory methods
     //
 
-    static PortableNetworkFile create(URI url, byte[] data, String filename, DecryptKey key) {
+    static PortableNetworkFile create(URI url, DecryptKey key) {
         FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.createPortableNetworkFile(url, data, filename, key);
+        return man.generalFactory.createPortableNetworkFile(url, key);
+    }
+    static PortableNetworkFile create(byte[] data, String filename) {
+        FactoryManager man = FactoryManager.getInstance();
+        return man.generalFactory.createPortableNetworkFile(data, filename);
     }
 
     static PortableNetworkFile parse(Object pnf) {
@@ -119,15 +123,22 @@ public interface PortableNetworkFile extends Mapper {
     interface Factory {
 
         /**
-         *  Create PNF
+         *  Create PNF with remote URL & decrypt key
          *
          * @param url      - download URL
-         * @param data     - file content (not encrypted)
-         * @param filename - file name
          * @param key      - decrypt key
          * @return PNF object
          */
-        PortableNetworkFile createPortableNetworkFile(URI url, byte[] data, String filename, DecryptKey key);
+        PortableNetworkFile createPortableNetworkFile(URI url, DecryptKey key);
+
+        /**
+         *  Create PNF with file data & filename
+         *
+         * @param data     - file content (not encrypted)
+         * @param filename - file name
+         * @return PNF object
+         */
+        PortableNetworkFile createPortableNetworkFile(byte[] data, String filename);
 
         /**
          *  Parse string/map object to PNF

@@ -172,8 +172,8 @@ public class GeneralFactory {
         return metaFactories.get(version);
     }
 
-    public int getMetaType(Map<?, ?> meta) {
-        return Converter.getInt(meta.get("type"), 0);
+    public int getMetaType(Map<?, ?> meta, int defaultValue) {
+        return Converter.getInt(meta.get("type"), defaultValue);
     }
 
     public Meta createMeta(int version, VerifyKey key, String seed, byte[] fingerprint) {
@@ -198,7 +198,7 @@ public class GeneralFactory {
             assert false : "meta error: " + meta;
             return null;
         }
-        int version = getMetaType(info);
+        int version = getMetaType(info, 0);
         Meta.Factory factory = getMetaFactory(version);
         if (factory == null && version != 0) {
             factory = getMetaFactory(0);  // unknown
@@ -229,7 +229,7 @@ public class GeneralFactory {
         // check ID.name
         String seed = meta.getSeed();
         String name = identifier.getName();
-        if (name == null || name.length() == 0) {
+        if (name == null || name.isEmpty()) {
             if (seed != null && seed.length() > 0) {
                 return false;
             }

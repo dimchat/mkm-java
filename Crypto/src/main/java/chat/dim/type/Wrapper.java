@@ -100,14 +100,14 @@ public interface Wrapper {
         Map<String, Object> result = new HashMap<>();
         Iterator<? extends Map.Entry<?, ?>> iterator = dict.entrySet().iterator();
         Map.Entry<?, ?> entry;
-        Object key;
-        Object value, naked;
+        String key;
+        Object value;
         while (iterator.hasNext()) {
             entry = iterator.next();
-            key = entry.getKey();
-            value = entry.getValue();
-            naked = unwrap(value);
-            result.put(getString(key), naked);
+            // key = (String) entry.getKey();
+            key = getString(entry.getKey());
+            value = unwrap(entry.getValue());
+            result.put(key, value);
         }
         return result;
     }
@@ -115,11 +115,10 @@ public interface Wrapper {
     static List<?> unwrapList(List<?> array) {
         assert array != null : "empty list";
         List<Object> result = new ArrayList<>();
-        Object naked;
         for (Object item : array) {
-            naked = unwrap(item);
-            result.add(naked);
+            result.add(unwrap(item));
         }
         return result;
     }
+
 }

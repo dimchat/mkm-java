@@ -62,7 +62,7 @@ public interface Copier {
         }
         return clone;
     }
-    static List<Object> copyList(List<?> array) {
+    static <V> List<V> copyList(List<V> array) {
         return new ArrayList<>(array);
     }
 

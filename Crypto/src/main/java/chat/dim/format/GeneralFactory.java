@@ -148,10 +148,15 @@ public class GeneralFactory {
         return pnfFactory;
     }
 
-    public PortableNetworkFile createPortableNetworkFile(URI url, byte[] data, String filename, DecryptKey key) {
+    public PortableNetworkFile createPortableNetworkFile(URI url, DecryptKey key) {
         PortableNetworkFile.Factory factory = getPortableNetworkFileFactory();
         assert factory != null : "PNF factory not ready";
-        return factory.createPortableNetworkFile(url, data, filename, key);
+        return factory.createPortableNetworkFile(url, key);
+    }
+    public PortableNetworkFile createPortableNetworkFile(byte[] data, String filename) {
+        PortableNetworkFile.Factory factory = getPortableNetworkFileFactory();
+        assert factory != null : "PNF factory not ready";
+        return factory.createPortableNetworkFile(data, filename);
     }
 
     public PortableNetworkFile parsePortableNetworkFile(Object pnf) {

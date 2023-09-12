@@ -51,7 +51,7 @@ public interface Converter {
         } else if (value instanceof Boolean) {
             // exactly
             return (Boolean) value;
-        } else if (value instanceof Number) {
+        } else if (value instanceof Number) {  // Byte, Short, Integer, Long, Float, Double
             int num = ((Number) value).intValue();
             assert num == 1 || num == 0 : "boolean value error: " + value;
             return num != 0;
@@ -63,7 +63,7 @@ public interface Converter {
         } else {
             lower = value.toString();
         }
-        if (lower.length() == 0) {
+        if (lower.isEmpty()) {
             return false;
         } else {
             lower = lower.toLowerCase();
@@ -73,7 +73,7 @@ public interface Converter {
                 lower.equals("null") || lower.equals("undefined")) {
             return false;
         }
-        assert lower.equals("true") || lower.equals("yes") || lower.equals("on") || lower.equals("1")
+        assert lower.equals("1") || lower.equals("true") || lower.equals("yes") || lower.equals("on")
                 : "boolean value error: " + value;
         return true;
     }
