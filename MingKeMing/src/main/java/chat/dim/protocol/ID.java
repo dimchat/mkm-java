@@ -42,9 +42,9 @@ import chat.dim.type.Stringer;
  *      data format: "name@address[/terminal]"
  *
  *      fields:
- *          name     - entity name, the seed of fingerprint to build address
+ *          name     - entity name, the seed of fingerprint (for building address)
  *          address  - a string to identify an entity
- *          terminal - entity login resource(device), OPTIONAL
+ *          terminal - location (device), RESERVED
  */
 public interface ID extends Stringer {
 

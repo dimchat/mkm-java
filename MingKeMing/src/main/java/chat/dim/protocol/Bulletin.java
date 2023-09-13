@@ -41,21 +41,21 @@ public interface Bulletin extends Document {
     /**
      *  Get group founder
      *
-     * @return founder ID
+     * @return user ID
      */
     ID getFounder();
 
     /**
      *  Get group assistants
      *
-     * @return bot ID list
+     * @return group bot ID list
      */
     List<ID> getAssistants();
 
     /**
      *  Set group assistants
      *
-     * @param assistants - bot ID list
+     * @param bots - group bot ID list
      */
-    void setAssistants(List<ID> assistants);
+    void setAssistants(List<ID> bots);
 }

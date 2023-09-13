@@ -30,8 +30,10 @@ import java.util.Map;
 public interface EncryptKey extends CryptographyKey {
 
     /**
-     *  ciphertext = encrypt(plaintext, PW)
-     *  ciphertext = encrypt(plaintext, PK)
+     *  1. Symmetric Key:
+     *      ciphertext = encrypt(plaintext, PW)
+     *  2. Asymmetric Public Key:
+     *      ciphertext = encrypt(plaintext, PK)
      *
      * @param plaintext - plain data
      * @param extra     - store extra variables ('IV' for 'AES')

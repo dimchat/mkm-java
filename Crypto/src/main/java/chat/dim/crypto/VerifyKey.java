@@ -42,5 +42,5 @@ public interface VerifyKey extends AsymmetricKey {
      * @param sKey - private key
      * @return true on signature matched
      */
-    boolean match(SignKey sKey);
+    boolean matchSignKey(SignKey sKey);
 }

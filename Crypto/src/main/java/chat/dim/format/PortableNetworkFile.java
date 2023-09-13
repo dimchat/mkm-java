@@ -40,9 +40,10 @@ import chat.dim.type.Mapper;
  *      1. "base64,{BASE64_ENCODE}"
  *      2. "data:image/png;base64,{BASE64_ENCODE}"
  *      3. {
- *              URL      : "http://...", // download from CDN
  *              data     : "...",        // base64_encode(fileContent)
  *              filename : "avatar.png",
+ *
+ *              URL      : "http://...", // download from CDN
  *              // before fileContent uploaded to a public CDN,
  *              // it can be encrypted by a symmetric key
  *              key      : {             // symmetric key to decrypt file content
@@ -54,25 +55,27 @@ import chat.dim.type.Mapper;
  */
 public interface PortableNetworkFile extends Mapper {
 
-    // download URL
-    void setURL(URI url);
-    URI getURL();
-
-    // when file data is too big, don't set it in this dictionary,
-    // but upload it to a CDN and set the download URL instead.
+    /** When file data is too big, don't set it in this dictionary,
+     *  but upload it to a CDN and set the download URL instead.
+     */
     void setData(byte[] data);
     byte[] getData();
 
     void setFilename(String filename);
     String getFilename();
 
-    // password for decrypting the downloaded data from CDN,
-    // default is a plain key, which just return the same data when decrypting.
+    /** Download URL
+     */
+    void setURL(URI url);
+    URI getURL();
+
+    /** Password for decrypting the downloaded data from CDN,
+     *  default is a plain key, which just return the same data when decrypting.
+     */
     void setPassword(DecryptKey key);
     DecryptKey getPassword();
 
-    /**
-     *  Get encoded string
+    /** Get encoded string
      *
      * @return "URL", or
      *         "base64,{BASE64_ENCODE}", or
@@ -93,13 +96,15 @@ public interface PortableNetworkFile extends Mapper {
     //  Factory methods
     //
 
-    static PortableNetworkFile create(URI url, DecryptKey key) {
-        FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.createPortableNetworkFile(url, key);
+    static PortableNetworkFile create(URI url, DecryptKey password) {
+        return create(null, null, url, password);
     }
     static PortableNetworkFile create(byte[] data, String filename) {
+        return create(data, filename, null, null);
+    }
+    static PortableNetworkFile create(byte[] data, String filename, URI url, DecryptKey password) {
         FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.createPortableNetworkFile(data, filename);
+        return man.generalFactory.createPortableNetworkFile(data, filename, url, password);
     }
 
     static PortableNetworkFile parse(Object pnf) {
@@ -123,22 +128,16 @@ public interface PortableNetworkFile extends Mapper {
     interface Factory {
 
         /**
-         *  Create PNF with remote URL & decrypt key
-         *
-         * @param url      - download URL
-         * @param key      - decrypt key
-         * @return PNF object
-         */
-        PortableNetworkFile createPortableNetworkFile(URI url, DecryptKey key);
-
-        /**
-         *  Create PNF with file data & filename
+         *  Create PNF
          *
          * @param data     - file content (not encrypted)
          * @param filename - file name
+         * @param url      - download URL
+         * @param password - decrypt key for downloaded data
          * @return PNF object
          */
-        PortableNetworkFile createPortableNetworkFile(byte[] data, String filename);
+        PortableNetworkFile createPortableNetworkFile(byte[] data, String filename,
+                                                      URI url, DecryptKey password);
 
         /**
          *  Parse string/map object to PNF

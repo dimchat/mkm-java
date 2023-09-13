@@ -45,7 +45,7 @@ public class GeneralFactory {
 
     private PortableNetworkFile.Factory pnfFactory = null;
 
-    protected List<String> split(String text) {
+    public List<String> split(String text) {
         List<String> array = new ArrayList<>();
         // "{TEXT}", or
         // "base64,{BASE64_ENCODE}", or
@@ -73,7 +73,7 @@ public class GeneralFactory {
         return array;
     }
     @SuppressWarnings("unchecked")
-    protected Map<String, Object> decode(Object data, String defaultKey) {
+    public Map<String, Object> decode(Object data, String defaultKey) {
         if (data instanceof Mapper) {
             return ((Mapper) data).toMap();
         } else if (data instanceof Map) {
@@ -148,15 +148,11 @@ public class GeneralFactory {
         return pnfFactory;
     }
 
-    public PortableNetworkFile createPortableNetworkFile(URI url, DecryptKey key) {
+    public PortableNetworkFile createPortableNetworkFile(byte[] data, String filename,
+                                                         URI url, DecryptKey password) {
         PortableNetworkFile.Factory factory = getPortableNetworkFileFactory();
         assert factory != null : "PNF factory not ready";
-        return factory.createPortableNetworkFile(url, key);
-    }
-    public PortableNetworkFile createPortableNetworkFile(byte[] data, String filename) {
-        PortableNetworkFile.Factory factory = getPortableNetworkFileFactory();
-        assert factory != null : "PNF factory not ready";
-        return factory.createPortableNetworkFile(data, filename);
+        return factory.createPortableNetworkFile(data, filename, url, password);
     }
 
     public PortableNetworkFile parsePortableNetworkFile(Object pnf) {

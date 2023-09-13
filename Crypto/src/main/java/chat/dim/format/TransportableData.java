@@ -34,7 +34,7 @@ import chat.dim.type.Mapper;
  *  ~~~~~~~~~~~~~~~~~~
  *  TED - Transportable Encoded Data
  *
- *      0.  "{BASE64_ENCODE}"
+ *      0. "{BASE64_ENCODE}"
  *      1. "base64,{BASE64_ENCODE}"
  *      2. "data:image/png;base64,{BASE64_ENCODE}"
  *      3. {

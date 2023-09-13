@@ -114,7 +114,7 @@ public interface Meta extends Mapper {
      * @param identifier - entity ID
      * @return true on matched
      */
-    boolean matchID(ID identifier);
+    boolean matchIdentifier(ID identifier);
 
     /**
      *  Check whether meta match with public key
@@ -122,7 +122,7 @@ public interface Meta extends Mapper {
      * @param pKey - public key
      * @return true on matched
      */
-    boolean matchKey(VerifyKey pKey);
+    boolean matchPublicKey(VerifyKey pKey);
 
     //
     //  Factory methods
