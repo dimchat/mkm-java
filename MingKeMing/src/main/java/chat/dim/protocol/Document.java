@@ -97,7 +97,7 @@ public interface Document extends TAI, Mapper {
     }
     static Document create(String type, ID identifier) {
         FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.createDocument(type, identifier);
+        return man.generalFactory.createDocument(type, identifier, null, null);
     }
     static Document parse(Object doc) {
         FactoryManager man = FactoryManager.getInstance();
@@ -121,6 +121,7 @@ public interface Document extends TAI, Mapper {
 
         /**
          *  Create document with data & signature loaded from local storage
+         *  Create a new empty document with entity ID only
          *
          * @param identifier - entity ID
          * @param data       - document data (JsON)
@@ -128,14 +129,6 @@ public interface Document extends TAI, Mapper {
          * @return Document
          */
         Document createDocument(ID identifier, String data, String signature);
-
-        /**
-         *  Create a new empty document with entity ID
-         *
-         * @param identifier - entity ID
-         * @return Document
-         */
-        Document createDocument(ID identifier);
 
         /**
          *  Parse map object to entity document

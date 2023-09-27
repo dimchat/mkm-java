@@ -45,6 +45,9 @@ public class GeneralFactory {
 
     private PortableNetworkFile.Factory pnfFactory = null;
 
+    /**
+     *  Split text string to array: ["{TEXT}", "{algorithm}"]
+     */
     public List<String> split(String text) {
         List<String> array = new ArrayList<>();
         // "{TEXT}", or

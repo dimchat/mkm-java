@@ -226,11 +226,7 @@ public class GeneralFactory {
         assert factory != null : "document type not found: " + type;
         return factory.createDocument(identifier, data, signature);
     }
-    public Document createDocument(String type, ID identifier) {
-        Document.Factory factory = getDocumentFactory(type);
-        assert factory != null : "document type not found: " + type;
-        return factory.createDocument(identifier);
-    }
+
     public Document parseDocument(Object doc) {
         if (doc == null) {
             return null;
