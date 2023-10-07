@@ -92,14 +92,23 @@ public interface Document extends TAI, Mapper {
     //
     //  Factory methods
     //
+
+    /**
+     *  Create from stored info
+     */
     static Document create(String type, ID identifier, String data, TransportableData signature) {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.createDocument(type, identifier, data, signature);
     }
+
+    /**
+     *  Create new empty document
+     */
     static Document create(String type, ID identifier) {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.createDocument(type, identifier, null, null);
     }
+
     static Document parse(Object doc) {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.parseDocument(doc);

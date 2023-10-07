@@ -128,14 +128,23 @@ public interface Meta extends Mapper {
     //
     //  Factory methods
     //
+
+    /**
+     *  Create from stored info
+     */
     static Meta create(int version, VerifyKey pKey, String seed, TransportableData fingerprint) {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.createMeta(version, pKey, seed, fingerprint);
     }
+
+    /**
+     *  Generate with private key
+     */
     static Meta generate(int version, SignKey sKey, String seed) {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.generateMeta(version, sKey, seed);
     }
+
     static Meta parse(Object meta) {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.parseMeta(meta);
@@ -144,10 +153,6 @@ public interface Meta extends Mapper {
     static Factory getFactory(int version) {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.getMetaFactory(version);
-    }
-    static Factory getFactory(MetaType version) {
-        FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.getMetaFactory(version.value);
     }
     static void setFactory(int version, Factory factory) {
         FactoryManager man = FactoryManager.getInstance();

@@ -96,13 +96,20 @@ public interface PortableNetworkFile extends Mapper {
     //  Factory methods
     //
 
+    /**
+     *  Create from remote URL
+     */
     static PortableNetworkFile create(URI url, DecryptKey password) {
         return create(null, null, url, password);
     }
+    /**
+     *  Create from file data
+     */
     static PortableNetworkFile create(byte[] data, String filename) {
         TransportableData ted = TransportableData.create(data);
         return create(ted, filename, null, null);
     }
+
     static PortableNetworkFile create(TransportableData data, String filename, URI url, DecryptKey password) {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.createPortableNetworkFile(data, filename, url, password);
