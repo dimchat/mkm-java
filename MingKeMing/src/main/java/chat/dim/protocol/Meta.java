@@ -34,6 +34,7 @@ import java.util.Map;
 
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
+import chat.dim.format.TransportableData;
 import chat.dim.mkm.FactoryManager;
 import chat.dim.type.Mapper;
 
@@ -127,7 +128,7 @@ public interface Meta extends Mapper {
     //
     //  Factory methods
     //
-    static Meta create(int version, VerifyKey pKey, String seed, byte[] fingerprint) {
+    static Meta create(int version, VerifyKey pKey, String seed, TransportableData fingerprint) {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.createMeta(version, pKey, seed, fingerprint);
     }
@@ -171,7 +172,7 @@ public interface Meta extends Mapper {
          * @param fingerprint - sKey.sign(seed)
          * @return Meta
          */
-        Meta createMeta(VerifyKey pKey, String seed, byte[] fingerprint);
+        Meta createMeta(VerifyKey pKey, String seed, TransportableData fingerprint);
 
         /**
          *  Generate meta

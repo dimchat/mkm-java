@@ -37,6 +37,7 @@ import java.util.Map;
 
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
+import chat.dim.format.TransportableData;
 import chat.dim.protocol.Address;
 import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
@@ -174,7 +175,7 @@ public class GeneralFactory {
         return Converter.getInt(meta.get("type"), defaultValue);
     }
 
-    public Meta createMeta(int version, VerifyKey key, String seed, byte[] fingerprint) {
+    public Meta createMeta(int version, VerifyKey key, String seed, TransportableData fingerprint) {
         Meta.Factory factory = getMetaFactory(version);
         assert factory != null : "meta type not found: " + version;
         return factory.createMeta(key, seed, fingerprint);
@@ -221,7 +222,7 @@ public class GeneralFactory {
         return Converter.getString(doc.get("type"), defaultValue);
     }
 
-    public Document createDocument(String type, ID identifier, String data, String signature) {
+    public Document createDocument(String type, ID identifier, String data, TransportableData signature) {
         Document.Factory factory = getDocumentFactory(type);
         assert factory != null : "document type not found: " + type;
         return factory.createDocument(identifier, data, signature);

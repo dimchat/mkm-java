@@ -33,6 +33,7 @@ package chat.dim.protocol;
 import java.util.Date;
 import java.util.Map;
 
+import chat.dim.format.TransportableData;
 import chat.dim.mkm.FactoryManager;
 import chat.dim.type.Mapper;
 
@@ -91,7 +92,7 @@ public interface Document extends TAI, Mapper {
     //
     //  Factory methods
     //
-    static Document create(String type, ID identifier, String data, String signature) {
+    static Document create(String type, ID identifier, String data, TransportableData signature) {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.createDocument(type, identifier, data, signature);
     }
@@ -128,7 +129,7 @@ public interface Document extends TAI, Mapper {
          * @param signature  - document signature (Base64)
          * @return Document
          */
-        Document createDocument(ID identifier, String data, String signature);
+        Document createDocument(ID identifier, String data, TransportableData signature);
 
         /**
          *  Parse map object to entity document

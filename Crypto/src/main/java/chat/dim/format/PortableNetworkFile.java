@@ -100,9 +100,10 @@ public interface PortableNetworkFile extends Mapper {
         return create(null, null, url, password);
     }
     static PortableNetworkFile create(byte[] data, String filename) {
-        return create(data, filename, null, null);
+        TransportableData ted = TransportableData.create(data);
+        return create(ted, filename, null, null);
     }
-    static PortableNetworkFile create(byte[] data, String filename, URI url, DecryptKey password) {
+    static PortableNetworkFile create(TransportableData data, String filename, URI url, DecryptKey password) {
         FactoryManager man = FactoryManager.getInstance();
         return man.generalFactory.createPortableNetworkFile(data, filename, url, password);
     }
@@ -136,7 +137,7 @@ public interface PortableNetworkFile extends Mapper {
          * @param password - decrypt key for downloaded data
          * @return PNF object
          */
-        PortableNetworkFile createPortableNetworkFile(byte[] data, String filename,
+        PortableNetworkFile createPortableNetworkFile(TransportableData data, String filename,
                                                       URI url, DecryptKey password);
 
         /**

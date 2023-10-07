@@ -61,17 +61,16 @@ public class GeneralFactory {
         }
         pos1 = text.indexOf(';') + 1;
         int pos2 = text.indexOf(',', pos1);
-        if (pos2 < 0) {
-            // [data]
-            if (pos1 == 0) {
-                array.add(text);
-            } else {
-                array.add(text.substring(pos1));
-            }
-        } else {
+        if (pos2 > pos1) {
             // [data, algorithm]
             array.add(text.substring(pos2 + 1));
             array.add(text.substring(pos1, pos2));
+        } else if (pos1 > 0) {
+            // [data]
+            array.add(text.substring(pos1));
+        } else {
+            // [data]
+            array.add(text);
         }
         return array;
     }
@@ -151,7 +150,7 @@ public class GeneralFactory {
         return pnfFactory;
     }
 
-    public PortableNetworkFile createPortableNetworkFile(byte[] data, String filename,
+    public PortableNetworkFile createPortableNetworkFile(TransportableData data, String filename,
                                                          URI url, DecryptKey password) {
         PortableNetworkFile.Factory factory = getPortableNetworkFileFactory();
         assert factory != null : "PNF factory not ready";
