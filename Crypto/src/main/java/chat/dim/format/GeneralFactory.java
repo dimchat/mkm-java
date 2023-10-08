@@ -132,10 +132,11 @@ public class GeneralFactory {
         }
         String algorithm = getDataAlgorithm(info, "*");
         TransportableData.Factory factory = getTransportableDataFactory(algorithm);
-        if (factory == null && !algorithm.equals("*")) {
+        if (factory == null) {
+            assert !algorithm.equals("*") : "TED factory not ready: " + ted;
             factory = getTransportableDataFactory("*");  // unknown
+            assert factory != null : "default TED factory not found";
         }
-        assert factory != null : "cannot parse TED: " + ted;
         return factory.parseTransportableData(info);
     }
 

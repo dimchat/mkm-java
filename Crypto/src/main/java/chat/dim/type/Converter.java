@@ -25,7 +25,9 @@
  */
 package chat.dim.type;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 public interface Converter {
 
@@ -69,14 +71,18 @@ public interface Converter {
             lower = lower.toLowerCase();
         }
         // check false values
-        if (lower.equals("0") || lower.equals("false") || lower.equals("no") || lower.equals("off") ||
-                lower.equals("null") || lower.equals("undefined")) {
+        if (FALSE_LIST.contains(lower)) {
             return false;
         }
-        assert lower.equals("1") || lower.equals("true") || lower.equals("yes") || lower.equals("on")
-                : "boolean value error: " + value;
+        assert TRUE_LIST.contains(lower) : "boolean value error: " + value;
         return true;
     }
+    List<String> FALSE_LIST = Arrays.asList(
+            "0", "false", "no", "off", "null", "undefined"
+    );
+    List<String> TRUE_LIST = Arrays.asList(
+            "1", "true", "yes", "on"
+    );
 
     static byte getByte(Object value, byte defaultValue) {
         if (value == null) {

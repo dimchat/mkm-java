@@ -103,15 +103,15 @@ public class GeneralFactory {
     //  ID
     //
 
-    public void setIDFactory(ID.Factory factory) {
+    public void setIdentifierFactory(ID.Factory factory) {
         idFactory = factory;
     }
 
-    public ID.Factory getIDFactory() {
+    public ID.Factory getIdentifierFactory() {
         return idFactory;
     }
 
-    public ID parseID(Object identifier) {
+    public ID parseIdentifier(Object identifier) {
         if (identifier == null) {
             return null;
         } else if (identifier instanceof ID) {
@@ -122,28 +122,28 @@ public class GeneralFactory {
             assert false : "ID error: " + identifier;
             return null;
         }
-        ID.Factory factory = getIDFactory();
+        ID.Factory factory = getIdentifierFactory();
         assert factory != null : "ID factory not ready";
-        return factory.parseID(str);
+        return factory.parseIdentifier(str);
     }
 
-    public ID createID(String name, Address address, String terminal) {
-        ID.Factory factory = getIDFactory();
+    public ID createIdentifier(String name, Address address, String terminal) {
+        ID.Factory factory = getIdentifierFactory();
         assert factory != null : "ID factory not ready";
-        return factory.createID(name, address, terminal);
+        return factory.createIdentifier(name, address, terminal);
     }
 
-    public ID generateID(Meta meta, int network, String terminal) {
-        ID.Factory factory = getIDFactory();
+    public ID generateIdentifier(Meta meta, int network, String terminal) {
+        ID.Factory factory = getIdentifierFactory();
         assert factory != null : "ID factory not ready";
-        return factory.generateID(meta, network, terminal);
+        return factory.generateIdentifier(meta, network, terminal);
     }
 
     public List<ID> convertIdentifiers(List<?> members) {
         List<ID> array = new ArrayList<>();
         ID id;
         for (Object item : members) {
-            id = parseID(item);
+            id = parseIdentifier(item);
             if (id == null) {
                 continue;
             }
@@ -198,11 +198,12 @@ public class GeneralFactory {
             return null;
         }
         int version = getMetaType(info, 0);
+        assert version > 0 : "meta error: " + meta;
         Meta.Factory factory = getMetaFactory(version);
-        if (factory == null && version != 0) {
+        if (factory == null) {
             factory = getMetaFactory(0);  // unknown
+            assert factory != null : "default meta factory not found";
         }
-        assert factory != null : "cannot parse entity meta: " + meta;
         return factory.parseMeta(info);
     }
 
@@ -241,10 +242,11 @@ public class GeneralFactory {
         }
         String type = getDocumentType(info, "*");
         Document.Factory factory = getDocumentFactory(type);
-        if (factory == null && !type.equals("*")) {
+        if (factory == null) {
+            assert !type.equals("*") : "document factory not ready: " + doc;
             factory = getDocumentFactory("*");  // unknown
+            assert factory != null : "default document factory not found";
         }
-        assert factory != null : "cannot parse entity document: " + doc;
         return factory.parseDocument(info);
     }
 }

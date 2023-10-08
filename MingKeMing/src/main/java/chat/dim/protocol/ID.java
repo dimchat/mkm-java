@@ -89,24 +89,24 @@ public interface ID extends Stringer {
     //
     static ID parse(Object identifier) {
         FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.parseID(identifier);
+        return man.generalFactory.parseIdentifier(identifier);
     }
     static ID create(String name, Address address, String terminal) {
         FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.createID(name, address, terminal);
+        return man.generalFactory.createIdentifier(name, address, terminal);
     }
     static ID generate(Meta meta, int network, String terminal) {
         FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.generateID(meta, network, terminal);
+        return man.generalFactory.generateIdentifier(meta, network, terminal);
     }
 
     static Factory getFactory() {
         FactoryManager man = FactoryManager.getInstance();
-        return man.generalFactory.getIDFactory();
+        return man.generalFactory.getIdentifierFactory();
     }
     static void setFactory(Factory factory) {
         FactoryManager man = FactoryManager.getInstance();
-        man.generalFactory.setIDFactory(factory);
+        man.generalFactory.setIdentifierFactory(factory);
     }
 
     /**
@@ -123,7 +123,7 @@ public interface ID extends Stringer {
          * @param terminal - ID.terminal
          * @return ID
          */
-        ID generateID(Meta meta, int network, String terminal);
+        ID generateIdentifier(Meta meta, int network, String terminal);
 
         /**
          *  Create ID
@@ -133,7 +133,7 @@ public interface ID extends Stringer {
          * @param terminal - ID.terminal
          * @return ID
          */
-        ID createID(String name, Address address, String terminal);
+        ID createIdentifier(String name, Address address, String terminal);
 
         /**
          *  Parse string object to ID
@@ -141,6 +141,6 @@ public interface ID extends Stringer {
          * @param identifier - ID string
          * @return ID
          */
-        ID parseID(String identifier);
+        ID parseIdentifier(String identifier);
     }
 }

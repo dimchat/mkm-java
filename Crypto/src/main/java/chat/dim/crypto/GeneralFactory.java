@@ -94,11 +94,12 @@ public class GeneralFactory {
             return null;
         }
         String algorithm = getAlgorithm(info, "*");
+        assert !algorithm.equals("*") : "symmetric key error: " + key;
         SymmetricKey.Factory factory = getSymmetricKeyFactory(algorithm);
-        if (factory == null && !algorithm.equals("*")) {
+        if (factory == null) {
             factory = getSymmetricKeyFactory("*");  // unknown
+            assert factory != null : "default symmetric key factory not found";
         }
-        assert factory != null : "cannot parse symmetric key: " + key;
         return factory.parseSymmetricKey(info);
     }
 
@@ -132,11 +133,12 @@ public class GeneralFactory {
             return null;
         }
         String algorithm = getAlgorithm(info, "*");
+        assert !algorithm.equals("*") : "private key error: " + key;
         PrivateKey.Factory factory = getPrivateKeyFactory(algorithm);
-        if (factory == null && !algorithm.equals("*")) {
+        if (factory == null) {
             factory = getPrivateKeyFactory("*");  // unknown
+            assert factory != null : "default private key factory not found";
         }
-        assert factory != null : "cannot parse private key: " + key;
         return factory.parsePrivateKey(info);
     }
 
@@ -164,11 +166,12 @@ public class GeneralFactory {
             return null;
         }
         String algorithm = getAlgorithm(info, "*");
+        assert !algorithm.equals("*") : "public key error: " + key;
         PublicKey.Factory factory = getPublicKeyFactory(algorithm);
-        if (factory == null && !algorithm.equals("*")) {
+        if (factory == null) {
             factory = getPublicKeyFactory("*");  // unknown
+            assert factory != null : "default public key factory not found";
         }
-        assert factory != null : "cannot parse public key: " + key;
         return factory.parsePublicKey(info);
     }
 }
