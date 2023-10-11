@@ -39,7 +39,7 @@ import chat.dim.type.Mapper;
  *  Format GeneralFactory
  *  ~~~~~~~~~~~~~~~~~~~~~
  */
-public class GeneralFactory {
+public class FormatGeneralFactory {
 
     private final Map<String, TransportableData.Factory> tedFactories = new HashMap<>();
 

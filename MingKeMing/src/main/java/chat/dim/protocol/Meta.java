@@ -35,7 +35,7 @@ import java.util.Map;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.TransportableData;
-import chat.dim.mkm.FactoryManager;
+import chat.dim.mkm.AccountFactoryManager;
 import chat.dim.type.Mapper;
 
 /**
@@ -133,7 +133,7 @@ public interface Meta extends Mapper {
      *  Create from stored info
      */
     static Meta create(int version, VerifyKey pKey, String seed, TransportableData fingerprint) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.createMeta(version, pKey, seed, fingerprint);
     }
 
@@ -141,25 +141,25 @@ public interface Meta extends Mapper {
      *  Generate with private key
      */
     static Meta generate(int version, SignKey sKey, String seed) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.generateMeta(version, sKey, seed);
     }
 
     static Meta parse(Object meta) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.parseMeta(meta);
     }
 
     static Factory getFactory(int version) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.getMetaFactory(version);
     }
     static void setFactory(int version, Factory factory) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         man.generalFactory.setMetaFactory(version, factory);
     }
     static void setFactory(MetaType version, Factory factory) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         man.generalFactory.setMetaFactory(version.value, factory);
     }
 

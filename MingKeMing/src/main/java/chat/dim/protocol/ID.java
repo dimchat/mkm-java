@@ -32,7 +32,7 @@ package chat.dim.protocol;
 
 import java.util.List;
 
-import chat.dim.mkm.FactoryManager;
+import chat.dim.mkm.AccountFactoryManager;
 import chat.dim.mkm.Identifier;
 import chat.dim.type.Stringer;
 
@@ -76,11 +76,11 @@ public interface ID extends Stringer {
     ID FOUNDER = new Identifier("moky@anywhere", "moky", Address.ANYWHERE, null);
 
     static List<ID> convert(List<?> members) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.convertIdentifiers(members);
     }
     static List<String> revert(List<ID> members) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.revertIdentifiers(members);
     }
 
@@ -88,24 +88,24 @@ public interface ID extends Stringer {
     //  Factory methods
     //
     static ID parse(Object identifier) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.parseIdentifier(identifier);
     }
     static ID create(String name, Address address, String terminal) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.createIdentifier(name, address, terminal);
     }
     static ID generate(Meta meta, int network, String terminal) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.generateIdentifier(meta, network, terminal);
     }
 
     static Factory getFactory() {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.getIdentifierFactory();
     }
     static void setFactory(Factory factory) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         man.generalFactory.setIdentifierFactory(factory);
     }
 

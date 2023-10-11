@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.Map;
 
 import chat.dim.format.TransportableData;
-import chat.dim.mkm.FactoryManager;
+import chat.dim.mkm.AccountFactoryManager;
 import chat.dim.type.Mapper;
 
 /**
@@ -97,7 +97,7 @@ public interface Document extends TAI, Mapper {
      *  Create from stored info
      */
     static Document create(String type, ID identifier, String data, TransportableData signature) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.createDocument(type, identifier, data, signature);
     }
 
@@ -105,21 +105,21 @@ public interface Document extends TAI, Mapper {
      *  Create new empty document
      */
     static Document create(String type, ID identifier) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.createDocument(type, identifier, null, null);
     }
 
     static Document parse(Object doc) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.parseDocument(doc);
     }
 
     static Factory getFactory(String type) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.getDocumentFactory(type);
     }
     static void setFactory(String type, Factory factory) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         man.generalFactory.setDocumentFactory(type, factory);
     }
 

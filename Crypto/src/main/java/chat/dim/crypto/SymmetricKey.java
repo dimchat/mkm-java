@@ -47,20 +47,20 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
     //  Factory methods
     //
     static SymmetricKey generate(String algorithm) {
-        FactoryManager man = FactoryManager.getInstance();
+        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
         return man.generalFactory.generateSymmetricKey(algorithm);
     }
     static SymmetricKey parse(Object key) {
-        FactoryManager man = FactoryManager.getInstance();
+        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
         return man.generalFactory.parseSymmetricKey(key);
     }
 
     static Factory getFactory(String algorithm) {
-        FactoryManager man = FactoryManager.getInstance();
+        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
         return man.generalFactory.getSymmetricKeyFactory(algorithm);
     }
     static void setFactory(String algorithm, Factory factory) {
-        FactoryManager man = FactoryManager.getInstance();
+        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
         man.generalFactory.setSymmetricKeyFactory(algorithm, factory);
     }
 

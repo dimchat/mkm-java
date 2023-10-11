@@ -1,9 +1,4 @@
 /* license: https://mit-license.org
- *
- *  Ming-Ke-Ming : Decentralized User Identity Authentication
- *
- *                                Written in 2022 by Moky <albert.moky@gmail.com>
- *
  * ==============================================================================
  * The MIT License (MIT)
  *
@@ -28,19 +23,19 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm;
+package chat.dim.crypto;
 
 /**
- *  Account FactoryManager
- *  ~~~~~~~~~~~~~~~~~~~~~~
+ *  CryptographyKey FactoryManager
+ *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
-public enum FactoryManager {
+public enum CryptoKeyFactoryManager {
 
     INSTANCE;
 
-    public static FactoryManager getInstance() {
+    public static CryptoKeyFactoryManager getInstance() {
         return INSTANCE;
     }
 
-    public GeneralFactory generalFactory = new GeneralFactory();
+    public CryptoKeyGeneralFactory generalFactory = new CryptoKeyGeneralFactory();
 }

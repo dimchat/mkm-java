@@ -111,21 +111,21 @@ public interface PortableNetworkFile extends Mapper {
     }
 
     static PortableNetworkFile create(TransportableData data, String filename, URI url, DecryptKey password) {
-        FactoryManager man = FactoryManager.getInstance();
+        FormatFactoryManager man = FormatFactoryManager.getInstance();
         return man.generalFactory.createPortableNetworkFile(data, filename, url, password);
     }
 
     static PortableNetworkFile parse(Object pnf) {
-        FactoryManager man = FactoryManager.getInstance();
+        FormatFactoryManager man = FormatFactoryManager.getInstance();
         return man.generalFactory.parsePortableNetworkFile(pnf);
     }
 
     static void setFactory(Factory factory) {
-        FactoryManager man = FactoryManager.getInstance();
+        FormatFactoryManager man = FormatFactoryManager.getInstance();
         man.generalFactory.setPortableNetworkFileFactory(factory);
     }
     static Factory getFactory() {
-        FactoryManager man = FactoryManager.getInstance();
+        FormatFactoryManager man = FormatFactoryManager.getInstance();
         return man.generalFactory.getPortableNetworkFileFactory();
     }
 

@@ -49,7 +49,7 @@ import chat.dim.type.Wrapper;
  *  Account GeneralFactory
  *  ~~~~~~~~~~~~~~~~~~~~~~
  */
-public class GeneralFactory {
+public class AccountGeneralFactory {
 
     private Address.Factory addressFactory = null;
 

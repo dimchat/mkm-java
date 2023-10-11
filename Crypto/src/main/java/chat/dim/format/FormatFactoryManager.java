@@ -29,13 +29,13 @@ package chat.dim.format;
  *  Format FactoryManager
  *  ~~~~~~~~~~~~~~~~~~~~~
  */
-public enum FactoryManager {
+public enum FormatFactoryManager {
 
     INSTANCE;
 
-    public static FactoryManager getInstance() {
+    public static FormatFactoryManager getInstance() {
         return INSTANCE;
     }
 
-    public GeneralFactory generalFactory = new GeneralFactory();
+    public FormatGeneralFactory generalFactory = new FormatGeneralFactory();
 }

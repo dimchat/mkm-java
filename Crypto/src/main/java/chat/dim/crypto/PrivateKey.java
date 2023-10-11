@@ -51,20 +51,20 @@ public interface PrivateKey extends SignKey {
     //  Factory methods
     //
     static PrivateKey generate(String algorithm) {
-        FactoryManager man = FactoryManager.getInstance();
+        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
         return man.generalFactory.generatePrivateKey(algorithm);
     }
     static PrivateKey parse(Object key) {
-        FactoryManager man = FactoryManager.getInstance();
+        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
         return man.generalFactory.parsePrivateKey(key);
     }
 
     static void setFactory(String algorithm, Factory factory) {
-        FactoryManager man = FactoryManager.getInstance();
+        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
         man.generalFactory.setPrivateKeyFactory(algorithm, factory);
     }
     static Factory getFactory(String algorithm) {
-        FactoryManager man = FactoryManager.getInstance();
+        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
         return man.generalFactory.getPrivateKeyFactory(algorithm);
     }
 

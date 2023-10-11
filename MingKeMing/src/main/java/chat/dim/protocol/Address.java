@@ -30,8 +30,8 @@
  */
 package chat.dim.protocol;
 
+import chat.dim.mkm.AccountFactoryManager;
 import chat.dim.mkm.BroadcastAddress;
-import chat.dim.mkm.FactoryManager;
 import chat.dim.type.Stringer;
 
 /**
@@ -63,24 +63,24 @@ public interface Address extends Stringer {
     //  Factory methods
     //
     static Address parse(Object address) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.parseAddress(address);
     }
     static Address create(String address) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.createAddress(address);
     }
     static Address generate(Meta meta, int network) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.generateAddress(meta, network);
     }
 
     static Factory getFactory() {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.getAddressFactory();
     }
     static void setFactory(Factory factory) {
-        FactoryManager man = FactoryManager.getInstance();
+        AccountFactoryManager man = AccountFactoryManager.getInstance();
         man.generalFactory.setAddressFactory(factory);
     }
 

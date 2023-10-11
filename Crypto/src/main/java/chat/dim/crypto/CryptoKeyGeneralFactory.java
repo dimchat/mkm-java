@@ -36,7 +36,7 @@ import chat.dim.type.Wrapper;
  *  CryptographyKey GeneralFactory
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
-public class GeneralFactory {
+public class CryptoKeyGeneralFactory {
 
     private final Map<String, SymmetricKey.Factory> symmetricKeyFactories = new HashMap<>();
 

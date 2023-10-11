@@ -107,21 +107,21 @@ public interface TransportableData extends Mapper {
         return create(DEFAULT, data);
     }
     static TransportableData create(String algorithm, byte[] data) {
-        FactoryManager man = FactoryManager.getInstance();
+        FormatFactoryManager man = FormatFactoryManager.getInstance();
         return man.generalFactory.createTransportableData(algorithm, data);
     }
 
     static TransportableData parse(Object ted) {
-        FactoryManager man = FactoryManager.getInstance();
+        FormatFactoryManager man = FormatFactoryManager.getInstance();
         return man.generalFactory.parseTransportableData(ted);
     }
 
     static void setFactory(String algorithm, Factory factory) {
-        FactoryManager man = FactoryManager.getInstance();
+        FormatFactoryManager man = FormatFactoryManager.getInstance();
         man.generalFactory.setTransportableDataFactory(algorithm, factory);
     }
     static Factory getFactory(String algorithm) {
-        FactoryManager man = FactoryManager.getInstance();
+        FormatFactoryManager man = FormatFactoryManager.getInstance();
         return man.generalFactory.getTransportableDataFactory(algorithm);
     }
 

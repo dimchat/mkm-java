@@ -43,16 +43,16 @@ public interface PublicKey extends VerifyKey {
     //  Factory method
     //
     static PublicKey parse(Object key) {
-        FactoryManager man = FactoryManager.getInstance();
+        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
         return man.generalFactory.parsePublicKey(key);
     }
 
     static Factory getFactory(String algorithm) {
-        FactoryManager man = FactoryManager.getInstance();
+        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
         return man.generalFactory.getPublicKeyFactory(algorithm);
     }
     static void setFactory(String algorithm, Factory factory) {
-        FactoryManager man = FactoryManager.getInstance();
+        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
         man.generalFactory.setPublicKeyFactory(algorithm, factory);
     }
 
