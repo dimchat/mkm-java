@@ -82,7 +82,9 @@ public class FormatGeneralFactory {
             return (Map<String, Object>) data;
         }
         String text = data instanceof String ? (String) data : data.toString();
-        if (text.startsWith("{") && text.endsWith("}")) {
+        if (text.isEmpty()) {
+            return null;
+        } else if (text.startsWith("{") && text.endsWith("}")) {
             return JSONMap.decode(text);
         }
         Map<String, Object> info = new HashMap<>();
@@ -127,7 +129,7 @@ public class FormatGeneralFactory {
         // unwrap
         Map<String, Object> info = decode(ted, "data");
         if (info == null) {
-            assert false : "TED error: " + ted;
+            //assert false : "TED error: " + ted;
             return null;
         }
         String algorithm = getDataAlgorithm(info, "*");
@@ -167,7 +169,7 @@ public class FormatGeneralFactory {
         // unwrap
         Map<String, Object> info = decode(pnf, "URL");
         if (info == null) {
-            assert false : "PNF error: " + pnf;
+            //assert false : "PNF error: " + pnf;
             return null;
         }
         PortableNetworkFile.Factory factory = getPortableNetworkFileFactory();
