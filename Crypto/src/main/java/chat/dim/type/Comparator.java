@@ -31,11 +31,41 @@ import java.util.Map;
 
 public interface Comparator {
 
-    /**
-     *  Comparison
-     *  ~~~~~~~~~~
-     *  Shallow
-     */
+    static boolean identical(Object a, Object b) {
+        if (a == null) {
+            return b == null;
+        } else if (b == null) {
+            return false;
+        } else {
+            return a == b;
+        }
+    }
+
+    static boolean different(Object a, Object b) {
+        if (a == null) {
+            return b != null;
+        } else if (b == null) {
+            return true;
+        } else if (a == b) {
+            // same object
+            return false;
+        } else if (a instanceof Map) {
+            // check key-values
+            if (b instanceof Map) {
+                return !mapEquals((Map<?, ?>)a, (Map<?, ?>)b);
+            }
+            return true;
+        } else if (a instanceof List) {
+            // check elements
+            if (b instanceof List) {
+                return !listEquals((List<?>)a, (List<?>)b);
+            }
+            return true;
+        } else {
+            // other types
+            return !a.equals(b);
+        }
+    }
 
     static boolean mapEquals(Map<?, ?> a, Map<?, ?> b) {
         if (a == null) {
@@ -53,10 +83,10 @@ public interface Comparator {
         Map.Entry<?, ?> entry;
         while (iterator.hasNext()) {
             entry = iterator.next();
-            if (objectEquals(entry.getValue(), b.get(entry.getKey()))) {
-                continue;
+            // check values
+            if (different(entry.getValue(), b.get(entry.getKey()))) {
+                return false;
             }
-            return false;
         }
         return true;
     }
@@ -69,115 +99,19 @@ public interface Comparator {
         } else if (a == b) {
             // same object
             return true;
-        }
-        int size = a.size();
-        if (size != b.size()) {
-            // different lengths
-            return false;
-        }
-        for (int i = 0; i < size; ++i) {
-            if (objectEquals(a.get(i), b.get(i))) {
-                continue;
-            }
-            return false;
-        }
-        return true;
-    }
-
-    static boolean objectEquals(Object a, Object b) {
-        if (a == null) {
-            return b == null;
-        } else if (b == null) {
-            return false;
-        } else if (a == b) {
-            // same object
-            return true;
-        } else {
-            return a.equals(b);
-        }
-    }
-
-    static boolean identical(Object a, Object b) {
-        if (a == null) {
-            return b == null;
-        } else if (b == null) {
-            return false;
-        } else {
-            return a == b;
-        }
-    }
-
-    /**
-     *  Comparison
-     *  ~~~~~~~~~~
-     *  Deep
-     */
-
-    static boolean mapDeepEquals(Map<?, ?> a, Map<?, ?> b) {
-        if (a == null) {
-            return b == null;
-        } else if (b == null) {
-            return false;
-        } else if (a == b) {
-            // same object
-            return true;
         } else if (a.size() != b.size()) {
             // different lengths
             return false;
         }
-        Iterator<? extends Map.Entry<?, ?>> iterator = a.entrySet().iterator();
-        Map.Entry<?, ?> entry;
-        while (iterator.hasNext()) {
-            entry = iterator.next();
-            if (objectDeepEquals(entry.getValue(), b.get(entry.getKey()))) {
-                continue;
+        Iterator<?> ait = a.iterator();
+        Iterator<?> bit = b.iterator();
+        while (ait.hasNext() && bit.hasNext()) {
+            // check elements
+            if (different(ait.next(), bit.next())) {
+                return false;
             }
-            return false;
         }
-        return true;
+        return !(ait.hasNext() || bit.hasNext());
     }
 
-    static boolean listDeepEquals(List<?> a, List<?> b) {
-        if (a == null) {
-            return b == null;
-        } else if (b == null) {
-            return false;
-        } else if (a == b) {
-            // same object
-            return true;
-        }
-        int size = a.size();
-        if (size != b.size()) {
-            // different lengths
-            return false;
-        }
-        for (int i = 0; i < size; ++i) {
-            if (objectDeepEquals(a.get(i), b.get(i))) {
-                continue;
-            }
-            return false;
-        }
-        return true;
-    }
-
-    static boolean objectDeepEquals(Object a, Object b) {
-        if (a == null) {
-            return b == null;
-        } else if (b == null) {
-            return false;
-        } else if (a == b) {
-            // same object
-            return true;
-        }
-        if (a instanceof Map) {
-            if (b instanceof Map) {
-                return mapDeepEquals((Map<?, ?>) a, (Map<?, ?>) b);
-            }
-        } else if (a instanceof List) {
-            if (b instanceof List) {
-                return listDeepEquals((List<?>) a, (List<?>) b);
-            }
-        }
-        return false;
-    }
 }
