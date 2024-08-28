@@ -25,9 +25,9 @@
  */
 package chat.dim.type;
 
-import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 public interface Converter {
 
@@ -58,31 +58,31 @@ public interface Converter {
             assert num == 1 || num == 0 : "boolean value error: " + value;
             return num != 0;
         }
-        // get lower string
-        String lower;
+        String text;
         if (value instanceof String) {
-            lower = ((String) value);
+            text = ((String) value);
         } else {
-            lower = value.toString();
+            text = value.toString();
         }
-        if (lower.isEmpty()) {
+        text = text.trim();
+        int size = text.length();
+        if (size == 0) {
             return false;
+        } else if (size > MAX_BOOLEAN_LEN) {
+            return true;
         } else {
-            lower = lower.toLowerCase();
+            text = text.toLowerCase();
         }
-        // check false values
-        if (FALSE_LIST.contains(lower)) {
-            return false;
-        }
-        assert TRUE_LIST.contains(lower) : "boolean value error: " + value;
-        return true;
+        return BOOLEAN_STATES.get(text);
     }
-    List<String> FALSE_LIST = Arrays.asList(
-            "0", "false", "no", "off", "null", "undefined"
-    );
-    List<String> TRUE_LIST = Arrays.asList(
-            "1", "true", "yes", "on"
-    );
+    Map<String, Boolean> BOOLEAN_STATES = new HashMap<String, Boolean>() {{
+        put("1", true); put("yes", true); put("true", true); put("on", true);
+
+        put("0", false); put("no", false); put("false", false); put("off", false);
+        put("+0", false); put("-no", false); put("+0.0", false); put("-0.0", false);
+        put("none", false); put("null", false); put("undefined", false);
+    }};
+    int MAX_BOOLEAN_LEN = "undefined".length();
 
     static byte getByte(Object value, byte defaultValue) {
         if (value == null) {
