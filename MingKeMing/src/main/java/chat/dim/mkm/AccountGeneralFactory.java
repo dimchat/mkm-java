@@ -78,10 +78,7 @@ public class AccountGeneralFactory {
             return (Address) address;
         }
         String str = Wrapper.getString(address);
-        if (str == null) {
-            assert false : "address error: " + address;
-            return null;
-        }
+        assert str != null : "address error: " + address;
         Address.Factory factory = getAddressFactory();
         assert factory != null : "address factory not ready";
         return factory.parseAddress(str);
@@ -118,10 +115,7 @@ public class AccountGeneralFactory {
             return (ID) identifier;
         }
         String str = Wrapper.getString(identifier);
-        if (str == null) {
-            assert false : "ID error: " + identifier;
-            return null;
-        }
+        assert str != null : "ID error: " + identifier;
         ID.Factory factory = getIdentifierFactory();
         assert factory != null : "ID factory not ready";
         return factory.parseIdentifier(str);
@@ -198,7 +192,7 @@ public class AccountGeneralFactory {
             return null;
         }
         int version = getMetaType(info, 0);
-        assert version > 0 : "meta error: " + meta;
+        assert version > 0 : "meta type error: " + meta;
         Meta.Factory factory = getMetaFactory(version);
         if (factory == null) {
             factory = getMetaFactory(0);  // unknown

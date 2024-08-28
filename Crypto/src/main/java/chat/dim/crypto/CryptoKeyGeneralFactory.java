@@ -47,11 +47,18 @@ public class CryptoKeyGeneralFactory {
     // sample data for checking keys
     private static final byte[] promise = "Moky loves May Lee forever!".getBytes();
 
+    /**
+     *  match asymmetric keys
+     */
     public boolean matches(SignKey sKey, VerifyKey pKey) {
         // verify with signature
         byte[] signature = sKey.sign(promise);
         return pKey.verify(promise, signature);
     }
+
+    /**
+     *  match symmetric keys
+     */
     public boolean matches(EncryptKey pKey, DecryptKey sKey) {
         // check by encryption
         Map<String, Object> extra = new HashMap<>();

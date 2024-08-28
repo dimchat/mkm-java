@@ -47,7 +47,12 @@ public final class JSONList {
 
         @Override
         public List<?> decode(String json) {
-            return (List<?>) JSON.decode(json);
+            Object array = JSON.decode(json);
+            if (array instanceof List) {
+                return (List<?>) array;
+            } else {
+                return null;
+            }
         }
     };
 }

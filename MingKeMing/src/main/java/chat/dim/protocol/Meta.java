@@ -45,8 +45,8 @@ import chat.dim.type.Mapper;
  *
  *      data format: {
  *          type: 1,             // algorithm version
- *          seed: "moKy",        // user/group name
  *          key: "{public key}", // PK = secp256k1(SK);
+ *          seed: "moKy",        // user/group name
  *          fingerprint: "..."   // CT = sign(seed, SK);
  *      }
  *
@@ -109,7 +109,7 @@ public interface Meta extends Mapper {
     boolean isValid();
 
     /**
-     *  Check whether meta match with entity ID
+     *  Check whether meta matches with entity ID
      *  (must call this when received a new meta from network)
      *
      * @param identifier - entity ID
@@ -118,7 +118,7 @@ public interface Meta extends Mapper {
     boolean matchIdentifier(ID identifier);
 
     /**
-     *  Check whether meta match with public key
+     *  Check whether meta matches with public key
      *
      * @param pKey - public key
      * @return true on matched

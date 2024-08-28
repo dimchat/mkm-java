@@ -46,7 +46,7 @@ public class FormatGeneralFactory {
     private PortableNetworkFile.Factory pnfFactory = null;
 
     /**
-     *  Split text string to array: ["{TEXT}", "{algorithm}"]
+     *  Split text string to array: ["{TEXT}", "{algorithm}", "{content-type}"]
      */
     public List<String> split(String text) {
         List<String> array = new ArrayList<>();
@@ -58,19 +58,28 @@ public class FormatGeneralFactory {
             // [URL]
             array.add(text);
             return array;
-        }
-        pos1 = text.indexOf(';') + 1;
-        int pos2 = text.indexOf(',', pos1);
-        if (pos2 > pos1) {
-            // [data, algorithm]
-            array.add(text.substring(pos2 + 1));
-            array.add(text.substring(pos1, pos2));
-        } else if (pos1 > 0) {
-            // [data]
-            array.add(text.substring(pos1));
         } else {
+            // skip 'data:'
+            pos1 = text.indexOf(':') + 1;
+        }
+        // seeking for 'content-type'
+        int pos2 = text.indexOf(';', pos1);
+        if (pos2 > pos1) {
+            array.add(text.substring(pos1, pos2));
+            pos1 = pos2 + 1;
+        }
+        // seeking for 'algorithm'
+        pos2 = text.indexOf(',', pos1);
+        if (pos2 > pos1) {
+            array.add(0, text.substring(pos1, pos2));
+            pos1 = pos2 + 1;
+        }
+        if (pos1 == 0) {
             // [data]
-            array.add(text);
+            array.add(0, text);
+        } else {
+            // [data, algorithm, type]
+            array.add(0, text.substring(pos1));
         }
         return array;
     }
@@ -89,12 +98,20 @@ public class FormatGeneralFactory {
         }
         Map<String, Object> info = new HashMap<>();
         List<String> array = split(text);
-        if (array.size() == 1) {
+        int size = array.size();
+        if (size == 1) {
             info.put(defaultKey, array.get(0));
         } else {
-            assert array.size() == 2 : "split error: " + text + " => " + array;
-            info.put("algorithm", array.get(1));
+            assert size > 1 : "split error: " + text + " => " + array;
             info.put("data", array.get(0));
+            info.put("algorithm", array.get(1));
+            if (size > 2) {
+                // 'data:...;...,...'
+                info.put("content-type", array.get(2));
+                if (text.startsWith("data:")) {
+                    info.put("URL", text);
+                }
+            }
         }
         return info;
     }

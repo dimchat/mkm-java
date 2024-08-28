@@ -38,7 +38,7 @@ import chat.dim.type.Mapper;
  *      1. "base64,{BASE64_ENCODE}"
  *      2. "data:image/png;base64,{BASE64_ENCODE}"
  *      3. {
- *              algorithm : "base65",
+ *              algorithm : "base64",
  *              data      : "...",     // base64_encode(data)
  *              ...
  *      }
@@ -147,4 +147,5 @@ public interface TransportableData extends Mapper {
          */
         TransportableData parseTransportableData(Map<String, Object> ted);
     }
+
 }

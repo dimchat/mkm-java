@@ -55,6 +55,7 @@ public interface Document extends TAI, Mapper {
     //  Document types
     //
     String VISA     = "visa";      // for user info (communicate key)
+    String PROFILE  = "profile";   // for user profile (reserved)
     String BULLETIN = "bulletin";  // for group info (owner, assistants)
 
     /**
