@@ -73,7 +73,9 @@ public interface Converter {
         } else {
             text = text.toLowerCase();
         }
-        return BOOLEAN_STATES.get(text);
+        Boolean state = BOOLEAN_STATES.get(text);
+        // return state == null || state;
+        return state != null ? state : true;
     }
     Map<String, Boolean> BOOLEAN_STATES = new HashMap<String, Boolean>() {{
         put("1", true); put("yes", true); put("true", true); put("on", true);
