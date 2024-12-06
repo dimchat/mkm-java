@@ -56,15 +56,24 @@ import chat.dim.type.Mapper;
 public interface Meta extends Mapper {
 
     /**
+     *  MetaType
+     *  ~~~~~~~~
+     *  Meta algorithm names
+     */
+    String MKM = "mkm"; // "1";
+    String BTC = "btc"; // "2";
+    String ETH = "eth"; // "4";
+    // ...
+
+    /**
      *  Meta algorithm version
      *
-     *      0x01 - username@address
-     *      0x02 - btc_address
-     *      0x03 - username@btc_address
-     *      0x04 - eth_address
-     *      0x05 - username@eth_address
+     *      1 = mkm : username@address (default)
+     *      2 = btc : btc_address
+     *      4 = eth : eth_address
+     *      ...
      */
-    int getType();
+    String getType();
 
     /**
      *  Public key (used for signature)
@@ -132,17 +141,17 @@ public interface Meta extends Mapper {
     /**
      *  Create from stored info
      */
-    static Meta create(int version, VerifyKey pKey, String seed, TransportableData fingerprint) {
+    static Meta create(String type, VerifyKey pKey, String seed, TransportableData fingerprint) {
         AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.createMeta(version, pKey, seed, fingerprint);
+        return man.generalFactory.createMeta(type, pKey, seed, fingerprint);
     }
 
     /**
      *  Generate with private key
      */
-    static Meta generate(int version, SignKey sKey, String seed) {
+    static Meta generate(String type, SignKey sKey, String seed) {
         AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.generateMeta(version, sKey, seed);
+        return man.generalFactory.generateMeta(type, sKey, seed);
     }
 
     static Meta parse(Object meta) {
@@ -150,17 +159,13 @@ public interface Meta extends Mapper {
         return man.generalFactory.parseMeta(meta);
     }
 
-    static Factory getFactory(int version) {
+    static Factory getFactory(String type) {
         AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.getMetaFactory(version);
+        return man.generalFactory.getMetaFactory(type);
     }
-    static void setFactory(int version, Factory factory) {
+    static void setFactory(String type, Factory factory) {
         AccountFactoryManager man = AccountFactoryManager.getInstance();
-        man.generalFactory.setMetaFactory(version, factory);
-    }
-    static void setFactory(MetaType version, Factory factory) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        man.generalFactory.setMetaFactory(version.value, factory);
+        man.generalFactory.setMetaFactory(type, factory);
     }
 
     /**

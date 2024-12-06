@@ -55,7 +55,7 @@ public class AccountGeneralFactory {
 
     private ID.Factory idFactory = null;
 
-    private final Map<Integer, Meta.Factory> metaFactories = new HashMap<>();
+    private final Map<String, Meta.Factory> metaFactories = new HashMap<>();
 
     private final Map<String, Document.Factory> documentFactories = new HashMap<>();
 
@@ -157,27 +157,41 @@ public class AccountGeneralFactory {
     //  Meta
     //
 
-    public void setMetaFactory(int version, Meta.Factory factory) {
-        metaFactories.put(version, factory);
+    public void setMetaFactory(String type, Meta.Factory factory) {
+        metaFactories.put(type, factory);
     }
 
-    public Meta.Factory getMetaFactory(int version) {
-        return metaFactories.get(version);
+    public Meta.Factory getMetaFactory(String type) {
+        return metaFactories.get(type);
     }
 
-    public int getMetaType(Map<?, ?> meta, int defaultValue) {
-        return Converter.getInt(meta.get("type"), defaultValue);
+    public String getMetaType(Map<?, ?> meta, String defaultValue) {
+        return Converter.getString(meta.get("type"), defaultValue);
     }
 
-    public Meta createMeta(int version, VerifyKey key, String seed, TransportableData fingerprint) {
-        Meta.Factory factory = getMetaFactory(version);
-        assert factory != null : "meta type not found: " + version;
+    /*/
+    public boolean hasMetaSeed(Map<?, ?> meta) {
+        String type = getMetaType(meta, "");
+        return type.equals("1") || type.equals("mkm");
+    }
+
+    public String getMetaSeed(Map<?, ?> meta) {
+        if (!hasMetaSeed(meta)) {
+            return null;
+        }
+        return Converter.getString(meta.get("seed"), "");
+    }
+    /*/
+
+    public Meta createMeta(String type, VerifyKey key, String seed, TransportableData fingerprint) {
+        Meta.Factory factory = getMetaFactory(type);
+        assert factory != null : "meta type not found: " + type;
         return factory.createMeta(key, seed, fingerprint);
     }
 
-    public Meta generateMeta(int version, SignKey sKey, String seed) {
-        Meta.Factory factory = getMetaFactory(version);
-        assert factory != null : "meta type not found: " + version;
+    public Meta generateMeta(String type, SignKey sKey, String seed) {
+        Meta.Factory factory = getMetaFactory(type);
+        assert factory != null : "meta type not found: " + type;
         return factory.generateMeta(sKey, seed);
     }
     public Meta parseMeta(Object meta) {
@@ -191,11 +205,10 @@ public class AccountGeneralFactory {
             assert false : "meta error: " + meta;
             return null;
         }
-        int version = getMetaType(info, 0);
-        assert version > 0 : "meta type error: " + meta;
-        Meta.Factory factory = getMetaFactory(version);
+        String type = getMetaType(info, "*");
+        Meta.Factory factory = getMetaFactory(type);
         if (factory == null) {
-            factory = getMetaFactory(0);  // unknown
+            factory = getMetaFactory("*");  // unknown
             assert factory != null : "default meta factory not found";
         }
         return factory.parseMeta(info);

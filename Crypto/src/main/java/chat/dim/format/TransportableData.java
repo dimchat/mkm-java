@@ -107,6 +107,7 @@ public interface TransportableData extends Mapper {
         return create(DEFAULT, data);
     }
     static TransportableData create(String algorithm, byte[] data) {
+        assert algorithm != null && algorithm.length() > 0 : "TED algorithm not set";
         FormatFactoryManager man = FormatFactoryManager.getInstance();
         return man.generalFactory.createTransportableData(algorithm, data);
     }

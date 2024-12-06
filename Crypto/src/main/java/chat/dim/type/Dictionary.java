@@ -139,6 +139,11 @@ public class Dictionary implements Mapper {
     }
 
     @Override
+    public String toString() {
+        return dictionary.toString();
+    }
+
+    @Override
     public boolean equals(Object other) {
         if (other == null) {
             return dictionary.isEmpty();
@@ -154,8 +159,8 @@ public class Dictionary implements Mapper {
     }
 
     @Override
-    public String toString() {
-        return dictionary.toString();
+    public int hashCode() {
+        return dictionary.hashCode();
     }
 
     @Override
