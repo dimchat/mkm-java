@@ -59,18 +59,4 @@ public final class BroadcastAddress extends ConstantString implements Address {
         return type;
     }
 
-    @Override
-    public boolean isBroadcast() {
-        return true;
-    }
-
-    @Override
-    public boolean isUser() {
-        return type == EntityType.ANY.value;
-    }
-
-    @Override
-    public boolean isGroup() {
-        return type == EntityType.EVERY.value;
-    }
 }

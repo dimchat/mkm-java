@@ -67,13 +67,13 @@ public interface ID extends Stringer {
     /**
      *  ID for Broadcast
      */
-    ID ANYONE = new Identifier("anyone@anywhere", "anyone", Address.ANYWHERE, null);
-    ID EVERYONE = new Identifier("everyone@everywhere", "everyone", Address.EVERYWHERE, null);
+    ID ANYONE = Identifier.create("anyone", Address.ANYWHERE, null);
+    ID EVERYONE = Identifier.create("everyone", Address.EVERYWHERE, null);
 
     /**
      *  DIM Founder
      */
-    ID FOUNDER = new Identifier("moky@anywhere", "moky", Address.ANYWHERE, null);
+    ID FOUNDER = Identifier.create("moky", Address.ANYWHERE, null);
 
     static List<ID> convert(List<?> members) {
         AccountFactoryManager man = AccountFactoryManager.getInstance();

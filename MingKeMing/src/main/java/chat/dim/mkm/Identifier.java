@@ -31,6 +31,7 @@
 package chat.dim.mkm;
 
 import chat.dim.protocol.Address;
+import chat.dim.protocol.EntityType;
 import chat.dim.protocol.ID;
 import chat.dim.type.ConstantString;
 
@@ -85,19 +86,36 @@ public final class Identifier extends ConstantString implements ID {
 
     @Override
     public boolean isBroadcast() {
-        assert address != null : "ID.address should not be empty: " + this;
-        return address.isBroadcast();
+        return EntityType.isBroadcast(getType());
     }
 
     @Override
     public boolean isUser() {
-        assert address != null : "ID.address should not be empty: " + this;
-        return address.isUser();
+        return EntityType.isUser(getType());
     }
 
     @Override
     public boolean isGroup() {
-        assert address != null : "ID.address should not be empty: " + this;
-        return address.isGroup();
+        return EntityType.isGroup(getType());
+    }
+
+    //
+    //  Factory
+    //
+
+    public static ID create(String name, Address address, String terminal) {
+        String string = concat(name, address, terminal);
+        return new Identifier(string, name, address, terminal);
+    }
+
+    public static String concat(String name, Address address, String terminal) {
+        String string = address.toString();
+        if (name != null && name.length() > 0) {
+            string = name + "@" + string;
+        }
+        if (terminal != null && terminal.length() > 0) {
+            string = string + "/" + terminal;
+        }
+        return string;
     }
 }

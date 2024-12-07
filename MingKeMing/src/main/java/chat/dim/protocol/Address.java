@@ -48,11 +48,6 @@ public interface Address extends Stringer {
      */
     int getType();
 
-    // address types
-    boolean isBroadcast();
-    boolean isUser();
-    boolean isGroup();
-
     /**
      *  Address for broadcast
      */
