@@ -75,11 +75,11 @@ public interface ID extends Stringer {
      */
     ID FOUNDER = Identifier.create("moky", Address.ANYWHERE, null);
 
-    static List<ID> convert(List<?> members) {
+    static List<ID> convert(Iterable<?> members) {
         AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.convertIdentifiers(members);
     }
-    static List<String> revert(List<ID> members) {
+    static List<String> revert(Iterable<ID> members) {
         AccountFactoryManager man = AccountFactoryManager.getInstance();
         return man.generalFactory.revertIdentifiers(members);
     }

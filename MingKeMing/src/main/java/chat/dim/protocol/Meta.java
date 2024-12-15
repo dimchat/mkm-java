@@ -60,17 +60,17 @@ public interface Meta extends Mapper {
      *  ~~~~~~~~
      *  Meta algorithm names
      */
-    String MKM = "mkm"; // "1";
-    String BTC = "btc"; // "2";
-    String ETH = "eth"; // "4";
+    String MKM = "MKM"; // "1";
+    String BTC = "BTC"; // "2";
+    String ETH = "ETH"; // "4";
     // ...
 
     /**
      *  Meta algorithm version
      *
-     *      1 = mkm : username@address (default)
-     *      2 = btc : btc_address
-     *      4 = eth : eth_address
+     *      1 = MKM : username@address (default)
+     *      2 = BTC : btc_address
+     *      4 = ETH : eth_address
      *      ...
      */
     String getType();

@@ -133,7 +133,7 @@ public class AccountGeneralFactory {
         return factory.generateIdentifier(meta, network, terminal);
     }
 
-    public List<ID> convertIdentifiers(List<?> members) {
+    public List<ID> convertIdentifiers(Iterable<?> members) {
         List<ID> array = new ArrayList<>();
         ID id;
         for (Object item : members) {
@@ -145,7 +145,7 @@ public class AccountGeneralFactory {
         }
         return array;
     }
-    public List<String> revertIdentifiers(List<ID> members) {
+    public List<String> revertIdentifiers(Iterable<ID> members) {
         List<String> array = new ArrayList<>();
         for (ID item : members) {
             array.add(item.toString());
@@ -172,7 +172,7 @@ public class AccountGeneralFactory {
     /*/
     public boolean hasMetaSeed(Map<?, ?> meta) {
         String type = getMetaType(meta, "");
-        return type.equals("1") || type.equals("mkm");
+        return type.equals("1") || type.equals("MKM");
     }
 
     public String getMetaSeed(Map<?, ?> meta) {
