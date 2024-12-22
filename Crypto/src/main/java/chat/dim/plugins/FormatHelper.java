@@ -23,19 +23,45 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.format;
+package chat.dim.plugins;
+
+import java.net.URI;
+import java.util.Map;
+
+import chat.dim.crypto.DecryptKey;
+import chat.dim.format.PortableNetworkFile;
+import chat.dim.format.TransportableData;
 
 /**
- *  Format FactoryManager
+ *  Format GeneralFactory
  *  ~~~~~~~~~~~~~~~~~~~~~
  */
-public enum FormatFactoryManager {
+public interface FormatHelper {
 
-    INSTANCE;
+    ///
+    ///   TED - Transportable Encoded Data
+    ///
 
-    public static FormatFactoryManager getInstance() {
-        return INSTANCE;
-    }
+    String getFormatAlgorithm(Map<?, ?> ted, String defaultValue);
 
-    public FormatGeneralFactory generalFactory = new FormatGeneralFactory();
+    void setTransportableDataFactory(String algorithm, TransportableData.Factory factory);
+
+    TransportableData.Factory getTransportableDataFactory(String algorithm);
+
+    TransportableData createTransportableData(String algorithm, byte[] data);
+
+    TransportableData parseTransportableData(Object ted);
+
+    ///
+    ///   PNF - Portable Network File
+    ///
+
+    void setPortableNetworkFileFactory(PortableNetworkFile.Factory factory);
+
+    PortableNetworkFile.Factory getPortableNetworkFileFactory();
+
+    PortableNetworkFile createPortableNetworkFile(TransportableData data, String filename, URI url, DecryptKey password);
+
+    PortableNetworkFile parsePortableNetworkFile(Object pnf);
+
 }

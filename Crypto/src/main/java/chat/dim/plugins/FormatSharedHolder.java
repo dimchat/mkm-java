@@ -1,13 +1,8 @@
 /* license: https://mit-license.org
- *
- *  Ming-Ke-Ming : Decentralized User Identity Authentication
- *
- *                                Written in 2022 by Moky <albert.moky@gmail.com>
- *
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2022 Albert Moky
+ * Copyright (c) 2023 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,19 +23,14 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm;
+package chat.dim.plugins;
 
 /**
- *  Account FactoryManager
- *  ~~~~~~~~~~~~~~~~~~~~~~
+ *  Format FactoryManager
+ *  ~~~~~~~~~~~~~~~~~~~~~
  */
-public enum AccountFactoryManager {
+public final class FormatSharedHolder {
 
-    INSTANCE;
+    public static FormatHelper helper = null;
 
-    public static AccountFactoryManager getInstance() {
-        return INSTANCE;
-    }
-
-    public AccountGeneralFactory generalFactory = new AccountGeneralFactory();
 }

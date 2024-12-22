@@ -32,8 +32,8 @@ package chat.dim.protocol;
 
 import java.util.List;
 
-import chat.dim.mkm.AccountFactoryManager;
 import chat.dim.mkm.Identifier;
+import chat.dim.plugins.AccountSharedHolder;
 import chat.dim.type.Stringer;
 
 /**
@@ -53,9 +53,9 @@ public interface ID extends Stringer {
     String getTerminal();
 
     /**
-     *  Get ID.type
+     *  Get ID type
      *
-     * @return network type
+     * @return network id of address
      */
     int getType();
 
@@ -76,37 +76,30 @@ public interface ID extends Stringer {
     ID FOUNDER = Identifier.create("moky", Address.ANYWHERE, null);
 
     static List<ID> convert(Iterable<?> members) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.convertIdentifiers(members);
+        return AccountSharedHolder.helper.convertIdentifiers(members);
     }
     static List<String> revert(Iterable<ID> members) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.revertIdentifiers(members);
+        return AccountSharedHolder.helper.revertIdentifiers(members);
     }
 
     //
     //  Factory methods
     //
     static ID parse(Object identifier) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.parseIdentifier(identifier);
+        return AccountSharedHolder.helper.parseIdentifier(identifier);
     }
     static ID create(String name, Address address, String terminal) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.createIdentifier(name, address, terminal);
+        return AccountSharedHolder.helper.createIdentifier(name, address, terminal);
     }
     static ID generate(Meta meta, int network, String terminal) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.generateIdentifier(meta, network, terminal);
+        return AccountSharedHolder.helper.generateIdentifier(meta, network, terminal);
     }
 
     static Factory getFactory() {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.getIdentifierFactory();
+        return AccountSharedHolder.helper.getIdentifierFactory();
     }
     static void setFactory(Factory factory) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        man.generalFactory.setIdentifierFactory(factory);
+        AccountSharedHolder.helper.setIdentifierFactory(factory);
     }
 
     /**
@@ -143,4 +136,5 @@ public interface ID extends Stringer {
          */
         ID parseIdentifier(String identifier);
     }
+
 }

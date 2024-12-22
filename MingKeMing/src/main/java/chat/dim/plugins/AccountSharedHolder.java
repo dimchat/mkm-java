@@ -2,12 +2,12 @@
  *
  *  Ming-Ke-Ming : Decentralized User Identity Authentication
  *
- *                                Written in 2020 by Moky <albert.moky@gmail.com>
+ *                                Written in 2022 by Moky <albert.moky@gmail.com>
  *
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2020 Albert Moky
+ * Copyright (c) 2022 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,24 +28,14 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.mkm;
+package chat.dim.plugins;
 
-import chat.dim.protocol.Address;
-import chat.dim.protocol.EntityType;
-import chat.dim.type.ConstantString;
+/**
+ *  Account FactoryManager
+ *  ~~~~~~~~~~~~~~~~~~~~~~
+ */
+public final class AccountSharedHolder {
 
-public final class BroadcastAddress extends ConstantString implements Address {
-
-    private final int type;
-
-    public BroadcastAddress(String string, EntityType network) {
-        super(string);
-        type = network.value;
-    }
-
-    @Override
-    public int getNetwork() {
-        return type;
-    }
+    public static AccountHelper helper = null;
 
 }

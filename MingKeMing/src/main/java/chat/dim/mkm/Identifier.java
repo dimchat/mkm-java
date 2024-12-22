@@ -73,15 +73,10 @@ public final class Identifier extends ConstantString implements ID {
         return terminal;
     }
 
-    /**
-     *  Get Network ID
-     *
-     * @return address type as network ID
-     */
     @Override
     public int getType() {
         assert address != null : "ID.address should not be empty: " + this;
-        return address.getType();
+        return address.getNetwork();
     }
 
     @Override
@@ -118,4 +113,5 @@ public final class Identifier extends ConstantString implements ID {
         }
         return string;
     }
+
 }

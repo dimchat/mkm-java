@@ -79,7 +79,7 @@ public interface Wrapper {
         if (object == null) {
             return null;
         } else if (object instanceof Mapper) {
-            return unwrapMap((((Mapper) object).toMap()));
+            return unwrapMap(((Mapper) object).toMap());
         } else if (object instanceof Map) {
             return unwrapMap((Map<?, ?>) object);
         } else if (object instanceof List) {

@@ -27,6 +27,8 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
+import chat.dim.plugins.CryptoSharedHolder;
+
 /**
  *  Symmetric Cryptography Key
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -47,21 +49,17 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
     //  Factory methods
     //
     static SymmetricKey generate(String algorithm) {
-        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
-        return man.generalFactory.generateSymmetricKey(algorithm);
+        return CryptoSharedHolder.helper.generateSymmetricKey(algorithm);
     }
     static SymmetricKey parse(Object key) {
-        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
-        return man.generalFactory.parseSymmetricKey(key);
+        return CryptoSharedHolder.helper.parseSymmetricKey(key);
     }
 
     static Factory getFactory(String algorithm) {
-        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
-        return man.generalFactory.getSymmetricKeyFactory(algorithm);
+        return CryptoSharedHolder.helper.getSymmetricKeyFactory(algorithm);
     }
     static void setFactory(String algorithm, Factory factory) {
-        CryptoKeyFactoryManager man = CryptoKeyFactoryManager.getInstance();
-        man.generalFactory.setSymmetricKeyFactory(algorithm, factory);
+        CryptoSharedHolder.helper.setSymmetricKeyFactory(algorithm, factory);
     }
 
     /**
@@ -85,4 +83,5 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
          */
         SymmetricKey parseSymmetricKey(Map<String, Object> key);
     }
+
 }

@@ -35,7 +35,7 @@ import java.util.Map;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.TransportableData;
-import chat.dim.mkm.AccountFactoryManager;
+import chat.dim.plugins.AccountSharedHolder;
 import chat.dim.type.Mapper;
 
 /**
@@ -142,30 +142,25 @@ public interface Meta extends Mapper {
      *  Create from stored info
      */
     static Meta create(String type, VerifyKey pKey, String seed, TransportableData fingerprint) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.createMeta(type, pKey, seed, fingerprint);
+        return AccountSharedHolder.helper.createMeta(type, pKey, seed, fingerprint);
     }
 
     /**
      *  Generate with private key
      */
     static Meta generate(String type, SignKey sKey, String seed) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.generateMeta(type, sKey, seed);
+        return AccountSharedHolder.helper.generateMeta(type, sKey, seed);
     }
 
     static Meta parse(Object meta) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.parseMeta(meta);
+        return AccountSharedHolder.helper.parseMeta(meta);
     }
 
     static Factory getFactory(String type) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.getMetaFactory(type);
+        return AccountSharedHolder.helper.getMetaFactory(type);
     }
     static void setFactory(String type, Factory factory) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        man.generalFactory.setMetaFactory(type, factory);
+        AccountSharedHolder.helper.setMetaFactory(type, factory);
     }
 
     /**
@@ -201,4 +196,5 @@ public interface Meta extends Mapper {
          */
         Meta parseMeta(Map<String, Object> meta);
     }
+
 }

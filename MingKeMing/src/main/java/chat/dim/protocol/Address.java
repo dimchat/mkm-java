@@ -30,8 +30,8 @@
  */
 package chat.dim.protocol;
 
-import chat.dim.mkm.AccountFactoryManager;
 import chat.dim.mkm.BroadcastAddress;
+import chat.dim.plugins.AccountSharedHolder;
 import chat.dim.type.Stringer;
 
 /**
@@ -44,9 +44,9 @@ public interface Address extends Stringer {
     /**
      *  Get address type
      *
-     * @return network type
+     * @return network id
      */
-    int getType();
+    int getNetwork();
 
     /**
      *  Address for broadcast
@@ -58,25 +58,20 @@ public interface Address extends Stringer {
     //  Factory methods
     //
     static Address parse(Object address) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.parseAddress(address);
+        return AccountSharedHolder.helper.parseAddress(address);
     }
     static Address create(String address) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.createAddress(address);
+        return AccountSharedHolder.helper.createAddress(address);
     }
     static Address generate(Meta meta, int network) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.generateAddress(meta, network);
+        return AccountSharedHolder.helper.generateAddress(meta, network);
     }
 
     static Factory getFactory() {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        return man.generalFactory.getAddressFactory();
+        return AccountSharedHolder.helper.getAddressFactory();
     }
     static void setFactory(Factory factory) {
-        AccountFactoryManager man = AccountFactoryManager.getInstance();
-        man.generalFactory.setAddressFactory(factory);
+        AccountSharedHolder.helper.setAddressFactory(factory);
     }
 
     /**
@@ -110,4 +105,5 @@ public interface Address extends Stringer {
          */
         Address parseAddress(String address);
     }
+
 }

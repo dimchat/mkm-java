@@ -23,19 +23,14 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.plugins;
 
 /**
  *  CryptographyKey FactoryManager
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
-public enum CryptoKeyFactoryManager {
+public final class CryptoSharedHolder {
 
-    INSTANCE;
+    public static CryptoHelper helper = null;
 
-    public static CryptoKeyFactoryManager getInstance() {
-        return INSTANCE;
-    }
-
-    public CryptoKeyGeneralFactory generalFactory = new CryptoKeyGeneralFactory();
 }
