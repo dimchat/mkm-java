@@ -35,7 +35,7 @@ import java.util.Map;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.TransportableData;
-import chat.dim.plugins.AccountSharedHolder;
+import chat.dim.plugins.SharedAccountHolder;
 import chat.dim.type.Mapper;
 
 /**
@@ -142,25 +142,42 @@ public interface Meta extends Mapper {
      *  Create from stored info
      */
     static Meta create(String type, VerifyKey pKey, String seed, TransportableData fingerprint) {
-        return AccountSharedHolder.helper.createMeta(type, pKey, seed, fingerprint);
+        return SharedAccountHolder.metaHelper.createMeta(type, pKey, seed, fingerprint);
     }
 
     /**
      *  Generate with private key
      */
     static Meta generate(String type, SignKey sKey, String seed) {
-        return AccountSharedHolder.helper.generateMeta(type, sKey, seed);
+        return SharedAccountHolder.metaHelper.generateMeta(type, sKey, seed);
     }
 
     static Meta parse(Object meta) {
-        return AccountSharedHolder.helper.parseMeta(meta);
+        return SharedAccountHolder.metaHelper.parseMeta(meta);
     }
 
     static Factory getFactory(String type) {
-        return AccountSharedHolder.helper.getMetaFactory(type);
+        return SharedAccountHolder.metaHelper.getMetaFactory(type);
     }
     static void setFactory(String type, Factory factory) {
-        AccountSharedHolder.helper.setMetaFactory(type, factory);
+        SharedAccountHolder.metaHelper.setMetaFactory(type, factory);
+    }
+
+    /**
+     *  General Helper
+     *  ~~~~~~~~~~~~~~
+     */
+    interface Helper {
+
+        void setMetaFactory(String type, Factory factory);
+        Factory getMetaFactory(String type);
+
+        Meta createMeta(String type, VerifyKey key, String seed, TransportableData fingerprint);
+
+        Meta generateMeta(String type, SignKey sKey, String seed);
+
+        Meta parseMeta(Object meta);
+
     }
 
     /**

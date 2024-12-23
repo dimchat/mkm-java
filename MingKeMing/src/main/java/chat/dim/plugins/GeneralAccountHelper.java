@@ -30,12 +30,20 @@
  */
 package chat.dim.plugins;
 
+import java.util.Map;
+
 /**
- *  Account FactoryManager
+ *  Account GeneralFactory
  *  ~~~~~~~~~~~~~~~~~~~~~~
  */
-public final class AccountSharedHolder {
+public interface GeneralAccountHelper /*extends Address.Helper, ID.Helper, Meta.Helper, Document.Helper */{
 
-    public static AccountHelper helper = null;
+    //
+    //  Algorithm Version
+    //
+
+    String getMetaType(Map<?, ?> meta, String defaultValue);
+
+    String getDocumentType(Map<?, ?> doc, String defaultValue);
 
 }

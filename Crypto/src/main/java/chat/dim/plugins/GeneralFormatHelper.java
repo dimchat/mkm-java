@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2022 Albert Moky
+ * Copyright (c) 2023 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,12 +25,18 @@
  */
 package chat.dim.plugins;
 
-/**
- *  CryptographyKey FactoryManager
- *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- */
-public final class CryptoSharedHolder {
+import java.util.Map;
 
-    public static CryptoHelper helper = null;
+/**
+ *  Format GeneralFactory
+ *  ~~~~~~~~~~~~~~~~~~~~~
+ */
+public interface GeneralFormatHelper /*extends TransportableData.Helper, PortableNetworkFile.Helper */{
+
+    //
+    //  Algorithm
+    //
+
+    String getFormatAlgorithm(Map<?, ?> ted, String defaultValue);
 
 }

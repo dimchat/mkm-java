@@ -33,7 +33,7 @@ package chat.dim.protocol;
 import java.util.List;
 
 import chat.dim.mkm.Identifier;
-import chat.dim.plugins.AccountSharedHolder;
+import chat.dim.plugins.SharedAccountHolder;
 import chat.dim.type.Stringer;
 
 /**
@@ -69,37 +69,57 @@ public interface ID extends Stringer {
      */
     ID ANYONE = Identifier.create("anyone", Address.ANYWHERE, null);
     ID EVERYONE = Identifier.create("everyone", Address.EVERYWHERE, null);
-
-    /**
-     *  DIM Founder
-     */
+    // DIM Founder
     ID FOUNDER = Identifier.create("moky", Address.ANYWHERE, null);
 
+    //
+    //  Conveniences
+    //
     static List<ID> convert(Iterable<?> members) {
-        return AccountSharedHolder.helper.convertIdentifiers(members);
+        return SharedAccountHolder.idHelper.convertIdentifiers(members);
     }
     static List<String> revert(Iterable<ID> members) {
-        return AccountSharedHolder.helper.revertIdentifiers(members);
+        return SharedAccountHolder.idHelper.revertIdentifiers(members);
     }
 
     //
     //  Factory methods
     //
     static ID parse(Object identifier) {
-        return AccountSharedHolder.helper.parseIdentifier(identifier);
+        return SharedAccountHolder.idHelper.parseIdentifier(identifier);
     }
     static ID create(String name, Address address, String terminal) {
-        return AccountSharedHolder.helper.createIdentifier(name, address, terminal);
+        return SharedAccountHolder.idHelper.createIdentifier(name, address, terminal);
     }
     static ID generate(Meta meta, int network, String terminal) {
-        return AccountSharedHolder.helper.generateIdentifier(meta, network, terminal);
+        return SharedAccountHolder.idHelper.generateIdentifier(meta, network, terminal);
     }
 
     static Factory getFactory() {
-        return AccountSharedHolder.helper.getIdentifierFactory();
+        return SharedAccountHolder.idHelper.getIdentifierFactory();
     }
     static void setFactory(Factory factory) {
-        AccountSharedHolder.helper.setIdentifierFactory(factory);
+        SharedAccountHolder.idHelper.setIdentifierFactory(factory);
+    }
+
+    /**
+     *  General Helper
+     *  ~~~~~~~~~~~~~~
+     */
+    interface Helper {
+
+        void setIdentifierFactory(Factory factory);
+        Factory getIdentifierFactory();
+
+        ID parseIdentifier(Object identifier);
+
+        ID createIdentifier(String name, Address address, String terminal);
+
+        ID generateIdentifier(Meta meta, int network, String terminal);
+
+        List<ID> convertIdentifiers(Iterable<?> members);
+        List<String> revertIdentifiers(Iterable<ID> members);
+
     }
 
     /**

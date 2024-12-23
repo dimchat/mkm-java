@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2023 Albert Moky
+ * Copyright (c) 2022 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,43 +25,22 @@
  */
 package chat.dim.plugins;
 
-import java.net.URI;
-import java.util.Map;
-
-import chat.dim.crypto.DecryptKey;
-import chat.dim.format.PortableNetworkFile;
-import chat.dim.format.TransportableData;
+import chat.dim.crypto.PrivateKey;
+import chat.dim.crypto.PublicKey;
+import chat.dim.crypto.SymmetricKey;
 
 /**
- *  Format GeneralFactory
- *  ~~~~~~~~~~~~~~~~~~~~~
+ *  CryptographyKey FactoryManager
+ *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
-public interface FormatHelper {
+public final class SharedCryptoHolder {
 
-    ///
-    ///   TED - Transportable Encoded Data
-    ///
+    public static SymmetricKey.Helper symmetricHelper = null;
 
-    String getFormatAlgorithm(Map<?, ?> ted, String defaultValue);
+    public static PrivateKey.Helper privateHelper = null;
+    public static PublicKey.Helper publicHelper = null;
 
-    void setTransportableDataFactory(String algorithm, TransportableData.Factory factory);
-
-    TransportableData.Factory getTransportableDataFactory(String algorithm);
-
-    TransportableData createTransportableData(String algorithm, byte[] data);
-
-    TransportableData parseTransportableData(Object ted);
-
-    ///
-    ///   PNF - Portable Network File
-    ///
-
-    void setPortableNetworkFileFactory(PortableNetworkFile.Factory factory);
-
-    PortableNetworkFile.Factory getPortableNetworkFileFactory();
-
-    PortableNetworkFile createPortableNetworkFile(TransportableData data, String filename, URI url, DecryptKey password);
-
-    PortableNetworkFile parsePortableNetworkFile(Object pnf);
+    // general helper
+    public static GeneralCryptoHelper helper = null;
 
 }

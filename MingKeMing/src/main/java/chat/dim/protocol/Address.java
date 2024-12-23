@@ -31,7 +31,7 @@
 package chat.dim.protocol;
 
 import chat.dim.mkm.BroadcastAddress;
-import chat.dim.plugins.AccountSharedHolder;
+import chat.dim.plugins.SharedAccountHolder;
 import chat.dim.type.Stringer;
 
 /**
@@ -58,20 +58,37 @@ public interface Address extends Stringer {
     //  Factory methods
     //
     static Address parse(Object address) {
-        return AccountSharedHolder.helper.parseAddress(address);
+        return SharedAccountHolder.addressHelper.parseAddress(address);
     }
     static Address create(String address) {
-        return AccountSharedHolder.helper.createAddress(address);
+        return SharedAccountHolder.addressHelper.createAddress(address);
     }
     static Address generate(Meta meta, int network) {
-        return AccountSharedHolder.helper.generateAddress(meta, network);
+        return SharedAccountHolder.addressHelper.generateAddress(meta, network);
     }
 
     static Factory getFactory() {
-        return AccountSharedHolder.helper.getAddressFactory();
+        return SharedAccountHolder.addressHelper.getAddressFactory();
     }
     static void setFactory(Factory factory) {
-        AccountSharedHolder.helper.setAddressFactory(factory);
+        SharedAccountHolder.addressHelper.setAddressFactory(factory);
+    }
+
+    /**
+     *  General Helper
+     *  ~~~~~~~~~~~~~~
+     */
+    interface Helper {
+
+        void setAddressFactory(Factory factory);
+        Factory getAddressFactory();
+
+        Address parseAddress(Object address);
+
+        Address createAddress(String address);
+
+        Address generateAddress(Meta meta, int network);
+
     }
 
     /**

@@ -34,7 +34,7 @@ import java.util.Date;
 import java.util.Map;
 
 import chat.dim.format.TransportableData;
-import chat.dim.plugins.AccountSharedHolder;
+import chat.dim.plugins.SharedAccountHolder;
 import chat.dim.type.Mapper;
 
 /**
@@ -97,25 +97,40 @@ public interface Document extends TAI, Mapper {
      *  Create from stored info
      */
     static Document create(String type, ID identifier, String data, TransportableData signature) {
-        return AccountSharedHolder.helper.createDocument(type, identifier, data, signature);
+        return SharedAccountHolder.docHelper.createDocument(type, identifier, data, signature);
     }
 
     /**
      *  Create new empty document
      */
     static Document create(String type, ID identifier) {
-        return AccountSharedHolder.helper.createDocument(type, identifier, null, null);
+        return SharedAccountHolder.docHelper.createDocument(type, identifier, null, null);
     }
 
     static Document parse(Object doc) {
-        return AccountSharedHolder.helper.parseDocument(doc);
+        return SharedAccountHolder.docHelper.parseDocument(doc);
     }
 
     static Factory getFactory(String type) {
-        return AccountSharedHolder.helper.getDocumentFactory(type);
+        return SharedAccountHolder.docHelper.getDocumentFactory(type);
     }
     static void setFactory(String type, Factory factory) {
-        AccountSharedHolder.helper.setDocumentFactory(type, factory);
+        SharedAccountHolder.docHelper.setDocumentFactory(type, factory);
+    }
+
+    /**
+     *  General Helper
+     *  ~~~~~~~~~~~~~~
+     */
+    interface Helper {
+
+        void setDocumentFactory(String type, Factory factory);
+        Factory getDocumentFactory(String type);
+
+        Document createDocument(String type, ID identifier, String data, TransportableData signature);
+
+        Document parseDocument(Object doc);
+
     }
 
     /**

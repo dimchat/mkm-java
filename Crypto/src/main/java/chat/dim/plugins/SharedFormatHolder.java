@@ -25,12 +25,20 @@
  */
 package chat.dim.plugins;
 
+import chat.dim.format.PortableNetworkFile;
+import chat.dim.format.TransportableData;
+
 /**
  *  Format FactoryManager
  *  ~~~~~~~~~~~~~~~~~~~~~
  */
-public final class FormatSharedHolder {
+public final class SharedFormatHolder {
 
-    public static FormatHelper helper = null;
+    public static TransportableData.Helper tedHelper = null;
+
+    public static PortableNetworkFile.Helper pnfHelper = null;
+
+    // general helper
+    public static GeneralFormatHelper helper = null;
 
 }

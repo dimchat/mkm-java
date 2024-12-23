@@ -27,7 +27,7 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
-import chat.dim.plugins.CryptoSharedHolder;
+import chat.dim.plugins.SharedCryptoHolder;
 
 /**
  *  Asymmetric Cryptography Public Key
@@ -45,14 +45,27 @@ public interface PublicKey extends VerifyKey {
     //  Factory method
     //
     static PublicKey parse(Object key) {
-        return CryptoSharedHolder.helper.parsePublicKey(key);
+        return SharedCryptoHolder.publicHelper.parsePublicKey(key);
     }
 
     static Factory getFactory(String algorithm) {
-        return CryptoSharedHolder.helper.getPublicKeyFactory(algorithm);
+        return SharedCryptoHolder.publicHelper.getPublicKeyFactory(algorithm);
     }
     static void setFactory(String algorithm, Factory factory) {
-        CryptoSharedHolder.helper.setPublicKeyFactory(algorithm, factory);
+        SharedCryptoHolder.publicHelper.setPublicKeyFactory(algorithm, factory);
+    }
+
+    /**
+     *  General Helper
+     *  ~~~~~~~~~~~~~~
+     */
+    interface Helper {
+
+        void setPublicKeyFactory(String algorithm, Factory factory);
+        Factory getPublicKeyFactory(String algorithm);
+
+        PublicKey parsePublicKey(Object key);
+
     }
 
     /**

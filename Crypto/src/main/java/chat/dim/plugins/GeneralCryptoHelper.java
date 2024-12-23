@@ -31,17 +31,14 @@ import java.util.Map;
 
 import chat.dim.crypto.DecryptKey;
 import chat.dim.crypto.EncryptKey;
-import chat.dim.crypto.PrivateKey;
-import chat.dim.crypto.PublicKey;
 import chat.dim.crypto.SignKey;
-import chat.dim.crypto.SymmetricKey;
 import chat.dim.crypto.VerifyKey;
 
 /**
  *  CryptographyKey GeneralFactory
  *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
-public interface CryptoHelper {
+public interface GeneralCryptoHelper /*extends SymmetricKey.Helper, PrivateKey.Helper, PublicKey.Helper */{
 
     // sample data for checking keys
     byte[] PROMISE = "Moky loves May Lee forever!".getBytes();
@@ -71,39 +68,5 @@ public interface CryptoHelper {
     //
 
     String getKeyAlgorithm(Map<?, ?> key, String defaultValue);
-
-    //
-    //  SymmetricKey
-    //
-
-    void setSymmetricKeyFactory(String algorithm, SymmetricKey.Factory factory);
-
-    SymmetricKey.Factory getSymmetricKeyFactory(String algorithm);
-
-    SymmetricKey generateSymmetricKey(String algorithm);
-
-    SymmetricKey parseSymmetricKey(Object key);
-
-    //
-    //  PrivateKey
-    //
-
-    void setPrivateKeyFactory(String algorithm, PrivateKey.Factory factory);
-
-    PrivateKey.Factory getPrivateKeyFactory(String algorithm);
-
-    PrivateKey generatePrivateKey(String algorithm);
-
-    PrivateKey parsePrivateKey(Object key);
-
-    //
-    //  PublicKey
-    //
-
-    void setPublicKeyFactory(String algorithm, PublicKey.Factory factory);
-
-    PublicKey.Factory getPublicKeyFactory(String algorithm);
-
-    PublicKey parsePublicKey(Object key);
 
 }
