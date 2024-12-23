@@ -97,14 +97,6 @@ public interface Meta extends Mapper {
      */
     byte[] getFingerprint();
 
-    /**
-     *  Generate address
-     *
-     * @param network - address type
-     * @return Address
-     */
-    Address generateAddress(int network);
-
     //
     //  Validation
     //
@@ -118,21 +110,12 @@ public interface Meta extends Mapper {
     boolean isValid();
 
     /**
-     *  Check whether meta matches with entity ID
-     *  (must call this when received a new meta from network)
+     *  Generate address
      *
-     * @param identifier - entity ID
-     * @return true on matched
+     * @param network - address type
+     * @return Address
      */
-    boolean matchIdentifier(ID identifier);
-
-    /**
-     *  Check whether meta matches with public key
-     *
-     * @param pKey - public key
-     * @return true on matched
-     */
-    boolean matchPublicKey(VerifyKey pKey);
+    Address generateAddress(int network);
 
     //
     //  Factory methods

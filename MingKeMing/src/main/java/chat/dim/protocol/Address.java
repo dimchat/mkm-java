@@ -60,9 +60,7 @@ public interface Address extends Stringer {
     static Address parse(Object address) {
         return SharedAccountHolder.addressHelper.parseAddress(address);
     }
-    static Address create(String address) {
-        return SharedAccountHolder.addressHelper.createAddress(address);
-    }
+
     static Address generate(Meta meta, int network) {
         return SharedAccountHolder.addressHelper.generateAddress(meta, network);
     }
@@ -85,8 +83,6 @@ public interface Address extends Stringer {
 
         Address parseAddress(Object address);
 
-        Address createAddress(String address);
-
         Address generateAddress(Meta meta, int network);
 
     }
@@ -105,14 +101,6 @@ public interface Address extends Stringer {
          * @return Address
          */
         Address generateAddress(Meta meta, int network);
-
-        /**
-         *  Create address from string
-         *
-         * @param address - address string
-         * @return Address
-         */
-        Address createAddress(String address);
 
         /**
          *  Parse string object to address
