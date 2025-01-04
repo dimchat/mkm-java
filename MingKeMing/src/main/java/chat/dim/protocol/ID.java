@@ -33,7 +33,7 @@ package chat.dim.protocol;
 import java.util.List;
 
 import chat.dim.mkm.Identifier;
-import chat.dim.plugins.SharedAccountHolder;
+import chat.dim.plugins.SharedAccountExtensions;
 import chat.dim.type.Stringer;
 
 /**
@@ -76,30 +76,30 @@ public interface ID extends Stringer {
     //  Conveniences
     //
     static List<ID> convert(Iterable<?> members) {
-        return SharedAccountHolder.idHelper.convertIdentifiers(members);
+        return SharedAccountExtensions.idHelper.convertIdentifiers(members);
     }
     static List<String> revert(Iterable<ID> members) {
-        return SharedAccountHolder.idHelper.revertIdentifiers(members);
+        return SharedAccountExtensions.idHelper.revertIdentifiers(members);
     }
 
     //
     //  Factory methods
     //
     static ID parse(Object identifier) {
-        return SharedAccountHolder.idHelper.parseIdentifier(identifier);
+        return SharedAccountExtensions.idHelper.parseIdentifier(identifier);
     }
     static ID create(String name, Address address, String terminal) {
-        return SharedAccountHolder.idHelper.createIdentifier(name, address, terminal);
+        return SharedAccountExtensions.idHelper.createIdentifier(name, address, terminal);
     }
     static ID generate(Meta meta, int network, String terminal) {
-        return SharedAccountHolder.idHelper.generateIdentifier(meta, network, terminal);
+        return SharedAccountExtensions.idHelper.generateIdentifier(meta, network, terminal);
     }
 
     static Factory getFactory() {
-        return SharedAccountHolder.idHelper.getIdentifierFactory();
+        return SharedAccountExtensions.idHelper.getIdentifierFactory();
     }
     static void setFactory(Factory factory) {
-        SharedAccountHolder.idHelper.setIdentifierFactory(factory);
+        SharedAccountExtensions.idHelper.setIdentifierFactory(factory);
     }
 
     /**

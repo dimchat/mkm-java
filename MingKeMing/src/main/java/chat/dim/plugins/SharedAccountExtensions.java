@@ -1,4 +1,9 @@
 /* license: https://mit-license.org
+ *
+ *  Ming-Ke-Ming : Decentralized User Identity Authentication
+ *
+ *                                Written in 2022 by Moky <albert.moky@gmail.com>
+ *
  * ==============================================================================
  * The MIT License (MIT)
  *
@@ -25,22 +30,24 @@
  */
 package chat.dim.plugins;
 
-import chat.dim.crypto.PrivateKey;
-import chat.dim.crypto.PublicKey;
-import chat.dim.crypto.SymmetricKey;
+import chat.dim.protocol.Address;
+import chat.dim.protocol.Document;
+import chat.dim.protocol.ID;
+import chat.dim.protocol.Meta;
 
 /**
- *  CryptographyKey FactoryManager
- *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ *  Account FactoryManager
+ *  ~~~~~~~~~~~~~~~~~~~~~~
  */
-public final class SharedCryptoHolder {
+public final class SharedAccountExtensions {
 
-    public static SymmetricKey.Helper symmetricHelper = null;
+    public static Address.Helper addressHelper = null;
+    public static ID.Helper idHelper = null;
 
-    public static PrivateKey.Helper privateHelper = null;
-    public static PublicKey.Helper publicHelper = null;
+    public static Meta.Helper metaHelper = null;
+    public static Document.Helper docHelper = null;
 
     // general helper
-    public static GeneralCryptoHelper helper = null;
+    public static GeneralAccountHelper helper = null;
 
 }

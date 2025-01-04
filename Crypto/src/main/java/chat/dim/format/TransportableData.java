@@ -27,7 +27,7 @@ package chat.dim.format;
 
 import java.util.Map;
 
-import chat.dim.plugins.SharedFormatHolder;
+import chat.dim.plugins.SharedFormatExtensions;
 import chat.dim.type.Mapper;
 
 /**
@@ -109,18 +109,18 @@ public interface TransportableData extends Mapper {
     }
     static TransportableData create(String algorithm, byte[] data) {
         assert algorithm != null && algorithm.length() > 0 : "TED algorithm not set";
-        return SharedFormatHolder.tedHelper.createTransportableData(algorithm, data);
+        return SharedFormatExtensions.tedHelper.createTransportableData(algorithm, data);
     }
 
     static TransportableData parse(Object ted) {
-        return SharedFormatHolder.tedHelper.parseTransportableData(ted);
+        return SharedFormatExtensions.tedHelper.parseTransportableData(ted);
     }
 
     static void setFactory(String algorithm, Factory factory) {
-        SharedFormatHolder.tedHelper.setTransportableDataFactory(algorithm, factory);
+        SharedFormatExtensions.tedHelper.setTransportableDataFactory(algorithm, factory);
     }
     static Factory getFactory(String algorithm) {
-        return SharedFormatHolder.tedHelper.getTransportableDataFactory(algorithm);
+        return SharedFormatExtensions.tedHelper.getTransportableDataFactory(algorithm);
     }
 
     /**

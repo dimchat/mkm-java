@@ -35,7 +35,7 @@ import java.util.Map;
 import chat.dim.crypto.SignKey;
 import chat.dim.crypto.VerifyKey;
 import chat.dim.format.TransportableData;
-import chat.dim.plugins.SharedAccountHolder;
+import chat.dim.plugins.SharedAccountExtensions;
 import chat.dim.type.Mapper;
 
 /**
@@ -125,25 +125,25 @@ public interface Meta extends Mapper {
      *  Create from stored info
      */
     static Meta create(String type, VerifyKey pKey, String seed, TransportableData fingerprint) {
-        return SharedAccountHolder.metaHelper.createMeta(type, pKey, seed, fingerprint);
+        return SharedAccountExtensions.metaHelper.createMeta(type, pKey, seed, fingerprint);
     }
 
     /**
      *  Generate with private key
      */
     static Meta generate(String type, SignKey sKey, String seed) {
-        return SharedAccountHolder.metaHelper.generateMeta(type, sKey, seed);
+        return SharedAccountExtensions.metaHelper.generateMeta(type, sKey, seed);
     }
 
     static Meta parse(Object meta) {
-        return SharedAccountHolder.metaHelper.parseMeta(meta);
+        return SharedAccountExtensions.metaHelper.parseMeta(meta);
     }
 
     static Factory getFactory(String type) {
-        return SharedAccountHolder.metaHelper.getMetaFactory(type);
+        return SharedAccountExtensions.metaHelper.getMetaFactory(type);
     }
     static void setFactory(String type, Factory factory) {
-        SharedAccountHolder.metaHelper.setMetaFactory(type, factory);
+        SharedAccountExtensions.metaHelper.setMetaFactory(type, factory);
     }
 
     /**

@@ -27,7 +27,7 @@ package chat.dim.crypto;
 
 import java.util.Map;
 
-import chat.dim.plugins.SharedCryptoHolder;
+import chat.dim.plugins.SharedCryptoExtensions;
 
 /**
  *  Asymmetric Cryptography Private Key
@@ -53,17 +53,17 @@ public interface PrivateKey extends SignKey {
     //  Factory methods
     //
     static PrivateKey generate(String algorithm) {
-        return SharedCryptoHolder.privateHelper.generatePrivateKey(algorithm);
+        return SharedCryptoExtensions.privateHelper.generatePrivateKey(algorithm);
     }
     static PrivateKey parse(Object key) {
-        return SharedCryptoHolder.privateHelper.parsePrivateKey(key);
+        return SharedCryptoExtensions.privateHelper.parsePrivateKey(key);
     }
 
     static void setFactory(String algorithm, Factory factory) {
-        SharedCryptoHolder.privateHelper.setPrivateKeyFactory(algorithm, factory);
+        SharedCryptoExtensions.privateHelper.setPrivateKeyFactory(algorithm, factory);
     }
     static Factory getFactory(String algorithm) {
-        return SharedCryptoHolder.privateHelper.getPrivateKeyFactory(algorithm);
+        return SharedCryptoExtensions.privateHelper.getPrivateKeyFactory(algorithm);
     }
 
     /**

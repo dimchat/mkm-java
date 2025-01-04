@@ -32,7 +32,7 @@ import chat.dim.format.TransportableData;
  *  Format FactoryManager
  *  ~~~~~~~~~~~~~~~~~~~~~
  */
-public final class SharedFormatHolder {
+public final class SharedFormatExtensions {
 
     public static TransportableData.Helper tedHelper = null;
 

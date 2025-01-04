@@ -29,7 +29,7 @@ import java.net.URI;
 import java.util.Map;
 
 import chat.dim.crypto.DecryptKey;
-import chat.dim.plugins.SharedFormatHolder;
+import chat.dim.plugins.SharedFormatExtensions;
 import chat.dim.type.Mapper;
 
 /**
@@ -112,18 +112,18 @@ public interface PortableNetworkFile extends Mapper {
     }
 
     static PortableNetworkFile create(TransportableData data, String filename, URI url, DecryptKey password) {
-        return SharedFormatHolder.pnfHelper.createPortableNetworkFile(data, filename, url, password);
+        return SharedFormatExtensions.pnfHelper.createPortableNetworkFile(data, filename, url, password);
     }
 
     static PortableNetworkFile parse(Object pnf) {
-        return SharedFormatHolder.pnfHelper.parsePortableNetworkFile(pnf);
+        return SharedFormatExtensions.pnfHelper.parsePortableNetworkFile(pnf);
     }
 
     static void setFactory(Factory factory) {
-        SharedFormatHolder.pnfHelper.setPortableNetworkFileFactory(factory);
+        SharedFormatExtensions.pnfHelper.setPortableNetworkFileFactory(factory);
     }
     static Factory getFactory() {
-        return SharedFormatHolder.pnfHelper.getPortableNetworkFileFactory();
+        return SharedFormatExtensions.pnfHelper.getPortableNetworkFileFactory();
     }
 
     /**
