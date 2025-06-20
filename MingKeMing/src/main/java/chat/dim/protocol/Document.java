@@ -43,27 +43,12 @@ import chat.dim.type.Mapper;
  *  This class is used to generate entity profile
  *
  *      data format: {
- *          ID        : "EntityID",        // entity ID
- *          type      : "visa",            // "bulletin", ...
+ *          did       : "EntityID",        // entity ID
  *          data      : "{JSON}",          // data = json_encode(info)
  *          signature : "{BASE64_ENCODE}"  // signature = sign(data, SK);
  *      }
  */
 public interface Document extends TAI, Mapper {
-
-    //
-    //  Document types
-    //
-    String VISA     = "visa";      // for user info (communicate key)
-    String PROFILE  = "profile";   // for user profile (reserved)
-    String BULLETIN = "bulletin";  // for group info (owner, assistants)
-
-    /**
-     *  Get document type
-     *
-     * @return document type
-     */
-    String getType();
 
     /**
      *  Get entity ID

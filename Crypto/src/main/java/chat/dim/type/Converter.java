@@ -29,162 +29,57 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public interface Converter {
+public abstract class Converter {
 
-    static String getString(Object value, String defaultValue) {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof String) {
-            // exactly
-            return (String) value;
-        } else {
-            //assert false : "not a string value: " + value;
-            return value.toString();
-        }
-    }
-
-    /**
-     *  assume value can be a config string:
-     *      'true', 'false', 'yes', 'no', 'on', 'off', '1', '0', ...
-     */
-    static boolean getBoolean(Object value, boolean defaultValue) {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Boolean) {
-            // exactly
-            return (Boolean) value;
-        } else if (value instanceof Number) {  // Byte, Short, Integer, Long, Float, Double
-            int num = ((Number) value).intValue();
-            assert num == 1 || num == 0 : "boolean value error: " + value;
-            return num != 0;
-        }
-        String text;
-        if (value instanceof String) {
-            text = ((String) value);
-        } else {
-            text = value.toString();
-        }
-        text = text.trim();
-        int size = text.length();
-        if (size == 0) {
-            return false;
-        } else if (size > MAX_BOOLEAN_LEN) {
-            return true;
-        } else {
-            text = text.toLowerCase();
-        }
-        Boolean state = BOOLEAN_STATES.get(text);
-        // return state == null || state;
-        return state != null ? state : true;
-    }
-    Map<String, Boolean> BOOLEAN_STATES = new HashMap<String, Boolean>() {{
+    public static Map<String, Boolean> BOOLEAN_STATES = new HashMap<String, Boolean>() {{
         put("1", true); put("yes", true); put("true", true); put("on", true);
 
         put("0", false); put("no", false); put("false", false); put("off", false);
         put("+0", false); put("-no", false); put("+0.0", false); put("-0.0", false);
         put("none", false); put("null", false); put("undefined", false);
     }};
-    int MAX_BOOLEAN_LEN = "undefined".length();
+    public static int MAX_BOOLEAN_LEN = "undefined".length();
 
-    static byte getByte(Object value, byte defaultValue) {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Byte) {
-            return (byte) value;
-        } else if (value instanceof Number) {  // Short, Integer, Long, Float, Double
-            return ((Number) value).byteValue();
-        } else if (value instanceof Boolean) {
-            return (byte) ((Boolean) value ? 1 : 0);
-        }
-        String str = value instanceof String ? (String) value : value.toString();
-        return Byte.parseByte(str);
-    }
-    static short getShort(Object value, short defaultValue) {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Short) {
-            // exactly
-            return (Short) value;
-        } else if (value instanceof Number) {  // Byte, Integer, Long, Float, Double
-            return ((Number) value).shortValue();
-        } else if (value instanceof Boolean) {
-            return (short) ((Boolean) value ? 1 : 0);
-        }
-        String str = value instanceof String ? (String) value : value.toString();
-        return Short.parseShort(str);
+    public static String getString(Object value, String defaultValue) {
+        return converter.getString(value, defaultValue);
     }
 
-    static int getInt(Object value, int defaultValue) {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Integer) {
-            // exactly
-            return (Integer) value;
-        } else if (value instanceof Number) {  // Byte, Short, Long, Float, Double
-            return ((Number) value).intValue();
-        } else if (value instanceof Boolean) {
-            return (Boolean) value ? 1 : 0;
-        }
-        String str = value instanceof String ? (String) value : value.toString();
-        return Integer.parseInt(str);
-    }
-    static long getLong(Object value, long defaultValue) {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Long) {
-            // exactly
-            return (Long) value;
-        } else if (value instanceof Number) {  // Byte, Short, Integer, Float, Double
-            return ((Number) value).longValue();
-        } else if (value instanceof Boolean) {
-            return (Boolean) value ? 1L : 0L;
-        }
-        String str = value instanceof String ? (String) value : value.toString();
-        return Long.parseLong(str);
+    /**
+     *  assume value can be a config string:
+     *      'true', 'false', 'yes', 'no', 'on', 'off', '1', '0', ...
+     */
+    public static boolean getBoolean(Object value, boolean defaultValue) {
+        return converter.getBoolean(value, defaultValue);
     }
 
-    static float getFloat(Object value, float defaultValue) {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Float) {
-            // exactly
-            return (Float) value;
-        } else if (value instanceof Number) {  // Byte, Short, Integer, Long, Double
-            return ((Number) value).floatValue();
-        } else if (value instanceof Boolean) {
-            return (Boolean) value ? 1.0F : 0.0F;
-        }
-        String str = value instanceof String ? (String) value : value.toString();
-        return Float.parseFloat(str);
+    public static byte getByte(Object value, byte defaultValue) {
+        return converter.getByte(value, defaultValue);
     }
-    static double getDouble(Object value, double defaultValue) {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Double) {
-            // exactly
-            return (Double) value;
-        } else if (value instanceof Number) {  // Byte, Short, Integer, Long, Float
-            return ((Number) value).doubleValue();
-        } else if (value instanceof Boolean) {
-            return (Boolean) value ? 1.0 : 0.0;
-        }
-        String str = value instanceof String ? (String) value : value.toString();
-        return Double.parseDouble(str);
+    public static short getShort(Object value, short defaultValue) {
+        return converter.getShort(value, defaultValue);
+    }
+
+    public static int getInt(Object value, int defaultValue) {
+        return converter.getInt(value, defaultValue);
+    }
+    public static long getLong(Object value, long defaultValue) {
+        return converter.getLong(value, defaultValue);
+    }
+
+    public static float getFloat(Object value, float defaultValue) {
+        return converter.getFloat(value, defaultValue);
+    }
+    public static double getDouble(Object value, double defaultValue) {
+        return converter.getDouble(value, defaultValue);
     }
 
     /**
      *  assume value can be a timestamp (seconds from 1970-01-01 00:00:00)
      */
-    static Date getDateTime(Object value, Date defaultValue) {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Date) {
-            // exactly
-            return (Date) value;
-        }
-        double seconds = getDouble(value, 0);
-        double millis = seconds * 1000;
-        return new Date((long) millis);
+    public static Date getDateTime(Object value, Date defaultValue) {
+        return converter.getDateTime(value, defaultValue);
     }
+
+    public static DataConverter converter = new DataConverter();
 
 }

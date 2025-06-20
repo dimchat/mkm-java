@@ -56,16 +56,6 @@ import chat.dim.type.Mapper;
 public interface Meta extends Mapper {
 
     /**
-     *  MetaType
-     *  ~~~~~~~~
-     *  Meta algorithm names
-     */
-    String MKM = "MKM"; // "1";
-    String BTC = "BTC"; // "2";
-    String ETH = "ETH"; // "4";
-    // ...
-
-    /**
      *  Meta algorithm version
      *
      *      1 = MKM : username@address (default)
