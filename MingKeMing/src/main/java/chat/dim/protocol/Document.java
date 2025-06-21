@@ -39,14 +39,17 @@ import chat.dim.type.Mapper;
 
 /**
  *  User/Group Profile
- *  ~~~~~~~~~~~~~~~~~~
- *  This class is used to generate entity profile
+ *  <p>
+ *      This class is used to generate entity profile
+ *  </p>
  *
- *      data format: {
- *          did       : "EntityID",        // entity ID
- *          data      : "{JSON}",          // data = json_encode(info)
- *          signature : "{BASE64_ENCODE}"  // signature = sign(data, SK);
- *      }
+ *  <blockquote><pre>
+ *  data format: {
+ *      did       : "EntityID",        // entity ID
+ *      data      : "{JSON}",          // data = json_encode(info)
+ *      signature : "{BASE64_ENCODE}"  // signature = sign(data, SK);
+ *  }
+ *  </pre></blockquote>
  */
 public interface Document extends TAI, Mapper {
 
@@ -105,7 +108,6 @@ public interface Document extends TAI, Mapper {
 
     /**
      *  General Helper
-     *  ~~~~~~~~~~~~~~
      */
     interface Helper {
 
@@ -120,13 +122,17 @@ public interface Document extends TAI, Mapper {
 
     /**
      *  Document Factory
-     *  ~~~~~~~~~~~~~~~~
      */
     interface Factory {
 
         /**
-         *  Create document with data & signature loaded from local storage
-         *  Create a new empty document with entity ID only
+         *  Create document
+         *  <p>
+         *      1. Create document with data & signature loaded from local storage
+         *  </p>
+         *  <p>
+         *      2. Create a new empty document with entity ID only
+         *  </p>
          *
          * @param identifier - entity ID
          * @param data       - document data (JsON)

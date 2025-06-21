@@ -34,7 +34,6 @@ import java.util.Map;
 
 /**
  *  Account GeneralFactory
- *  ~~~~~~~~~~~~~~~~~~~~~~
  */
 public interface GeneralAccountHelper /*extends Address.Helper, ID.Helper, Meta.Helper, Document.Helper */{
 

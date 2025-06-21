@@ -37,7 +37,6 @@ import chat.dim.protocol.Meta;
 
 /**
  *  Account FactoryManager
- *  ~~~~~~~~~~~~~~~~~~~~~~
  */
 public final class SharedAccountExtensions {
 

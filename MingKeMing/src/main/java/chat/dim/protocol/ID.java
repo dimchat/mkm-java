@@ -38,13 +38,16 @@ import chat.dim.type.Stringer;
 
 /**
  *  ID for entity (User/Group)
- *
+ *  <p>
  *      data format: "name@address[/terminal]"
+ *  </p>
  *
- *      fields:
- *          name     - entity name, the seed of fingerprint (for building address)
- *          address  - a string to identify an entity
- *          terminal - location (device), RESERVED
+ *  <pre>
+ *  fields:
+ *      name     - entity name, the seed of fingerprint (for building address)
+ *      address  - a string to identify an entity
+ *      terminal - location (device), RESERVED
+ *  </pre>
  */
 public interface ID extends Stringer {
 
@@ -104,7 +107,6 @@ public interface ID extends Stringer {
 
     /**
      *  General Helper
-     *  ~~~~~~~~~~~~~~
      */
     interface Helper {
 
@@ -124,7 +126,6 @@ public interface ID extends Stringer {
 
     /**
      *  ID Factory
-     *  ~~~~~~~~~~
      */
     interface Factory {
 

@@ -38,10 +38,12 @@ import chat.dim.crypto.VerifyKey;
 /**
  *  The Additional Information
  *
- *      'Meta' is the information for entity which never changed,
- *          which contains the key for verify signature;
- *      'TAI' is the variable part,
- *          which could contain a public key for asymmetric encryption.
+ *  <pre>
+ *  'Meta' is the information for entity which never changed,
+ *      which contains the key for verify signature;
+ *  'TAI' is the variable part,
+ *      which could contain a public key for asymmetric encryption.
+ *  </pre>
  */
 public interface TAI {
 
@@ -89,9 +91,11 @@ public interface TAI {
 
     /**
      *  Update property with key and data
-     *  (this will reset 'data' and 'signature')
+     *  <p>
+     *      (this will reset 'data' and 'signature')
+     *  </p>
      *
-     * @param name - property name
+     * @param name  - property name
      * @param value - property data
      */
     void setProperty(String name, Object value);

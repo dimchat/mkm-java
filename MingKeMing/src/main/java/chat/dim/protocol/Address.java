@@ -36,8 +36,9 @@ import chat.dim.type.Stringer;
 
 /**
  *  Address for MKM ID
- *  ~~~~~~~~~~~~~~~~~~
- *  This class is used to build address for ID
+ *  <p>
+ *      This class is used to build address for ID
+ *  </p>
  */
 public interface Address extends Stringer {
 
@@ -74,7 +75,6 @@ public interface Address extends Stringer {
 
     /**
      *  General Helper
-     *  ~~~~~~~~~~~~~~
      */
     interface Helper {
 
@@ -89,14 +89,13 @@ public interface Address extends Stringer {
 
     /**
      *  Address Factory
-     *  ~~~~~~~~~~~~~~~
      */
     interface Factory {
 
         /**
          *  Generate address with meta & type
          *
-         * @param meta - meta info
+         * @param meta    - meta info
          * @param network - address type
          * @return Address
          */

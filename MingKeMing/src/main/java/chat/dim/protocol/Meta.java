@@ -40,50 +40,57 @@ import chat.dim.type.Mapper;
 
 /**
  *  User/Group Meta data
- *  ~~~~~~~~~~~~~~~~~~~~
- *  This class is used to generate entity meta
+ *  <p>
+ *      This class is used to generate entity meta
+ *  </p>
  *
- *      data format: {
- *          type: 1,             // algorithm version
- *          key: "{public key}", // PK = secp256k1(SK);
- *          seed: "moKy",        // user/group name
- *          fingerprint: "..."   // CT = sign(seed, SK);
- *      }
+ *  <blockquote><pre>
+ *  data format: {
+ *      type: 1,             // algorithm version
+ *      key: "{public key}", // PK = secp256k1(SK);
+ *      seed: "moKy",        // user/group name
+ *      fingerprint: "..."   // CT = sign(seed, SK);
+ *  }
  *
- *      algorithm:
- *          fingerprint = sign(seed, SK);
+ *  algorithm:
+ *      fingerprint = sign(seed, SK);
+ *  </pre></blockquote>
  */
 public interface Meta extends Mapper {
 
     /**
      *  Meta algorithm version
      *
-     *      1 = MKM : username@address (default)
-     *      2 = BTC : btc_address
-     *      4 = ETH : eth_address
-     *      ...
+     *  <pre>
+     *  1 = MKM : username@address (default)
+     *  2 = BTC : btc_address
+     *  4 = ETH : eth_address
+     *  ...
+     *  </pre>
      */
     String getType();
 
     /**
      *  Public key (used for signature)
      *
-     *      RSA / ECC
+     *  <p>RSA / ECC</p>
      */
     VerifyKey getPublicKey();
 
     /**
      *  Seed to generate fingerprint
      *
-     *      Username / Group-X
+     *  <p>Username / Group-X</p>
      */
     String getSeed();
 
     /**
      *  Fingerprint to verify ID and public key
      *
-     *      Build: fingerprint = sign(seed, privateKey)
-     *      Check: verify(seed, fingerprint, publicKey)
+     *  <blockquote><pre>
+     *  Build: fingerprint = sign(seed, privateKey)
+     *  Check: verify(seed, fingerprint, publicKey)
+     *  </pre></blockquote>
      */
     byte[] getFingerprint();
 
@@ -93,7 +100,7 @@ public interface Meta extends Mapper {
 
     /**
      *  Check meta valid
-     *  (must call this when received a new meta from network)
+     *  <p>(must call this when received a new meta from network)</p>
      *
      * @return true on valid
      */
@@ -138,7 +145,6 @@ public interface Meta extends Mapper {
 
     /**
      *  General Helper
-     *  ~~~~~~~~~~~~~~
      */
     interface Helper {
 
@@ -155,7 +161,6 @@ public interface Meta extends Mapper {
 
     /**
      *  Meta Factory
-     *  ~~~~~~~~~~~~
      */
     interface Factory {
 

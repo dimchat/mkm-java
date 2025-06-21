@@ -37,13 +37,16 @@ import chat.dim.type.ConstantString;
 
 /**
  *  ID for entity (User/Group)
- *
+ *  <p>
  *      data format: "name@address[/terminal]"
+ *  </p>
  *
- *      fields:
- *          name     - entity name, the seed of fingerprint to build address
- *          address  - a string to identify an entity
- *          terminal - entity login resource(device), OPTIONAL
+ *  <pre>
+ *  fields:
+ *      name     - entity name, the seed of fingerprint to build address
+ *      address  - a string to identify an entity
+ *      terminal - entity login resource(device), OPTIONAL
+ *  </pre>
  */
 public final class Identifier extends ConstantString implements ID {
 
