@@ -28,18 +28,31 @@ package chat.dim.crypto;
 public interface VerifyKey extends AsymmetricKey {
 
     /**
-     *  OK = verify(data, signature, PK)
+     *  Verify signature with data
+     *  <blockquote><pre>
+     *      OK = verify(data, signature, PK);
+     *  </pre></blockquote>
      *
-     * @param data - data
-     * @param signature - signature of data
+     * @param data
+     *        data
+     *
+     * @param signature
+     *        signature of data
+     *
      * @return true on signature matched
      */
     boolean verify(byte[] data, byte[] signature);
 
     /**
-     *  OK = verify(data, sign(data, SK), PK)
+     *  Check asymmetric keys by signature.
+     *  <blockquote><pre>
+     *      signature = sign(data, SK);
+     *      OK = verify(data, signature, PK);
+     *  </pre></blockquote>
      *
-     * @param sKey - private key
+     * @param sKey
+     *        private key
+     *
      * @return true on signature matched
      */
     boolean matchSignKey(SignKey sKey);

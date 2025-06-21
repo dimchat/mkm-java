@@ -35,7 +35,6 @@ public interface Copier {
 
     /**
      *  Shallow Copy
-     *  ~~~~~~~~~~~~
      */
     static Object copy(Object object) {
         if (object == null) {
@@ -68,7 +67,6 @@ public interface Copier {
 
     /**
      *  Deep Copy
-     *  ~~~~~~~~~
      */
     static Object deepCopy(Object object) {
         if (object == null) {

@@ -36,7 +36,6 @@ import chat.dim.crypto.VerifyKey;
 
 /**
  *  CryptographyKey GeneralFactory
- *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 public interface GeneralCryptoHelper /*extends SymmetricKey.Helper, PrivateKey.Helper, PublicKey.Helper */{
 

@@ -30,7 +30,6 @@ import chat.dim.format.TransportableData;
 
 /**
  *  Format FactoryManager
- *  ~~~~~~~~~~~~~~~~~~~~~
  */
 public final class SharedFormatExtensions {
 

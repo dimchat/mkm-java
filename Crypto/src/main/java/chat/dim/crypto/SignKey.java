@@ -28,9 +28,14 @@ package chat.dim.crypto;
 public interface SignKey extends AsymmetricKey {
 
     /**
-     *  signature = sign(data, SK);
+     *  Get signature for data
+     *  <blockquote><pre>
+     *      signature = sign(data, SK);
+     *  </pre></blockquote>
      *
-     * @param data - data to be signed
+     * @param data
+     *        data to be signed
+     *
      * @return signature
      */
     byte[] sign(byte[] data);

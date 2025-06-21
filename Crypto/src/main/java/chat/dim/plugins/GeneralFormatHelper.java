@@ -29,7 +29,6 @@ import java.util.Map;
 
 /**
  *  Format GeneralFactory
- *  ~~~~~~~~~~~~~~~~~~~~~
  */
 public interface GeneralFormatHelper /*extends TransportableData.Helper, PortableNetworkFile.Helper */{
 

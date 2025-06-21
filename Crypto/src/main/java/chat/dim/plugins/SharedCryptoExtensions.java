@@ -31,7 +31,6 @@ import chat.dim.crypto.SymmetricKey;
 
 /**
  *  CryptographyKey FactoryManager
- *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  */
 public final class SharedCryptoExtensions {
 

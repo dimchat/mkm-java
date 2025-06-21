@@ -29,14 +29,17 @@ import chat.dim.type.Mapper;
 
 /**
  *  Cryptography Key
- *  ~~~~~~~~~~~~~~~~
- *  Cryptography key with designated algorithm
+ *  <p>
+ *      Cryptography key with designated algorithm
+ *  </p>
  *
+ *  <blockquote><pre>
  *  key data format: {
  *      algorithm : "RSA", // ECC, AES, ...
  *      data      : "{BASE64_ENCODE}",
  *      ...
  *  }
+ *  </pre></blockquote>
  */
 public interface CryptographyKey extends Mapper {
 

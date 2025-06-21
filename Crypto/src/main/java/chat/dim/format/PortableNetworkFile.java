@@ -34,25 +34,28 @@ import chat.dim.type.Mapper;
 
 /**
  *  Transportable File
- *  ~~~~~~~~~~~~~~~~~~
- *  PNF - Portable Network File
+ *  <p>
+ *      PNF - Portable Network File
+ *  </p>
  *
- *      0.  "{URL}"
- *      1. "base64,{BASE64_ENCODE}"
- *      2. "data:image/png;base64,{BASE64_ENCODE}"
- *      3. {
- *              data     : "...",        // base64_encode(fileContent)
- *              filename : "avatar.png",
+ *  <blockquote><pre>
+ *  0.  "{URL}"
+ *  1. "base64,{BASE64_ENCODE}"
+ *  2. "data:image/png;base64,{BASE64_ENCODE}"
+ *  3. {
+ *         data     : "...",        // base64_encode(fileContent)
+ *         filename : "avatar.png",
  *
- *              URL      : "http://...", // download from CDN
- *              // before fileContent uploaded to a public CDN,
- *              // it can be encrypted by a symmetric key
- *              key      : {             // symmetric key to decrypt file content
- *                  algorithm : "AES",   // "DES", ...
- *                  data      : "{BASE64_ENCODE}",
- *                  ...
- *              }
+ *         URL      : "http://...", // download from CDN
+ *         // before fileContent uploaded to a public CDN,
+ *         // it can be encrypted by a symmetric key
+ *         key      : {             // symmetric key to decrypt file data
+ *             algorithm : "AES",   // "DES", ...
+ *             data      : "{BASE64_ENCODE}",
+ *             ...
+ *         }
  *      }
+ *  </pre></blockquote>
  */
 public interface PortableNetworkFile extends Mapper {
 
@@ -128,7 +131,6 @@ public interface PortableNetworkFile extends Mapper {
 
     /**
      *  General Helper
-     *  ~~~~~~~~~~~~~~
      */
     interface Helper {
 
@@ -144,17 +146,24 @@ public interface PortableNetworkFile extends Mapper {
 
     /**
      *  PNF Factory
-     *  ~~~~~~~~~~~
      */
     interface Factory {
 
         /**
          *  Create PNF
          *
-         * @param data     - file content (not encrypted)
-         * @param filename - file name
-         * @param url      - download URL
-         * @param password - decrypt key for downloaded data
+         * @param data
+         *        file content (not encrypted)
+         *
+         * @param filename
+         *        file name
+         *
+         * @param url
+         *        download URL
+         *
+         * @param password
+         *        decrypt key for downloaded data
+         *
          * @return PNF object
          */
         PortableNetworkFile createPortableNetworkFile(TransportableData data, String filename,
@@ -163,7 +172,9 @@ public interface PortableNetworkFile extends Mapper {
         /**
          *  Parse string/map object to PNF
          *
-         * @param pnf - PNF info
+         * @param pnf
+         *        PNF info
+         *
          * @return PNF object
          */
         PortableNetworkFile parsePortableNetworkFile(Map<String, Object> pnf);

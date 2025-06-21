@@ -31,13 +31,14 @@ import chat.dim.plugins.SharedCryptoExtensions;
 
 /**
  *  Asymmetric Cryptography Public Key
- *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
  *
+ *  <blockquote><pre>
  *  key data format: {
  *      algorithm : "RSA", // "ECC", ...
  *      data      : "{BASE64_ENCODE}",
  *      ...
  *  }
+ *  </pre></blockquote>
  */
 public interface PublicKey extends VerifyKey {
 
@@ -57,7 +58,6 @@ public interface PublicKey extends VerifyKey {
 
     /**
      *  General Helper
-     *  ~~~~~~~~~~~~~~
      */
     interface Helper {
 
@@ -70,14 +70,15 @@ public interface PublicKey extends VerifyKey {
 
     /**
      *  Key Factory
-     *  ~~~~~~~~~~~
      */
     interface Factory {
 
         /**
          *  Parse map object to key
          *
-         * @param key - key info
+         * @param key
+         *        key info
+         *
          * @return PublicKey
          */
         PublicKey parsePublicKey(Map<String, Object> key);

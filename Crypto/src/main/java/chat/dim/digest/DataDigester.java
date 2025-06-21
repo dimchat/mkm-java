@@ -27,8 +27,9 @@ package chat.dim.digest;
 
 /**
  *  Data Digest
- *  ~~~~~~~~~~~
- *  MD5, SHA1, SHA256, Keccak256, RipeMD160, ...
+ *  <p>
+ *      MD5, SHA1, SHA256, Keccak256, RipeMD160, ...
+ *  </p>
  */
 public interface DataDigester {
 

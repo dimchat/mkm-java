@@ -32,9 +32,11 @@ import chat.dim.type.Mapper;
 
 /**
  *  Transportable Data
- *  ~~~~~~~~~~~~~~~~~~
- *  TED - Transportable Encoded Data
+ *  <p>
+ *      TED - Transportable Encoded Data
+ *  </p>
  *
+ *  <blockquote><pre>
  *      0. "{BASE64_ENCODE}"
  *      1. "base64,{BASE64_ENCODE}"
  *      2. "data:image/png;base64,{BASE64_ENCODE}"
@@ -43,6 +45,7 @@ import chat.dim.type.Mapper;
  *              data      : "...",     // base64_encode(data)
  *              ...
  *      }
+ *  </pre></blockquote>
  */
 public interface TransportableData extends Mapper {
 
@@ -125,7 +128,6 @@ public interface TransportableData extends Mapper {
 
     /**
      *  General Helper
-     *  ~~~~~~~~~~~~~~
      */
     interface Helper {
 
@@ -140,14 +142,15 @@ public interface TransportableData extends Mapper {
 
     /**
      *  TED Factory
-     *  ~~~~~~~~~~~
      */
     interface Factory {
 
         /**
          *  Create TED
          *
-         * @param data - original data
+         * @param data
+         *        original data
+         *
          * @return TED object
          */
         TransportableData createTransportableData(byte[] data);
@@ -155,7 +158,9 @@ public interface TransportableData extends Mapper {
         /**
          *  Parse string/map object to TED
          *
-         * @param ted - TED info
+         * @param ted
+         *        TED info
+         *
          * @return TED object
          */
         TransportableData parseTransportableData(Map<String, Object> ted);

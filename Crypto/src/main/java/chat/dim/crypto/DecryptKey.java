@@ -31,20 +31,35 @@ public interface DecryptKey extends CryptographyKey {
 
     /**
      *  1. Symmetric Key:
-     *      plaintext = decrypt(ciphertext, PW);
-     *  2. Asymmetric Private Key:
-     *     plaintext = decrypt(ciphertext, SK);
+     *     <blockquote><pre>
+     *         plaintext = decrypt(ciphertext, PW);
+     *     </pre></blockquote>
      *
-     * @param ciphertext - encrypted data
-     * @param params     - extra params ('IV' for 'AES')
+     *  2. Asymmetric Private Key:
+     *     <blockquote><pre>
+     *         plaintext = decrypt(ciphertext, SK);
+     *     </pre></blockquote>
+     *
+     * @param ciphertext
+     *        encrypted data
+     *
+     * @param params
+     *        extra params ('IV' for 'AES')
+     *
      * @return plaintext
      */
     byte[] decrypt(byte[] ciphertext, Map<String, Object> params);
 
     /**
-     *  OK = decrypt(encrypt(data, PK), SK) == data
+     *  Check symmetric keys by encryption.
+     *  <blockquote><pre>
+     *      CT = encrypt(data, PK);
+     *      OK = decrypt(CT, SK) == data;
+     *  </pre></blockquote>
      *
-     * @param pKey - encrypt (public) key
+     * @param pKey
+     *        encrypt (public) key
+     *
      * @return true on signature matched
      */
     boolean matchEncryptKey(EncryptKey pKey);

@@ -35,8 +35,9 @@ public interface Wrapper {
 
     /**
      *  Get inner String
-     *  ~~~~~~~~~~~~~~~~
-     *  Remove first wrapper
+     *  <p>
+     *      Remove first wrapper
+     *  </p>
      */
     static String getString(Object str) {
         if (str == null) {
@@ -53,8 +54,9 @@ public interface Wrapper {
 
     /**
      *  Get inner Map
-     *  ~~~~~~~~~~~~~
-     *  Remove first wrapper
+     *  <p>
+     *      Remove first wrapper
+     *  </p>
      */
     @SuppressWarnings("unchecked")
     static Map<String, Object> getMap(Object dict) {
@@ -72,8 +74,9 @@ public interface Wrapper {
 
     /**
      *  Unwrap recursively
-     *  ~~~~~~~~~~~~~~~~~~
-     *  Remove all wrappers
+     *  <p>
+     *      Remove all wrappers
+     *  </p>
      */
     static Object unwrap(Object object) {
         if (object == null) {

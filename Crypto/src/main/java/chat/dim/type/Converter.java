@@ -45,8 +45,10 @@ public abstract class Converter {
     }
 
     /**
-     *  assume value can be a config string:
+     *  Assume value can be a config string:
+     *  <blockquote><pre>
      *      'true', 'false', 'yes', 'no', 'on', 'off', '1', '0', ...
+     *  </pre></blockquote>
      */
     public static boolean getBoolean(Object value, boolean defaultValue) {
         return converter.getBoolean(value, defaultValue);
@@ -74,7 +76,8 @@ public abstract class Converter {
     }
 
     /**
-     *  assume value can be a timestamp (seconds from 1970-01-01 00:00:00)
+     *  Assume value can be a timestamp:
+     *        (seconds from 1970-01-01 00:00:00)
      */
     public static Date getDateTime(Object value, Date defaultValue) {
         return converter.getDateTime(value, defaultValue);

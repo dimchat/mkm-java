@@ -31,14 +31,17 @@ import chat.dim.plugins.SharedCryptoExtensions;
 
 /**
  *  Asymmetric Cryptography Private Key
- *  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
- *  This class is used to decrypt symmetric key or sign message data
+ *  <p>
+ *      This class is used to decrypt symmetric key or sign message data
+ *  </p>
  *
+ *  <blockquote><pre>
  *  key data format: {
  *      algorithm : "RSA", // "ECC", ...
  *      data      : "{BASE64_ENCODE}",
  *      ...
  *  }
+ *  </pre></blockquote>
  */
 public interface PrivateKey extends SignKey {
 
@@ -68,7 +71,6 @@ public interface PrivateKey extends SignKey {
 
     /**
      *  General Helper
-     *  ~~~~~~~~~~~~~~
      */
     interface Helper {
 
@@ -83,7 +85,6 @@ public interface PrivateKey extends SignKey {
 
     /**
      *  Key Factory
-     *  ~~~~~~~~~~~
      */
     interface Factory {
 
@@ -97,7 +98,9 @@ public interface PrivateKey extends SignKey {
         /**
          *  Parse map object to key
          *
-         * @param key - key info
+         * @param key
+         *        key info
+         *
          * @return PrivateKey
          */
         PrivateKey parsePrivateKey(Map<String, Object> key);

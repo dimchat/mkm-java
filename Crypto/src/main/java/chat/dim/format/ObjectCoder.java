@@ -27,8 +27,9 @@ package chat.dim.format;
 
 /**
  *  Object Coder
- *  ~~~~~~~~~~~~
- *  JsON, XML, ...
+ *  <p>
+ *      JsON, XML, ...
+ *  </p>
  *
  *  1. encode object to string;
  *  2. decode string to object.
@@ -38,7 +39,9 @@ public interface ObjectCoder<T> {
     /**
      *  Encode Map/List object to String
      *
-     * @param object - Map or List
+     * @param object
+     *        Map or List
+     *
      * @return serialized string
      */
     String encode(T object);
@@ -46,7 +49,9 @@ public interface ObjectCoder<T> {
     /**
      *  Decode String to Map/List object
      *
-     * @param string - serialized string
+     * @param string
+     *        serialized string
+     *
      * @return Map or List
      */
     T decode(String string);

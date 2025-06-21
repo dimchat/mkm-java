@@ -31,14 +31,17 @@ import chat.dim.plugins.SharedCryptoExtensions;
 
 /**
  *  Symmetric Cryptography Key
- *  ~~~~~~~~~~~~~~~~~~~~~~~~~~
- *  This class is used to encrypt or decrypt message data
+ *  <p>
+ *      This class is used to encrypt or decrypt message data
+ *  </p>
  *
+ *  <blockquote><pre>
  *  key data format: {
  *      algorithm : "AES", // "DES", ...
  *      data      : "{BASE64_ENCODE}",
  *      ...
  *  }
+ *  </pre></blockquote>
  */
 public interface SymmetricKey extends EncryptKey, DecryptKey {
 
@@ -64,7 +67,6 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
 
     /**
      *  General Helper
-     *  ~~~~~~~~~~~~~~
      */
     interface Helper {
 
@@ -79,7 +81,6 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
 
     /**
      *  Key Factory
-     *  ~~~~~~~~~~~
      */
     interface Factory {
 
@@ -93,7 +94,9 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
         /**
          *  Parse map object to key
          *
-         * @param key - key info
+         * @param key
+         *        key info
+         *
          * @return SymmetricKey
          */
         SymmetricKey parseSymmetricKey(Map<String, Object> key);

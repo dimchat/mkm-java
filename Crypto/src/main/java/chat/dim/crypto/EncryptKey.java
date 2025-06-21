@@ -31,12 +31,21 @@ public interface EncryptKey extends CryptographyKey {
 
     /**
      *  1. Symmetric Key:
-     *      ciphertext = encrypt(plaintext, PW)
-     *  2. Asymmetric Public Key:
-     *      ciphertext = encrypt(plaintext, PK)
+     *     <blockquote><pre>
+     *         ciphertext = encrypt(plaintext, PW)
+     *     </pre></blockquote>
      *
-     * @param plaintext - plain data
-     * @param extra     - store extra variables ('IV' for 'AES')
+     *  2. Asymmetric Public Key:
+     *     <blockquote><pre>
+     *         ciphertext = encrypt(plaintext, PK);
+     *     </pre></blockquote>
+     *
+     * @param plaintext
+     *        plain data
+     *
+     * @param extra
+     *        store extra variables ('IV' for 'AES')
+     *
      * @return ciphertext
      */
     byte[] encrypt(byte[] plaintext, Map<String, Object> extra);

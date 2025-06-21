@@ -55,7 +55,9 @@ public interface Mapper extends Map<String, Object> {
     /**
      *  Copy inner map
      *
-     * @param deepCopy - deep copy
+     * @param deepCopy
+     *        deep copy
+     *
      * @return Map
      */
     Map<String, Object> copyMap(boolean deepCopy);

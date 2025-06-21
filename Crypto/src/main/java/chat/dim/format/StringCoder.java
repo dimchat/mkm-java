@@ -27,8 +27,9 @@ package chat.dim.format;
 
 /**
  *  String Coder
- *  ~~~~~~~~~~~~
- *  UTF-8, UTF-16, GBK, GB2312, ...
+ *  <p>
+ *      UTF-8, UTF-16, GBK, GB2312, ...
+ *  </p>
  *
  *  1. encode string to binary data;
  *  2. decode binary data to string.
@@ -38,7 +39,9 @@ public interface StringCoder {
     /**
      *  Encode local string to binary data
      *
-     * @param string - local string
+     * @param string
+     *        local string
+     *
      * @return binary data
      */
     byte[] encode(String string);
@@ -46,7 +49,9 @@ public interface StringCoder {
     /**
      *  Decode binary data to local string
      *
-     * @param data - binary data
+     * @param data
+     *        binary data
+     *
      * @return local string
      */
     String decode(byte[] data);
