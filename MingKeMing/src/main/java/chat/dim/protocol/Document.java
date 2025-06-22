@@ -30,7 +30,9 @@
  */
 package chat.dim.protocol;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import chat.dim.format.TransportableData;
@@ -76,6 +78,30 @@ public interface Document extends TAI, Mapper {
      */
     String getName();
     void setName(String value);
+
+    //
+    //  Conveniences
+    //
+
+    static List<Document> convert(Iterable<?> documents) {
+        List<Document> array = new ArrayList<>();
+        Document doc;
+        for (Object item : documents) {
+            doc = parse(item);
+            if (doc == null) {
+                continue;
+            }
+            array.add(doc);
+        }
+        return array;
+    }
+    static List<Map<String, Object>> revert(Iterable<Document> documents) {
+        List<Map<String, Object>> array = new ArrayList<>();
+        for (Document doc : documents) {
+            array.add(doc.toMap());
+        }
+        return array;
+    }
 
     //
     //  Factory methods

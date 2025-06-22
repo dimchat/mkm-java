@@ -30,6 +30,7 @@
  */
 package chat.dim.protocol;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import chat.dim.mkm.Identifier;
@@ -78,16 +79,31 @@ public interface ID extends Stringer {
     //
     //  Conveniences
     //
+
     static List<ID> convert(Iterable<?> members) {
-        return SharedAccountExtensions.idHelper.convertIdentifiers(members);
+        List<ID> array = new ArrayList<>();
+        ID did;
+        for (Object item : members) {
+            did = parse(item);
+            if (did == null) {
+                continue;
+            }
+            array.add(did);
+        }
+        return array;
     }
     static List<String> revert(Iterable<ID> members) {
-        return SharedAccountExtensions.idHelper.revertIdentifiers(members);
+        List<String> array = new ArrayList<>();
+        for (ID item : members) {
+            array.add(item.toString());
+        }
+        return array;
     }
 
     //
     //  Factory methods
     //
+
     static ID parse(Object identifier) {
         return SharedAccountExtensions.idHelper.parseIdentifier(identifier);
     }
@@ -118,9 +134,6 @@ public interface ID extends Stringer {
         ID createIdentifier(String name, Address address, String terminal);
 
         ID generateIdentifier(Meta meta, int network, String terminal);
-
-        List<ID> convertIdentifiers(Iterable<?> members);
-        List<String> revertIdentifiers(Iterable<ID> members);
 
     }
 
