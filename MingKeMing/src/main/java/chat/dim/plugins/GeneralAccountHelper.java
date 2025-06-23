@@ -41,8 +41,8 @@ public interface GeneralAccountHelper /*extends Address.Helper, ID.Helper, Meta.
     //  Algorithm Version
     //
 
-    String getMetaType(Map<?, ?> meta, String defaultValue);
+    String getMetaType(Map<?, ?> meta, String defaultValueIfNull);
 
-    String getDocumentType(Map<?, ?> doc, String defaultValue);
+    String getDocumentType(Map<?, ?> doc, String defaultValueIfNull);
 
 }

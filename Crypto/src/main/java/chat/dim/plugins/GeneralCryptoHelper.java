@@ -66,6 +66,6 @@ public interface GeneralCryptoHelper /*extends SymmetricKey.Helper, PrivateKey.H
     //  Algorithm
     //
 
-    String getKeyAlgorithm(Map<?, ?> key, String defaultValue);
+    String getKeyAlgorithm(Map<?, ?> key, String defaultValueIfNull);
 
 }
