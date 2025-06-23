@@ -49,6 +49,7 @@ import chat.dim.type.Mapper;
  */
 public interface TransportableData extends Mapper {
 
+    /*
     //
     //  encode algorithm
     //
@@ -56,6 +57,7 @@ public interface TransportableData extends Mapper {
     String BASE_64 = "base64";
     String BASE_58 = "base58";
     String HEX     = "hex";
+     */
 
     /**
      *  Get data encode algorithm
@@ -93,8 +95,8 @@ public interface TransportableData extends Mapper {
     //  Conveniences
     //
 
-    static Object encode(byte[] data) {
-        TransportableData ted = create(data);
+    static Object encode(String algorithm, byte[] data) {
+        TransportableData ted = create(algorithm, data);
         return ted.toObject();
     }
 
@@ -107,9 +109,6 @@ public interface TransportableData extends Mapper {
     //  Factory methods
     //
 
-    static TransportableData create(byte[] data) {
-        return create(DEFAULT, data);
-    }
     static TransportableData create(String algorithm, byte[] data) {
         assert algorithm != null && algorithm.length() > 0 : "TED algorithm not set";
         return SharedFormatExtensions.tedHelper.createTransportableData(algorithm, data);

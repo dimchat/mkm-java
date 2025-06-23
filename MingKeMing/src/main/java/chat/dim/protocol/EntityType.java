@@ -85,11 +85,11 @@ public enum EntityType {
     ICP             (0x05), // 0000 0101 (Content Provider)
     //BOT_GROUP     (0x05), // 0000 0101
 
-    /**
+    /*
      *  Management: 6, 7, 8
      */
-    SUPERVISOR      (0x06), // 0000 0110 (Company President)
-    COMPANY         (0x07), // 0000 0111 (Super Group for ISP/ICP)
+    //SUPERVISOR    (0x06), // 0000 0110 (Company President)
+    //COMPANY       (0x07), // 0000 0111 (Super Group for ISP/ICP)
     //CA            (0x08), // 0000 1000 (Certification Authority)
 
     /*

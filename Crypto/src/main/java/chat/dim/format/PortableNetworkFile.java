@@ -109,9 +109,8 @@ public interface PortableNetworkFile extends Mapper {
     /**
      *  Create from file data
      */
-    static PortableNetworkFile create(byte[] data, String filename) {
-        TransportableData ted = TransportableData.create(data);
-        return create(ted, filename, null, null);
+    static PortableNetworkFile create(TransportableData data, String filename) {
+        return create(data, filename, null, null);
     }
 
     static PortableNetworkFile create(TransportableData data, String filename, URI url, DecryptKey password) {

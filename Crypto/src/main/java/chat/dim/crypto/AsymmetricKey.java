@@ -27,6 +27,9 @@ package chat.dim.crypto;
 
 public interface AsymmetricKey extends CryptographyKey {
 
+    /*
     String RSA = "RSA"; //-- "RSA/ECB/PKCS1Padding", "SHA256withRSA"
     String ECC = "ECC";
+     */
+
 }

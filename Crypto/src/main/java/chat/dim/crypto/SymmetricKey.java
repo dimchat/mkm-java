@@ -45,8 +45,10 @@ import chat.dim.plugins.SharedCryptoExtensions;
  */
 public interface SymmetricKey extends EncryptKey, DecryptKey {
 
+    /*
     String AES = "AES"; //-- "AES/CBC/PKCS7Padding"
     String DES = "DES";
+     */
 
     //
     //  Factory methods
