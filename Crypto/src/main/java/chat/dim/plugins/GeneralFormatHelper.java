@@ -36,6 +36,6 @@ public interface GeneralFormatHelper /*extends TransportableData.Helper, Portabl
     //  Algorithm
     //
 
-    String getFormatAlgorithm(Map<?, ?> ted, String defaultValueIfNull);
+    String getFormatAlgorithm(Map<?, ?> ted, String defaultValue);
 
 }

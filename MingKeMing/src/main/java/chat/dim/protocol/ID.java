@@ -80,6 +80,12 @@ public interface ID extends Stringer {
     //  Conveniences
     //
 
+    /**
+     *  Convert ID list from string array
+     *
+     * @param members - string array
+     * @return ID list
+     */
     static List<ID> convert(Iterable<?> members) {
         List<ID> array = new ArrayList<>();
         ID did;
@@ -92,6 +98,13 @@ public interface ID extends Stringer {
         }
         return array;
     }
+
+    /**
+     *  Revert ID list to string array
+     *
+     * @param members - ID list
+     * @return string array
+     */
     static List<String> revert(Iterable<ID> members) {
         List<String> array = new ArrayList<>();
         for (ID item : members) {

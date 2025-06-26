@@ -29,9 +29,9 @@ import java.util.Date;
 
 public class DataConverter {
 
-    public String getString(Object value, String defaultValueIfNull) {
+    public String getString(Object value, String defaultValue) {
         if (value == null) {
-            return defaultValueIfNull;
+            return defaultValue;
         } else if (value instanceof String) {
             // exactly
             return (String) value;
@@ -45,9 +45,9 @@ public class DataConverter {
         return value instanceof String ? (String) value : value.toString();
     }
 
-    public Boolean getBoolean(Object value, Boolean defaultValueIfNull) {
+    public Boolean getBoolean(Object value, Boolean defaultValue) throws NumberFormatException {
         if (value == null) {
-            return defaultValueIfNull;
+            return defaultValue;
         } else if (value instanceof Boolean) {
             // exactly
             return (Boolean) value;
@@ -58,16 +58,22 @@ public class DataConverter {
         }
         String str = getString(value);
         str = str.trim();
-        if (str.length() > Converter.MAX_BOOLEAN_LEN) {
-            return null;
+        if (str.isEmpty()) {
+            return false;
+        } else if (str.length() > Converter.MAX_BOOLEAN_LEN) {
+            throw new NumberFormatException("Boolean value error: \"" + value + "\"");
         }
         str = str.toLowerCase();
-        return Converter.BOOLEAN_STATES.get(str);
+        Boolean state = Converter.BOOLEAN_STATES.get(str);
+        if (state == null) {
+            throw new NumberFormatException("Boolean value error: \"" + value + "\"");
+        }
+        return state;
     }
 
-    public Byte getByte(Object value, Byte defaultValueIfNull) {
+    public Byte getByte(Object value, Byte defaultValue) throws NumberFormatException {
         if (value == null) {
-            return defaultValueIfNull;
+            return defaultValue;
         } else if (value instanceof Byte) {
             // exactly
             return (Byte) value;
@@ -77,15 +83,11 @@ public class DataConverter {
             return (byte) ((Boolean) value ? 1 : 0);
         }
         String str = getString(value);
-        try {
-            return Byte.parseByte(str);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return Byte.parseByte(str);
     }
-    public Short getShort(Object value, Short defaultValueIfNull) {
+    public Short getShort(Object value, Short defaultValue) throws NumberFormatException {
         if (value == null) {
-            return defaultValueIfNull;
+            return defaultValue;
         } else if (value instanceof Short) {
             // exactly
             return (Short) value;
@@ -95,16 +97,12 @@ public class DataConverter {
             return (short) ((Boolean) value ? 1 : 0);
         }
         String str = getString(value);
-        try {
-            return Short.parseShort(str);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return Short.parseShort(str);
     }
 
-    public Integer getInteger(Object value, Integer defaultValueIfNull) {
+    public Integer getInteger(Object value, Integer defaultValue) throws NumberFormatException {
         if (value == null) {
-            return defaultValueIfNull;
+            return defaultValue;
         } else if (value instanceof Integer) {
             // exactly
             return (Integer) value;
@@ -114,15 +112,11 @@ public class DataConverter {
             return (Boolean) value ? 1 : 0;
         }
         String str = getString(value);
-        try {
-            return Integer.parseInt(str);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return Integer.parseInt(str);
     }
-    public Long getLong(Object value, Long defaultValueIfNull) {
+    public Long getLong(Object value, Long defaultValue) throws NumberFormatException {
         if (value == null) {
-            return defaultValueIfNull;
+            return defaultValue;
         } else if (value instanceof Long) {
             // exactly
             return (Long) value;
@@ -132,16 +126,12 @@ public class DataConverter {
             return (Boolean) value ? 1L : 0L;
         }
         String str = getString(value);
-        try {
-            return Long.parseLong(str);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return Long.parseLong(str);
     }
 
-    public Float getFloat(Object value, Float defaultValueIfNull) {
+    public Float getFloat(Object value, Float defaultValue) throws NumberFormatException {
         if (value == null) {
-            return defaultValueIfNull;
+            return defaultValue;
         } else if (value instanceof Float) {
             // exactly
             return (Float) value;
@@ -151,15 +141,11 @@ public class DataConverter {
             return (Boolean) value ? 1.0F : 0.0F;
         }
         String str = getString(value);
-        try {
-            return Float.parseFloat(str);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return Float.parseFloat(str);
     }
-    public Double getDouble(Object value, Double defaultValueIfNull) {
+    public Double getDouble(Object value, Double defaultValue) throws NumberFormatException {
         if (value == null) {
-            return defaultValueIfNull;
+            return defaultValue;
         } else if (value instanceof Double) {
             // exactly
             return (Double) value;
@@ -169,24 +155,19 @@ public class DataConverter {
             return (Boolean) value ? 1.0 : 0.0;
         }
         String str = getString(value);
-        try {
-            return Double.parseDouble(str);
-        } catch (NumberFormatException e) {
-            return null;
-        }
+        return Double.parseDouble(str);
     }
 
-    public Date getDateTime(Object value, Date defaultValueIfNull) {
+    public Date getDateTime(Object value, Date defaultValue) throws NumberFormatException {
         if (value == null) {
-            return defaultValueIfNull;
+            return defaultValue;
         } else if (value instanceof Date) {
             // exactly
             return (Date) value;
         }
         Double seconds = getDouble(value, null);
         if (seconds == null || seconds < 0) {
-            // NumberFormatException
-            return null;
+            throw new NumberFormatException("Timestamp error: \"" + value + "\"");
         }
         double millis = seconds * 1000;
         return new Date((long) millis);

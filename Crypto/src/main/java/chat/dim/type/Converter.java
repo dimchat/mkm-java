@@ -40,8 +40,8 @@ public abstract class Converter {
     }};
     public static int MAX_BOOLEAN_LEN = "undefined".length();
 
-    public static String getString(Object value, String defaultValueIfNull) {
-        return converter.getString(value, defaultValueIfNull);
+    public static String getString(Object value, String defaultValue) {
+        return converter.getString(value, defaultValue);
     }
 
     /**
@@ -50,37 +50,37 @@ public abstract class Converter {
      *      'true', 'false', 'yes', 'no', 'on', 'off', '1', '0', ...
      *  </pre></blockquote>
      */
-    public static Boolean getBoolean(Object value, Boolean defaultValueIfNull) {
-        return converter.getBoolean(value, defaultValueIfNull);
+    public static Boolean getBoolean(Object value, Boolean defaultValue) {
+        return converter.getBoolean(value, defaultValue);
     }
 
-    public static Byte getByte(Object value, Byte defaultValueIfNull) {
-        return converter.getByte(value, defaultValueIfNull);
+    public static Byte getByte(Object value, Byte defaultValue) {
+        return converter.getByte(value, defaultValue);
     }
-    public static Short getShort(Object value, Short defaultValueIfNull) {
-        return converter.getShort(value, defaultValueIfNull);
-    }
-
-    public static Integer getInteger(Object value, Integer defaultValueIfNull) {
-        return converter.getInteger(value, defaultValueIfNull);
-    }
-    public static Long getLong(Object value, Long defaultValueIfNull) {
-        return converter.getLong(value, defaultValueIfNull);
+    public static Short getShort(Object value, Short defaultValue) {
+        return converter.getShort(value, defaultValue);
     }
 
-    public static Float getFloat(Object value, Float defaultValueIfNull) {
-        return converter.getFloat(value, defaultValueIfNull);
+    public static Integer getInteger(Object value, Integer defaultValue) {
+        return converter.getInteger(value, defaultValue);
     }
-    public static Double getDouble(Object value, Double defaultValueIfNull) {
-        return converter.getDouble(value, defaultValueIfNull);
+    public static Long getLong(Object value, Long defaultValue) {
+        return converter.getLong(value, defaultValue);
+    }
+
+    public static Float getFloat(Object value, Float defaultValue) {
+        return converter.getFloat(value, defaultValue);
+    }
+    public static Double getDouble(Object value, Double defaultValue) {
+        return converter.getDouble(value, defaultValue);
     }
 
     /**
      *  Assume value can be a timestamp:
      *        (seconds from 1970-01-01 00:00:00)
      */
-    public static Date getDateTime(Object value, Date defaultValueIfNull) {
-        return converter.getDateTime(value, defaultValueIfNull);
+    public static Date getDateTime(Object value, Date defaultValue) {
+        return converter.getDateTime(value, defaultValue);
     }
 
     public static DataConverter converter = new DataConverter();
