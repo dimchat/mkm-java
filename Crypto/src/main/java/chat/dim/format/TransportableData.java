@@ -95,8 +95,8 @@ public interface TransportableData extends Mapper {
     //  Conveniences
     //
 
-    static Object encode(String algorithm, byte[] data) {
-        TransportableData ted = create(algorithm, data);
+    static Object encode(byte[] data) {
+        TransportableData ted = create(data);
         return ted.toObject();
     }
 
@@ -109,9 +109,12 @@ public interface TransportableData extends Mapper {
     //  Factory methods
     //
 
-    static TransportableData create(String algorithm, byte[] data) {
+    static TransportableData create(byte[] data) {
+        return SharedFormatExtensions.tedHelper.createTransportableData(data, null);
+    }
+    static TransportableData create(byte[] data, String algorithm) {
         assert algorithm != null && algorithm.length() > 0 : "TED algorithm not set";
-        return SharedFormatExtensions.tedHelper.createTransportableData(algorithm, data);
+        return SharedFormatExtensions.tedHelper.createTransportableData(data, algorithm);
     }
 
     static TransportableData parse(Object ted) {
@@ -133,7 +136,7 @@ public interface TransportableData extends Mapper {
         void setTransportableDataFactory(String algorithm, Factory factory);
         Factory getTransportableDataFactory(String algorithm);
 
-        TransportableData createTransportableData(String algorithm, byte[] data);
+        TransportableData createTransportableData(byte[] data, String algorithm);
 
         TransportableData parseTransportableData(Object ted);
 

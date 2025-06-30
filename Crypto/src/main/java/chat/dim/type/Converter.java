@@ -35,8 +35,8 @@ public abstract class Converter {
         put("1", true); put("yes", true); put("true", true); put("on", true);
 
         put("0", false); put("no", false); put("false", false); put("off", false);
-        put("+0", false); put("-0", false); put("+0.0", false); put("-0.0", false);
-        put("none", false); put("null", false); put("undefined", false);
+        //put("+0", false); put("-0", false); put("0.0", false); put("+0.0", false); put("-0.0", false);
+        put("null", false); put("none", false); put("undefined", false);
     }};
     public static int MAX_BOOLEAN_LEN = "undefined".length();
 

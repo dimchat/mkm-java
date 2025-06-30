@@ -88,7 +88,7 @@ public enum EntityType {
     /*
      *  Management: 6, 7, 8
      */
-    //SUPERVISOR    (0x06), // 0000 0110 (Company President)
+    //SUPERVISOR    (0x06), // 0000 0110 (Company CEO)
     //COMPANY       (0x07), // 0000 0111 (Super Group for ISP/ICP)
     //CA            (0x08), // 0000 1000 (Certification Authority)
 

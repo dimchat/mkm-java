@@ -83,17 +83,17 @@ public interface Document extends TAI, Mapper {
     //  Conveniences
     //
 
-    static List<Document> convert(Iterable<?> documents) {
-        List<Document> array = new ArrayList<>();
+    static List<Document> convert(Iterable<?> array) {
+        List<Document> documents = new ArrayList<>();
         Document doc;
-        for (Object item : documents) {
+        for (Object item : array) {
             doc = parse(item);
             if (doc == null) {
                 continue;
             }
-            array.add(doc);
+            documents.add(doc);
         }
-        return array;
+        return documents;
     }
     static List<Map<String, Object>> revert(Iterable<Document> documents) {
         List<Map<String, Object>> array = new ArrayList<>();

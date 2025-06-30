@@ -83,32 +83,32 @@ public interface ID extends Stringer {
     /**
      *  Convert ID list from string array
      *
-     * @param members - string array
+     * @param array - string array
      * @return ID list
      */
-    static List<ID> convert(Iterable<?> members) {
-        List<ID> array = new ArrayList<>();
+    static List<ID> convert(Iterable<?> array) {
+        List<ID> members = new ArrayList<>();
         ID did;
-        for (Object item : members) {
+        for (Object item : array) {
             did = parse(item);
             if (did == null) {
                 continue;
             }
-            array.add(did);
+            members.add(did);
         }
-        return array;
+        return members;
     }
 
     /**
      *  Revert ID list to string array
      *
-     * @param members - ID list
+     * @param identifiers - ID list
      * @return string array
      */
-    static List<String> revert(Iterable<ID> members) {
+    static List<String> revert(Iterable<ID> identifiers) {
         List<String> array = new ArrayList<>();
-        for (ID item : members) {
-            array.add(item.toString());
+        for (ID did : identifiers) {
+            array.add(did.toString());
         }
         return array;
     }
