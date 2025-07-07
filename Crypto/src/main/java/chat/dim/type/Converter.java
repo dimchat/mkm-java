@@ -83,6 +83,6 @@ public abstract class Converter {
         return converter.getDateTime(value, defaultValue);
     }
 
-    public static DataConverter converter = new DataConverter();
+    public static DataConverter converter = new BaseConverter();
 
 }

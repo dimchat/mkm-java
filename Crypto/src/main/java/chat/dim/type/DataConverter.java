@@ -27,150 +27,20 @@ package chat.dim.type;
 
 import java.util.Date;
 
-public class DataConverter {
+public interface DataConverter {
 
-    public String getString(Object value, String defaultValue) {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof String) {
-            // exactly
-            return (String) value;
-        } else {
-            //assert false : "not a string value: " + value;
-            return value.toString();
-        }
-    }
+    String   getString(Object value,String   defaultValue);
 
-    private String getString(Object value) {
-        return value instanceof String ? (String) value : value.toString();
-    }
+    Boolean getBoolean(Object value, Boolean defaultValue);
 
-    public Boolean getBoolean(Object value, Boolean defaultValue) throws NumberFormatException {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Boolean) {
-            // exactly
-            return (Boolean) value;
-        } else if (value instanceof Number) {  // Byte, Short, Integer, Long, Float, Double
-            int num = ((Number) value).intValue();
-            assert num == 1 || num == 0 : "Boolean value error: " + value;
-            return num != 0;
-        }
-        String str = getString(value);
-        str = str.trim();
-        if (str.isEmpty()) {
-            return false;
-        } else if (str.length() > Converter.MAX_BOOLEAN_LEN) {
-            throw new NumberFormatException("Boolean value error: \"" + value + "\"");
-        }
-        str = str.toLowerCase();
-        Boolean state = Converter.BOOLEAN_STATES.get(str);
-        if (state == null) {
-            throw new NumberFormatException("Boolean value error: \"" + value + "\"");
-        }
-        return state;
-    }
+    Byte       getByte(Object value, Byte    defaultValue);
+    Short     getShort(Object value, Short   defaultValue);
+    Integer getInteger(Object value, Integer defaultValue);
+    Long       getLong(Object value, Long    defaultValue);
 
-    public Byte getByte(Object value, Byte defaultValue) throws NumberFormatException {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Byte) {
-            // exactly
-            return (Byte) value;
-        } else if (value instanceof Number) {  // Short, Integer, Long, Float, Double
-            return ((Number) value).byteValue();
-        } else if (value instanceof Boolean) {
-            return (byte) ((Boolean) value ? 1 : 0);
-        }
-        String str = getString(value);
-        return Byte.parseByte(str);
-    }
-    public Short getShort(Object value, Short defaultValue) throws NumberFormatException {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Short) {
-            // exactly
-            return (Short) value;
-        } else if (value instanceof Number) {  // Byte, Integer, Long, Float, Double
-            return ((Number) value).shortValue();
-        } else if (value instanceof Boolean) {
-            return (short) ((Boolean) value ? 1 : 0);
-        }
-        String str = getString(value);
-        return Short.parseShort(str);
-    }
+    Float     getFloat(Object value, Float   defaultValue);
+    Double   getDouble(Object value, Double  defaultValue);
 
-    public Integer getInteger(Object value, Integer defaultValue) throws NumberFormatException {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Integer) {
-            // exactly
-            return (Integer) value;
-        } else if (value instanceof Number) {  // Byte, Short, Long, Float, Double
-            return ((Number) value).intValue();
-        } else if (value instanceof Boolean) {
-            return (Boolean) value ? 1 : 0;
-        }
-        String str = getString(value);
-        return Integer.parseInt(str);
-    }
-    public Long getLong(Object value, Long defaultValue) throws NumberFormatException {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Long) {
-            // exactly
-            return (Long) value;
-        } else if (value instanceof Number) {  // Byte, Short, Integer, Float, Double
-            return ((Number) value).longValue();
-        } else if (value instanceof Boolean) {
-            return (Boolean) value ? 1L : 0L;
-        }
-        String str = getString(value);
-        return Long.parseLong(str);
-    }
-
-    public Float getFloat(Object value, Float defaultValue) throws NumberFormatException {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Float) {
-            // exactly
-            return (Float) value;
-        } else if (value instanceof Number) {  // Byte, Short, Integer, Long, Double
-            return ((Number) value).floatValue();
-        } else if (value instanceof Boolean) {
-            return (Boolean) value ? 1.0F : 0.0F;
-        }
-        String str = getString(value);
-        return Float.parseFloat(str);
-    }
-    public Double getDouble(Object value, Double defaultValue) throws NumberFormatException {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Double) {
-            // exactly
-            return (Double) value;
-        } else if (value instanceof Number) {  // Byte, Short, Integer, Long, Float
-            return ((Number) value).doubleValue();
-        } else if (value instanceof Boolean) {
-            return (Boolean) value ? 1.0 : 0.0;
-        }
-        String str = getString(value);
-        return Double.parseDouble(str);
-    }
-
-    public Date getDateTime(Object value, Date defaultValue) throws NumberFormatException {
-        if (value == null) {
-            return defaultValue;
-        } else if (value instanceof Date) {
-            // exactly
-            return (Date) value;
-        }
-        Double seconds = getDouble(value, null);
-        if (seconds == null || seconds < 0) {
-            throw new NumberFormatException("Timestamp error: \"" + value + "\"");
-        }
-        double millis = seconds * 1000;
-        return new Date((long) millis);
-    }
+    Date   getDateTime(Object value, Date    defaultValue);
 
 }
