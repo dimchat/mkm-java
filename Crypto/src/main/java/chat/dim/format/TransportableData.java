@@ -129,20 +129,6 @@ public interface TransportableData extends Mapper {
     }
 
     /**
-     *  General Helper
-     */
-    interface Helper {
-
-        void setTransportableDataFactory(String algorithm, Factory factory);
-        Factory getTransportableDataFactory(String algorithm);
-
-        TransportableData createTransportableData(byte[] data, String algorithm);
-
-        TransportableData parseTransportableData(Object ted);
-
-    }
-
-    /**
      *  TED Factory
      */
     interface Factory {

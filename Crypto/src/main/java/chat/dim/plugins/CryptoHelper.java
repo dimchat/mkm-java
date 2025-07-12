@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2022 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,53 +23,49 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.plugins;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
-import chat.dim.plugins.SharedCryptoExtensions;
+import chat.dim.crypto.DecryptKey;
+import chat.dim.crypto.EncryptKey;
+import chat.dim.crypto.SignKey;
+import chat.dim.crypto.VerifyKey;
 
 /**
- *  Asymmetric Cryptography Public Key
- *
- *  <blockquote><pre>
- *  key data format: {
- *      algorithm : "RSA", // "ECC", ...
- *      data      : "{BASE64_ENCODE}",
- *      ...
- *  }
- *  </pre></blockquote>
+ *  CryptographyKey GeneralFactory
  */
-public interface PublicKey extends VerifyKey {
+public interface CryptoHelper /*extends SymmetricKey.Helper, PrivateKey.Helper, PublicKey.Helper */{
 
-    //
-    //  Factory method
-    //
-    static PublicKey parse(Object key) {
-        return SharedCryptoExtensions.publicHelper.parsePublicKey(key);
-    }
+    // sample data for checking keys
+    byte[] PROMISE = "Moky loves May Lee forever!".getBytes();
 
-    static Factory getFactory(String algorithm) {
-        return SharedCryptoExtensions.publicHelper.getPublicKeyFactory(algorithm);
-    }
-    static void setFactory(String algorithm, Factory factory) {
-        SharedCryptoExtensions.publicHelper.setPublicKeyFactory(algorithm, factory);
+    /**
+     *  Compare asymmetric keys
+     */
+    static boolean matchAsymmetricKeys(SignKey sKey, VerifyKey pKey) {
+        // verify with signature
+        byte[] signature = sKey.sign(PROMISE);
+        return pKey.verify(PROMISE, signature);
     }
 
     /**
-     *  Key Factory
+     *  Compare symmetric keys
      */
-    interface Factory {
-
-        /**
-         *  Parse map object to key
-         *
-         * @param key
-         *        key info
-         *
-         * @return PublicKey
-         */
-        PublicKey parsePublicKey(Map<String, Object> key);
+    static boolean matchSymmetricKeys(EncryptKey pKey, DecryptKey sKey) {
+        // check by encryption
+        Map<String, Object> params = new HashMap<>();
+        byte[] ciphertext = pKey.encrypt(PROMISE, params);
+        byte[] plaintext = sKey.decrypt(ciphertext, params);
+        return Arrays.equals(plaintext, PROMISE);
     }
+
+    //
+    //  Algorithm
+    //
+
+    String getKeyAlgorithm(Map<?, ?> key, String defaultValue);
 
 }

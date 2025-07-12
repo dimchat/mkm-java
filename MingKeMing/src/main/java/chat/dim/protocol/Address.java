@@ -74,20 +74,6 @@ public interface Address extends Stringer {
     }
 
     /**
-     *  General Helper
-     */
-    interface Helper {
-
-        void setAddressFactory(Factory factory);
-        Factory getAddressFactory();
-
-        Address parseAddress(Object address);
-
-        Address generateAddress(Meta meta, int network);
-
-    }
-
-    /**
      *  Address Factory
      */
     interface Factory {

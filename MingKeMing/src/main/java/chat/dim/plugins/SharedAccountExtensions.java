@@ -30,23 +30,18 @@
  */
 package chat.dim.plugins;
 
-import chat.dim.protocol.Address;
-import chat.dim.protocol.Document;
-import chat.dim.protocol.ID;
-import chat.dim.protocol.Meta;
-
 /**
  *  Account FactoryManager
  */
 public final class SharedAccountExtensions {
 
-    public static Address.Helper addressHelper = null;
-    public static ID.Helper idHelper = null;
+    public static AddressHelper addressHelper = null;
+    public static IdentifierHelper idHelper = null;
 
-    public static Meta.Helper metaHelper = null;
-    public static Document.Helper docHelper = null;
+    public static MetaHelper metaHelper = null;
+    public static DocumentHelper docHelper = null;
 
     // general helper
-    public static GeneralAccountHelper helper = null;
+    public static AccountHelper helper = null;
 
 }

@@ -1,8 +1,13 @@
 /* license: https://mit-license.org
+ *
+ *  Ming-Ke-Ming : Decentralized User Identity Authentication
+ *
+ *                                Written in 2025 by Moky <albert.moky@gmail.com>
+ *
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2025 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,53 +28,22 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.plugins;
 
-import java.util.Map;
+import chat.dim.crypto.SignKey;
+import chat.dim.crypto.VerifyKey;
+import chat.dim.format.TransportableData;
+import chat.dim.protocol.Meta;
 
-import chat.dim.plugins.SharedCryptoExtensions;
+public interface MetaHelper {
 
-/**
- *  Asymmetric Cryptography Public Key
- *
- *  <blockquote><pre>
- *  key data format: {
- *      algorithm : "RSA", // "ECC", ...
- *      data      : "{BASE64_ENCODE}",
- *      ...
- *  }
- *  </pre></blockquote>
- */
-public interface PublicKey extends VerifyKey {
+    void setMetaFactory(String type, Meta.Factory factory);
+    Meta.Factory getMetaFactory(String type);
 
-    //
-    //  Factory method
-    //
-    static PublicKey parse(Object key) {
-        return SharedCryptoExtensions.publicHelper.parsePublicKey(key);
-    }
+    Meta createMeta(String type, VerifyKey key, String seed, TransportableData fingerprint);
 
-    static Factory getFactory(String algorithm) {
-        return SharedCryptoExtensions.publicHelper.getPublicKeyFactory(algorithm);
-    }
-    static void setFactory(String algorithm, Factory factory) {
-        SharedCryptoExtensions.publicHelper.setPublicKeyFactory(algorithm, factory);
-    }
+    Meta generateMeta(String type, SignKey sKey, String seed);
 
-    /**
-     *  Key Factory
-     */
-    interface Factory {
-
-        /**
-         *  Parse map object to key
-         *
-         * @param key
-         *        key info
-         *
-         * @return PublicKey
-         */
-        PublicKey parsePublicKey(Map<String, Object> key);
-    }
+    Meta parseMeta(Object meta);
 
 }

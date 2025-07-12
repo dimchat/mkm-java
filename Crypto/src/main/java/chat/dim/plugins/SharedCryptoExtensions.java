@@ -25,21 +25,17 @@
  */
 package chat.dim.plugins;
 
-import chat.dim.crypto.PrivateKey;
-import chat.dim.crypto.PublicKey;
-import chat.dim.crypto.SymmetricKey;
-
 /**
  *  CryptographyKey FactoryManager
  */
 public final class SharedCryptoExtensions {
 
-    public static SymmetricKey.Helper symmetricHelper = null;
+    public static SymmetricKeyHelper symmetricHelper = null;
 
-    public static PrivateKey.Helper privateHelper = null;
-    public static PublicKey.Helper publicHelper = null;
+    public static PrivateKeyHelper privateHelper = null;
+    public static PublicKeyHelper publicHelper = null;
 
     // general helper
-    public static GeneralCryptoHelper helper = null;
+    public static CryptoHelper helper = null;
 
 }

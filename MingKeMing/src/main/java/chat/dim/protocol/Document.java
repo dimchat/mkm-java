@@ -47,7 +47,8 @@ import chat.dim.type.Mapper;
  *
  *  <blockquote><pre>
  *  data format: {
- *      did       : "EntityID",        // entity ID
+ *      did       : "{EntityID}",      // entity ID
+ *      type      : "visa",            // "bulletin", ...
  *      data      : "{JSON}",          // data = json_encode(info)
  *      signature : "{BASE64_ENCODE}"  // signature = sign(data, SK);
  *  }
@@ -130,20 +131,6 @@ public interface Document extends TAI, Mapper {
     }
     static void setFactory(String type, Factory factory) {
         SharedAccountExtensions.docHelper.setDocumentFactory(type, factory);
-    }
-
-    /**
-     *  General Helper
-     */
-    interface Helper {
-
-        void setDocumentFactory(String type, Factory factory);
-        Factory getDocumentFactory(String type);
-
-        Document createDocument(String type, ID identifier, String data, TransportableData signature);
-
-        Document parseDocument(Object doc);
-
     }
 
     /**

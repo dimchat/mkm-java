@@ -29,6 +29,9 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ *  Data Convert Interface
+ */
 public abstract class Converter {
 
     public static Map<String, Boolean> BOOLEAN_STATES = new HashMap<String, Boolean>() {{

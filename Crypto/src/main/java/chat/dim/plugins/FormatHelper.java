@@ -1,13 +1,8 @@
 /* license: https://mit-license.org
- *
- *  Ming-Ke-Ming : Decentralized User Identity Authentication
- *
- *                                Written in 2022 by Moky <albert.moky@gmail.com>
- *
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2022 Albert Moky
+ * Copyright (c) 2023 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -33,16 +28,14 @@ package chat.dim.plugins;
 import java.util.Map;
 
 /**
- *  Account GeneralFactory
+ *  Format GeneralFactory
  */
-public interface GeneralAccountHelper /*extends Address.Helper, ID.Helper, Meta.Helper, Document.Helper */{
+public interface FormatHelper /*extends TransportableData.Helper, PortableNetworkFile.Helper */{
 
     //
-    //  Algorithm Version
+    //  Algorithm
     //
 
-    String getMetaType(Map<?, ?> meta, String defaultValue);
-
-    String getDocumentType(Map<?, ?> doc, String defaultValue);
+    String getFormatAlgorithm(Map<?, ?> ted, String defaultValue);
 
 }

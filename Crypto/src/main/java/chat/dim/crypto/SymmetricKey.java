@@ -68,20 +68,6 @@ public interface SymmetricKey extends EncryptKey, DecryptKey {
     }
 
     /**
-     *  General Helper
-     */
-    interface Helper {
-
-        void setSymmetricKeyFactory(String algorithm, Factory factory);
-        Factory getSymmetricKeyFactory(String algorithm);
-
-        SymmetricKey generateSymmetricKey(String algorithm);
-
-        SymmetricKey parseSymmetricKey(Object key);
-
-    }
-
-    /**
      *  Key Factory
      */
     interface Factory {

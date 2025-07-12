@@ -46,10 +46,10 @@ import chat.dim.type.Mapper;
  *
  *  <blockquote><pre>
  *  data format: {
- *      type: 1,             // algorithm version
- *      key: "{public key}", // PK = secp256k1(SK);
- *      seed: "moKy",        // user/group name
- *      fingerprint: "..."   // CT = sign(seed, SK);
+ *      type        : 1,              // algorithm version
+ *      key         : "{public key}", // PK = secp256k1(SK);
+ *      seed        : "moKy",         // user/group name
+ *      fingerprint : "..."           // CT = sign(seed, SK);
  *  }
  *
  *  algorithm:
@@ -141,22 +141,6 @@ public interface Meta extends Mapper {
     }
     static void setFactory(String type, Factory factory) {
         SharedAccountExtensions.metaHelper.setMetaFactory(type, factory);
-    }
-
-    /**
-     *  General Helper
-     */
-    interface Helper {
-
-        void setMetaFactory(String type, Factory factory);
-        Factory getMetaFactory(String type);
-
-        Meta createMeta(String type, VerifyKey key, String seed, TransportableData fingerprint);
-
-        Meta generateMeta(String type, SignKey sKey, String seed);
-
-        Meta parseMeta(Object meta);
-
     }
 
     /**

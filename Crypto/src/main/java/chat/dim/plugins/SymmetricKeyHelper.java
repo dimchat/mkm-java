@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2022 Albert Moky
+ * Copyright (c) 2025 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,47 +25,15 @@
  */
 package chat.dim.plugins;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
+import chat.dim.crypto.SymmetricKey;
 
-import chat.dim.crypto.DecryptKey;
-import chat.dim.crypto.EncryptKey;
-import chat.dim.crypto.SignKey;
-import chat.dim.crypto.VerifyKey;
+public interface SymmetricKeyHelper {
 
-/**
- *  CryptographyKey GeneralFactory
- */
-public interface GeneralCryptoHelper /*extends SymmetricKey.Helper, PrivateKey.Helper, PublicKey.Helper */{
+    void setSymmetricKeyFactory(String algorithm, SymmetricKey.Factory factory);
+    SymmetricKey.Factory getSymmetricKeyFactory(String algorithm);
 
-    // sample data for checking keys
-    byte[] PROMISE = "Moky loves May Lee forever!".getBytes();
+    SymmetricKey generateSymmetricKey(String algorithm);
 
-    /**
-     *  Compare asymmetric keys
-     */
-    static boolean matchAsymmetricKeys(SignKey sKey, VerifyKey pKey) {
-        // verify with signature
-        byte[] signature = sKey.sign(PROMISE);
-        return pKey.verify(PROMISE, signature);
-    }
-
-    /**
-     *  Compare symmetric keys
-     */
-    static boolean matchSymmetricKeys(EncryptKey pKey, DecryptKey sKey) {
-        // check by encryption
-        Map<String, Object> params = new HashMap<>();
-        byte[] ciphertext = pKey.encrypt(PROMISE, params);
-        byte[] plaintext = sKey.decrypt(ciphertext, params);
-        return Arrays.equals(plaintext, PROMISE);
-    }
-
-    //
-    //  Algorithm
-    //
-
-    String getKeyAlgorithm(Map<?, ?> key, String defaultValue);
+    SymmetricKey parseSymmetricKey(Object key);
 
 }

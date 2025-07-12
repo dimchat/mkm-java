@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2025 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,53 +23,17 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.plugins;
 
-import java.util.Map;
+import chat.dim.format.TransportableData;
 
-import chat.dim.plugins.SharedCryptoExtensions;
+public interface TransportableDataHelper {
 
-/**
- *  Asymmetric Cryptography Public Key
- *
- *  <blockquote><pre>
- *  key data format: {
- *      algorithm : "RSA", // "ECC", ...
- *      data      : "{BASE64_ENCODE}",
- *      ...
- *  }
- *  </pre></blockquote>
- */
-public interface PublicKey extends VerifyKey {
+    void setTransportableDataFactory(String algorithm, TransportableData.Factory factory);
+    TransportableData.Factory getTransportableDataFactory(String algorithm);
 
-    //
-    //  Factory method
-    //
-    static PublicKey parse(Object key) {
-        return SharedCryptoExtensions.publicHelper.parsePublicKey(key);
-    }
+    TransportableData createTransportableData(byte[] data, String algorithm);
 
-    static Factory getFactory(String algorithm) {
-        return SharedCryptoExtensions.publicHelper.getPublicKeyFactory(algorithm);
-    }
-    static void setFactory(String algorithm, Factory factory) {
-        SharedCryptoExtensions.publicHelper.setPublicKeyFactory(algorithm, factory);
-    }
-
-    /**
-     *  Key Factory
-     */
-    interface Factory {
-
-        /**
-         *  Parse map object to key
-         *
-         * @param key
-         *        key info
-         *
-         * @return PublicKey
-         */
-        PublicKey parsePublicKey(Map<String, Object> key);
-    }
+    TransportableData parseTransportableData(Object ted);
 
 }

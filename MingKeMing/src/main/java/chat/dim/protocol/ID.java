@@ -135,22 +135,6 @@ public interface ID extends Stringer {
     }
 
     /**
-     *  General Helper
-     */
-    interface Helper {
-
-        void setIdentifierFactory(Factory factory);
-        Factory getIdentifierFactory();
-
-        ID parseIdentifier(Object identifier);
-
-        ID createIdentifier(String name, Address address, String terminal);
-
-        ID generateIdentifier(Meta meta, int network, String terminal);
-
-    }
-
-    /**
      *  ID Factory
      */
     interface Factory {

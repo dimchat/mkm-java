@@ -129,21 +129,6 @@ public interface PortableNetworkFile extends Mapper {
     }
 
     /**
-     *  General Helper
-     */
-    interface Helper {
-
-        void setPortableNetworkFileFactory(Factory factory);
-        Factory getPortableNetworkFileFactory();
-
-        PortableNetworkFile parsePortableNetworkFile(Object pnf);
-
-        PortableNetworkFile createPortableNetworkFile(TransportableData data, String filename,
-                                                      URI url, DecryptKey password);
-
-    }
-
-    /**
      *  PNF Factory
      */
     interface Factory {

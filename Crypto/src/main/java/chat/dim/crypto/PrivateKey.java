@@ -70,20 +70,6 @@ public interface PrivateKey extends SignKey {
     }
 
     /**
-     *  General Helper
-     */
-    interface Helper {
-
-        void setPrivateKeyFactory(String algorithm, Factory factory);
-        Factory getPrivateKeyFactory(String algorithm);
-
-        PrivateKey generatePrivateKey(String algorithm);
-
-        PrivateKey parsePrivateKey(Object key);
-
-    }
-
-    /**
      *  Key Factory
      */
     interface Factory {
