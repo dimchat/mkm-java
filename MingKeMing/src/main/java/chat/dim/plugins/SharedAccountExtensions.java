@@ -42,6 +42,6 @@ public final class SharedAccountExtensions {
     public static DocumentHelper docHelper = null;
 
     // general helper
-    public static AccountHelper helper = null;
+    public static GeneralAccountHelper helper = null;
 
 }

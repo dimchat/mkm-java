@@ -56,45 +56,81 @@ public class Dictionary implements Mapper {
     public String getString(String key, String defaultValue) {
         return Converter.getString(dictionary.get(key), defaultValue);
     }
+    @Override
+    public String getString(String key) {
+        return Converter.getString(dictionary.get(key));
+    }
 
     @Override
     public Boolean getBoolean(String key, Boolean defaultValue) {
         return Converter.getBoolean(dictionary.get(key), defaultValue);
+    }
+    @Override
+    public Boolean getBoolean(String key) {
+        return Converter.getBoolean(dictionary.get(key));
     }
 
     @Override
     public Integer getInteger(String key, Integer defaultValue) {
         return Converter.getInteger(dictionary.get(key), defaultValue);
     }
+    @Override
+    public Integer getInteger(String key) {
+        return Converter.getInteger(dictionary.get(key));
+    }
 
     @Override
     public Long getLong(String key, Long defaultValue) {
         return Converter.getLong(dictionary.get(key), defaultValue);
+    }
+    @Override
+    public Long getLong(String key) {
+        return Converter.getLong(dictionary.get(key));
     }
 
     @Override
     public Byte getByte(String key, Byte defaultValue) {
         return Converter.getByte(dictionary.get(key), defaultValue);
     }
+    @Override
+    public Byte getByte(String key) {
+        return Converter.getByte(dictionary.get(key));
+    }
 
     @Override
     public Short getShort(String key, Short defaultValue) {
         return Converter.getShort(dictionary.get(key), defaultValue);
+    }
+    @Override
+    public Short getShort(String key) {
+        return Converter.getShort(dictionary.get(key));
     }
 
     @Override
     public Float getFloat(String key, Float defaultValue) {
         return Converter.getFloat(dictionary.get(key), defaultValue);
     }
+    @Override
+    public Float getFloat(String key) {
+        return Converter.getFloat(dictionary.get(key));
+    }
 
     @Override
     public Double getDouble(String key, Double defaultValue) {
         return Converter.getDouble(dictionary.get(key), defaultValue);
     }
+    @Override
+    public Double getDouble(String key) {
+        return Converter.getDouble(dictionary.get(key));
+    }
 
     @Override
     public Date getDateTime(String key, Date defaultValue) {
         return Converter.getDateTime(dictionary.get(key), defaultValue);
+    }
+    @Override
+    public Date getDateTime(String key) {
+        return Converter.getDateTime(dictionary.get(key));
     }
 
     @Override

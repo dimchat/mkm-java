@@ -46,6 +46,9 @@ public abstract class Converter {
     public static String getString(Object value, String defaultValue) {
         return converter.getString(value, defaultValue);
     }
+    public static String getString(Object value) {
+        return converter.getString(value, null);
+    }
 
     /**
      *  Assume value can be a config string:
@@ -56,26 +59,50 @@ public abstract class Converter {
     public static Boolean getBoolean(Object value, Boolean defaultValue) {
         return converter.getBoolean(value, defaultValue);
     }
+    public static Boolean getBoolean(Object value) {
+        return converter.getBoolean(value, null);
+    }
 
     public static Byte getByte(Object value, Byte defaultValue) {
         return converter.getByte(value, defaultValue);
     }
+    public static Byte getByte(Object value) {
+        return converter.getByte(value, null);
+    }
+
     public static Short getShort(Object value, Short defaultValue) {
         return converter.getShort(value, defaultValue);
+    }
+    public static Short getShort(Object value) {
+        return converter.getShort(value, null);
     }
 
     public static Integer getInteger(Object value, Integer defaultValue) {
         return converter.getInteger(value, defaultValue);
     }
+    public static Integer getInteger(Object value) {
+        return converter.getInteger(value, null);
+    }
+
     public static Long getLong(Object value, Long defaultValue) {
         return converter.getLong(value, defaultValue);
+    }
+    public static Long getLong(Object value) {
+        return converter.getLong(value, null);
     }
 
     public static Float getFloat(Object value, Float defaultValue) {
         return converter.getFloat(value, defaultValue);
     }
+    public static Float getFloat(Object value) {
+        return converter.getFloat(value, null);
+    }
+
     public static Double getDouble(Object value, Double defaultValue) {
         return converter.getDouble(value, defaultValue);
+    }
+    public static Double getDouble(Object value) {
+        return converter.getDouble(value, null);
     }
 
     /**
@@ -84,6 +111,9 @@ public abstract class Converter {
      */
     public static Date getDateTime(Object value, Date defaultValue) {
         return converter.getDateTime(value, defaultValue);
+    }
+    public static Date getDateTime(Object value) {
+        return converter.getDateTime(value, null);
     }
 
     public static DataConverter converter = new BaseConverter();

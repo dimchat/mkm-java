@@ -39,6 +39,16 @@ public interface Mapper extends Map<String, Object> {
     Float     getFloat(String key, Float   defaultValue);
     Double   getDouble(String key, Double  defaultValue);
 
+    String   getString(String key);
+    Boolean getBoolean(String key);
+    Integer getInteger(String key);
+    Long       getLong(String key);
+    Byte       getByte(String key);
+    Short     getShort(String key);
+    Float     getFloat(String key);
+    Double   getDouble(String key);
+
+    Date getDateTime(String key);
     Date getDateTime(String key, Date defaultValue);
     void setDateTime(String key, Date time);
 

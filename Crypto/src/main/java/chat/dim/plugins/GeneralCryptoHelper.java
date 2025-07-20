@@ -37,7 +37,7 @@ import chat.dim.crypto.VerifyKey;
 /**
  *  CryptographyKey GeneralFactory
  */
-public interface CryptoHelper /*extends SymmetricKey.Helper, PrivateKey.Helper, PublicKey.Helper */{
+public interface GeneralCryptoHelper /*extends SymmetricKey.Helper, PrivateKey.Helper, PublicKey.Helper */{
 
     // sample data for checking keys
     byte[] PROMISE = "Moky loves May Lee forever!".getBytes();

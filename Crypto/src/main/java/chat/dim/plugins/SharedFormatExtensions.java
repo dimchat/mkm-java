@@ -35,6 +35,6 @@ public final class SharedFormatExtensions {
     public static PortableNetworkFileHelper pnfHelper = null;
 
     // general helper
-    public static FormatHelper helper = null;
+    public static GeneralFormatHelper helper = null;
 
 }

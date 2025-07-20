@@ -36,6 +36,6 @@ public final class SharedCryptoExtensions {
     public static PublicKeyHelper publicHelper = null;
 
     // general helper
-    public static CryptoHelper helper = null;
+    public static GeneralCryptoHelper helper = null;
 
 }
