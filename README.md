@@ -1,10 +1,10 @@
 # Ming Ke Ming (名可名) -- Account Module (Java)
 
-[![License](https://img.shields.io/github/license/dimchat/mkm-java)](https://github.com/dimchat/mkm-java/blob/main/LICENSE)
+[![License](https://img.shields.io/github/license/dimchat/mkm-java)](https://github.com/dimchat/mkm-java/blob/master/LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreeng)](https://github.com/dimchat/mkm-java/pulls)
 [![Platform](https://img.shields.io/badge/Platform-Java%208-brightgreen)](https://github.com/dimchat/mkm-java/wiki)
 [![Issues](https://img.shields.io/github/issues/dimchat/mkm-java)](https://github.com/dimchat/mkm-java/issues)
-[![Repo Size](https://img.shields.io/github/repo-size/dimchat/mkm-java)](https://github.com/dimchat/mkm-java/archive/refs/heads/main.zip)
+[![Repo Size](https://img.shields.io/github/repo-size/dimchat/mkm-java)](https://github.com/dimchat/mkm-java/archive/refs/heads/master.zip)
 [![Tags](https://img.shields.io/github/tag/dimchat/mkm-java)](https://github.com/dimchat/mkm-java/tags)
 [![Version](https://img.shields.io/maven-central/v/chat.dim/MingKeMing)](https://mvnrepository.com/artifact/chat.dim/MingKeMing)
 

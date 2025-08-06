@@ -79,7 +79,7 @@ public interface Address extends Stringer {
     interface Factory {
 
         /**
-         *  Generate address with meta & type
+         *  Generate address with meta &amp; type
          *
          * @param meta    - meta info
          * @param network - address type

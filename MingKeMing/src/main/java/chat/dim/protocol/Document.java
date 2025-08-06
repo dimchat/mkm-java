@@ -141,7 +141,7 @@ public interface Document extends TAI, Mapper {
         /**
          *  Create document
          *  <p>
-         *      1. Create document with data & signature loaded from local storage
+         *      1. Create document with data &amp; signature loaded from local storage
          *  </p>
          *  <p>
          *      2. Create a new empty document with entity ID only
