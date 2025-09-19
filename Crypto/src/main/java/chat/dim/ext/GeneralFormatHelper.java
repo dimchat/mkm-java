@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2020 Albert Moky
+ * Copyright (c) 2023 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,19 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.digest;
+package chat.dim.ext;
 
-public final class SHA1 {
+import java.util.Map;
 
-    public static byte[] digest(byte[] data) {
-        return digester.digest(data);
-    }
+/**
+ *  Format GeneralFactory
+ */
+public interface GeneralFormatHelper /*extends TransportableData.Helper, PortableNetworkFile.Helper */{
 
-    public static DataDigester digester = null;
+    //
+    //  Algorithm
+    //
+
+    String getFormatAlgorithm(Map<?, ?> ted, String defaultValue);
+
 }

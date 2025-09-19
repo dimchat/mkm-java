@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2023 Albert Moky
+ * Copyright (c) 2019 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,13 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.plugins;
+package chat.dim.protocol;
 
-import java.util.Map;
+public interface AsymmetricKey extends CryptographyKey {
 
-/**
- *  Format GeneralFactory
- */
-public interface GeneralFormatHelper /*extends TransportableData.Helper, PortableNetworkFile.Helper */{
-
-    //
-    //  Algorithm
-    //
-
-    String getFormatAlgorithm(Map<?, ?> ted, String defaultValue);
+    /*
+    String RSA = "RSA"; //-- "RSA/ECB/PKCS1Padding", "SHA256withRSA"
+    String ECC = "ECC";
+     */
 
 }

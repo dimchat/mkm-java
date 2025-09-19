@@ -23,7 +23,7 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.protocol;
 
 public interface SignKey extends AsymmetricKey {
 

@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2022 Albert Moky
+ * Copyright (c) 2019 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,15 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.plugins;
+package chat.dim.digest;
 
 /**
- *  CryptographyKey FactoryManager
+ *  Message Digest
+ *  <p>
+ *      MD5, SHA1, SHA256, Keccak256, RipeMD160, ...
+ *  </p>
  */
-public final class SharedCryptoExtensions {
+public interface MessageDigester {
 
-    public static SymmetricKeyHelper symmetricHelper = null;
-
-    public static PrivateKeyHelper privateHelper = null;
-    public static PublicKeyHelper publicHelper = null;
-
-    // general helper
-    public static GeneralCryptoHelper helper = null;
-
+    byte[] digest(byte[] data);
 }

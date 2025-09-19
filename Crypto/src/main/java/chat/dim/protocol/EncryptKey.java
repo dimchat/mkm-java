@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2020 Albert Moky
+ * Copyright (c) 2019 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,36 +23,30 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.format;
+package chat.dim.protocol;
 
-import java.util.List;
+import java.util.Map;
 
-public final class JSONList {
+public interface EncryptKey extends CryptographyKey {
 
-    public static String encode(List<?> array) {
-        return coder.encode(array);
-    }
-
-    public static List<?> decode(String json) {
-        return coder.decode(json);
-    }
-
-    // default coder
-    public static ObjectCoder<List<?>> coder = new ObjectCoder<List<?>>() {
-
-        @Override
-        public String encode(List<?> array) {
-            return JSON.encode(array);
-        }
-
-        @Override
-        public List<?> decode(String json) {
-            Object array = JSON.decode(json);
-            if (array instanceof List) {
-                return (List<?>) array;
-            } else {
-                return null;
-            }
-        }
-    };
+    /**
+     *  1. Symmetric Key:
+     *     <blockquote><pre>
+     *         ciphertext = encrypt(plaintext, PW)
+     *     </pre></blockquote>
+     *
+     *  2. Asymmetric Public Key:
+     *     <blockquote><pre>
+     *         ciphertext = encrypt(plaintext, PK);
+     *     </pre></blockquote>
+     *
+     * @param plaintext
+     *        plain data
+     *
+     * @param extra
+     *        store extra variables ('IV' for 'AES')
+     *
+     * @return ciphertext
+     */
+    byte[] encrypt(byte[] plaintext, Map<String, Object> extra);
 }

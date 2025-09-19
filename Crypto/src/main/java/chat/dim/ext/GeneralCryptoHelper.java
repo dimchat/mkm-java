@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2022 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,37 +23,49 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.ext;
 
-public interface VerifyKey extends AsymmetricKey {
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import chat.dim.protocol.DecryptKey;
+import chat.dim.protocol.EncryptKey;
+import chat.dim.protocol.SignKey;
+import chat.dim.protocol.VerifyKey;
+
+/**
+ *  CryptographyKey GeneralFactory
+ */
+public interface GeneralCryptoHelper /*extends SymmetricKey.Helper, PrivateKey.Helper, PublicKey.Helper */{
+
+    // sample data for checking keys
+    byte[] PROMISE = "Moky loves May Lee forever!".getBytes();
 
     /**
-     *  Verify signature with data
-     *  <blockquote><pre>
-     *      OK = verify(data, signature, PK);
-     *  </pre></blockquote>
-     *
-     * @param data
-     *        data
-     *
-     * @param signature
-     *        signature of data
-     *
-     * @return true on signature matched
+     *  Compare asymmetric keys
      */
-    boolean verify(byte[] data, byte[] signature);
+    static boolean matchAsymmetricKeys(SignKey sKey, VerifyKey pKey) {
+        // verify with signature
+        byte[] signature = sKey.sign(PROMISE);
+        return pKey.verify(PROMISE, signature);
+    }
 
     /**
-     *  Check asymmetric keys by signature.
-     *  <blockquote><pre>
-     *      signature = sign(data, SK);
-     *      OK = verify(data, signature, PK);
-     *  </pre></blockquote>
-     *
-     * @param sKey
-     *        private key
-     *
-     * @return true on signature matched
+     *  Compare symmetric keys
      */
-    boolean matchSignKey(SignKey sKey);
+    static boolean matchSymmetricKeys(EncryptKey pKey, DecryptKey sKey) {
+        // check by encryption
+        Map<String, Object> params = new HashMap<>();
+        byte[] ciphertext = pKey.encrypt(PROMISE, params);
+        byte[] plaintext = sKey.decrypt(ciphertext, params);
+        return Arrays.equals(plaintext, PROMISE);
+    }
+
+    //
+    //  Algorithm
+    //
+
+    String getKeyAlgorithm(Map<?, ?> key, String defaultValue);
+
 }

@@ -23,11 +23,11 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.protocol;
 
 import java.util.Map;
 
-import chat.dim.plugins.SharedCryptoExtensions;
+import chat.dim.ext.SharedCryptoExtensions;
 
 /**
  *  Asymmetric Cryptography Private Key

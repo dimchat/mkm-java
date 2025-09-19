@@ -23,13 +23,12 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.format;
+package chat.dim.protocol;
 
 import java.net.URI;
 import java.util.Map;
 
-import chat.dim.crypto.DecryptKey;
-import chat.dim.plugins.SharedFormatExtensions;
+import chat.dim.ext.SharedFormatExtensions;
 import chat.dim.type.Mapper;
 
 /**

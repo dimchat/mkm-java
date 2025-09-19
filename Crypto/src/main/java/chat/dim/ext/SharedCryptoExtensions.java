@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2022 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,53 +23,19 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
-
-import java.util.Map;
-
-import chat.dim.plugins.SharedCryptoExtensions;
+package chat.dim.ext;
 
 /**
- *  Asymmetric Cryptography Public Key
- *
- *  <blockquote><pre>
- *  key data format: {
- *      algorithm : "RSA", // "ECC", ...
- *      data      : "{BASE64_ENCODE}",
- *      ...
- *  }
- *  </pre></blockquote>
+ *  CryptographyKey FactoryManager
  */
-public interface PublicKey extends VerifyKey {
+public final class SharedCryptoExtensions {
 
-    //
-    //  Factory method
-    //
-    static PublicKey parse(Object key) {
-        return SharedCryptoExtensions.publicHelper.parsePublicKey(key);
-    }
+    public static SymmetricKeyHelper symmetricHelper = null;
 
-    static Factory getFactory(String algorithm) {
-        return SharedCryptoExtensions.publicHelper.getPublicKeyFactory(algorithm);
-    }
-    static void setFactory(String algorithm, Factory factory) {
-        SharedCryptoExtensions.publicHelper.setPublicKeyFactory(algorithm, factory);
-    }
+    public static PrivateKeyHelper privateHelper = null;
+    public static PublicKeyHelper publicHelper = null;
 
-    /**
-     *  Key Factory
-     */
-    interface Factory {
-
-        /**
-         *  Parse map object to key
-         *
-         * @param key
-         *        key info
-         *
-         * @return PublicKey
-         */
-        PublicKey parsePublicKey(Map<String, Object> key);
-    }
+    // general helper
+    public static GeneralCryptoHelper helper = null;
 
 }

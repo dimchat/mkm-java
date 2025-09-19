@@ -23,17 +23,15 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.plugins;
+package chat.dim.ext;
 
-import chat.dim.crypto.PrivateKey;
+import chat.dim.protocol.PublicKey;
 
-public interface PrivateKeyHelper {
+public interface PublicKeyHelper {
 
-    void setPrivateKeyFactory(String algorithm, PrivateKey.Factory factory);
-    PrivateKey.Factory getPrivateKeyFactory(String algorithm);
+    void setPublicKeyFactory(String algorithm, PublicKey.Factory factory);
+    PublicKey.Factory getPublicKeyFactory(String algorithm);
 
-    PrivateKey generatePrivateKey(String algorithm);
-
-    PrivateKey parsePrivateKey(Object key);
+    PublicKey parsePublicKey(Object key);
 
 }

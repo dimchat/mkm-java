@@ -23,37 +23,44 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.protocol;
 
-import chat.dim.type.Mapper;
+import java.util.Map;
 
-/**
- *  Cryptography Key
- *  <p>
- *      Cryptography key with designated algorithm
- *  </p>
- *
- *  <blockquote><pre>
- *  key data format: {
- *      algorithm : "RSA", // ECC, AES, ...
- *      data      : "{BASE64_ENCODE}",
- *      ...
- *  }
- *  </pre></blockquote>
- */
-public interface CryptographyKey extends Mapper {
+public interface DecryptKey extends CryptographyKey {
 
     /**
-     *  Get key algorithm name
+     *  1. Symmetric Key:
+     *     <blockquote><pre>
+     *         plaintext = decrypt(ciphertext, PW);
+     *     </pre></blockquote>
      *
-     * @return algorithm name
+     *  2. Asymmetric Private Key:
+     *     <blockquote><pre>
+     *         plaintext = decrypt(ciphertext, SK);
+     *     </pre></blockquote>
+     *
+     * @param ciphertext
+     *        encrypted data
+     *
+     * @param params
+     *        extra params ('IV' for 'AES')
+     *
+     * @return plaintext
      */
-    String getAlgorithm();
+    byte[] decrypt(byte[] ciphertext, Map<String, Object> params);
 
     /**
-     *  Get key data
+     *  Check symmetric keys by encryption.
+     *  <blockquote><pre>
+     *      CT = encrypt(data, PK);
+     *      OK = decrypt(CT, SK) == data;
+     *  </pre></blockquote>
      *
-     * @return key data
+     * @param pKey
+     *        encrypt (public) key
+     *
+     * @return true on signature matched
      */
-    byte[] getData();
+    boolean matchEncryptKey(EncryptKey pKey);
 }

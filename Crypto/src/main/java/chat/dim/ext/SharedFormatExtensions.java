@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2023 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,44 +23,18 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.ext;
 
-import java.util.Map;
+/**
+ *  Format FactoryManager
+ */
+public final class SharedFormatExtensions {
 
-public interface DecryptKey extends CryptographyKey {
+    public static TransportableDataHelper tedHelper = null;
 
-    /**
-     *  1. Symmetric Key:
-     *     <blockquote><pre>
-     *         plaintext = decrypt(ciphertext, PW);
-     *     </pre></blockquote>
-     *
-     *  2. Asymmetric Private Key:
-     *     <blockquote><pre>
-     *         plaintext = decrypt(ciphertext, SK);
-     *     </pre></blockquote>
-     *
-     * @param ciphertext
-     *        encrypted data
-     *
-     * @param params
-     *        extra params ('IV' for 'AES')
-     *
-     * @return plaintext
-     */
-    byte[] decrypt(byte[] ciphertext, Map<String, Object> params);
+    public static PortableNetworkFileHelper pnfHelper = null;
 
-    /**
-     *  Check symmetric keys by encryption.
-     *  <blockquote><pre>
-     *      CT = encrypt(data, PK);
-     *      OK = decrypt(CT, SK) == data;
-     *  </pre></blockquote>
-     *
-     * @param pKey
-     *        encrypt (public) key
-     *
-     * @return true on signature matched
-     */
-    boolean matchEncryptKey(EncryptKey pKey);
+    // general helper
+    public static GeneralFormatHelper helper = null;
+
 }

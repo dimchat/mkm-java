@@ -31,5 +31,5 @@ public final class SHA256 {
         return digester.digest(data);
     }
 
-    public static DataDigester digester = null;
+    public static MessageDigester digester = null;
 }

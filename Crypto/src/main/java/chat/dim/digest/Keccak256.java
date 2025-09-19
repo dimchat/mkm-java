@@ -25,11 +25,11 @@
  */
 package chat.dim.digest;
 
-public final class Keccak256 {
+public final class KECCAK256 {
 
     public static byte[] digest(byte[] data) {
         return digester.digest(data);
     }
 
-    public static DataDigester digester = null;
+    public static MessageDigester digester = null;
 }

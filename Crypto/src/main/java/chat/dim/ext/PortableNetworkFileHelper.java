@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2025 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,15 +23,22 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.digest;
+package chat.dim.ext;
 
-/**
- *  Data Digest
- *  <p>
- *      MD5, SHA1, SHA256, Keccak256, RipeMD160, ...
- *  </p>
- */
-public interface DataDigester {
+import java.net.URI;
 
-    byte[] digest(byte[] data);
+import chat.dim.protocol.DecryptKey;
+import chat.dim.protocol.PortableNetworkFile;
+import chat.dim.protocol.TransportableData;
+
+public interface PortableNetworkFileHelper {
+
+    void setPortableNetworkFileFactory(PortableNetworkFile.Factory factory);
+    PortableNetworkFile.Factory getPortableNetworkFileFactory();
+
+    PortableNetworkFile parsePortableNetworkFile(Object pnf);
+
+    PortableNetworkFile createPortableNetworkFile(TransportableData data, String filename,
+                                                  URI url, DecryptKey password);
+
 }

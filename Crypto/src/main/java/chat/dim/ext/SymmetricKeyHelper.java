@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2019 Albert Moky
+ * Copyright (c) 2025 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,13 +23,17 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.crypto;
+package chat.dim.ext;
 
-public interface AsymmetricKey extends CryptographyKey {
+import chat.dim.protocol.SymmetricKey;
 
-    /*
-    String RSA = "RSA"; //-- "RSA/ECB/PKCS1Padding", "SHA256withRSA"
-    String ECC = "ECC";
-     */
+public interface SymmetricKeyHelper {
+
+    void setSymmetricKeyFactory(String algorithm, SymmetricKey.Factory factory);
+    SymmetricKey.Factory getSymmetricKeyFactory(String algorithm);
+
+    SymmetricKey generateSymmetricKey(String algorithm);
+
+    SymmetricKey parseSymmetricKey(Object key);
 
 }

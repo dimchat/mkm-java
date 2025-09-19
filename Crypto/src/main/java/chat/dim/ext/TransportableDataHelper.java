@@ -23,17 +23,17 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.plugins;
+package chat.dim.ext;
 
-import chat.dim.crypto.SymmetricKey;
+import chat.dim.protocol.TransportableData;
 
-public interface SymmetricKeyHelper {
+public interface TransportableDataHelper {
 
-    void setSymmetricKeyFactory(String algorithm, SymmetricKey.Factory factory);
-    SymmetricKey.Factory getSymmetricKeyFactory(String algorithm);
+    void setTransportableDataFactory(String algorithm, TransportableData.Factory factory);
+    TransportableData.Factory getTransportableDataFactory(String algorithm);
 
-    SymmetricKey generateSymmetricKey(String algorithm);
+    TransportableData createTransportableData(byte[] data, String algorithm);
 
-    SymmetricKey parseSymmetricKey(Object key);
+    TransportableData parseTransportableData(Object ted);
 
 }

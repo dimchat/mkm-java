@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2025 Albert Moky
+ * Copyright (c) 2019 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,37 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.plugins;
+package chat.dim.protocol;
 
-import java.net.URI;
+public interface VerifyKey extends AsymmetricKey {
 
-import chat.dim.crypto.DecryptKey;
-import chat.dim.format.PortableNetworkFile;
-import chat.dim.format.TransportableData;
+    /**
+     *  Verify signature with data
+     *  <blockquote><pre>
+     *      OK = verify(data, signature, PK);
+     *  </pre></blockquote>
+     *
+     * @param data
+     *        data
+     *
+     * @param signature
+     *        signature of data
+     *
+     * @return true on signature matched
+     */
+    boolean verify(byte[] data, byte[] signature);
 
-public interface PortableNetworkFileHelper {
-
-    void setPortableNetworkFileFactory(PortableNetworkFile.Factory factory);
-    PortableNetworkFile.Factory getPortableNetworkFileFactory();
-
-    PortableNetworkFile parsePortableNetworkFile(Object pnf);
-
-    PortableNetworkFile createPortableNetworkFile(TransportableData data, String filename,
-                                                  URI url, DecryptKey password);
-
+    /**
+     *  Check asymmetric keys by signature.
+     *  <blockquote><pre>
+     *      signature = sign(data, SK);
+     *      OK = verify(data, signature, PK);
+     *  </pre></blockquote>
+     *
+     * @param sKey
+     *        private key
+     *
+     * @return true on signature matched
+     */
+    boolean matchSignKey(SignKey sKey);
 }
