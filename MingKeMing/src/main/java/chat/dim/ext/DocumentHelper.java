@@ -28,11 +28,11 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.plugins;
+package chat.dim.ext;
 
-import chat.dim.format.TransportableData;
 import chat.dim.protocol.Document;
 import chat.dim.protocol.ID;
+import chat.dim.protocol.TransportableData;
 
 public interface DocumentHelper {
 

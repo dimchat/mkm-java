@@ -30,8 +30,8 @@
  */
 package chat.dim.protocol;
 
+import chat.dim.ext.SharedAccountExtensions;
 import chat.dim.mkm.BroadcastAddress;
-import chat.dim.plugins.SharedAccountExtensions;
 import chat.dim.type.Stringer;
 
 /**

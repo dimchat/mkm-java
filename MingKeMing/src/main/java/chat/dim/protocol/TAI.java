@@ -32,9 +32,6 @@ package chat.dim.protocol;
 
 import java.util.Map;
 
-import chat.dim.crypto.SignKey;
-import chat.dim.crypto.VerifyKey;
-
 /**
  *  The Additional Information
  *

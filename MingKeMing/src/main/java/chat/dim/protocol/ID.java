@@ -33,8 +33,8 @@ package chat.dim.protocol;
 import java.util.ArrayList;
 import java.util.List;
 
+import chat.dim.ext.SharedAccountExtensions;
 import chat.dim.mkm.Identifier;
-import chat.dim.plugins.SharedAccountExtensions;
 import chat.dim.type.Stringer;
 
 /**

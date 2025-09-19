@@ -2,12 +2,12 @@
  *
  *  Ming-Ke-Ming : Decentralized User Identity Authentication
  *
- *                                Written in 2025 by Moky <albert.moky@gmail.com>
+ *                                Written in 2022 by Moky <albert.moky@gmail.com>
  *
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2025 Albert Moky
+ * Copyright (c) 2022 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,21 +28,21 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.plugins;
+package chat.dim.ext;
 
-import chat.dim.protocol.Address;
-import chat.dim.protocol.ID;
-import chat.dim.protocol.Meta;
+import java.util.Map;
 
-public interface IdentifierHelper {
+/**
+ *  Account GeneralFactory
+ */
+public interface GeneralAccountHelper /*extends Address.Helper, ID.Helper, Meta.Helper, Document.Helper */{
 
-    void setIdentifierFactory(ID.Factory factory);
-    ID.Factory getIdentifierFactory();
+    //
+    //  Algorithm Version
+    //
 
-    ID parseIdentifier(Object identifier);
+    String getMetaType(Map<?, ?> meta, String defaultValue);
 
-    ID createIdentifier(String name, Address address, String terminal);
-
-    ID generateIdentifier(Meta meta, int network, String terminal);
+    String getDocumentType(Map<?, ?> doc, String defaultValue);
 
 }

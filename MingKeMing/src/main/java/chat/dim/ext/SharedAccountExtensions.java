@@ -28,21 +28,20 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.plugins;
-
-import java.util.Map;
+package chat.dim.ext;
 
 /**
- *  Account GeneralFactory
+ *  Account FactoryManager
  */
-public interface GeneralAccountHelper /*extends Address.Helper, ID.Helper, Meta.Helper, Document.Helper */{
+public final class SharedAccountExtensions {
 
-    //
-    //  Algorithm Version
-    //
+    public static AddressHelper addressHelper = null;
+    public static IdentifierHelper idHelper = null;
 
-    String getMetaType(Map<?, ?> meta, String defaultValue);
+    public static MetaHelper metaHelper = null;
+    public static DocumentHelper docHelper = null;
 
-    String getDocumentType(Map<?, ?> doc, String defaultValue);
+    // general helper
+    public static GeneralAccountHelper helper = null;
 
 }

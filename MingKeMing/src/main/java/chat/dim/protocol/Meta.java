@@ -32,10 +32,7 @@ package chat.dim.protocol;
 
 import java.util.Map;
 
-import chat.dim.crypto.SignKey;
-import chat.dim.crypto.VerifyKey;
-import chat.dim.format.TransportableData;
-import chat.dim.plugins.SharedAccountExtensions;
+import chat.dim.ext.SharedAccountExtensions;
 import chat.dim.type.Mapper;
 
 /**

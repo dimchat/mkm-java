@@ -35,8 +35,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import chat.dim.format.TransportableData;
-import chat.dim.plugins.SharedAccountExtensions;
+import chat.dim.ext.SharedAccountExtensions;
 import chat.dim.type.Mapper;
 
 /**

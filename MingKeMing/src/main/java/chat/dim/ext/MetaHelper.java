@@ -28,18 +28,22 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.plugins;
+package chat.dim.ext;
 
-import chat.dim.protocol.Address;
 import chat.dim.protocol.Meta;
+import chat.dim.protocol.SignKey;
+import chat.dim.protocol.TransportableData;
+import chat.dim.protocol.VerifyKey;
 
-public interface AddressHelper {
+public interface MetaHelper {
 
-    void setAddressFactory(Address.Factory factory);
-    Address.Factory getAddressFactory();
+    void setMetaFactory(String type, Meta.Factory factory);
+    Meta.Factory getMetaFactory(String type);
 
-    Address parseAddress(Object address);
+    Meta createMeta(String type, VerifyKey key, String seed, TransportableData fingerprint);
 
-    Address generateAddress(Meta meta, int network);
+    Meta generateMeta(String type, SignKey sKey, String seed);
+
+    Meta parseMeta(Object meta);
 
 }

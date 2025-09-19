@@ -28,22 +28,21 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.plugins;
+package chat.dim.ext;
 
-import chat.dim.crypto.SignKey;
-import chat.dim.crypto.VerifyKey;
-import chat.dim.format.TransportableData;
+import chat.dim.protocol.Address;
+import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
 
-public interface MetaHelper {
+public interface IdentifierHelper {
 
-    void setMetaFactory(String type, Meta.Factory factory);
-    Meta.Factory getMetaFactory(String type);
+    void setIdentifierFactory(ID.Factory factory);
+    ID.Factory getIdentifierFactory();
 
-    Meta createMeta(String type, VerifyKey key, String seed, TransportableData fingerprint);
+    ID parseIdentifier(Object identifier);
 
-    Meta generateMeta(String type, SignKey sKey, String seed);
+    ID createIdentifier(String name, Address address, String terminal);
 
-    Meta parseMeta(Object meta);
+    ID generateIdentifier(Meta meta, int network, String terminal);
 
 }
