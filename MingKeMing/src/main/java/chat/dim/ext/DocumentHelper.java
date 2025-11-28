@@ -39,7 +39,7 @@ public interface DocumentHelper {
     void setDocumentFactory(String type, Document.Factory factory);
     Document.Factory getDocumentFactory(String type);
 
-    Document createDocument(String type, ID identifier, String data, TransportableData signature);
+    Document createDocument(String type, ID did, String data, TransportableData signature);
 
     Document parseDocument(Object doc);
 

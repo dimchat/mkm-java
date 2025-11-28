@@ -110,15 +110,15 @@ public interface Document extends TAI, Mapper {
     /**
      *  Create from stored info
      */
-    static Document create(String type, ID identifier, String data, TransportableData signature) {
-        return SharedAccountExtensions.docHelper.createDocument(type, identifier, data, signature);
+    static Document create(String type, ID did, String data, TransportableData signature) {
+        return SharedAccountExtensions.docHelper.createDocument(type, did, data, signature);
     }
 
     /**
      *  Create new empty document
      */
-    static Document create(String type, ID identifier) {
-        return SharedAccountExtensions.docHelper.createDocument(type, identifier, null, null);
+    static Document create(String type, ID did) {
+        return SharedAccountExtensions.docHelper.createDocument(type, did, null, null);
     }
 
     static Document parse(Object doc) {
@@ -146,12 +146,12 @@ public interface Document extends TAI, Mapper {
          *      2. Create a new empty document with entity ID only
          *  </p>
          *
-         * @param identifier - entity ID
-         * @param data       - document data (JsON)
-         * @param signature  - document signature (Base64)
+         * @param did       - entity ID
+         * @param data      - document data (JsON)
+         * @param signature - document signature (Base64)
          * @return Document
          */
-        Document createDocument(ID identifier, String data, TransportableData signature);
+        Document createDocument(ID did, String data, TransportableData signature);
 
         /**
          *  Parse map object to entity document

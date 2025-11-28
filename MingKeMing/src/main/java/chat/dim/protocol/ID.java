@@ -118,20 +118,20 @@ public interface ID extends Stringer {
     //
 
     static ID parse(Object identifier) {
-        return SharedAccountExtensions.idHelper.parseIdentifier(identifier);
+        return SharedAccountExtensions.idHelper.parseID(identifier);
     }
     static ID create(String name, Address address, String terminal) {
-        return SharedAccountExtensions.idHelper.createIdentifier(name, address, terminal);
+        return SharedAccountExtensions.idHelper.createID(name, address, terminal);
     }
     static ID generate(Meta meta, int network, String terminal) {
-        return SharedAccountExtensions.idHelper.generateIdentifier(meta, network, terminal);
+        return SharedAccountExtensions.idHelper.generateID(meta, network, terminal);
     }
 
     static Factory getFactory() {
-        return SharedAccountExtensions.idHelper.getIdentifierFactory();
+        return SharedAccountExtensions.idHelper.getIDFactory();
     }
     static void setFactory(Factory factory) {
-        SharedAccountExtensions.idHelper.setIdentifierFactory(factory);
+        SharedAccountExtensions.idHelper.setIDFactory(factory);
     }
 
     /**
@@ -147,7 +147,7 @@ public interface ID extends Stringer {
          * @param terminal - ID.terminal
          * @return ID
          */
-        ID generateIdentifier(Meta meta, int network, String terminal);
+        ID generateID(Meta meta, int network, String terminal);
 
         /**
          *  Create ID
@@ -157,7 +157,7 @@ public interface ID extends Stringer {
          * @param terminal - ID.terminal
          * @return ID
          */
-        ID createIdentifier(String name, Address address, String terminal);
+        ID createID(String name, Address address, String terminal);
 
         /**
          *  Parse string object to ID
@@ -165,7 +165,7 @@ public interface ID extends Stringer {
          * @param identifier - ID string
          * @return ID
          */
-        ID parseIdentifier(String identifier);
+        ID parseID(String identifier);
     }
 
 }

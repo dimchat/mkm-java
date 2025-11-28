@@ -34,15 +34,15 @@ import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
 import chat.dim.protocol.Meta;
 
-public interface IdentifierHelper {
+public interface IDHelper {
 
-    void setIdentifierFactory(ID.Factory factory);
-    ID.Factory getIdentifierFactory();
+    void setIDFactory(ID.Factory factory);
+    ID.Factory getIDFactory();
 
-    ID parseIdentifier(Object identifier);
+    ID parseID(Object identifier);
 
-    ID createIdentifier(String name, Address address, String terminal);
+    ID createID(String name, Address address, String terminal);
 
-    ID generateIdentifier(Meta meta, int network, String terminal);
+    ID generateID(Meta meta, int network, String terminal);
 
 }

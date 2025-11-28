@@ -36,7 +36,7 @@ package chat.dim.ext;
 public final class SharedAccountExtensions {
 
     public static AddressHelper addressHelper = null;
-    public static IdentifierHelper idHelper = null;
+    public static IDHelper idHelper = null;
 
     public static MetaHelper metaHelper = null;
     public static DocumentHelper docHelper = null;
