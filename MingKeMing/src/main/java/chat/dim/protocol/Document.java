@@ -76,8 +76,8 @@ public interface Document extends TAI, Mapper {
      *
      * @return name string
      */
-    String getName();
-    void setName(String value);
+    //String getName();
+    //void setName(String value);
 
     //
     //  Conveniences
