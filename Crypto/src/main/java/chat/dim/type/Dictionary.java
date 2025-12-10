@@ -42,14 +42,13 @@ public class Dictionary implements Mapper {
 
     protected Dictionary(Map<String, Object> map) {
         super();
-        assert map != null : "cannot initialize with an empty map!";
+        if (map == null) {
+            assert false : "cannot initialize with an empty map!";
+            map = new HashMap<>();
+        } else if (map instanceof Mapper) {
+            map = ((Mapper) map).toMap();
+        }
         dictionary = map;
-    }
-
-    protected Dictionary(Mapper map) {
-        super();
-        assert map != null : "cannot initialize with an empty map!";
-        dictionary = map.toMap();
     }
 
     @Override
