@@ -55,12 +55,12 @@ import chat.dim.type.Mapper;
  */
 public interface Document extends TAI, Mapper {
 
-    /**
+    /*
      *  Get entity ID
      *
      * @return entity ID
      */
-    ID getIdentifier();
+    //ID getIdentifier();
 
     //---- properties getter/setter
 
@@ -71,7 +71,7 @@ public interface Document extends TAI, Mapper {
      */
     Date getTime();
 
-    /**
+    /*
      *  Get entity name
      *
      * @return name string
