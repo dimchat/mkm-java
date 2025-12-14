@@ -46,10 +46,10 @@ import chat.dim.type.Mapper;
  *
  *  <blockquote><pre>
  *  data format: {
- *      did       : "{EntityID}",      // entity ID
- *      type      : "visa",            // "bulletin", ...
- *      data      : "{JSON}",          // data = json_encode(info)
- *      signature : "{BASE64_ENCODE}"  // signature = sign(data, SK);
+ *      "did"       : "{EntityID}",      // entity ID
+ *      "type"      : "visa",            // "bulletin", ...
+ *      "data"      : "{JSON}",          // data = json_encode(info)
+ *      "signature" : "{BASE64_ENCODE}"  // signature = sign(data, SK);
  *  }
  *  </pre></blockquote>
  */
@@ -110,15 +110,15 @@ public interface Document extends TAI, Mapper {
     /**
      *  Create from stored info
      */
-    static Document create(String type, ID did, String data, TransportableData signature) {
-        return SharedAccountExtensions.docHelper.createDocument(type, did, data, signature);
+    static Document create(String type, String data, TransportableData signature) {
+        return SharedAccountExtensions.docHelper.createDocument(type, data, signature);
     }
 
     /**
      *  Create new empty document
      */
-    static Document create(String type, ID did) {
-        return SharedAccountExtensions.docHelper.createDocument(type, did, null, null);
+    static Document create(String type) {
+        return SharedAccountExtensions.docHelper.createDocument(type, null, null);
     }
 
     static Document parse(Object doc) {
@@ -146,12 +146,11 @@ public interface Document extends TAI, Mapper {
          *      2. Create a new empty document with entity ID only
          *  </p>
          *
-         * @param did       - entity ID
          * @param data      - document data (JsON)
          * @param signature - document signature (Base64)
          * @return Document
          */
-        Document createDocument(ID did, String data, TransportableData signature);
+        Document createDocument(String data, TransportableData signature);
 
         /**
          *  Parse map object to entity document

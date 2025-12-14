@@ -31,7 +31,6 @@
 package chat.dim.ext;
 
 import chat.dim.protocol.Document;
-import chat.dim.protocol.ID;
 import chat.dim.protocol.TransportableData;
 
 public interface DocumentHelper {
@@ -39,7 +38,7 @@ public interface DocumentHelper {
     void setDocumentFactory(String type, Document.Factory factory);
     Document.Factory getDocumentFactory(String type);
 
-    Document createDocument(String type, ID did, String data, TransportableData signature);
+    Document createDocument(String type, String data, TransportableData signature);
 
     Document parseDocument(Object doc);
 
