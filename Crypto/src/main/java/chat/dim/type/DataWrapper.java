@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2020 Albert Moky
+ * Copyright (c) 2025 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,53 +28,16 @@ package chat.dim.type;
 import java.util.List;
 import java.util.Map;
 
-/**
- *  Data Wrap Interface
- */
-public abstract class Wrapper {
+public interface DataWrapper {
 
-    /**
-     *  Get inner String
-     *  <p>
-     *      Remove first wrapper
-     *  </p>
-     */
-    public static String getString(Object str) {
-        return wrapper.getString(str);
-    }
+    String getString(Object str);
 
-    /**
-     *  Get inner Map
-     *  <p>
-     *      Remove first wrapper
-     *  </p>
-     */
-    public static Map<String, Object> getMap(Object dict) {
-        return wrapper.getMap(dict);
-    }
+    Map<String, Object> getMap(Object dict);
 
-    /**
-     *  Unwrap recursively
-     *  <p>
-     *      Remove all wrappers
-     *  </p>
-     */
-    public static Object unwrap(Object object) {
-        return wrapper.unwrap(object);
-    }
+    Object unwrap(Object object);
 
-    // Unwrap values for keys in map
-    public static Map<String, Object> unwrapMap(Map<?, ?> dict) {
-        return wrapper.unwrapMap(dict);
-    }
-    // Unwrap values in the array
-    public static List<?> unwrapList(List<?> array) {
-        return wrapper.unwrapList(array);
-    }
+    Map<String, Object> unwrapMap(Map<?, ?> dict);
 
-    /**
-     *  Default Wrapper
-     */
-    public static DataWrapper wrapper = new BaseWrapper();
+    List<?> unwrapList(List<?> array);
 
 }
