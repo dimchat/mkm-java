@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2023 Albert Moky
+ * Copyright (c) 2025 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -28,30 +28,14 @@ package chat.dim.type;
 import java.util.List;
 import java.util.Map;
 
-/**
- *  Data Compare Interface
- */
-public abstract class Comparator {
+public interface DataComparator {
 
-    public static boolean identical(Object a, Object b) {
-        return comparator.identical(a, b);
-    }
+    boolean identical(Object a, Object b);
 
-    public static boolean different(Object a, Object b) {
-        return comparator.different(a, b);
-    }
+    boolean different(Object a, Object b);
 
-    public static boolean mapEquals(Map<?, ?> a, Map<?, ?> b) {
-        return comparator.mapEquals(a, b);
-    }
+    boolean mapEquals(Map<?, ?> a, Map<?, ?> b);
 
-    public static boolean listEquals(List<?> a, List<?> b) {
-        return comparator.listEquals(a, b);
-    }
-
-    /**
-     *  Default comparator
-     */
-    public static DataComparator comparator = new BaseComparator();
+    boolean listEquals(List<?> a, List<?> b);
 
 }
