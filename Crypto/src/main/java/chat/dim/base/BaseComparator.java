@@ -23,7 +23,7 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.type;
+package chat.dim.base;
 
 import java.util.Iterator;
 import java.util.List;

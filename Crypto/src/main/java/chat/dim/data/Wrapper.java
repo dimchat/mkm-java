@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2025 Albert Moky
+ * Copyright (c) 2020 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,19 +23,61 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.type;
+package chat.dim.data;
 
 import java.util.List;
 import java.util.Map;
 
-public interface DataComparator {
+import chat.dim.base.BaseWrapper;
+import chat.dim.base.DataWrapper;
 
-    boolean identical(Object a, Object b);
+/**
+ *  Data Wrap Interface
+ */
+public abstract class Wrapper {
 
-    boolean different(Object a, Object b);
+    /**
+     *  Get inner String
+     *  <p>
+     *      Remove first wrapper
+     *  </p>
+     */
+    public static String getString(Object str) {
+        return wrapper.getString(str);
+    }
 
-    boolean mapEquals(Map<?, ?> a, Map<?, ?> b);
+    /**
+     *  Get inner Map
+     *  <p>
+     *      Remove first wrapper
+     *  </p>
+     */
+    public static Map<String, Object> getMap(Object dict) {
+        return wrapper.getMap(dict);
+    }
 
-    boolean listEquals(List<?> a, List<?> b);
+    /**
+     *  Unwrap recursively
+     *  <p>
+     *      Remove all wrappers
+     *  </p>
+     */
+    public static Object unwrap(Object object) {
+        return wrapper.unwrap(object);
+    }
+
+    // Unwrap values for keys in map
+    public static Map<String, Object> unwrapMap(Map<?, ?> dict) {
+        return wrapper.unwrapMap(dict);
+    }
+    // Unwrap values in the array
+    public static List<?> unwrapList(List<?> array) {
+        return wrapper.unwrapList(array);
+    }
+
+    /**
+     *  Default Wrapper
+     */
+    public static DataWrapper wrapper = new BaseWrapper();
 
 }

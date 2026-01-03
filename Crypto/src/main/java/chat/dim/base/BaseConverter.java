@@ -23,9 +23,11 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.type;
+package chat.dim.base;
 
 import java.util.Date;
+
+import chat.dim.data.Converter;
 
 public class BaseConverter implements DataConverter {
 

@@ -23,21 +23,19 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.type;
+package chat.dim.base;
 
 import java.util.List;
 import java.util.Map;
 
-public interface DataWrapper {
+public interface DataComparator {
 
-    String getString(Object str);
+    boolean identical(Object a, Object b);
 
-    Map<String, Object> getMap(Object dict);
+    boolean different(Object a, Object b);
 
-    Object unwrap(Object object);
+    boolean mapEquals(Map<?, ?> a, Map<?, ?> b);
 
-    Map<String, Object> unwrapMap(Map<?, ?> dict);
-
-    List<?> unwrapList(List<?> array);
+    boolean listEquals(List<?> a, List<?> b);
 
 }

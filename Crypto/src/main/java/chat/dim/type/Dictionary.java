@@ -31,6 +31,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import chat.dim.data.Comparator;
+import chat.dim.data.Converter;
+import chat.dim.data.Copier;
+
 public class Dictionary implements Mapper {
 
     private final Map<String, Object> dictionary;

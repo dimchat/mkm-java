@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2020 Albert Moky
+ * Copyright (c) 2023 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,58 +23,24 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.type;
+package chat.dim.base;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Date;
 
-/**
- *  Data Wrap Interface
- */
-public abstract class Wrapper {
+public interface DataConverter {
 
-    /**
-     *  Get inner String
-     *  <p>
-     *      Remove first wrapper
-     *  </p>
-     */
-    public static String getString(Object str) {
-        return wrapper.getString(str);
-    }
+    String   getString(Object value,String   defaultValue);
 
-    /**
-     *  Get inner Map
-     *  <p>
-     *      Remove first wrapper
-     *  </p>
-     */
-    public static Map<String, Object> getMap(Object dict) {
-        return wrapper.getMap(dict);
-    }
+    Boolean getBoolean(Object value, Boolean defaultValue);
 
-    /**
-     *  Unwrap recursively
-     *  <p>
-     *      Remove all wrappers
-     *  </p>
-     */
-    public static Object unwrap(Object object) {
-        return wrapper.unwrap(object);
-    }
+    Byte       getByte(Object value, Byte    defaultValue);
+    Short     getShort(Object value, Short   defaultValue);
+    Integer getInteger(Object value, Integer defaultValue);
+    Long       getLong(Object value, Long    defaultValue);
 
-    // Unwrap values for keys in map
-    public static Map<String, Object> unwrapMap(Map<?, ?> dict) {
-        return wrapper.unwrapMap(dict);
-    }
-    // Unwrap values in the array
-    public static List<?> unwrapList(List<?> array) {
-        return wrapper.unwrapList(array);
-    }
+    Float     getFloat(Object value, Float   defaultValue);
+    Double   getDouble(Object value, Double  defaultValue);
 
-    /**
-     *  Default Wrapper
-     */
-    public static DataWrapper wrapper = new BaseWrapper();
+    Date   getDateTime(Object value, Date    defaultValue);
 
 }

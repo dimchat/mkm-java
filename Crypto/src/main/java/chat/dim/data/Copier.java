@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2025 Albert Moky
+ * Copyright (c) 2022 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,31 +23,52 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.type;
+package chat.dim.data;
 
 import java.util.List;
 import java.util.Map;
 
-public interface DataCopier {
+import chat.dim.base.BaseCopier;
+import chat.dim.base.DataCopier;
+
+/**
+ *  Data Copy Interface
+ */
+public abstract class Copier {
 
     /**
-     *  Shallow Copier
+     *  Shallow Copy
      */
+    public static Object copy(Object object) {
+        return copier.copy(object);
+    }
 
-    Object copy(Object object);
+    public static Map<String, Object> copyMap(Map<?, ?> dict) {
+        return copier.copyMap(dict);
+    }
 
-    Map<String, Object> copyMap(Map<?, ?> dict);
-
-    <V> List<V> copyList(List<V> array);
+    public static <V> List<V> copyList(List<V> array) {
+        return copier.copyList(array);
+    }
 
     /**
-     *  Deep Copier
+     *  Deep Copy
      */
+    public static Object deepCopy(Object object) {
+        return copier.deepCopy(object);
+    }
 
-    Object deepCopy(Object object);
+    public static Map<String, Object> deepCopyMap(Map<?, ?> dict) {
+        return copier.deepCopyMap(dict);
+    }
 
-    Map<String, Object> deepCopyMap(Map<?, ?> dict);
+    public static List<Object> deepCopyList(List<?> array) {
+        return copier.deepCopyList(array);
+    }
 
-    List<Object> deepCopyList(List<?> array);
+    /**
+     *  Default Copier
+     */
+    public static DataCopier copier = new BaseCopier();
 
 }

@@ -23,12 +23,15 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.type;
+package chat.dim.base;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import chat.dim.data.Wrapper;
+import chat.dim.type.Mapper;
 
 public class BaseCopier implements DataCopier {
 

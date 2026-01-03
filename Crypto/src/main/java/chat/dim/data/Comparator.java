@@ -23,10 +23,13 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.type;
+package chat.dim.data;
 
 import java.util.List;
 import java.util.Map;
+
+import chat.dim.base.BaseComparator;
+import chat.dim.base.DataComparator;
 
 /**
  *  Data Compare Interface
@@ -50,7 +53,7 @@ public abstract class Comparator {
     }
 
     /**
-     *  Default comparator
+     *  Default Comparator
      */
     public static DataComparator comparator = new BaseComparator();
 

@@ -23,11 +23,14 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.type;
+package chat.dim.data;
 
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+import chat.dim.base.BaseConverter;
+import chat.dim.base.DataConverter;
 
 /**
  *  Data Convert Interface
@@ -116,6 +119,9 @@ public abstract class Converter {
         return converter.getDateTime(value, null);
     }
 
+    /**
+     *  Default Converter
+     */
     public static DataConverter converter = new BaseConverter();
 
 }
