@@ -25,10 +25,8 @@
  */
 package chat.dim.protocol;
 
-import java.util.Map;
-
 import chat.dim.ext.SharedFormatExtensions;
-import chat.dim.type.Mapper;
+import chat.dim.type.Stringer;
 
 /**
  *  Transportable Data
@@ -38,20 +36,14 @@ import chat.dim.type.Mapper;
  *
  *  <blockquote><pre>
  *      0. "{BASE64_ENCODE}"
- *      1. "base64,{BASE64_ENCODE}"
- *      2. "data:image/png;base64,{BASE64_ENCODE}"
- *      3. {
- *              algorithm : "base64",
- *              data      : "...",     // base64_encode(data)
- *              ...
- *      }
+ *      1. "data:image/png;base64,{BASE64_ENCODE}"
  *  </pre></blockquote>
  */
-public interface TransportableData extends Mapper {
+public interface TransportableData extends Stringer {
 
     /*
     //
-    //  encode algorithm
+    //  encoding algorithm
     //
     String DEFAULT = "base64";
     String BASE_64 = "base64";
@@ -60,11 +52,11 @@ public interface TransportableData extends Mapper {
      */
 
     /**
-     *  Get data encode algorithm
+     *  Get data encoding algorithm
      *
      * @return "base64"
      */
-    String getAlgorithm();
+    String getEncoding();
 
     /**
      *  Get original data
@@ -77,55 +69,23 @@ public interface TransportableData extends Mapper {
      *  Get encoded string
      *
      * @return "{BASE64_ENCODE}", or
-     *         "base64,{BASE64_ENCODE}", or
-     *         "data:image/png;base64,{BASE64_ENCODE}", or
-     *         "{...}"
+     *         "data:image/png;base64,{BASE64_ENCODE}"
      */
     @Override
     String toString();
 
-    /**
-     *  toJson()
-     *
-     * @return String, or Map
-     */
-    Object toObject();
-
     //
-    //  Conveniences
+    //  Factory method
     //
-
-    static Object encode(byte[] data) {
-        TransportableData ted = create(data);
-        return ted.toObject();
-    }
-
-    static byte[] decode(Object encoded) {
-        TransportableData ted = parse(encoded);
-        return ted == null ? null : ted.getData();
-    }
-
-    //
-    //  Factory methods
-    //
-
-    static TransportableData create(byte[] data) {
-        return SharedFormatExtensions.tedHelper.createTransportableData(data, null);
-    }
-    static TransportableData create(byte[] data, String algorithm) {
-        assert algorithm != null && algorithm.length() > 0 : "TED algorithm not set";
-        return SharedFormatExtensions.tedHelper.createTransportableData(data, algorithm);
-    }
-
     static TransportableData parse(Object ted) {
         return SharedFormatExtensions.tedHelper.parseTransportableData(ted);
     }
 
-    static void setFactory(String algorithm, Factory factory) {
-        SharedFormatExtensions.tedHelper.setTransportableDataFactory(algorithm, factory);
+    static void setFactory(Factory factory) {
+        SharedFormatExtensions.tedHelper.setTransportableDataFactory(factory);
     }
-    static Factory getFactory(String algorithm) {
-        return SharedFormatExtensions.tedHelper.getTransportableDataFactory(algorithm);
+    static Factory getFactory() {
+        return SharedFormatExtensions.tedHelper.getTransportableDataFactory();
     }
 
     /**
@@ -134,24 +94,12 @@ public interface TransportableData extends Mapper {
     interface Factory {
 
         /**
-         *  Create TED
+         *  Parse string object to TED
          *
-         * @param data
-         *        original data
-         *
+         * @param ted - TED string
          * @return TED object
          */
-        TransportableData createTransportableData(byte[] data);
-
-        /**
-         *  Parse string/map object to TED
-         *
-         * @param ted
-         *        TED info
-         *
-         * @return TED object
-         */
-        TransportableData parseTransportableData(Map<String, Object> ted);
+        TransportableData parseTransportableData(String ted);
     }
 
 }

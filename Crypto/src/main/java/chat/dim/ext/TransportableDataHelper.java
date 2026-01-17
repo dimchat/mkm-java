@@ -29,10 +29,8 @@ import chat.dim.protocol.TransportableData;
 
 public interface TransportableDataHelper {
 
-    void setTransportableDataFactory(String algorithm, TransportableData.Factory factory);
-    TransportableData.Factory getTransportableDataFactory(String algorithm);
-
-    TransportableData createTransportableData(byte[] data, String algorithm);
+    void setTransportableDataFactory(TransportableData.Factory factory);
+    TransportableData.Factory getTransportableDataFactory();
 
     TransportableData parseTransportableData(Object ted);
 
