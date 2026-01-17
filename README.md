@@ -429,5 +429,5 @@ Meta Example (JsON) for ```hulk@4YeVEN3aUnvC1DNUufCq1bs9zoBSJTzVEj```
 
 ----
 
-Copyright &copy; 2018-2025 Albert Moky
+Copyright &copy; 2018-2026 Albert Moky
 [![Followers](https://img.shields.io/github/followers/moky)](https://github.com/moky?tab=followers)

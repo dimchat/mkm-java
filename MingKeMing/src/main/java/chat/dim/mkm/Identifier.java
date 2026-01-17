@@ -108,10 +108,10 @@ public final class Identifier extends ConstantString implements ID {
 
     public static String concat(String name, Address address, String terminal) {
         String string = address.toString();
-        if (name != null && name.length() > 0) {
+        if (name != null && !name.isEmpty()) {
             string = name + "@" + string;
         }
-        if (terminal != null && terminal.length() > 0) {
+        if (terminal != null && !terminal.isEmpty()) {
             string = string + "/" + terminal;
         }
         return string;
