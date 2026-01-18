@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2023 Albert Moky
+ * Copyright (c) 2025 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -25,17 +25,23 @@
  */
 package chat.dim.ext;
 
-import java.util.Map;
+import java.net.URI;
+
+import chat.dim.protocol.DecryptKey;
+import chat.dim.protocol.TransportableData;
+import chat.dim.protocol.TransportableFile;
 
 /**
- *  Format GeneralFactory
+ *  PNF Helper
  */
-public interface GeneralFormatHelper /*extends TransportableData.Helper, PortableNetworkFile.Helper */{
+public interface TransportableFileHelper {
 
-    //
-    //  Algorithm
-    //
+    void setTransportableFileFactory(TransportableFile.Factory factory);
+    TransportableFile.Factory getTransportableFileFactory();
 
-    String getFormatAlgorithm(Map<?, ?> ted, String defaultValue);
+    TransportableFile parseTransportableFile(Object pnf);
+
+    TransportableFile createTransportableFile(TransportableData data, String filename,
+                                              URI url, DecryptKey password);
 
 }

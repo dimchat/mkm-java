@@ -39,24 +39,22 @@ import chat.dim.type.Mapper;
  *
  *  <blockquote><pre>
  *  0.  "{URL}"
- *  1. "base64,{BASE64_ENCODE}"
- *  2. "data:image/png;base64,{BASE64_ENCODE}"
- *  3. {
- *         data     : "...",        // base64_encode(fileContent)
- *         filename : "avatar.png",
+ *  1. {
+ *         "data"     : "...",        // base64_encode(fileContent)
+ *         "filename" : "avatar.png",
  *
- *         URL      : "http://...", // download from CDN
+ *         "URL"      : "http://...", // download from CDN
  *         // before fileContent uploaded to a public CDN,
  *         // it can be encrypted by a symmetric key
- *         key      : {             // symmetric key to decrypt file data
- *             algorithm : "AES",   // "DES", ...
- *             data      : "{BASE64_ENCODE}",
+ *         "key"      : {             // symmetric key to decrypt file data
+ *             "algorithm" : "AES",   // "DES", ...
+ *             "data"      : "{BASE64_ENCODE}",
  *             ...
  *         }
  *      }
  *  </pre></blockquote>
  */
-public interface PortableNetworkFile extends Mapper {
+public interface TransportableFile extends Mapper, TransportableResource {
 
     /** When file data is too big, don't set it in this dictionary,
      *  but upload it to a CDN and set the download URL instead.
@@ -81,19 +79,27 @@ public interface PortableNetworkFile extends Mapper {
     /** Get encoded string
      *
      * @return "URL", or
-     *         "base64,{BASE64_ENCODE}", or
-     *         "data:image/png;base64,{BASE64_ENCODE}", or
      *         "{...}"
      */
     @Override
     String toString();
 
     /**
-     *  toJson()
+     *  Encode data and update inner map
      *
-     * @return String, or Map
+     * @return inner map
      */
-    Object toObject();
+    @Override
+    Map<String, Object> toMap();
+
+    /**
+     *  if contains "URL" and "filename" only,
+     *      toString();
+     *  else,
+     *      toMap();
+     */
+    @Override
+    Object serialize();
 
     //
     //  Factory methods
@@ -102,29 +108,29 @@ public interface PortableNetworkFile extends Mapper {
     /**
      *  Create from remote URL
      */
-    static PortableNetworkFile create(URI url, DecryptKey password) {
+    static TransportableFile create(URI url, DecryptKey password) {
         return create(null, null, url, password);
     }
     /**
      *  Create from file data
      */
-    static PortableNetworkFile create(TransportableData data, String filename) {
+    static TransportableFile create(TransportableData data, String filename) {
         return create(data, filename, null, null);
     }
 
-    static PortableNetworkFile create(TransportableData data, String filename, URI url, DecryptKey password) {
-        return SharedFormatExtensions.pnfHelper.createPortableNetworkFile(data, filename, url, password);
+    static TransportableFile create(TransportableData data, String filename, URI url, DecryptKey password) {
+        return SharedFormatExtensions.pnfHelper.createTransportableFile(data, filename, url, password);
     }
 
-    static PortableNetworkFile parse(Object pnf) {
-        return SharedFormatExtensions.pnfHelper.parsePortableNetworkFile(pnf);
+    static TransportableFile parse(Object pnf) {
+        return SharedFormatExtensions.pnfHelper.parseTransportableFile(pnf);
     }
 
     static void setFactory(Factory factory) {
-        SharedFormatExtensions.pnfHelper.setPortableNetworkFileFactory(factory);
+        SharedFormatExtensions.pnfHelper.setTransportableFileFactory(factory);
     }
     static Factory getFactory() {
-        return SharedFormatExtensions.pnfHelper.getPortableNetworkFileFactory();
+        return SharedFormatExtensions.pnfHelper.getTransportableFileFactory();
     }
 
     /**
@@ -149,8 +155,8 @@ public interface PortableNetworkFile extends Mapper {
          *
          * @return PNF object
          */
-        PortableNetworkFile createPortableNetworkFile(TransportableData data, String filename,
-                                                      URI url, DecryptKey password);
+        TransportableFile createTransportableFile(TransportableData data, String filename,
+                                                  URI url, DecryptKey password);
 
         /**
          *  Parse string/map object to PNF
@@ -160,7 +166,7 @@ public interface PortableNetworkFile extends Mapper {
          *
          * @return PNF object
          */
-        PortableNetworkFile parsePortableNetworkFile(Map<String, Object> pnf);
+        TransportableFile parseTransportableFile(Map<String, Object> pnf);
     }
 
 }

@@ -32,9 +32,6 @@ public final class SharedFormatExtensions {
 
     public static TransportableDataHelper tedHelper = null;
 
-    public static PortableNetworkFileHelper pnfHelper = null;
-
-    // general helper
-    public static GeneralFormatHelper helper = null;
+    public static TransportableFileHelper pnfHelper = null;
 
 }

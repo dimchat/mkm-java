@@ -2,7 +2,7 @@
  * ==============================================================================
  * The MIT License (MIT)
  *
- * Copyright (c) 2025 Albert Moky
+ * Copyright (c) 2026 Albert Moky
  *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -23,22 +23,48 @@
  * SOFTWARE.
  * ==============================================================================
  */
-package chat.dim.ext;
+package chat.dim.protocol;
 
-import java.net.URI;
+/**
+ *  Serializable Data or File Content
+ *
+ *  <blockquote><pre>
+ *  0. "{BASE64_ENCODE}"
+ *  1. "data:image/png;base64,{BASE64_ENCODE}"
+ *  2. "https://..."
+ *  3. {
+ *        "data"     : "...",        // base64_encode(fileContent)
+ *        "filename" : "avatar.png",
+ *
+ *        "URL"      : "http://...", // download from CDN
+ *         // before fileContent uploaded to a public CDN,
+ *         // it can be encrypted by a symmetric key
+ *        "key"      : {             // symmetric key to decrypt file data
+ *            "algorithm" : "AES",   // "DES", ...
+ *            "data"      : "{BASE64_ENCODE}"
+ *        }
+ *    }
+ *  </pre></blockquote>
+ */
+public interface TransportableResource {
 
-import chat.dim.protocol.DecryptKey;
-import chat.dim.protocol.PortableNetworkFile;
-import chat.dim.protocol.TransportableData;
+    /*  Format
+     *  ~~~~~~
+     *
+     *      TED - TransportableData
+     *          0. "{BASE64_ENCODE}"
+     *          1. "data:image/png;base64,{BASE64_ENCODE}"
+     *
+     *      PNF - TransportableFile
+     *          2. "https://..."
+     *          3. {...}
+     */
 
-public interface PortableNetworkFileHelper {
-
-    void setPortableNetworkFileFactory(PortableNetworkFile.Factory factory);
-    PortableNetworkFile.Factory getPortableNetworkFileFactory();
-
-    PortableNetworkFile parsePortableNetworkFile(Object pnf);
-
-    PortableNetworkFile createPortableNetworkFile(TransportableData data, String filename,
-                                                  URI url, DecryptKey password);
+    /**
+     *  Encode data
+     *
+     * @return String or Map
+     */
+    Object serialize();
 
 }

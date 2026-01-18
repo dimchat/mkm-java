@@ -39,7 +39,7 @@ import chat.dim.type.Stringer;
  *      1. "data:image/png;base64,{BASE64_ENCODE}"
  *  </pre></blockquote>
  */
-public interface TransportableData extends Stringer {
+public interface TransportableData extends Stringer, TransportableResource {
 
     /*
     //
@@ -74,9 +74,16 @@ public interface TransportableData extends Stringer {
     @Override
     String toString();
 
+    /**
+     *  toString()
+     */
+    @Override
+    Object serialize();
+
     //
     //  Factory method
     //
+
     static TransportableData parse(Object ted) {
         return SharedFormatExtensions.tedHelper.parseTransportableData(ted);
     }
