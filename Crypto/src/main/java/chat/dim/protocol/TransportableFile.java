@@ -59,8 +59,8 @@ public interface TransportableFile extends Mapper, TransportableResource {
     /** When file data is too big, don't set it in this dictionary,
      *  but upload it to a CDN and set the download URL instead.
      */
-    void setData(byte[] data);
-    byte[] getData();
+    void setData(TransportableData data);
+    TransportableData getData();
 
     void setFilename(String filename);
     String getFilename();

@@ -63,7 +63,7 @@ public interface TransportableData extends Stringer, TransportableResource {
      *
      * @return plaintext
      */
-    byte[] getData();
+    byte[] getBytes();
 
     /**
      *  Get encoded string

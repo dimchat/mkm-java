@@ -43,10 +43,10 @@ import chat.dim.type.Mapper;
  *
  *  <blockquote><pre>
  *  data format: {
- *      type        : 1,              // algorithm version
- *      key         : "{public key}", // PK = secp256k1(SK);
- *      seed        : "moKy",         // user/group name
- *      fingerprint : "..."           // CT = sign(seed, SK);
+ *      "type"        : i2s(1),         // algorithm version
+ *      "key"         : "{public key}", // PK = secp256k1(SK);
+ *      "seed"        : "moKy",         // user/group name
+ *      "fingerprint" : "..."           // CT = sign(seed, SK);
  *  }
  *
  *  algorithm:
@@ -89,7 +89,7 @@ public interface Meta extends Mapper {
      *  Check: verify(seed, fingerprint, publicKey)
      *  </pre></blockquote>
      */
-    byte[] getFingerprint();
+    TransportableData getFingerprint();
 
     //
     //  Validation

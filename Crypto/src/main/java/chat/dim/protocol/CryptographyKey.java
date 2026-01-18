@@ -35,8 +35,8 @@ import chat.dim.type.Mapper;
  *
  *  <blockquote><pre>
  *  key data format: {
- *      algorithm : "RSA", // ECC, AES, ...
- *      data      : "{BASE64_ENCODE}",
+ *      "algorithm" : "RSA", // ECC, AES, ...
+ *      "data"      : "{BASE64_ENCODE}",
  *      ...
  *  }
  *  </pre></blockquote>
@@ -55,5 +55,5 @@ public interface CryptographyKey extends Mapper {
      *
      * @return key data
      */
-    byte[] getData();
+    TransportableData getData();
 }
