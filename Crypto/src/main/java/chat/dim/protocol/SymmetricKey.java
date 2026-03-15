@@ -37,8 +37,8 @@ import chat.dim.ext.SharedCryptoExtensions;
  *
  *  <blockquote><pre>
  *  key data format: {
- *      algorithm : "AES", // "DES", ...
- *      data      : "{BASE64_ENCODE}",
+ *      "algorithm" : "AES", // "DES", ...
+ *      "data"      : "{BASE64_ENCODE}",
  *      ...
  *  }
  *  </pre></blockquote>

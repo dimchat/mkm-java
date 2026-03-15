@@ -66,6 +66,22 @@ public interface TransportableData extends Stringer, TransportableResource {
     byte[] getBytes();
 
     /**
+     *  Get byte length
+     *
+     * @return size of the raw binary data in bytes
+     */
+    @Override
+    int length();
+
+    /**
+     *  Whether this data is empty
+     *
+     * @return empty if byte length is 0
+     */
+    @Override
+    boolean isEmpty();
+
+    /**
      *  Get encoded string
      *
      * @return "{BASE64_ENCODE}", or

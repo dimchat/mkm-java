@@ -33,12 +33,12 @@ package chat.dim.protocol;
 import java.util.Map;
 
 /**
- *  The Additional Information
+ *  The Additional Information (Profile)
  *
  *  <pre>
  *  'Meta' is the information for entity which never changed,
  *      which contains the key for verify signature;
- *  'TAI' is the variable part,
+ *  'TAI' is the variable part (signed by meta.key's private key),
  *      which could contain a public key for asymmetric encryption.
  *  </pre>
  */
@@ -96,4 +96,5 @@ public interface TAI {
      * @param value - property data
      */
     void setProperty(String name, Object value);
+
 }

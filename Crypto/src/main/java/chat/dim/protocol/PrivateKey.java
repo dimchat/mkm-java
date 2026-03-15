@@ -37,8 +37,8 @@ import chat.dim.ext.SharedCryptoExtensions;
  *
  *  <blockquote><pre>
  *  key data format: {
- *      algorithm : "RSA", // "ECC", ...
- *      data      : "{BASE64_ENCODE}",
+ *      "algorithm" : "RSA", // "ECC", ...
+ *      "data"      : "{BASE64_ENCODE}",
  *      ...
  *  }
  *  </pre></blockquote>

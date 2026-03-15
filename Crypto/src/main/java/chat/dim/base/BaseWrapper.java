@@ -42,10 +42,12 @@ public class BaseWrapper implements DataWrapper {
         } else if (str instanceof Stringer) {
             return str.toString();
         } else if (str instanceof String) {
+            // exactly
             return (String) str;
         } else {
-            assert false : "string error: " + str;
-            return str.toString();
+            assert false : "not a string value: " + str;
+            //return str.toString();
+            return null;
         }
     }
 
@@ -57,6 +59,7 @@ public class BaseWrapper implements DataWrapper {
         } else if (dict instanceof Mapper) {
             return ((Mapper) dict).toMap();
         } else if (dict instanceof Map) {
+            // exactly
             return (Map<String, Object>) dict;
         } else {
             assert false : "map error: " + dict;

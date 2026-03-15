@@ -37,8 +37,8 @@ package chat.dim.protocol;
  *        "filename" : "avatar.png",
  *
  *        "URL"      : "http://...", // download from CDN
- *         // before fileContent uploaded to a public CDN,
- *         // it can be encrypted by a symmetric key
+ *        // before fileContent uploaded to a public CDN,
+ *        // it can be encrypted by a symmetric key
  *        "key"      : {             // symmetric key to decrypt file data
  *            "algorithm" : "AES",   // "DES", ...
  *            "data"      : "{BASE64_ENCODE}"

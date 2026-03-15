@@ -32,6 +32,8 @@ package chat.dim.ext;
 
 import java.util.Map;
 
+import chat.dim.protocol.ID;
+
 /**
  *  Account GeneralFactory
  */
@@ -44,5 +46,7 @@ public interface GeneralAccountHelper /*extends Address.Helper, ID.Helper, Meta.
     String getMetaType(Map<?, ?> meta, String defaultValue);
 
     String getDocumentType(Map<?, ?> doc, String defaultValue);
+
+    ID getDocumentID(Map<?, ?> doc);
 
 }

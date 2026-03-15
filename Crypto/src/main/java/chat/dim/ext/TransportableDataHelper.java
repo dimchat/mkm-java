@@ -27,6 +27,9 @@ package chat.dim.ext;
 
 import chat.dim.protocol.TransportableData;
 
+/**
+ *  TED Helper
+ */
 public interface TransportableDataHelper {
 
     void setTransportableDataFactory(TransportableData.Factory factory);

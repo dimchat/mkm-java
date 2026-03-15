@@ -76,7 +76,8 @@ public interface TransportableFile extends Mapper, TransportableResource {
     void setPassword(DecryptKey key);
     DecryptKey getPassword();
 
-    /** Get encoded string
+    /**
+     *  Get encoded string
      *
      * @return "URL", or
      *         "{...}"

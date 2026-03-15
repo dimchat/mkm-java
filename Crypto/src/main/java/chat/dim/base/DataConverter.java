@@ -29,7 +29,7 @@ import java.util.Date;
 
 public interface DataConverter {
 
-    String   getString(Object value,String   defaultValue);
+    String   getString(Object value, String  defaultValue);
 
     Boolean getBoolean(Object value, Boolean defaultValue);
 
