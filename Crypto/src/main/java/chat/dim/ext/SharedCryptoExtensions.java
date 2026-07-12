@@ -29,6 +29,9 @@ package chat.dim.ext;
  *  CryptographyKey FactoryManager
  */
 public final class SharedCryptoExtensions {
+    private SharedCryptoExtensions() {
+        throw new AssertionError("Utility class cannot be instantiated");
+    }
 
     public static SymmetricKeyHelper symmetricHelper = null;
 

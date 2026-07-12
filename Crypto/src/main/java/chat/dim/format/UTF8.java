@@ -26,6 +26,9 @@
 package chat.dim.format;
 
 public final class UTF8 {
+    private UTF8() {
+        throw new AssertionError("Utility class cannot be instantiated");
+    }
 
     public static byte[] encode(String string) {
         return coder.encode(string);

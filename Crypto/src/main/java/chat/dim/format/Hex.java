@@ -26,6 +26,9 @@
 package chat.dim.format;
 
 public final class Hex {
+    private Hex() {
+        throw new AssertionError("Utility class cannot be instantiated");
+    }
 
     public static String encode(byte[] data) {
         return coder.encode(data);

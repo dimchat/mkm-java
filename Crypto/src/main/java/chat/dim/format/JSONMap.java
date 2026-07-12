@@ -28,6 +28,9 @@ package chat.dim.format;
 import java.util.Map;
 
 public final class JSONMap {
+    private JSONMap() {
+        throw new AssertionError("Utility class cannot be instantiated");
+    }
 
     public static String encode(Map<String, Object> dictionary) {
         return coder.encode(dictionary);

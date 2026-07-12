@@ -32,9 +32,12 @@ import chat.dim.base.BaseWrapper;
 import chat.dim.base.DataWrapper;
 
 /**
- *  Data Wrap Interface
+ *  Data Wrap Utilities
  */
-public abstract class Wrapper {
+public final class Wrapper {
+    private Wrapper() {
+        throw new AssertionError("Utility class cannot be instantiated");
+    }
 
     /**
      *  Get inner String

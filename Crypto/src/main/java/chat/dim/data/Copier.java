@@ -32,9 +32,12 @@ import chat.dim.base.BaseCopier;
 import chat.dim.base.DataCopier;
 
 /**
- *  Data Copy Interface
+ *  Data Copy Utilities
  */
-public abstract class Copier {
+public final class Copier {
+    private Copier() {
+        throw new AssertionError("Utility class cannot be instantiated");
+    }
 
     /**
      *  Shallow Copy

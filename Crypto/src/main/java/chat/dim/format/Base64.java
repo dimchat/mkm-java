@@ -26,6 +26,9 @@
 package chat.dim.format;
 
 public final class Base64 {
+    private Base64() {
+        throw new AssertionError("Utility class cannot be instantiated");
+    }
 
     public static String encode(byte[] data) {
         return coder.encode(data);

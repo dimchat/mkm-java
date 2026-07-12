@@ -26,6 +26,9 @@
 package chat.dim.format;
 
 public final class JSON {
+    private JSON() {
+        throw new AssertionError("Utility class cannot be instantiated");
+    }
 
     public static String encode(Object container) {
         return coder.encode(container);

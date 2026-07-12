@@ -90,7 +90,7 @@ public class BaseWrapper implements DataWrapper {
         if (dict instanceof Mapper) {
             dict = ((Mapper) dict).toMap();
         }
-        Map<String, Object> result = new HashMap<>();
+        Map<String, Object> result = new HashMap<>(dict.size());
         String key;
         Object value;
         for (Map.Entry<?, ?> entry : dict.entrySet()) {
@@ -105,7 +105,7 @@ public class BaseWrapper implements DataWrapper {
     @Override
     public List<?> unwrapList(List<?> array) {
         assert array != null : "empty list";
-        List<Object> result = new ArrayList<>();
+        List<Object> result = new ArrayList<>(array.size());
         for (Object item : array) {
             result.add(unwrap(item));
         }

@@ -53,7 +53,7 @@ public class BaseCopier implements DataCopier {
 
     @Override
     public Map<String, Object> copyMap(Map<?, ?> dict) {
-        Map<String, Object> clone = new HashMap<>();
+        Map<String, Object> clone = new HashMap<>(dict.size());
         String key;
         Object value;
         for (Map.Entry<?, ?> entry : dict.entrySet()) {
@@ -87,7 +87,7 @@ public class BaseCopier implements DataCopier {
 
     @Override
     public Map<String, Object> deepCopyMap(Map<?, ?> dict) {
-        Map<String, Object> clone = new HashMap<>();
+        Map<String, Object> clone = new HashMap<>(dict.size());
         String key;
         Object value;
         for (Map.Entry<?, ?> entry : dict.entrySet()) {
@@ -100,7 +100,7 @@ public class BaseCopier implements DataCopier {
 
     @Override
     public List<Object> deepCopyList(List<?> array) {
-        List<Object> clone = new ArrayList<>();
+        List<Object> clone = new ArrayList<>(array.size());
         for (Object item : array) {
             clone.add(deepCopy(item));
         }

@@ -29,6 +29,9 @@ package chat.dim.ext;
  *  Format FactoryManager
  */
 public final class SharedFormatExtensions {
+    private SharedFormatExtensions() {
+        throw new AssertionError("Utility class cannot be instantiated");
+    }
 
     public static TransportableDataHelper tedHelper = null;
 

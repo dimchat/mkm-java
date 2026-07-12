@@ -33,9 +33,12 @@ import chat.dim.base.BaseConverter;
 import chat.dim.base.DataConverter;
 
 /**
- *  Data Convert Interface
+ *  Data Convert Utilities
  */
-public abstract class Converter {
+public final class Converter {
+    private Converter() {
+        throw new AssertionError("Utility class cannot be instantiated");
+    }
 
     public static Map<String, Boolean> BOOLEAN_STATES = new HashMap<String, Boolean>() {{
         put("1", true); put("yes", true); put("true", true); put("on", true);

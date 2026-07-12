@@ -32,9 +32,12 @@ import chat.dim.base.BaseComparator;
 import chat.dim.base.DataComparator;
 
 /**
- *  Data Compare Interface
+ *  Data Compare Utilities
  */
-public abstract class Comparator {
+public final class Comparator {
+    private Comparator() {
+        throw new AssertionError("Utility class cannot be instantiated");
+    }
 
     public static boolean identical(Object a, Object b) {
         return comparator.identical(a, b);
