@@ -34,6 +34,9 @@ package chat.dim.ext;
  *  Account FactoryManager
  */
 public final class SharedAccountExtensions {
+    private SharedAccountExtensions() {
+        throw new AssertionError("Utility class cannot be instantiated");
+    }
 
     public static AddressHelper addressHelper = null;
     public static IDHelper idHelper = null;

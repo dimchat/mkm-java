@@ -68,6 +68,25 @@ public interface ID extends Stringer {
     boolean isUser();
     boolean isGroup();
 
+    //
+    //  Comparison
+    //
+
+    /**
+     *  Check Naked ID
+     */
+    boolean isSameAs(Object other);
+
+    /**
+     *  Naked ID: name@address
+     */
+    ID withoutTerminal();
+
+    /**
+     *  Dressed ID: name@address/terminal
+     */
+    ID withTerminal(String terminal);
+
     /**
      *  ID for Broadcast
      */
