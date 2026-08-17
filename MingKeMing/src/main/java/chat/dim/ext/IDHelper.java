@@ -43,6 +43,6 @@ public interface IDHelper {
 
     ID createID(String name, Address address, String terminal);
 
-    ID generateID(Meta meta, int network, String terminal);
+    ID generateID(Meta meta, int network);
 
 }

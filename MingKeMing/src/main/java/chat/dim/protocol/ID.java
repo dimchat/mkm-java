@@ -142,8 +142,8 @@ public interface ID extends Stringer {
     static ID create(String name, Address address, String terminal) {
         return SharedAccountExtensions.idHelper.createID(name, address, terminal);
     }
-    static ID generate(Meta meta, int network, String terminal) {
-        return SharedAccountExtensions.idHelper.generateID(meta, network, terminal);
+    static ID generate(Meta meta, int network) {
+        return SharedAccountExtensions.idHelper.generateID(meta, network);
     }
 
     static Factory getFactory() {
@@ -163,10 +163,9 @@ public interface ID extends Stringer {
          *
          * @param meta     - meta info
          * @param network  - ID.type
-         * @param terminal - ID.terminal
          * @return ID
          */
-        ID generateID(Meta meta, int network, String terminal);
+        ID generateID(Meta meta, int network);
 
         /**
          *  Create ID
