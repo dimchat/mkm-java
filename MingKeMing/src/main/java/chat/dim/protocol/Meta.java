@@ -53,7 +53,7 @@ import chat.dim.type.Mapper;
  *      fingerprint = sign(seed, SK);
  *  </pre></blockquote>
  */
-public interface Meta extends Mapper {
+public interface Meta extends Mapper<String, Object> {
 
     /**
      *  Meta algorithm version

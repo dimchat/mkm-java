@@ -41,7 +41,7 @@ import chat.dim.type.Mapper;
  *  }
  *  </pre></blockquote>
  */
-public interface CryptographyKey extends Mapper {
+public interface CryptographyKey extends Mapper<String, Object> {
 
     /**
      *  Get key algorithm name

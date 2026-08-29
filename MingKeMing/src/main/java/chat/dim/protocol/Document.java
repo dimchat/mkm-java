@@ -53,7 +53,7 @@ import chat.dim.type.Mapper;
  *  }
  *  </pre></blockquote>
  */
-public interface Document extends TAI, Mapper {
+public interface Document extends TAI, Mapper<String, Object> {
 
     /**
      *  Get signature time from properties (data)

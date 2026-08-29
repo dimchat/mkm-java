@@ -54,7 +54,7 @@ import chat.dim.type.Mapper;
  *      }
  *  </pre></blockquote>
  */
-public interface TransportableFile extends Mapper, TransportableResource {
+public interface TransportableFile extends TransportableResource, Mapper<String, Object> {
 
     /** When file data is too big, don't set it in this dictionary,
      *  but upload it to a CDN and set the download URL instead.

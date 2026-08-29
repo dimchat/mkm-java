@@ -30,29 +30,43 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 
 import chat.dim.data.Comparator;
 import chat.dim.data.Converter;
 import chat.dim.data.Copier;
 
-public class Dictionary implements Mapper {
+public class Dictionary implements Mapper<String, Object> {
 
     private final Map<String, Object> dictionary;
 
-    protected Dictionary() {
+    public Dictionary() {
         super();
         dictionary = new HashMap<>();
     }
 
-    protected Dictionary(Map<String, Object> map) {
+    public Dictionary(Map<String, Object> map) {
         super();
         if (map == null) {
             assert false : "cannot initialize with an empty map!";
-            map = new HashMap<>();
+            dictionary = new HashMap<>();
         } else if (map instanceof Mapper) {
-            map = ((Mapper) map).toMap();
+            dictionary = ((Mapper<String, Object>) map).toMap();
+        } else {
+            dictionary = map;
         }
-        dictionary = map;
+        // Ensure that all keys are of type String.
+        assert ((Supplier<Boolean>)() -> {
+            // check all keys
+            for (Object key : dictionary.keySet()) {
+                if (!(key instanceof String)) {
+                    // key error
+                    return false;
+                }
+            }
+            // OK
+            return true;
+        }).get() : "⚠️ Debug hint: Ensure all keys are String. map=" + dictionary;
     }
 
     @Override
@@ -155,7 +169,7 @@ public class Dictionary implements Mapper {
     }
 
     @Override
-    public void setMap(String key, Mapper mapper) {
+    public void setMap(String key, Mapper<?, ?> mapper) {
         if (mapper == null) {
             remove(key);
         } else {
@@ -192,7 +206,7 @@ public class Dictionary implements Mapper {
                 return true;
             }
             // compare inner map
-            other = ((Mapper) other).toMap();
+            other = ((Mapper<?, ?>) other).toMap();
         }
         return other instanceof Map && Comparator.mapEquals(dictionary, (Map<?, ?>) other);
     }

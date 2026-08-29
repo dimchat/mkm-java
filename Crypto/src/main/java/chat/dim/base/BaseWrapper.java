@@ -57,7 +57,7 @@ public class BaseWrapper implements DataWrapper {
         if (dict == null) {
             return null;
         } else if (dict instanceof Mapper) {
-            return ((Mapper) dict).toMap();
+            return ((Mapper<String, Object>) dict).toMap();
         } else if (dict instanceof Map) {
             // exactly
             return (Map<String, Object>) dict;
@@ -72,7 +72,7 @@ public class BaseWrapper implements DataWrapper {
         if (object == null) {
             return null;
         } else if (object instanceof Mapper) {
-            return unwrapMap(((Mapper) object).toMap());
+            return unwrapMap(((Mapper<?, ?>) object).toMap());
         } else if (object instanceof Map) {
             return unwrapMap((Map<?, ?>) object);
         } else if (object instanceof List) {
@@ -88,7 +88,7 @@ public class BaseWrapper implements DataWrapper {
     public Map<String, Object> unwrapMap(Map<?, ?> dict) {
         assert dict != null : "empty map";
         if (dict instanceof Mapper) {
-            dict = ((Mapper) dict).toMap();
+            dict = ((Mapper<?, ?>) dict).toMap();
         }
         Map<String, Object> result = new HashMap<>(dict.size());
         String key;

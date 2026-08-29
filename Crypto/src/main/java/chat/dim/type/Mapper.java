@@ -28,39 +28,39 @@ package chat.dim.type;
 import java.util.Date;
 import java.util.Map;
 
-public interface Mapper extends Map<String, Object> {
+public interface Mapper<K, V> extends Map<K, V> {
 
-    String   getString(String key, String  defaultValue);
-    Boolean getBoolean(String key, Boolean defaultValue);
-    Integer getInteger(String key, Integer defaultValue);
-    Long       getLong(String key, Long    defaultValue);
-    Byte       getByte(String key, Byte    defaultValue);
-    Short     getShort(String key, Short   defaultValue);
-    Float     getFloat(String key, Float   defaultValue);
-    Double   getDouble(String key, Double  defaultValue);
+    String   getString(K key, String  defaultValue);
+    Boolean getBoolean(K key, Boolean defaultValue);
+    Integer getInteger(K key, Integer defaultValue);
+    Long       getLong(K key, Long    defaultValue);
+    Byte       getByte(K key, Byte    defaultValue);
+    Short     getShort(K key, Short   defaultValue);
+    Float     getFloat(K key, Float   defaultValue);
+    Double   getDouble(K key, Double  defaultValue);
 
-    String   getString(String key);
-    Boolean getBoolean(String key);
-    Integer getInteger(String key);
-    Long       getLong(String key);
-    Byte       getByte(String key);
-    Short     getShort(String key);
-    Float     getFloat(String key);
-    Double   getDouble(String key);
+    String   getString(K key);
+    Boolean getBoolean(K key);
+    Integer getInteger(K key);
+    Long       getLong(K key);
+    Byte       getByte(K key);
+    Short     getShort(K key);
+    Float     getFloat(K key);
+    Double   getDouble(K key);
 
-    Date getDateTime(String key);
-    Date getDateTime(String key, Date defaultValue);
-    void setDateTime(String key, Date time);
+    Date getDateTime(K key);
+    Date getDateTime(K key, Date defaultValue);
+    void setDateTime(K key, Date time);
 
-    void setString(String key, Stringer stringer);
-    void setMap(String key, Mapper mapper);
+    void setString(K key, Stringer stringer);
+    void setMap(K key, Mapper<?, ?> mapper);
 
     /**
      *  Get inner map
      *
      * @return Map
      */
-    Map<String, Object> toMap();
+    Map<K, V> toMap();
 
     /**
      *  Copy inner map
@@ -70,5 +70,5 @@ public interface Mapper extends Map<String, Object> {
      *
      * @return Map
      */
-    Map<String, Object> copyMap(boolean deepCopy);
+    Map<K, V> copyMap(boolean deepCopy);
 }

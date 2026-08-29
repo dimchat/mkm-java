@@ -40,7 +40,7 @@ public class BaseCopier implements DataCopier {
         if (object == null) {
             return null;
         } else if (object instanceof Mapper) {
-            return copyMap(((Mapper) object).toMap());
+            return copyMap(((Mapper<?, ?>) object).toMap());
         } else if (object instanceof Map) {
             return copyMap((Map<?, ?>) object);
         } else if (object instanceof List) {
@@ -74,7 +74,7 @@ public class BaseCopier implements DataCopier {
         if (object == null) {
             return null;
         } else if (object instanceof Mapper) {
-            return deepCopyMap(((Mapper) object).toMap());
+            return deepCopyMap(((Mapper<?, ?>) object).toMap());
         } else if (object instanceof Map) {
             return deepCopyMap((Map<?, ?>) object);
         } else if (object instanceof List) {
