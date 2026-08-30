@@ -28,6 +28,8 @@ package chat.dim.protocol;
 import chat.dim.ext.SharedFormatExtensions;
 import chat.dim.type.Stringer;
 
+import java.util.Map;
+
 /**
  *  Transportable Data
  *  <p>
@@ -100,6 +102,10 @@ public interface TransportableData extends Stringer, TransportableResource {
     //  Factory method
     //
 
+    static TransportableData create(byte[] data, String encoding, String mimeType, Map<String, String> parameters) {
+        return SharedFormatExtensions.tedHelper.createTransportableData(data, encoding, mimeType, parameters);
+    }
+
     static TransportableData parse(Object ted) {
         return SharedFormatExtensions.tedHelper.parseTransportableData(ted);
     }
@@ -117,9 +123,31 @@ public interface TransportableData extends Stringer, TransportableResource {
     interface Factory {
 
         /**
+         *  Create TED
+         *
+         * @param data
+         *        bytes
+         *
+         * @param encoding
+         *        algorithm name ("base64", ...)
+         *
+         * @param mimeType (OPTIONAL)
+         *        content-type ("image/jpeg", ...), default is null
+         *
+         * @param parameters (OPTIONAL)
+         *        extra info (charset, filename, ...), default is null
+         *
+         * @return TED object
+         */
+        TransportableData createTransportableData(byte[] data, String encoding,
+                                                  String mimeType, Map<String, String> parameters);
+
+        /**
          *  Parse string object to TED
          *
-         * @param ted - TED string
+         * @param ted
+         *        TED string
+         *
          * @return TED object
          */
         TransportableData parseTransportableData(String ted);

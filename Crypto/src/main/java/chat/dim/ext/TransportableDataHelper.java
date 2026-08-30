@@ -25,6 +25,8 @@
  */
 package chat.dim.ext;
 
+import java.util.Map;
+
 import chat.dim.protocol.TransportableData;
 
 /**
@@ -36,5 +38,8 @@ public interface TransportableDataHelper {
     TransportableData.Factory getTransportableDataFactory();
 
     TransportableData parseTransportableData(Object ted);
+
+    TransportableData createTransportableData(byte[] data, String encoding,
+                                              String mimeType, Map<String, String> parameters);
 
 }
