@@ -31,7 +31,7 @@
 package chat.dim.ext;
 
 /**
- *  Account FactoryManager
+ *  Account GeneralManager
  */
 public final class SharedAccountExtensions {
     private SharedAccountExtensions() {
@@ -45,6 +45,6 @@ public final class SharedAccountExtensions {
     public static DocumentHelper docHelper = null;
 
     // general helper
-    public static GeneralAccountHelper helper = null;
+    public static AccountHelper helper = null;
 
 }

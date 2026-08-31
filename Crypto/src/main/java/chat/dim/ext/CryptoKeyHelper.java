@@ -1,9 +1,4 @@
 /* license: https://mit-license.org
- *
- *  Ming-Ke-Ming : Decentralized User Identity Authentication
- *
- *                                Written in 2022 by Moky <albert.moky@gmail.com>
- *
  * ==============================================================================
  * The MIT License (MIT)
  *
@@ -30,23 +25,47 @@
  */
 package chat.dim.ext;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
-import chat.dim.protocol.ID;
+import chat.dim.protocol.DecryptKey;
+import chat.dim.protocol.EncryptKey;
+import chat.dim.protocol.SignKey;
+import chat.dim.protocol.VerifyKey;
 
 /**
- *  Account GeneralFactory
+ *  CryptographyKey GeneralHelper
  */
-public interface GeneralAccountHelper /*extends Address.Helper, ID.Helper, Meta.Helper, Document.Helper */{
+public interface CryptoKeyHelper /*extends SymmetricKey.Helper, PrivateKey.Helper, PublicKey.Helper */{
+
+    // sample data for checking keys
+    byte[] PROMISE = "Moky loves May Lee forever!".getBytes();
+
+    /**
+     *  Compare asymmetric keys
+     */
+    static boolean matchAsymmetricKeys(SignKey sKey, VerifyKey pKey) {
+        // verify with signature
+        byte[] signature = sKey.sign(PROMISE);
+        return pKey.verify(PROMISE, signature);
+    }
+
+    /**
+     *  Compare symmetric keys
+     */
+    static boolean matchSymmetricKeys(EncryptKey pKey, DecryptKey sKey) {
+        // check by encryption
+        Map<String, Object> params = new HashMap<>();
+        byte[] ciphertext = pKey.encrypt(PROMISE, params);
+        byte[] plaintext = sKey.decrypt(ciphertext, params);
+        return Arrays.equals(plaintext, PROMISE);
+    }
 
     //
-    //  Algorithm Version
+    //  Algorithm
     //
 
-    String getMetaType(Map<?, ?> meta, String defaultValue);
-
-    String getDocumentType(Map<?, ?> doc, String defaultValue);
-
-    ID getDocumentID(Map<?, ?> doc);
+    String getKeyAlgorithm(Map<?, ?> key, String defaultValue);
 
 }

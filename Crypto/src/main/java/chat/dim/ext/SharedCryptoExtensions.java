@@ -26,7 +26,7 @@
 package chat.dim.ext;
 
 /**
- *  CryptographyKey FactoryManager
+ *  CryptographyKey GeneralManager
  */
 public final class SharedCryptoExtensions {
     private SharedCryptoExtensions() {
@@ -39,6 +39,6 @@ public final class SharedCryptoExtensions {
     public static PublicKeyHelper publicHelper = null;
 
     // general helper
-    public static GeneralCryptoHelper helper = null;
+    public static CryptoKeyHelper helper = null;
 
 }
