@@ -33,8 +33,10 @@ public final class SharedFormatExtensions {
         throw new AssertionError("Utility class cannot be instantiated");
     }
 
+    // TED
     public static TransportableDataHelper tedHelper = null;
 
-    public static TransportableFileHelper pnfHelper = null;
+    // PNF
+    // ...
 
 }
