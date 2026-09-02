@@ -104,12 +104,12 @@ public interface Meta extends Mapper<String, Object> {
     boolean isValid();
 
     /**
-     *  Generate address
+     *  Generate ID
      *
-     * @param network - address type
-     * @return Address
+     * @param network - ID type
+     * @return ID without terminal
      */
-    Address generateAddress(int network);
+    ID generateID(int network);
 
     //
     //  Factory methods

@@ -62,10 +62,6 @@ public interface Address extends Stringer {
         return SharedAccountExtensions.addressHelper.parseAddress(address);
     }
 
-    static Address generate(Meta meta, int network) {
-        return SharedAccountExtensions.addressHelper.generateAddress(meta, network);
-    }
-
     static Factory getFactory() {
         return SharedAccountExtensions.addressHelper.getAddressFactory();
     }
@@ -77,15 +73,6 @@ public interface Address extends Stringer {
      *  Address Factory
      */
     interface Factory {
-
-        /**
-         *  Generate address with meta &amp; type
-         *
-         * @param meta    - meta info
-         * @param network - address type
-         * @return Address
-         */
-        Address generateAddress(Meta meta, int network);
 
         /**
          *  Parse string object to address

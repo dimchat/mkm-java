@@ -31,7 +31,6 @@
 package chat.dim.ext;
 
 import chat.dim.protocol.Address;
-import chat.dim.protocol.Meta;
 
 public interface AddressHelper {
 
@@ -39,7 +38,5 @@ public interface AddressHelper {
     Address.Factory getAddressFactory();
 
     Address parseAddress(Object address);
-
-    Address generateAddress(Meta meta, int network);
 
 }

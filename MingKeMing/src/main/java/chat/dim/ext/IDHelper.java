@@ -32,7 +32,6 @@ package chat.dim.ext;
 
 import chat.dim.protocol.Address;
 import chat.dim.protocol.ID;
-import chat.dim.protocol.Meta;
 
 public interface IDHelper {
 
@@ -42,7 +41,5 @@ public interface IDHelper {
     ID parseID(Object identifier);
 
     ID createID(String name, Address address, String terminal);
-
-    ID generateID(Meta meta, int network);
 
 }
